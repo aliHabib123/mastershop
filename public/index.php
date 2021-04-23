@@ -19,7 +19,8 @@ if (php_sapi_name() === 'cli-server') {
     }
     unset($path);
 }
-
+// Require Dao files
+ require_once 'module/Application/src/Model/include_dao.php';
 // Composer autoloading
 include __DIR__ . '/../vendor/autoload.php';
 
