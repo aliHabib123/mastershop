@@ -41,13 +41,13 @@ gulp.task("sass-min", function () {
     .pipe(gulp.dest("./public/css/"));
 });
 
-gulp.task(
-  "docss",
-  gulp.series("sass", "sass-min", function (done) {
-    done();
-  })
-);
+// gulp.task(
+//   "docss",
+//   gulp.series("sass", "sass-min", function (done) {
+//     done();
+//   })
+// );
 
 gulp.task("watch", function () {
-  gulp.watch("sass/**/*.scss", ["docss"]);
+  gulp.watch("./assets/sass/*.scss", gulp.series('sass', 'sass-min'));
 });
