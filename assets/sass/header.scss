@@ -1,0 +1,162 @@
+//Mega Menu
+.mega-menu {
+  nav.navbar {
+    .navbar-collapse {
+      > ul.navbar-nav {
+        > li {
+          > a {
+            color: #fff;
+          }
+          ul.dropdown-menu {
+            li.grid-list {
+              > div {
+                //   display: grid;
+                //   grid-template-columns: auto auto auto;
+                //   grid-template-rows: auto auto;
+                //   grid-gap: 10px;
+                > div {
+                  margin-bottom: 15px;
+                }
+              }
+              .main-cat-name {
+                margin-bottom: 5px;
+                a {
+                  font-family: $fontPrimary;
+                  font-size: 16px;
+                  font-weight: bold;
+                  color: #000;
+                  border-bottom: 2px solid $border-color-main;
+                }
+              }
+              .subcategories {
+                color: black;
+                padding-left: 0;
+                list-style: none;
+                li {
+                  a {
+                    color: #000;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .brands-categories {
+    margin-bottom: 25px;
+    ul {
+      padding-left: 0;
+      list-style: none;
+      li {
+        display: inline-block;
+        a {
+          color: $menu-grey;
+          border-right: 2px solid $menu-grey;
+          line-height: 1;
+          padding: 0px 10px;
+          &:hover {
+            color: $base-color;
+          }
+        }
+        &:last-child a {
+          border-right: none;
+        }
+        &.active {
+          a {
+            color: $base-color;
+          }
+        }
+      }
+    }
+  }
+  .brands-slider-container {
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    .brands-slider {
+      display: none;
+    }
+    .bx-wrapper {
+      -moz-box-shadow: none;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      border: none;
+      background: transparent;
+      margin-bottom: 25px;
+      .bx-next {
+        right: -45px;
+        background: url(../img/arrow-right.png) no-repeat 0px 0px;
+      }
+      .bx-prev {
+        left: -45px;
+        background: url(../img/arrow-left.png) no-repeat 0px 0px;
+      }
+      .bx-controls-direction a {
+        position: absolute;
+        top: 50%;
+        margin-top: -44.5px;
+        outline: 0;
+        width: 26px;
+        height: 89px;
+        text-indent: -9999px;
+        z-index: 9999;
+      }
+    }
+  }
+}
+.grid-item {
+  &.card {
+    border: none;
+  }
+}
+/*!
+ * Yamm!3
+ * Yet another megamenu for Bootstrap 3 and 4
+ * 
+ * https://geedmo.github.com/yamm3
+ */
+.yamm .nav,
+.yamm .collapse,
+.yamm .dropup,
+.yamm .dropdown {
+  position: static;
+}
+.yamm .container {
+  position: relative;
+}
+.yamm .dropdown-menu {
+  left: auto;
+}
+.yamm .nav.navbar-right .dropdown-menu {
+  left: auto;
+  right: 0;
+}
+.yamm .yamm-content {
+  padding: 20px 30px;
+}
+.yamm .dropdown.yamm-fw .dropdown-menu {
+  left: 0;
+  right: 0;
+  padding: 15px;
+}
+.list-unstyled,
+.list-unstyled ul {
+  min-width: 120px;
+}
+.lower-menu {
+  background-color: $base-color;
+}
+.small-separator {
+  background: $border-color-main;
+  height: 1px;
+  margin: auto;
+  width: 60%;
+  display: block;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+.pointer {
+  cursor: pointer;
+}
