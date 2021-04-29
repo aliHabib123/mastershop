@@ -1,42 +1,46 @@
 <?php
+
 /**
  * @var Laminas\View\Renderer\PhpRenderer $this
  */
 if (defined('RUNNING_FROM_ROOT')) {
-  $this->plugin('basePath')->setBasePath($this->basePath().'/public');
-} ?>
-<?= $this->doctype() ?>
+    $this->plugin('basePath')->setBasePath($this->basePath() . '/public');
+}
+?>
+<!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <?= $this->headTitle('Laminas MVC Skeleton')->setSeparator(' - ')->setAutoEscape(false) ?>
 
-        <?= $this->headMeta()
-            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
-            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
-        ?>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <base href="<?php echo BASE_URL; ?>">
+    <link rel="icon" type="image/png" href="img/favicon.png" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;700&family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" crossorigin="anonymous">
+    <script src="js/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="fontawesome-free-5.15.3-web/css/all.css">
+    <link rel="stylesheet" href="js/bxslider-4-4.2.12/dist/jquery.bxslider.css">
+    <link rel="stylesheet" href="css/all.css" crossorigin="anonymous">
+</head>
 
-        <!-- Le styles -->
-        <?= $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
-            ->prependStylesheet($this->basePath('css/style.css'))
-            ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
-        ?>
+<body>
+    <!--=================================================== HEADER      ===============================================-->
+    <?php echo $this->partial('layout/header') ?>
+    <!--=================================================== END HEADER  ===============================================-->
+    <!--=================================================== HEADER      ===============================================-->
+    <?php echo $this->partial('layout/banner') ?>
+    <!--=================================================== END HEADER  ===============================================-->
+    <!-- ================================================== BODY        ============================================== -->
+    <?php echo $this->content ?>
+    <!-- ================================================== END BODY    ============================================== -->
+    <!--=================================================== FOOTER      ===============================================-->
+    <?php echo $this->partial('layout/footer'); ?>
+    <!--=================================================== END FOOTER  ===============================================-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="js/bxslider-4-4.2.12/dist/jquery.bxslider.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js" crossorigin="anonymous"></script>
+</body>
 
-        <!-- Scripts -->
-        <?= $this->headScript() ?>
-    </head>
-    <body>
-        <!--=================================================== HEADER      ===============================================-->
-        <?php echo $this->partial('layout/header')?>
-        <!--=================================================== END HEADER  ===============================================-->	
-        <!-- ================================================== BODY        ============================================== -->	
-        <?php echo $this->content?>
-        <!-- ================================================== END BODY    ============================================== -->
-        <!--=================================================== FOOTER      ===============================================-->
-        <?php echo $this->partial('layout/footer');?>
-        <!--=================================================== END FOOTER  ===============================================-->
-        <?= $this->inlineScript()
-            ->prependFile($this->basePath('js/bootstrap.min.js'))
-            ->prependFile($this->basePath('js/jquery-3.5.1.min.js')) ?>
-    </body>
 </html>
