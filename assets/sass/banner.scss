@@ -1,0 +1,64 @@
+.main-banner-container {
+  .bx-wrapper {
+    margin-bottom: 0;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: none;
+    background: #fff;
+    .bx-pager {
+      bottom: 15px;
+      a {
+        background: $base-red;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+      }
+      a:hover,
+      a.active,
+      a:focus {
+        background: $base-color;
+      }
+    }
+  }
+  .banner-item {
+    line-height: 1;
+    position: relative;
+    text-align: right;
+    &_img {
+      width: 100%;
+      img {
+        width: 100%;
+      }
+    }
+    &_caption1 {
+      position: absolute;
+      top: 25%;
+      padding-left: 50px;
+      font-size: 45px;
+    }
+    &_caption2 {
+      position: absolute;
+      top: 40%;
+      padding-left: 50px;
+      font-size: 45px;
+      font-weight: bold;
+    }
+    &_button {
+      position: absolute;
+      top: 60%;
+      padding-left: 50px;
+      a {
+        display: inline-block;
+        background-color: $base-red;
+        border: 1px solid $base-red;
+        color: #fff;
+        padding: 15px 20px;
+        &:hover {
+          background-color: #fff;
+          color: $base-red;
+        }
+      }
+    }
+  }
+}

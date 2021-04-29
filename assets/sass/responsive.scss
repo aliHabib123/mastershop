@@ -1,0 +1,196 @@
+@media (max-width: 768px) {
+  .middle-menu {
+    .logo-container {
+      float: none;
+      width: 100%;
+      text-align: center;
+    }
+    .search-container {
+      width: 100%;
+      padding-left: 0;
+      span {
+        display: inline-block;
+      }
+      .search-button {
+        button {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+  .main-banner-container {
+    .bx-wrapper {
+      margin-bottom: 0;
+      -moz-box-shadow: none;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      border: none;
+      background: #fff;
+      .bx-pager {
+        bottom: 15px;
+        a {
+          background: $base-red;
+          width: 15px;
+          height: 15px;
+          border-radius: 50%;
+        }
+        a:hover,
+        a.active,
+        a:focus {
+          background: $base-color;
+        }
+      }
+    }
+    .banner-item {
+      line-height: 1;
+      position: relative;
+      text-align: right;
+      &_img {
+        width: 100%;
+        img {
+          width: 100%;
+        }
+      }
+      &_caption1 {
+        position: absolute;
+        top: 25%;
+        padding-left: 50px;
+        font-size: 45px;
+        display: none;
+      }
+      &_caption2 {
+        position: absolute;
+        top: 40%;
+        padding-left: 50px;
+        font-size: 45px;
+        font-weight: bold;
+        display: none;
+      }
+      &_button {
+        position: absolute;
+        top: 50%;
+        padding-left: 0;
+        width: 100%;
+        text-align: center;
+        transform: translateY(-50%);
+        a {
+          display: inline-block;
+          background-color: $base-red;
+          border: 1px solid $base-red;
+          color: #fff;
+          padding: 15px 20px;
+          &:hover {
+            background-color: #fff;
+            color: $base-red;
+          }
+        }
+      }
+    }
+  }
+  .mobile-menu {
+    .dropdown-item {
+      &:active {
+        background-color: transparent;
+      }
+      &:hover {
+        color: $base-color;
+        background-color: #fff;
+      }
+    }
+    background-color: $base-color;
+    .dropdown-menu {
+      background-color: transparent;
+    }
+    .dropdown-submenu {
+      position: relative;
+      ul {
+        .dropdown-item {
+          padding: 0.25rem 1.5rem 0.25rem 5rem;
+        }
+      }
+    }
+
+    .dropdown-submenu > a:after {
+      //   content: "\f0da";
+      //   float: right;
+      //   border: none;
+      //   font-family: "FontAwesome";
+    }
+
+    .dropdown-submenu > .dropdown-menu {
+      top: 0;
+      left: 100%;
+      margin-top: 0px;
+      margin-left: 0px;
+    }
+    .navbar-light .navbar-toggler-icon {
+      background-image: url('data:image/svg + xml,%3csvgviewBox="0 0 30 30"xmlns="http://www.w3.org/2000/svg"%3e%3cpathstroke="rgb(255, 255, 255)"stroke-width="2"stroke-linecap="round"stroke-miterlimit="10"d="M4 7h22M4 15h22M4 23h22"/%3e%3c/svg%3e');
+    }
+    .navbar-light {
+      .navbar-nav .show > .nav-link {
+        color: #fff;
+      }
+      .navbar-toggler {
+        border-color: #fff;
+        &:focus {
+          outline: none;
+        }
+      }
+      ul.navbar-nav {
+        > li {
+          > a {
+            color: #fff;
+            font-family: $fontPrimary;
+          }
+        }
+      }
+    }
+  }
+  .main-title {
+    font-size: 25px;
+    margin-top: 20px;
+    margin-bottom: 0px;
+  }
+  .special-tags ul li a {
+    font-size: 14px;
+    padding: 0px 6px;
+  }
+  .categories-slider-wrapper {
+    padding-bottom: 40px;
+    .bx-wrapper {
+      -moz-box-shadow: none;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      border: none;
+      margin-bottom: 0;
+      background-color: transparent;
+      .bx-pager {
+        bottom: -35px;
+        a {
+          background: #5492c6;
+          width: 25px;
+          height: 25px;
+          border-radius: 50%;
+        }
+        a:hover,
+        a.active,
+        a:focus {
+          background: #c6d6e4;
+        }
+      }
+    }
+  }
+  .ads-container {
+    .ad1,
+    .ad2 {
+      margin-bottom: 25px;
+    }
+  }
+  .footer-logo {
+    display: none;
+  }
+  footer .footer1 .social-media {
+    margin-top: 0px;
+    margin-bottom: 15px;
+  }
+}

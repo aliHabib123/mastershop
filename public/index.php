@@ -2,6 +2,28 @@
 
 declare(strict_types=1);
 
+ini_set("display_errors", "On");
+error_reporting(E_ERROR | E_COMPILE_ERROR | E_CORE_ERROR | E_RECOVERABLE_ERROR | E_USER_ERROR | E_PARSE);
+
+define('MODE', 'dev'); //dev or prod
+//Getting the absolute path of the project
+define('PATH', dirname(__FILE__));
+
+define('MAIN_URL', "http://localhost/mastershop/");
+define('BASE_URL', "http://localhost/mastershop/public/");
+
+define('BASE_PATH', PATH . '/');
+define('image_dir', 'images/');
+define('upload_image_dir', 'uploads/images/');
+define('upload_file_dir', 'uploads/files/');
+define('IMAGE_URL', BASE_URL . 'uploads/images/');
+define('FILE_URL', BASE_URL . 'uploads/files/');
+
+
+#Google Recaptcha V2
+define('V2_SITE_KEY', '');
+define('V2_SECRET_KEY', '');
+
 use Laminas\Mvc\Application;
 use Laminas\Stdlib\ArrayUtils;
 
@@ -20,16 +42,17 @@ if (php_sapi_name() === 'cli-server') {
     unset($path);
 }
 // Require Dao files
- require_once 'module/Application/src/Model/include_dao.php';
+require_once 'module/Application/src/Model/include_dao.php';
+
 // Composer autoloading
 include __DIR__ . '/../vendor/autoload.php';
 
-if (! class_exists(Application::class)) {
+if (!class_exists(Application::class)) {
     throw new RuntimeException(
         "Unable to load application.\n"
-        . "- Type `composer install` if you are developing locally.\n"
-        . "- Type `vagrant ssh -c 'composer install'` if you are using Vagrant.\n"
-        . "- Type `docker-compose run laminas composer install` if you are using Docker.\n"
+            . "- Type `composer install` if you are developing locally.\n"
+            . "- Type `vagrant ssh -c 'composer install'` if you are using Vagrant.\n"
+            . "- Type `docker-compose run laminas composer install` if you are using Docker.\n"
     );
 }
 
