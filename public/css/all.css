@@ -1,3 +1,7 @@
+@media (min-width: 1305px) {
+  .container {
+    width: 1300px; } }
+
 body {
   font-family: "Montserrat Alternates", sans-serif;
   color: #000; }
