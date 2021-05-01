@@ -36,5 +36,5 @@ gulp.task("sass-min", function () {
 // );
 
 gulp.task("watch", function () {
-  gulp.watch("./assets/sass/*.scss", gulp.series("sass", "sass-min"));
+  gulp.watch(["./assets/sass/*.scss", "!./assets/sass/all.scss"], gulp.series("sass"));
 });

@@ -287,7 +287,18 @@ body {
 .spotlight-deals_img {
   text-align: center;
   text-align: -webkit-center;
-  text-align: -moz-center; }
+  text-align: -moz-center;
+  position: relative; }
+  .spotlight-deals_img .sale-tag {
+    position: absolute;
+    background-color: #ef0101;
+    color: #fff;
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    font-size: 27px;
+    padding: 5px 10px;
+    line-height: 1;
+    transform: rotate(-90deg); }
 
 .spotlight-deals_title {
   font-family: "Montserrat Alternates", sans-serif;
@@ -558,7 +569,7 @@ body {
       text-align: -webkit-center;
       text-align: -moz-center; }
       .small-banner-container .small-banner-caption-container.centered .banner-title1 {
-        font-family: "Montserrat Alternates", sans-serif;
+        font-family: "Montserrat", sans-serif;
         font-size: 40px;
         color: #fff;
         margin-bottom: 10px; }
