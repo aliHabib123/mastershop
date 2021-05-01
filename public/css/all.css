@@ -140,6 +140,9 @@ body {
   .main-title.centered {
     text-align: center; }
 
+.with-margin .main-title {
+  margin-bottom: 40px; }
+
 .full-width {
   padding-top: 10px;
   padding-bottom: 10px; }
@@ -268,7 +271,83 @@ body {
     background-color: #2576ba;
     color: #fff; }
 
-@media (min-width: 767px) {
+.ads-c {
+  margin-bottom: 20px; }
+  .ads-c .ad-col:first-child {
+    margin-bottom: 15px; }
+  .ads-c .ad-col img {
+    width: 100%; }
+
+.spotlight-deals > div > div {
+  border-top: 1px solid #5a5a5a;
+  border-bottom: 1px solid #5a5a5a;
+  padding-top: 20px;
+  padding-bottom: 20px; }
+
+.spotlight-deals_img {
+  text-align: center;
+  text-align: -webkit-center;
+  text-align: -moz-center; }
+
+.spotlight-deals_title {
+  font-family: "Montserrat Alternates", sans-serif;
+  font-size: 32px;
+  font-weight: bold;
+  color: #2576ba;
+  border-bottom: 1px solid #5a5a5a;
+  margin-bottom: 20px; }
+  .spotlight-deals_title span {
+    float: right;
+    position: relative;
+    top: -6px; }
+
+.spotlight-deals_item_title {
+  margin-bottom: 15px; }
+  .spotlight-deals_item_title a {
+    font-family: "Montserrat Alternates", sans-serif;
+    font-weight: 500;
+    font-size: 266;
+    color: #000; }
+
+.spotlight-deals_price1 {
+  font-family: "Montserrat Alternates", sans-serif;
+  font-size: 32px;
+  color: #818181;
+  line-height: 1;
+  text-decoration: line-through;
+  font-weight: 500;
+  margin-bottom: 10px; }
+
+.spotlight-deals_price2 {
+  font-family: "Montserrat Alternates", sans-serif;
+  font-size: 40px;
+  color: #2576ba;
+  line-height: 1;
+  font-weight: 500;
+  margin-bottom: 10px; }
+  .spotlight-deals_price2 span {
+    font-size: 25px;
+    margin-left: 10px; }
+
+.spotlight-deals_buttons {
+  margin-top: 25px; }
+  .spotlight-deals_buttons a {
+    display: inline-block;
+    color: #818181 !important;
+    border: 1px solid #818181;
+    border-radius: 4px;
+    line-height: 1;
+    padding: 10px 20px; }
+    .spotlight-deals_buttons a:first-child {
+      margin-right: 15px; }
+    .spotlight-deals_buttons a img {
+      width: 25px;
+      margin-right: 10px; }
+    .spotlight-deals_buttons a:hover {
+      background-color: #818181;
+      color: #fff !important; }
+
+@media (min-width: 768px) {
   .panel-group {
     width: 400px; }
   .thumbnail {
@@ -276,7 +355,11 @@ body {
   .card-columns {
     -webkit-column-count: 5;
     -moz-column-count: 5;
-    column-count: 5; } }
+    column-count: 5; }
+  .col-md-2.item-col {
+    -ms-flex: 0 0 20%;
+    flex: 0 0 20%;
+    max-width: 20%; } }
 
 .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li > a {
   color: #fff; }
@@ -470,6 +553,26 @@ body {
     top: 50%;
     line-height: 1;
     transform: translateY(-50%); }
+    .small-banner-container .small-banner-caption-container.centered {
+      text-align: center;
+      text-align: -webkit-center;
+      text-align: -moz-center; }
+      .small-banner-container .small-banner-caption-container.centered .banner-title1 {
+        font-family: "Montserrat Alternates", sans-serif;
+        font-size: 40px;
+        color: #fff;
+        margin-bottom: 10px; }
+      .small-banner-container .small-banner-caption-container.centered .banner-title2 {
+        font-size: 35px;
+        font-weight: 300;
+        font-family: "Montserrat", sans-serif;
+        color: #fff;
+        margin-bottom: 10px; }
+      .small-banner-container .small-banner-caption-container.centered .banner-title3 {
+        font-family: "Montserrat Alternates", sans-serif;
+        font-size: 20px;
+        color: #fff;
+        font-weight: 300; }
     .small-banner-container .small-banner-caption-container .banner-title {
       font-family: "Montserrat", sans-serif;
       color: #2576ba;
@@ -712,11 +815,7 @@ footer {
     margin-top: 0px;
     margin-bottom: 15px; }
   .small-banner-container + .breadcrumb-c .breadcrumb-c-inner {
-    margin-bottom: 10px;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    right: 0; }
+    margin-bottom: 10px; }
     .small-banner-container + .breadcrumb-c .breadcrumb-c-inner ul {
       padding-left: 0;
       list-style: none;
@@ -747,6 +846,13 @@ footer {
       margin-bottom: 15px; }
       .small-banner-container.with-breadcrumb .small-banner-caption-container {
         transform: translateY(-50%); }
+        .small-banner-container.with-breadcrumb .small-banner-caption-container.centered .banner-title1 {
+          font-size: 25px;
+          margin-bottom: 0; }
+        .small-banner-container.with-breadcrumb .small-banner-caption-container.centered .banner-title2 {
+          display: none; }
+        .small-banner-container.with-breadcrumb .small-banner-caption-container.centered .banner-title3 {
+          display: none; }
     .small-banner-container .small-banner {
       position: relative; }
       .small-banner-container .small-banner_img img {
@@ -756,4 +862,50 @@ footer {
     .small-banner-container .small-banner-caption-container .banner-brief {
       display: none; }
     .small-banner-container .banner-breadcrumb {
-      display: none; } }
+      display: none; }
+  .spotlight-deals_title {
+    font-size: 25px;
+    padding-bottom: 10px; }
+    .spotlight-deals_title span {
+      float: right;
+      position: relative;
+      top: -6px; }
+      .spotlight-deals_title span img {
+        width: 50px; }
+  .spotlight-deals_item_title {
+    margin-bottom: 15px; }
+    .spotlight-deals_item_title a {
+      font-family: "Montserrat Alternates", sans-serif;
+      font-weight: 500;
+      font-size: 266;
+      color: #000; }
+  .spotlight-deals_price1 {
+    font-family: "Montserrat Alternates", sans-serif;
+    font-size: 32px;
+    color: #818181;
+    line-height: 1;
+    text-decoration: line-through;
+    font-weight: 500;
+    margin-bottom: 10px; }
+  .spotlight-deals_price2 {
+    font-family: "Montserrat Alternates", sans-serif;
+    font-size: 40px;
+    color: #2576ba;
+    line-height: 1;
+    font-weight: 500;
+    margin-bottom: 10px; }
+    .spotlight-deals_price2 span {
+      font-size: 25px;
+      margin-left: 10px; }
+  .spotlight-deals_buttons {
+    margin-top: 25px; }
+    .spotlight-deals_buttons a {
+      padding: 10px; }
+      .spotlight-deals_buttons a:first-child {
+        margin-right: 15px; }
+      .spotlight-deals_buttons a img {
+        width: 25px;
+        margin-right: 10px; }
+      .spotlight-deals_buttons a:hover {
+        background-color: #818181;
+        color: #fff !important; } }

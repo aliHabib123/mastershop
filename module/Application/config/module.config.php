@@ -27,13 +27,27 @@ return [
                     ],
                 ],
             ],
-            'archives' => [
+            'products' => [
                 'type' => Segment::class,
                 'options' => [
                     'route'    => '/products[/:cat1][/:cat2][/:cat3][/]',
                     'defaults' => [
                         'controller' => Controller\ProductController::class,
                         'action'     => 'index',
+                        'year'       => date('Y'),
+                    ],
+                    'constraints' => [
+                        'year' => '\d{4}',
+                    ],
+                ],
+            ],
+            'todaysDeals' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route'    => '/todays-deals[/]',
+                    'defaults' => [
+                        'controller' => Controller\ProductController::class,
+                        'action'     => 'todaysDeals',
                         'year'       => date('Y'),
                     ],
                     'constraints' => [
