@@ -13,14 +13,9 @@ namespace Application\Controller;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 
-class IndexController extends AbstractActionController
+class ProductController extends AbstractActionController
 {
     public function indexAction()
-    {
-        $this->layout()->withBanner = true;
-        return new ViewModel();
-    }
-    public function testAction()
     {
         return new ViewModel();
     }

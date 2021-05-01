@@ -1,0 +1,89 @@
+<?php
+
+use Application\Controller\DesignController;
+?>
+<div class="main-wrapper">
+    <div class="small-banner-container with-breadcrumb">
+        <div class="small-banner_img">
+            <img src="img/small-banner.jpg" />
+        </div>
+        <div class="small-banner-caption-container">
+            <div class="container">
+                <div class="banner-title">Electronics</div>
+                <div class="banner-brief">Shop the latest electronic products in the market</div>
+            </div>
+        </div>
+        <div class="banner-breadcrumb">
+            <div class="container">
+                <ul>
+                    <li><a href="#"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
+                    <li><a>Large Appliances</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="accordion-c">
+                    <div class="accordion_title">Filter by</div>
+                    <div id="accordion">
+
+                        <div class="card">
+                            <div class="card-header">
+                                <a class="card-link" data-toggle="collapse" href="#collapseOne">
+                                    Category<i class="fas fa-plus"></i>
+                                </a>
+                            </div>
+                            <div id="collapseOne" class="collapse" data-parent="#accordion">
+                                <div class="card-body">
+                                    Lorem ipsum..
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                                    Price<i class="fas fa-plus"></i>
+                                </a>
+                            </div>
+                            <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                                <div class="card-body">
+                                    Lorem ipsum..
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+                                    Brand<i class="fas fa-plus"></i>
+                                </a>
+                            </div>
+                            <div id="collapseThree" class="collapse" data-parent="#accordion">
+                                <div class="card-body">
+                                    Lorem ipsum..
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-9">
+                <div class="row">
+                    <?php for ($i = 0; $i < 16; $i++) { ?>
+                        <div class="col-md-3 item-col">
+                            <?php echo DesignController::item(); ?>
+                        </div>
+                    <?php } ?>
+                    <div class="col-md-12">
+                        <div id="product-pagination" class="text-center"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
