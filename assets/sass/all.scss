@@ -5,9 +5,14 @@ $border-color-main: #b7b7b7;
 $menu-grey: #acacac;
 $fontPrimary: "Montserrat Alternates", sans-serif;
 $fontsecondary: "Montserrat", sans-serif;
-@import 'main';
-@import 'header';
-@import 'banner';
-@import 'product';
-@import 'footer';
-@import 'responsive';
+@media (min-width: 1305px) {
+  .container {
+    width: 1300px;
+  }
+}
+@import "main";
+@import "header";
+@import "banner";
+@import "product";
+@import "footer";
+@import "responsive";

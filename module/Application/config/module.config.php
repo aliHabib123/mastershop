@@ -27,20 +27,24 @@ return [
                     ],
                 ],
             ],
-            'test' => [
-                'type'    => Literal::class,
+            'archives' => [
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/test',
+                    'route'    => '/products[/:cat1][/:cat2][/:cat3][/]',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'test',
+                        'controller' => Controller\ProductController::class,
+                        'action'     => 'index',
+                        'year'       => date('Y'),
+                    ],
+                    'constraints' => [
+                        'year' => '\d{4}',
                     ],
                 ],
             ],
             'application' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/application[/:action]',
+                    'route'    => '/application[/:action][/]',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
                         'action'     => 'index',
@@ -53,6 +57,8 @@ return [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
             Controller\DesignController::class => InvokableFactory::class,
+            Controller\ProductController::class => InvokableFactory::class,
+            Controller\HelperController::class => InvokableFactory::class,
         ],
     ],
     'view_manager' => [
