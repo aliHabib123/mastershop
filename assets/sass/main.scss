@@ -182,6 +182,11 @@ body {
     text-align: center;
   }
 }
+.with-margin {
+  .main-title {
+    margin-bottom: 40px;
+  }
+}
 .full-width {
   padding-top: 10px;
   padding-bottom: 10px;
@@ -352,7 +357,98 @@ body {
     }
   }
 }
-@media (min-width: 767px) {
+.ads-c {
+  margin-bottom: 20px;
+  .ad-col {
+    &:first-child {
+      margin-bottom: 15px;
+    }
+    img {
+      width: 100%;
+    }
+  }
+}
+.spotlight-deals {
+  > div {
+    > div {
+      border-top: 1px solid $base-black;
+      border-bottom: 1px solid $base-black;
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+  }
+  &_img {
+    text-align: center;
+    text-align: -webkit-center;
+    text-align: -moz-center;
+  }
+  &_title {
+    font-family: $fontPrimary;
+    font-size: 32px;
+    font-weight: bold;
+    color: $base-color;
+    border-bottom: 1px solid $base-black;
+    margin-bottom: 20px;
+    span {
+      float: right;
+      position: relative;
+      top: -6px;
+    }
+  }
+  &_item_title {
+    margin-bottom: 15px;
+    a {
+      font-family: $fontPrimary;
+      font-weight: 500;
+      font-size: 266;
+      color: #000;
+    }
+  }
+  &_price1 {
+    font-family: $fontPrimary;
+    font-size: 32px;
+    color: #818181;
+    line-height: 1;
+    text-decoration: line-through;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  &_price2 {
+    font-family: $fontPrimary;
+    font-size: 40px;
+    color: $base-color;
+    line-height: 1;
+    font-weight: 500;
+    margin-bottom: 10px;
+    span {
+      font-size: 25px;
+      margin-left: 10px;
+    }
+  }
+  &_buttons {
+    margin-top: 25px;
+    a {
+      display: inline-block;
+      color: $base-grey !important;
+      border: 1px solid $base-grey;
+      border-radius: 4px;
+      line-height: 1;
+      padding: 10px 20px;
+      &:first-child {
+        margin-right: 15px;
+      }
+      img {
+        width: 25px;
+        margin-right: 10px;
+      }
+      &:hover {
+        background-color: $base-grey;
+        color: #fff !important;
+      }
+    }
+  }
+}
+@media (min-width: 768px) {
   .panel-group {
     width: 400px;
   }
@@ -363,5 +459,10 @@ body {
     -webkit-column-count: 5;
     -moz-column-count: 5;
     column-count: 5;
+  }
+  .col-md-2.item-col {
+    -ms-flex: 0 0 20%;
+    flex: 0 0 20%;
+    max-width: 20%;
   }
 }

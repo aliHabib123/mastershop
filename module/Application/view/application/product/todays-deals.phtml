@@ -1,0 +1,100 @@
+<?php
+
+use Application\Controller\DesignController;
+?>
+<div class="main-wrapper">
+    <div class="small-banner-container with-breadcrumb">
+        <div class="small-banner_img">
+            <img src="img/banner-red.jpg" />
+        </div>
+        <div class="small-banner-caption-container centered">
+            <div class="container">
+                <div class="banner-title1">TODAY'S DEALS</div>
+                <div class="banner-title2">Get Ready!</div>
+                <div class="banner-title3">Get a chance and catch our latest products and deals.</div>
+            </div>
+        </div>
+        <div class="banner-breadcrumb">
+            <div class="container">
+                <ul>
+                    <li><a href="#"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
+                    <li><a>Large Appliances</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="breadcrumb-c d-block d-sm-none">
+        <div class="breadcrumb-c-inner">
+            <div class="container">
+                <ul>
+                    <li><a href="#"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
+                    <li><a>Large Appliances</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="spotlight-deals">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 d-block d-sm-none">
+                <div class="spotlight-deals_title">SPOTLIGHT DEALS <span><a href="#"><img src="img/arrow-right-grey.png" /></a></span></div>
+                </div>
+                <div class="col-md-4 spotlight-deals_img">
+                    <a href="#">
+                        <img src="img/product.png" />
+                    </a>
+                </div>
+                <div class="col-md-8">
+                    <div class="spotlight-deals_title d-none d-sm-block">SPOTLIGHT DEALS <span><a href="#"><img src="img/arrow-right-grey.png" /></a></span></div>
+                    <div class="spotlight-deals_item_title">
+                        <a href="#">
+                            Panasonic DECT 6.0 Expandable Cordless Phone
+                            with Answering Machine and Smart Call Block
+                        </a>
+                    </div>
+                    <div class="spotlight-deals_price1">1,290,000</div>
+                    <div class="spotlight-deals_price2">890,000<span>LBP</span></div>
+                    <div class="spotlight-deals_buttons">
+                        <a href="#" class="add-to-wishlist"><img src="img/heart-off.png" />Add to wishlist</a>
+                        <a href="#" class="add-to-wishlist"><img src="img/cart.png" />Add to cart</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="container ads-c">
+        <div class="row">
+            <div class="col-md-6 ad-col">
+                <a href="#">
+                    <img src="img/ad2.png"/>
+                </a>
+            </div>
+            <div class="col-md-6 ad-col">
+                <a href="#">
+                    <img src="img/ad2.png"/>
+                </a>
+            </div>
+        </div>
+    </div> -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 with-margin">
+                <?php echo DesignController::mainTitle("TODAY'S DEALS") ?>
+            </div>
+        </div>
+        <div class="row">
+            <?php for ($i = 0; $i < 20; $i++) { ?>
+                <div class="col-6 col-md-2 item-col">
+                    <?php echo DesignController::item(); ?>
+                </div>
+            <?php } ?>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div id="product-pagination" class="text-center"></div>
+            </div>
+        </div>
+    </div>
+</div>

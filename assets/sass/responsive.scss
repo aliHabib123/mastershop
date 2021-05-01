@@ -197,10 +197,10 @@
   .small-banner-container + .breadcrumb-c {
     .breadcrumb-c-inner {
       margin-bottom: 10px;
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      right: 0;
+      // position: absolute;
+      // bottom: 0;
+      // width: 100%;
+      // right: 0;
       ul {
         padding-left: 0;
         list-style: none;
@@ -244,6 +244,18 @@
       margin-bottom: 15px;
       .small-banner-caption-container {
         transform: translateY(-50%);
+        &.centered {
+          .banner-title1 {
+            font-size: 25px;
+            margin-bottom: 0;
+          }
+          .banner-title2 {
+            display: none;
+          }
+          .banner-title3 {
+            display: none;
+          }
+        }
       }
     }
     .small-banner {
@@ -279,6 +291,69 @@
           }
           span {
           }
+        }
+      }
+    }
+  }
+  .spotlight-deals {
+    &_img {
+    }
+    &_title {
+      font-size: 25px;
+      padding-bottom: 10px;
+      span {
+        float: right;
+        position: relative;
+        top: -6px;
+        img{
+          width: 50px;
+        }
+      }
+    }
+    &_item_title {
+      margin-bottom: 15px;
+      a {
+        font-family: $fontPrimary;
+        font-weight: 500;
+        font-size: 266;
+        color: #000;
+      }
+    }
+    &_price1 {
+      font-family: $fontPrimary;
+      font-size: 32px;
+      color: #818181;
+      line-height: 1;
+      text-decoration: line-through;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    &_price2 {
+      font-family: $fontPrimary;
+      font-size: 40px;
+      color: $base-color;
+      line-height: 1;
+      font-weight: 500;
+      margin-bottom: 10px;
+      span {
+        font-size: 25px;
+        margin-left: 10px;
+      }
+    }
+    &_buttons {
+      margin-top: 25px;
+      a {
+        padding: 10px;
+        &:first-child {
+          margin-right: 15px;
+        }
+        img {
+          width: 25px;
+          margin-right: 10px;
+        }
+        &:hover {
+          background-color: $base-grey;
+          color: #fff !important;
         }
       }
     }

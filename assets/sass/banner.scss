@@ -87,6 +87,30 @@
     top: 50%;
     line-height: 1;
     transform: translateY(-50%);
+    &.centered{
+      text-align: center;
+      text-align: -webkit-center;
+      text-align: -moz-center;
+      .banner-title1{
+        font-family: $fontPrimary;
+        font-size: 40px;
+        color: #fff;
+        margin-bottom: 10px;
+      }
+      .banner-title2{
+        font-size: 35px;
+        font-weight: 300;
+        font-family: $fontsecondary;
+        color: #fff;
+        margin-bottom: 10px;
+      }
+      .banner-title3{
+        font-family: $fontPrimary;
+        font-size: 20px;
+        color: #fff;
+        font-weight: 300;
+      }
+    }
     .banner-title {
       font-family: $fontsecondary;
       color: $base-color;
