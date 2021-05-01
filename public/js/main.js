@@ -110,6 +110,19 @@ $(function () {
       reloadcategoriesSlider();
     }, 250);
   });
+
+  //Pagination
+  $('#product-pagination').twbsPagination({
+    totalPages: 35,
+    visiblePages: 5,
+    first: '',
+    last: '',
+    next: '<i class="fas fa-chevron-right"></i>',
+    prev: '<i class="fas fa-chevron-left"></i>',
+    onPageClick: function (event, page) {
+        alert(page)
+    }
+});
 });
 
 $(function () {
