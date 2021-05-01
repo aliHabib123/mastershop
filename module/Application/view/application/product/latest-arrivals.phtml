@@ -1,0 +1,71 @@
+<?php
+
+use Application\Controller\DesignController;
+?>
+<div class="main-wrapper">
+    <div class="small-banner-container with-breadcrumb">
+        <div class="small-banner_img">
+            <img src="img/banner-red.jpg" />
+        </div>
+        <div class="small-banner-caption-container centered">
+            <div class="container">
+                <div class="banner-title1">NEW FOR YOU</div>
+                <div class="banner-title2">Get Ready!</div>
+                <div class="banner-title3">Get a chance and catch our latest products and deals.</div>
+            </div>
+        </div>
+        <div class="banner-breadcrumb">
+            <div class="container">
+                <ul>
+                    <li><a href="#"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
+                    <li><a>Large Appliances</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="breadcrumb-c d-block d-sm-none">
+        <div class="breadcrumb-c-inner">
+            <div class="container">
+                <ul>
+                    <li><a href="#"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
+                    <li><a>Latest Arrivals</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container ads-c">
+        <div class="row">
+            <div class="col-md-6 ad-col">
+                <a href="#">
+                    <img src="img/ad2.png"/>
+                </a>
+            </div>
+            <div class="col-md-6 ad-col">
+                <a href="#">
+                    <img src="img/ad2.png"/>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 with-margin">
+                <?php echo DesignController::mainTitle("LATEST ARRIVALS") ?>
+            </div>
+        </div>
+        <div class="row">
+            <?php for ($i = 0; $i < 20; $i++) { ?>
+                <div class="col-6 col-md-2 item-col">
+                    <?php echo DesignController::item(); ?>
+                </div>
+            <?php } ?>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div id="product-pagination" class="text-center"></div>
+            </div>
+        </div>
+    </div>
+</div>

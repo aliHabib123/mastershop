@@ -55,6 +55,20 @@ return [
                     ],
                 ],
             ],
+            'latestArrivals' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route'    => '/latest-arrivals[/]',
+                    'defaults' => [
+                        'controller' => Controller\ProductController::class,
+                        'action'     => 'latestArrivals',
+                        'year'       => date('Y'),
+                    ],
+                    'constraints' => [
+                        'year' => '\d{4}',
+                    ],
+                ],
+            ],
             'application' => [
                 'type'    => Segment::class,
                 'options' => [
