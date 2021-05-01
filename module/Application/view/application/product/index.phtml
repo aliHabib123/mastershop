@@ -22,6 +22,16 @@ use Application\Controller\DesignController;
             </div>
         </div>
     </div>
+    <div class="breadcrumb-c">
+    <div class="breadcrumb-c-inner">
+            <div class="container">
+                <ul>
+                    <li><a href="#"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
+                    <li><a>Large Appliances</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
             <div class="col-md-3">
@@ -75,7 +85,7 @@ use Application\Controller\DesignController;
             <div class="col-md-9">
                 <div class="row">
                     <?php for ($i = 0; $i < 16; $i++) { ?>
-                        <div class="col-md-3 item-col">
+                        <div class="col-md-3 col-6 item-col">
                             <?php echo DesignController::item(); ?>
                         </div>
                     <?php } ?>

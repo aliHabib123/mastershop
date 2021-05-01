@@ -710,4 +710,50 @@ footer {
     display: none; }
   footer .footer1 .social-media {
     margin-top: 0px;
-    margin-bottom: 15px; } }
+    margin-bottom: 15px; }
+  .small-banner-container + .breadcrumb-c .breadcrumb-c-inner {
+    margin-bottom: 10px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    right: 0; }
+    .small-banner-container + .breadcrumb-c .breadcrumb-c-inner ul {
+      padding-left: 0;
+      list-style: none;
+      margin-bottom: 0; }
+      .small-banner-container + .breadcrumb-c .breadcrumb-c-inner ul li {
+        display: inline-block; }
+        .small-banner-container + .breadcrumb-c .breadcrumb-c-inner ul li a {
+          line-height: 1;
+          font-size: 16px;
+          font-family: "Montserrat Alternates", sans-serif;
+          color: #000;
+          padding: 0px 8px;
+          border-left: 1px solid #000; }
+        .small-banner-container + .breadcrumb-c .breadcrumb-c-inner ul li:last-child a {
+          padding-right: 0;
+          color: #2576ba; }
+        .small-banner-container + .breadcrumb-c .breadcrumb-c-inner ul li:first-child a {
+          padding-left: 0;
+          border-left: none; }
+        .small-banner-container + .breadcrumb-c .breadcrumb-c-inner ul li span {
+          margin-right: 5px;
+          position: relative;
+          top: -2px; }
+  .small-banner-container {
+    margin-bottom: 30px;
+    position: relative; }
+    .small-banner-container.with-breadcrumb {
+      margin-bottom: 15px; }
+      .small-banner-container.with-breadcrumb .small-banner-caption-container {
+        transform: translateY(-50%); }
+    .small-banner-container .small-banner {
+      position: relative; }
+      .small-banner-container .small-banner_img img {
+        width: 100%; }
+    .small-banner-container .small-banner-caption-container .banner-title {
+      font-size: 25px; }
+    .small-banner-container .small-banner-caption-container .banner-brief {
+      display: none; }
+    .small-banner-container .banner-breadcrumb {
+      display: none; } }
