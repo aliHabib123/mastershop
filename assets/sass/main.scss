@@ -7,112 +7,6 @@ body {
     }
   }
 }
-.upper-menu-container {
-  border-bottom: 1px solid $border-color-main;
-  margin-bottom: 10px;
-  .upper-menu {
-    .signin-register {
-      color: $base-black;
-      font-family: $fontPrimary;
-      line-height: 1;
-      padding-top: 5px;
-      .signin {
-        color: $base-color;
-      }
-      .register {
-        color: $base-red;
-      }
-    }
-    .custom-menu {
-      padding-left: 0;
-      list-style: none;
-      margin-bottom: 0;
-      li {
-        a {
-          color: #000;
-          padding: 5px;
-          line-height: 1;
-        }
-      }
-      .dropdown-menu {
-        padding: 10px;
-        line-height: 1.4;
-      }
-      &-centered {
-        text-align: center;
-        text-align: -webkit-center;
-        text-align: -moz-center;
-        > li {
-          display: inline-block;
-        }
-        .dropdown-menu {
-          text-align: center;
-        }
-      }
-      &-right {
-        text-align: right;
-        text-align: -webkit-right;
-        text-align: -moz-right;
-        > li {
-          &.bell-icon {
-            a {
-              color: $base-red;
-            }
-          }
-          display: inline-block;
-          border-left: 1px solid $border-color-main;
-          a {
-            img {
-              max-width: 24px;
-            }
-          }
-        }
-        .dropdown-menu {
-          min-width: auto;
-          text-align: left;
-          img {
-            max-width: 24px;
-          }
-        }
-      }
-    }
-  }
-}
-.middle-menu {
-  margin-bottom: 10px;
-  .logo-container {
-    float: left;
-    width: 170px;
-  }
-  .search-container {
-    float: left;
-    width: calc(100% - 170px);
-    margin-top: 20px;
-    padding-left: 40px;
-    .all-cat-btn {
-      button {
-        background-color: $base-color;
-        border: 1px solid $base-color;
-        color: #fff;
-      }
-    }
-    .search-button {
-      button {
-        margin-left: 15px;
-        border-radius: 0px;
-        background-color: $base-color;
-        border: 1px solid $base-color;
-        color: #fff;
-        padding-left: 20px;
-        padding-right: 20px;
-        &:hover {
-          background-color: #fff;
-          color: $base-color;
-        }
-      }
-    }
-  }
-}
 .categories-slider-wrapper {
   margin-left: -15px;
   margin-right: -15px;
@@ -457,6 +351,54 @@ body {
         background-color: $base-grey;
         color: #fff !important;
       }
+    }
+  }
+}
+.compact-cart-wrapper {
+  .compact-cart-item {
+    border-bottom: 1px solid $base-grey;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    &:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+    .compact-cart-title {
+      font-size: 14px;
+      font-family: $fontPrimary;
+      color: #000;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    .compact-cart-price {
+      font-size: 14px;
+      font-family: $fontPrimary;
+      color: $base-color;
+    }
+    .compact-cart-img {
+      text-align: center;
+      img {
+        width: 100%;
+      }
+    }
+  }
+  .compact-cart-buttons {
+    a.to-cart {
+      margin-bottom: 10px;
+      background-color: #c5003c;
+      color: #fff !important;
+      border: 1px solid #c5003c;
+      border-radius: 4px;
+      display: block;
+      text-align: center;
+    }
+    a.to-checkout {
+      background-color: $base-color;
+      color: #fff !important;
+      border: 1px solid $base-color;
+      border-radius: 4px;
+      display: block;
+      text-align: center;
     }
   }
 }

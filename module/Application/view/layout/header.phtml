@@ -32,12 +32,59 @@
                     </div>
                     <div class="col-md-3 col-6">
                         <ul class="custom-menu custom-menu-right">
-                            <li>
-                                <a href="" class="d-none d-sm-block">my wishlist</a>
-                                <a href="#" class="d-block d-sm-none"><i class="far fa-heart"></i></a>
+                            <li class="wishlist">
+                                <a href="#" class="d-none d-sm-inline-block">my wishlist</a>
+                                <a href="#" class="d-inline-block d-sm-none"><i class="far fa-heart"></i></a>
                             </li>
-                            <li class="bell-icon"><a href=""><i class="far fa-bell"></i></a></li>
-                            <li class="cart-icon"><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
+                            <!-- <li class="bell-icon"><a href=""><i class="far fa-bell"></i></a></li> -->
+                            <!-- <li class="cart-icon"><a href="#"><i class="fas fa-shopping-cart"></i><span class="badge">5</span></a></li> -->
+                            <li class="dropdown pointer cart-icon">
+                                <a class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fas fa-shopping-cart"></i><span class="badge">5</span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <form>
+                                    <div class="compact-cart-wrapper">
+                                        <div class="compact-cart-item">
+                                            <div class="row">
+                                                <div class="col-md-3 compact-cart-img">
+                                                    <img src="img/product.png" />
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <div class="compact-cart-title">
+                                                        Tefal Fondue Inox
+                                                        Design &
+                                                    </div>
+                                                    <div class="compact-cart-price">
+                                                       1,290,000 LBP
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="compact-cart-item">
+                                            <div class="row">
+                                                <div class="col-md-3 compact-cart-img">
+                                                    <img src="img/product.png" />
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <div class="compact-cart-title">
+                                                        Tefal Fondue Inox
+                                                        Design &
+                                                    </div>
+                                                    <div class="compact-cart-price">
+                                                       1,290,000 LBP
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="compact-cart-buttons">
+                                            <a href="#" class="to-cart">Continue to cart</a>
+                                            <a href="#" class="to-checkout">Continue to checkout</a>
+                                        </div>
+                                    </div>
+                                    </form>
+                                </div>
+                            </li>
                             <li class="dropdown pointer">
                                 <a class="dropdown-toggle" data-toggle="dropdown">
                                     <img src="img/uk.png" />
