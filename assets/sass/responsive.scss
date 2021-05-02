@@ -305,7 +305,7 @@
         float: right;
         position: relative;
         top: -6px;
-        img{
+        img {
           width: 50px;
         }
       }
@@ -354,6 +354,69 @@
         &:hover {
           background-color: $base-grey;
           color: #fff !important;
+        }
+      }
+    }
+  }
+  .upper-menu-container {
+    border-bottom: 1px solid $border-color-main;
+    margin-bottom: 10px;
+    .upper-menu {
+      .signin-register {
+        color: $base-black;
+        font-family: $fontPrimary;
+        line-height: 1;
+        padding-top: 5px;
+        .signin {
+          color: $base-color;
+        }
+        .register {
+          color: $base-red;
+        }
+      }
+      .custom-menu {
+        li {
+          a {
+          }
+          &.wishlist {
+            a {
+              span.badge {
+                width: 15px;
+                height: 15px;
+                position: absolute;
+                right: -3px;
+                font-size: 11px;
+              }
+              &:last-child{
+                padding: 0;
+                position: absolute;
+              }
+            }
+          }
+        }
+        .dropdown-menu {
+        }
+        &-centered {
+          > li {
+          }
+          .dropdown-menu {
+          }
+        }
+        &-right {
+          > li {
+            &.bell-icon {
+              a {
+              }
+            }
+            a {
+              img {
+              }
+            }
+          }
+          .dropdown-menu {
+            img {
+            }
+          }
         }
       }
     }
