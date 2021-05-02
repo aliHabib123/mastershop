@@ -7,6 +7,66 @@ $(function () {
       controls: false,
     });
   }
+  if ($(".product-images-slider").length > 0) {
+    $(".product-images-slider").bxSlider({
+      minSlides: 1,
+      maxSlides: 4,
+      adaptiveHeight: false,
+      slideWidth: "100px",
+      pager: false,
+      touchEnabled: false,
+    });
+  }
+  $("#popup-image").magnificPopup({
+    type: "image",
+    // other options
+  });
+  $(".product-images-slider").on("click", ".change-main-image", function (e) {
+    e.preventDefault();
+    src = $(this).prop("src");
+    $("#popup-image").attr("href", src);
+    $("#popup-image").find("img").attr("src", src);
+    $("#popup-image").magnificPopup({
+      type: "image",
+      // other options
+    });
+  });
+  //.input-wrapper
+  $(document).on("click", ".input-wrapper i", function (e) {
+    e.preventDefault();
+    str = $(this).attr("class");
+    let el = $("#qty");
+    if (str.includes("plus")) {
+      //alert("plus");
+      el.val(Number(el.val()) + 1);
+    } else if (str.includes("minus")) {
+      if (Number(el.val()) > 1) {
+        el.val(Number(el.val()) - 1);
+      }
+    }
+  });
+  $("#qty").on("input", function () {
+    if ($(this).val() < 1) {
+      $(this).val(1);
+    }
+  });
+
+  if($('.related-slider').length > 0){
+    let width = $(".related").width();
+    let slideWidth = width / 5;
+    if ($(window).width() < 768) {
+      slideWidth = width / 2;
+    }
+    slideWidth = slideWidth + "px";
+    $('.related-slider').bxSlider({
+      minSlides: 1,
+      maxSlides: 4,
+      adaptiveHeight: true,
+      slideWidth: '250px',
+      pager: false,
+      controls: true,
+    });
+  }
   if ($("#categories-slider").length) {
     reloadcategoriesSlider();
   }
@@ -79,12 +139,12 @@ $(function () {
     let width = $(".categories-slider-wrapper").width();
     let slideWidth = width / 5;
     let config = {
-        minSlides: 1,
-        maxSlides: 5,
-        adaptiveHeight: true,
-        slideWidth: slideWidth,
-        pager: false,
-      };
+      minSlides: 1,
+      maxSlides: 5,
+      adaptiveHeight: true,
+      slideWidth: slideWidth,
+      pager: false,
+    };
     if ($(window).width() < 768) {
       slideWidth = width / 2;
       alert(slideWidth);
@@ -94,7 +154,7 @@ $(function () {
         adaptiveHeight: true,
         slideWidth: slideWidth,
         pager: true,
-        controls: false
+        controls: false,
       };
     }
     slideWidth = slideWidth + "px";
@@ -112,17 +172,17 @@ $(function () {
   });
 
   //Pagination
-  $('#product-pagination').twbsPagination({
+  $("#product-pagination").twbsPagination({
     totalPages: 35,
     visiblePages: 5,
-    first: '',
-    last: '',
+    first: "",
+    last: "",
     next: '<i class="fas fa-chevron-right"></i>',
     prev: '<i class="fas fa-chevron-left"></i>',
     onPageClick: function (event, page) {
-        alert(page)
-    }
-});
+      alert(page);
+    },
+  });
 });
 
 $(function () {

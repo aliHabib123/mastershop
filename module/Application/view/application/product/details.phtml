@@ -1,0 +1,119 @@
+<?php
+use Application\Controller\DesignController;
+?>
+<div class="main-wrapper">
+    <div class="small-banner-container with-breadcrumb">
+        <div class="small-banner_img">
+            <img src="img/small-banner.jpg" />
+        </div>
+        <div class="small-banner-caption-container">
+            <div class="container">
+                <div class="banner-title">Electronics</div>
+                <div class="banner-brief">Shop the latest electronic products in the market</div>
+            </div>
+        </div>
+        <div class="banner-breadcrumb">
+            <div class="container">
+                <ul>
+                    <li><a href="#"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
+                    <li><a>Large Appliances</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="breadcrumb-c d-block d-sm-none">
+        <div class="breadcrumb-c-inner">
+            <div class="container">
+                <ul>
+                    <li><a href="#"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
+                    <li><a>Large Appliances</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="product-details">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="main-image">
+                        <a id="popup-image" href="img/product.png">
+                            <img src="img/product.png" />
+                        </a>
+
+                    </div>
+                    <div class="product-images-slider-c clearfix">
+                        <div class="product-images-slider">
+                            <div><img class="change-main-image" src="img/product.png" /></div>
+                            <div><img class="change-main-image" src="img/apple.png" /></div>
+                            <div><img class="change-main-image" src="img/lg.png" /></div>
+                            <div><img class="change-main-image" src="img/product.png" /></div>
+                            <div><img class="change-main-image" src="img/apple.png" /></div>
+                            <div><img class="change-main-image" src="img/lg.png" /></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="product-details-side">
+                        <div class="price1">1,290,000</div>
+                        <div class="price2">1,000,000<span>LBP</span></div>
+                        <div class="title">Samoa, Sophia Bundle</div>
+                        <div class="sku">SKU: 468.6</div>
+                        <div class="brand"><img src="img/lg.png" /></div>
+                        <div class="desc">The Look of the SEASON!<br>
+                            Recreate the look or customize your own with this Bundle!
+                        </div>
+                        <div class="color">Color: Not Specified</div>
+                        <div class="qty noSelect">QTY:&nbsp;
+                            <span class="input-wrapper">
+                                <i class="fas fa-plus"></i><input type="number" value="1" min="1" pattern="[1-9]" id="qty" /><i class="fas fa-minus"></i>
+                            </span>
+                        </div>
+                        <div class="buttons">
+                            <a class="add-to-cart" href="#"><img src="img/cart.png" />Add to Cart</a>
+                            <a class="buy-now" href="#">Buy Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 specifications">
+                    <?php echo DesignController::secondaryTitle('Specifications')?> 
+                    <div class="specs-wrapper">
+                        <div class="specs-item">Size: xx Number</div>
+                        <div class="specs-item">Weight: 3 Kilos</div>
+                        <div class="specs-item">Dimensions: L:3 cm, W:5cm, H:10 cm</div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <?php echo DesignController::mainTitle('YOU MIGHT ALSO LIKE')?>
+                    <div class="related">
+                    <div class="related-slider">
+                        <div>
+                            <?php echo DesignController::item(); ?>
+                        </div>
+                        <div>
+                            <?php echo DesignController::item(); ?>
+                        </div>
+                        <div>
+                            <?php echo DesignController::item(); ?>
+                        </div>
+                        <div>
+                            <?php echo DesignController::item(); ?>
+                        </div>
+                        <div>
+                            <?php echo DesignController::item(); ?>
+                        </div>
+                        <div>
+                            <?php echo DesignController::item(); ?>
+                        </div>
+                        <div>
+                            <?php echo DesignController::item(); ?>
+                        </div>
+                        <div>
+                            <?php echo DesignController::item(); ?>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
