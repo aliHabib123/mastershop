@@ -41,6 +41,20 @@ return [
                     ],
                 ],
             ],
+            'productDetails' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route'    => '/product[/:slug][/]',
+                    'defaults' => [
+                        'controller' => Controller\ProductController::class,
+                        'action'     => 'details',
+                        'year'       => date('Y'),
+                    ],
+                    'constraints' => [
+                        'year' => '\d{4}',
+                    ],
+                ],
+            ],
             'todaysDeals' => [
                 'type' => Segment::class,
                 'options' => [

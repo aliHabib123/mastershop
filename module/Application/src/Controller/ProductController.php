@@ -19,6 +19,10 @@ class ProductController extends AbstractActionController
     {
         return new ViewModel();
     }
+    public function detailsAction()
+    {
+        return new ViewModel();
+    }
     public function todaysDealsAction()
     {
         return new ViewModel();

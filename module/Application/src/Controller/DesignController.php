@@ -18,6 +18,10 @@ class DesignController extends AbstractActionController
         $html = "<div class=\"main-title centered\">$title</div>";
         return $html;
     }
+    public static function secondaryTitle(string $title){
+        $html = "<div class=\"secondary-title\">$title</div>";
+        return $html;
+    }
     public static function item(){
         $html = "<div class=\"item-wrapper\">
         <div class=\"item-wrapper_img\">

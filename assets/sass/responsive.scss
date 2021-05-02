@@ -387,7 +387,7 @@
                 right: -3px;
                 font-size: 11px;
               }
-              &:last-child{
+              &:last-child {
                 padding: 0;
                 position: absolute;
               }
@@ -420,5 +420,20 @@
         }
       }
     }
+  }
+  .specifications {
+    margin-top: 30px;
+    margin-bottom: 10px;
+  }
+  .product-details {
+    .product-images-slider-c {
+      margin-bottom: 25px;
+      width: 70%;
+      margin-left: 15%;
+      margin-right: 15%;
+    }
+  }
+  .related {
+    width: 65%;
   }
 }
