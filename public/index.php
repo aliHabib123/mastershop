@@ -24,6 +24,9 @@ define('FILE_URL', BASE_URL . 'uploads/files/');
 define('V2_SITE_KEY', '');
 define('V2_SECRET_KEY', '');
 
+define('OAUTH_PUBLIC_KEY', '553406392339-3rfcfvflmghl341mrl362n19mkmq3oh4.apps.googleusercontent.com');
+define('OAUTH_SECRET_KEY', '2vkD3ukNRdjeDmU5CJ7ojfyO');
+
 use Laminas\Mvc\Application;
 use Laminas\Stdlib\ArrayUtils;
 
