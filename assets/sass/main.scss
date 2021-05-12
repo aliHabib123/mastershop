@@ -238,6 +238,14 @@ body {
 .main-wrapper {
   margin-bottom: 30px;
 }
+.mb0{
+  .main-wrapper{
+    margin-bottom: 0;
+  }
+}
+.pr0{
+  padding-right: 0;
+}
 .item-col {
   margin-bottom: 25px;
 }

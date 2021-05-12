@@ -83,6 +83,22 @@ return [
                     ],
                 ],
             ],
+            // Supplier Routes
+            'vendor' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route'    => '/vendor/contact-details[/]',
+                    'defaults' => [
+                        'controller' => Controller\VendorController::class,
+                        'action'     => 'contactDetails',
+                        'year'       => date('Y'),
+                    ],
+                    'constraints' => [
+                        'year' => '\d{4}',
+                    ],
+                ],
+            ],
+            
             'application' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -100,6 +116,7 @@ return [
             Controller\IndexController::class => InvokableFactory::class,
             Controller\DesignController::class => InvokableFactory::class,
             Controller\ProductController::class => InvokableFactory::class,
+            Controller\VendorController::class => InvokableFactory::class,
             Controller\HelperController::class => InvokableFactory::class,
         ],
     ],

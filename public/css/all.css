@@ -1,6 +1,6 @@
 @media (min-width: 1305px) {
   .container {
-    width: 1300px; } }
+    max-width: 1300px; } }
 
 body {
   font-family: "Montserrat Alternates", sans-serif;
@@ -191,6 +191,12 @@ body {
 
 .main-wrapper {
   margin-bottom: 30px; }
+
+.mb0 .main-wrapper {
+  margin-bottom: 0; }
+
+.pr0 {
+  padding-right: 0; }
 
 .item-col {
   margin-bottom: 25px; }
@@ -1174,6 +1180,51 @@ footer {
       color: #000; }
       footer .footer-menu ul li a:hover {
         color: #2576ba; }
+
+.sidebar ul.nav {
+  background-color: #4c4d4d;
+  height: 100%; }
+  .sidebar ul.nav li a {
+    color: #fff;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 300;
+    font-size: 18px;
+    border-bottom: 1px solid #fff; }
+    .sidebar ul.nav li a.active {
+      background-color: #2576ba; }
+  .sidebar ul.nav li:last-child a {
+    border-bottom: none; }
+
+.page-date {
+  font-family: "Montserrat", sans-serif;
+  font-size: 18px;
+  font-weight: 300;
+  padding-top: 15px;
+  border-bottom: 1px solid #acacac;
+  padding-bottom: 5px;
+  margin-bottom: 15px; }
+  .page-date i {
+    color: #acacac; }
+
+.vendor-page-wrapper {
+  padding-bottom: 40px; }
+  .vendor-page-wrapper form .form-group label {
+    font-size: 16px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 300;
+    margin-top: 3px; }
+  .vendor-page-wrapper form .form-control {
+    height: 34px;
+    border-radius: 0;
+    border: 1px solid #acacac; }
+    .vendor-page-wrapper form .form-control:focus, .vendor-page-wrapper form .form-control:active {
+      outline: none;
+      box-shadow: none; }
+  .vendor-page-wrapper .input-wrap {
+    margin-bottom: 20px; }
+
+.pl0 {
+  padding-left: 0; }
 
 @media (max-width: 768px) {
   .middle-menu .logo-container {
