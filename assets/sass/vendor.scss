@@ -1,0 +1,64 @@
+.sidebar {
+  ul.nav {
+    background-color: #4c4d4d;
+    height: 100%;
+    li {
+      a {
+        color: #fff;
+        font-family: $fontsecondary;
+        font-weight: 300;
+        font-size: 18px;
+        border-bottom: 1px solid #fff;
+        &.active {
+          background-color: $base-color;
+        }
+      }
+      &:last-child{
+        a {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+}
+.page-date {
+  font-family: $fontsecondary;
+  font-size: 18px;
+  font-weight: 300;
+  padding-top: 15px;
+  border-bottom: 1px solid $menu-grey;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+  i {
+    color: $menu-grey;
+  }
+}
+.vendor-page-wrapper {
+  padding-bottom: 40px;
+  form {
+    .form-group {
+      label {
+        font-size: 16px;
+        font-family: $fontsecondary;
+        font-weight: 300;
+        margin-top: 3px;
+      }
+    }
+    .form-control {
+      height: 34px;
+      border-radius: 0;
+      border: 1px solid $menu-grey;
+      &:focus,
+      &:active {
+        outline: none;
+        box-shadow: none;
+      }
+    }
+  }
+  .input-wrap {
+    margin-bottom: 20px;
+  }
+}
+.pl0 {
+  padding-left: 0;
+}

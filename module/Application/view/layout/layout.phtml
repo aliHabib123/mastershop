@@ -8,7 +8,10 @@ if (defined('RUNNING_FROM_ROOT')) {
 }
 ?>
 <!doctype html>
-<html lang="en">
+<?php 
+$htmlClass = isset($this->htmlClass) ? $this->htmlClass : '';
+?>
+<html lang="en" class="<?php echo $htmlClass;?>">
 
 <head>
     <meta charset="utf-8">
