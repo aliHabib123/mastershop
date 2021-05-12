@@ -84,13 +84,27 @@ return [
                 ],
             ],
             // Supplier Routes
-            'vendor' => [
+            'contactDetails' => [
                 'type' => Segment::class,
                 'options' => [
-                    'route'    => '/vendor/contact-details[/]',
+                    'route'    => '/vendor/contact[/]',
                     'defaults' => [
                         'controller' => Controller\VendorController::class,
                         'action'     => 'contactDetails',
+                        'year'       => date('Y'),
+                    ],
+                    'constraints' => [
+                        'year' => '\d{4}',
+                    ],
+                ],
+            ],
+            'accountDetails' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route'    => '/vendor/account[/]',
+                    'defaults' => [
+                        'controller' => Controller\VendorController::class,
+                        'action'     => 'accountDetails',
                         'year'       => date('Y'),
                     ],
                     'constraints' => [
