@@ -1226,6 +1226,22 @@ footer {
 .pl0 {
   padding-left: 0; }
 
+.iti {
+  width: 100%; }
+
+.submit-btn {
+  background-color: #2576ba;
+  font-family: "Montserrat", sans-serif;
+  font-size: 22px;
+  color: #fff;
+  border: 1px solid #2576ba;
+  line-height: 1;
+  padding: 0.7rem 4rem; }
+  .submit-btn:hover, .submit-btn:focus, .submit-btn :active {
+    color: #2576ba;
+    background-color: #fff;
+    box-shadow: none; }
+
 @media (max-width: 768px) {
   .middle-menu .logo-container {
     float: none;

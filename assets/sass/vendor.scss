@@ -62,3 +62,20 @@
 .pl0 {
   padding-left: 0;
 }
+.iti {
+  width: 100%;
+}
+.submit-btn{
+  background-color: $base-color;
+  font-family: $fontsecondary;
+  font-size: 22px;
+  color: #fff;
+  border: 1px solid $base-color;
+  line-height: 1;
+  padding: 0.7rem 4rem;
+  &:hover, &:focus, :active{
+    color: $base-color;
+    background-color: #fff;
+    box-shadow: none;
+  }
+}

@@ -183,6 +183,14 @@ $(function () {
       alert(page);
     },
   });
+
+  // jQuery
+$("#mobile-number, #work-number").intlTelInput({
+  // options here
+  initialCountry: 'LB',
+  separateDialCode: true
+});
+
 });
 
 $(function () {

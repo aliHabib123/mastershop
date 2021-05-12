@@ -39,7 +39,7 @@ use Application\Controller\DesignController;
                                 <div class="col-md-6 input-wrap">
                                     <div class="row">
                                         <div class="col-md-4 pr0">
-                                            <label for="email">Company Name:</label>
+                                            <label for="email">*Company Name</label>
                                         </div>
                                         <div class="col-md-8">
                                             <input type="text" class="form-control" placeholder="">
@@ -49,7 +49,7 @@ use Application\Controller\DesignController;
                                 <div class="col-md-6 input-wrap">
                                     <div class="row">
                                         <div class="col-md-4 pr0">
-                                            <label for="email">Contact Person:</label>
+                                            <label for="email">*Contact Person</label>
                                         </div>
                                         <div class="col-md-8">
                                             <input type="text" class="form-control" placeholder="">
@@ -59,7 +59,7 @@ use Application\Controller\DesignController;
                                 <div class="col-md-6 input-wrap">
                                     <div class="row">
                                         <div class="col-md-4 pr0">
-                                            <label for="email">Email Address:</label>
+                                            <label for="email">*Email Address</label>
                                         </div>
                                         <div class="col-md-8">
                                             <input type="email" class="form-control" placeholder="">
@@ -69,7 +69,27 @@ use Application\Controller\DesignController;
                                 <div class="col-md-6 input-wrap">
                                     <div class="row">
                                         <div class="col-md-4 pr0">
-                                            <label for="email">Mobile Number:</label>
+                                            <label for="email">*Mobile Number</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" placeholder="" id="mobile-number" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 input-wrap">
+                                    <div class="row">
+                                        <div class="col-md-4 pr0">
+                                            <label for="email">*Work Number</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" placeholder="" id="work-number" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 input-wrap">
+                                    <div class="row">
+                                        <div class="col-md-4 pr0">
+                                            <label for="email">*Country</label>
                                         </div>
                                         <div class="col-md-8">
                                             <input type="text" class="form-control" placeholder="">
@@ -79,7 +99,7 @@ use Application\Controller\DesignController;
                                 <div class="col-md-6 input-wrap">
                                     <div class="row">
                                         <div class="col-md-4 pr0">
-                                            <label for="email">Work Number:</label>
+                                            <label for="email">*City</label>
                                         </div>
                                         <div class="col-md-8">
                                             <input type="text" class="form-control" placeholder="">
@@ -89,27 +109,7 @@ use Application\Controller\DesignController;
                                 <div class="col-md-6 input-wrap">
                                     <div class="row">
                                         <div class="col-md-4 pr0">
-                                            <label for="email">Country:</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input type="text" class="form-control" placeholder="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 input-wrap">
-                                    <div class="row">
-                                        <div class="col-md-4 pr0">
-                                            <label for="email">City:</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input type="text" class="form-control" placeholder="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 input-wrap">
-                                    <div class="row">
-                                        <div class="col-md-4 pr0">
-                                            <label for="email">Address:</label>
+                                            <label for="email">*Address</label>
                                         </div>
                                         <div class="col-md-8">
                                             <input type="text" class="form-control" placeholder="">
@@ -118,7 +118,7 @@ use Application\Controller\DesignController;
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">SAVE</button>
+                        <button type="submit" class="btn submit-btn">SAVE</button>
                     </form>
                 </div>
             </div>
