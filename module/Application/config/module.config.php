@@ -126,7 +126,20 @@ return [
                     ],
                 ],
             ],
-            
+            'inventory' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route'    => '/vendor/inventory[/]',
+                    'defaults' => [
+                        'controller' => Controller\VendorController::class,
+                        'action'     => 'inventory',
+                        'year'       => date('Y'),
+                    ],
+                    'constraints' => [
+                        'year' => '\d{4}',
+                    ],
+                ],
+            ],
             'application' => [
                 'type'    => Segment::class,
                 'options' => [
