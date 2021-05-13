@@ -30,4 +30,9 @@ class VendorController extends AbstractActionController
         $this->layout()->htmlClass = 'mb0';
         return new ViewModel();
     }
+    public function warehouseDetailsAction()
+    {
+        $this->layout()->htmlClass = 'mb0';
+        return new ViewModel();
+    }
 }
