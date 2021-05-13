@@ -1213,6 +1213,16 @@ footer {
     font-family: "Montserrat", sans-serif;
     font-weight: 300;
     margin-top: 3px; }
+  .vendor-page-wrapper form .form-group .custom-file-label {
+    margin-top: 0px;
+    text-align: left;
+    border-radius: 0;
+    border: none;
+    height: 35px; }
+    .vendor-page-wrapper form .form-group .custom-file-label::after {
+      height: 35px; }
+  .vendor-page-wrapper form .form-group .custom-file-input:lang(en) ~ .custom-file-label::after {
+    content: "CHOOSE FILE"; }
   .vendor-page-wrapper form .form-control {
     height: 34px;
     border-radius: 0;
@@ -1222,6 +1232,72 @@ footer {
       box-shadow: none; }
   .vendor-page-wrapper .input-wrap {
     margin-bottom: 20px; }
+  .vendor-page-wrapper .card {
+    border: none;
+    border-radius: 0;
+    min-height: 300px; }
+    .vendor-page-wrapper .card1 {
+      background-color: #2576ba; }
+    .vendor-page-wrapper .card2 {
+      background-color: #69a0cf; }
+    .vendor-page-wrapper .card3 {
+      background-color: #b9d3e9; }
+    .vendor-page-wrapper .card .card-title {
+      color: #fff;
+      text-align: center;
+      font-size: 50px;
+      font-weight: bold;
+      font-family: "Montserrat", sans-serif;
+      margin-bottom: 2rem; }
+    .vendor-page-wrapper .card .card-text {
+      font-family: "Montserrat", sans-serif;
+      text-align: center;
+      line-height: 1; }
+      .vendor-page-wrapper .card .card-text.txt-sml {
+        font-size: 14px;
+        color: #000;
+        font-weight: 300; }
+      .vendor-page-wrapper .card .card-text.txt-lrg {
+        font-size: 24px;
+        color: #fff;
+        font-weight: 300;
+        margin-bottom: 30px; }
+    .vendor-page-wrapper .card .card-bottom {
+      text-align: center;
+      text-align: -webkit-center;
+      text-align: -moz-center; }
+      .vendor-page-wrapper .card .card-bottom .download-csv {
+        border-radius: 0;
+        background-color: #b7b7b7;
+        color: #fff;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 300;
+        font-size: 14px;
+        border: 1px solid #b7b7b7; }
+        .vendor-page-wrapper .card .card-bottom .download-csv:hover {
+          background-color: transparent;
+          color: #b7b7b7; }
+      .vendor-page-wrapper .card .card-bottom .upload-csv, .vendor-page-wrapper .card .card-bottom .run {
+        border-radius: 0;
+        background-color: #e64f4f;
+        color: #fff;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 300;
+        font-size: 14px;
+        border: 1px solid #e64f4f; }
+        .vendor-page-wrapper .card .card-bottom .upload-csv:hover, .vendor-page-wrapper .card .card-bottom .run:hover {
+          background-color: transparent;
+          color: #e64f4f; }
+    .vendor-page-wrapper .card.with-sub .card-title {
+      margin-bottom: 10px; }
+    .vendor-page-wrapper .card.with-sub .card-text {
+      font-family: "Montserrat", sans-serif;
+      text-align: center;
+      line-height: 1; }
+      .vendor-page-wrapper .card.with-sub .card-text.txt-sml {
+        margin-bottom: 10px; }
+      .vendor-page-wrapper .card.with-sub .card-text.txt-lrg {
+        margin-bottom: 26px; }
 
 .pl0 {
   padding-left: 0; }
@@ -1237,7 +1313,8 @@ footer {
   border: 1px solid #2576ba;
   line-height: 1;
   padding: 0.7rem 4rem; }
-  .submit-btn:hover, .submit-btn:focus, .submit-btn :active {
+  .submit-btn:hover, .submit-btn:focus,
+  .submit-btn :active {
     color: #2576ba;
     background-color: #fff;
     box-shadow: none; }

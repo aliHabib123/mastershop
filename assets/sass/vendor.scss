@@ -13,7 +13,7 @@
           background-color: $base-color;
         }
       }
-      &:last-child{
+      &:last-child {
         a {
           border-bottom: none;
         }
@@ -43,6 +43,19 @@
         font-weight: 300;
         margin-top: 3px;
       }
+      .custom-file-label{
+        margin-top: 0px;
+        text-align: left;
+        border-radius: 0;
+        border: none;
+        height: 35px;
+        &::after{
+          height: 35px;
+        }
+      }
+      .custom-file-input:lang(en)~.custom-file-label::after {
+        content: "CHOOSE FILE";
+    }
     }
     .form-control {
       height: 34px;
@@ -58,6 +71,91 @@
   .input-wrap {
     margin-bottom: 20px;
   }
+  .card {
+    border: none;
+    border-radius: 0;
+    min-height: 300px;
+    &1 {
+      background-color: $base-color;
+    }
+    &2 {
+      background-color: #69a0cf;
+    }
+    &3 {
+      background-color: #b9d3e9;
+    }
+    .card-title {
+      color: #fff;
+      text-align: center;
+      font-size: 50px;
+      font-weight: bold;
+      font-family: $fontsecondary;
+      margin-bottom: 2rem;
+    }
+    .card-text {
+      font-family: $fontsecondary;
+      text-align: center;
+      line-height: 1;
+      &.txt-sml {
+        font-size: 14px;
+        color: #000;
+        font-weight: 300;
+      }
+      &.txt-lrg {
+        font-size: 24px;
+        color: #fff;
+        font-weight: 300;
+        margin-bottom: 30px;
+      }
+    }
+    .card-bottom{
+      text-align: center;
+      text-align: -webkit-center;
+      text-align: -moz-center;
+      .download-csv{
+        border-radius: 0;
+        background-color: $border-color-main;
+        color: #fff;
+        font-family: $fontsecondary;
+        font-weight: 300;
+        font-size: 14px;
+        border: 1px solid $border-color-main;
+        &:hover{
+          background-color: transparent;
+          color: $border-color-main;
+        }
+      }
+      .upload-csv, .run{
+        border-radius: 0;
+        background-color: #e64f4f;
+        color: #fff;
+        font-family: $fontsecondary;
+        font-weight: 300;
+        font-size: 14px;
+        border: 1px solid #e64f4f;
+        &:hover{
+          background-color: transparent;
+          color: #e64f4f;
+        }
+      }
+    }
+    &.with-sub{
+      .card-title {
+        margin-bottom: 10px;
+      }
+      .card-text {
+        font-family: $fontsecondary;
+        text-align: center;
+        line-height: 1;
+        &.txt-sml {
+          margin-bottom: 10px;
+        }
+        &.txt-lrg {
+          margin-bottom: 26px;
+        }
+      }
+    }
+  }
 }
 .pl0 {
   padding-left: 0;
@@ -65,7 +163,7 @@
 .iti {
   width: 100%;
 }
-.submit-btn{
+.submit-btn {
   background-color: $base-color;
   font-family: $fontsecondary;
   font-size: 22px;
@@ -73,17 +171,19 @@
   border: 1px solid $base-color;
   line-height: 1;
   padding: 0.7rem 4rem;
-  &:hover, &:focus, :active{
+  &:hover,
+  &:focus,
+  :active {
     color: $base-color;
     background-color: #fff;
     box-shadow: none;
   }
 }
-.light-table{
-  thead{
+.light-table {
+  thead {
     background-color: #eeeeee;
-    tr{
-      th{
+    tr {
+      th {
         font-family: $fontsecondary;
         font-weight: bold;
         font-size: 18px;
@@ -91,21 +191,19 @@
       }
     }
   }
-  td{
-    a{
+  td {
+    a {
       display: inline-block;
       margin-left: 3px;
       margin-right: 3px;
       color: #9d9ca0;
-      &.edit{
-
+      &.edit {
       }
-      &.delete{
-
+      &.delete {
       }
     }
   }
 }
-.button-wrapper{
+.button-wrapper {
   margin-top: 25px;
 }
