@@ -140,6 +140,20 @@ return [
                     ],
                 ],
             ],
+            'myProducts' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route'    => '/vendor/my-products[/]',
+                    'defaults' => [
+                        'controller' => Controller\VendorController::class,
+                        'action'     => 'myProducts',
+                        'year'       => date('Y'),
+                    ],
+                    'constraints' => [
+                        'year' => '\d{4}',
+                    ],
+                ],
+            ],
             'application' => [
                 'type'    => Segment::class,
                 'options' => [

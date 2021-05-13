@@ -43,19 +43,19 @@
         font-weight: 300;
         margin-top: 3px;
       }
-      .custom-file-label{
+      .custom-file-label {
         margin-top: 0px;
         text-align: left;
         border-radius: 0;
         border: none;
         height: 35px;
-        &::after{
+        &::after {
           height: 35px;
         }
       }
-      .custom-file-input:lang(en)~.custom-file-label::after {
+      .custom-file-input:lang(en) ~ .custom-file-label::after {
         content: "CHOOSE FILE";
-    }
+      }
     }
     .form-control {
       height: 34px;
@@ -108,11 +108,11 @@
         margin-bottom: 30px;
       }
     }
-    .card-bottom{
+    .card-bottom {
       text-align: center;
       text-align: -webkit-center;
       text-align: -moz-center;
-      .download-csv{
+      .download-csv {
         border-radius: 0;
         background-color: $border-color-main;
         color: #fff;
@@ -120,12 +120,13 @@
         font-weight: 300;
         font-size: 14px;
         border: 1px solid $border-color-main;
-        &:hover{
+        &:hover {
           background-color: transparent;
           color: $border-color-main;
         }
       }
-      .upload-csv, .run{
+      .upload-csv,
+      .run {
         border-radius: 0;
         background-color: #e64f4f;
         color: #fff;
@@ -133,13 +134,13 @@
         font-weight: 300;
         font-size: 14px;
         border: 1px solid #e64f4f;
-        &:hover{
+        &:hover {
           background-color: transparent;
           color: #e64f4f;
         }
       }
     }
-    &.with-sub{
+    &.with-sub {
       .card-title {
         margin-bottom: 10px;
       }
@@ -206,4 +207,31 @@
 }
 .button-wrapper {
   margin-top: 25px;
+}
+.products-table-wrapper {
+  .product-img {
+    width: 65px;
+    border: 1px solid #ebebeb;
+    height: 65px;
+    overflow: hidden;
+    float: left;
+    margin-right: 5px;
+    position: relative;
+  }
+  .product-details{
+    font-family: $fontsecondary;
+    font-weight: 300;
+    font-size: 14px;
+  }
+  table {
+    tbody{
+      tr {
+        td{
+          font-family: $fontsecondary;
+          font-weight: 300;
+          font-size: 18px;
+        }
+      }
+    }
+  }
 }
