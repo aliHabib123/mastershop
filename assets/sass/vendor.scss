@@ -79,3 +79,33 @@
     box-shadow: none;
   }
 }
+.light-table{
+  thead{
+    background-color: #eeeeee;
+    tr{
+      th{
+        font-family: $fontsecondary;
+        font-weight: bold;
+        font-size: 18px;
+        padding: 3px 10px;
+      }
+    }
+  }
+  td{
+    a{
+      display: inline-block;
+      margin-left: 3px;
+      margin-right: 3px;
+      color: #9d9ca0;
+      &.edit{
+
+      }
+      &.delete{
+
+      }
+    }
+  }
+}
+.button-wrapper{
+  margin-top: 25px;
+}

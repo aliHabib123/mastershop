@@ -1,0 +1,92 @@
+<?php
+
+use Application\Controller\DesignController;
+?>
+<div class="main-wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 sidebar">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">My Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">My Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Update Inventory</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">My Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Warehouse Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Account Details</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-9 pl0">
+                <div class="page-date"><i class="far fa-calendar-alt"></i>&nbsp;Tuesday, April 6, 2021</div>
+                <div class="vendor-page-wrapper">
+                    <div class="warehouse-table-wrapper light-table">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>LABEL</th>
+                                    <th>MANAGER FULL NAME</th>
+                                    <th>MOBILE NUMBER</th>
+                                    <th>MANAGER EMAIL</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>123</td>
+                                    <td>Warehouse 1</td>
+                                    <td>Cristelle Boustany</td>
+                                    <td>+96176000000</td>
+                                    <td>cboustany@healdco.com</td>
+                                    <td>
+                                        <a class="" href="#"><i class="fas fa-pen"></i></a>
+                                        <a href="#"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>123</td>
+                                    <td>Warehouse 1</td>
+                                    <td>Cristelle Boustany</td>
+                                    <td>+96176000000</td>
+                                    <td>cboustany@healdco.com</td>
+                                    <td>
+                                        <a class="" href="#"><i class="fas fa-pen"></i></a>
+                                        <a href="#"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>123</td>
+                                    <td>Warehouse 1</td>
+                                    <td>Cristelle Boustany</td>
+                                    <td>+96176000000</td>
+                                    <td>cboustany@healdco.com</td>
+                                    <td>
+                                        <a class="edit" href="#"><i class="fas fa-pen"></i></a>
+                                        <a class="delete" href="#"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="button-wrapper">
+                        <a href="#" class="btn submit-btn" data-toggle="modal" data-target="#add-warehouse-modal">ADD WAREHOUSE</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

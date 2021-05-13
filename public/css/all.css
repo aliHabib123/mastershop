@@ -1242,6 +1242,23 @@ footer {
     background-color: #fff;
     box-shadow: none; }
 
+.light-table thead {
+  background-color: #eeeeee; }
+  .light-table thead tr th {
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 3px 10px; }
+
+.light-table td a {
+  display: inline-block;
+  margin-left: 3px;
+  margin-right: 3px;
+  color: #9d9ca0; }
+
+.button-wrapper {
+  margin-top: 25px; }
+
 @media (max-width: 768px) {
   .middle-menu .logo-container {
     float: none;

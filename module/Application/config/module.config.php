@@ -112,6 +112,20 @@ return [
                     ],
                 ],
             ],
+            'warehouseDetails' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route'    => '/vendor/warehouse[/]',
+                    'defaults' => [
+                        'controller' => Controller\VendorController::class,
+                        'action'     => 'warehouseDetails',
+                        'year'       => date('Y'),
+                    ],
+                    'constraints' => [
+                        'year' => '\d{4}',
+                    ],
+                ],
+            ],
             
             'application' => [
                 'type'    => Segment::class,
