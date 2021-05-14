@@ -5,13 +5,13 @@
  * @author: http://phpdao.com
  * @date: 2021-05-14 19:34
  */
-interface UserRoleDAO{
+interface WarehouseDAO{
 
 	/**
 	 * Get Domain object by primry key
 	 *
 	 * @param String $id primary key
-	 * @Return UserRole 
+	 * @Return Warehouse 
 	 */
 	public function load($id);
 
@@ -28,41 +28,53 @@ interface UserRoleDAO{
 	
 	/**
  	 * Delete record from table
- 	 * @param userRole primary key
+ 	 * @param warehouse primary key
  	 */
-	public function delete($id);
+	public function delete($warehouse_id);
 	
 	/**
  	 * Insert record to table
  	 *
- 	 * @param UserRole userRole
+ 	 * @param Warehouse warehouse
  	 */
-	public function insert($userRole);
+	public function insert($warehouse);
 	
 	/**
  	 * Update record in table
  	 *
- 	 * @param UserRole userRole
+ 	 * @param Warehouse warehouse
  	 */
-	public function update($userRole);	
+	public function update($warehouse);	
 
 	/**
 	 * Delete all rows
 	 */
 	public function clean();
 
-	public function queryByName($value);
+	public function queryByTitle($value);
 
-	public function queryByDisplayOrder($value);
+	public function queryByCompanyId($value);
+
+	public function queryByContactId($value);
 
 	public function queryByActive($value);
 
+	public function queryByCreatedAt($value);
 
-	public function deleteByName($value);
+	public function queryByUpdatedAt($value);
 
-	public function deleteByDisplayOrder($value);
+
+	public function deleteByTitle($value);
+
+	public function deleteByCompanyId($value);
+
+	public function deleteByContactId($value);
 
 	public function deleteByActive($value);
+
+	public function deleteByCreatedAt($value);
+
+	public function deleteByUpdatedAt($value);
 
 
 }

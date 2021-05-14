@@ -197,6 +197,13 @@ class DAOFactory{
 	}
 
 	/**
+	 * @return WarehouseDAO
+	 */
+	public static function getWarehouseDAO(){
+		return new WarehouseMySqlExtDAO();
+	}
+
+	/**
 	 * @return WishlistDAO
 	 */
 	public static function getWishlistDAO(){

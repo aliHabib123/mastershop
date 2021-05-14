@@ -3,7 +3,7 @@
  * Class that operate on table 'item_attribute_mapping'. Database Mysql.
  *
  * @author: http://phpdao.com
- * @date: 2021-04-23 23:58
+ * @date: 2021-05-14 19:34
  */
 class ItemAttributeMappingMySqlDAO implements ItemAttributeMappingDAO{
 
