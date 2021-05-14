@@ -117,6 +117,10 @@
 	require_once('class/dto/VehicleType.class.php');
 	require_once('class/mysql/VehicleTypeMySqlDAO.class.php');
 	require_once('class/mysql/ext/VehicleTypeMySqlExtDAO.class.php');
+	require_once('class/dao/WarehouseDAO.class.php');
+	require_once('class/dto/Warehouse.class.php');
+	require_once('class/mysql/WarehouseMySqlDAO.class.php');
+	require_once('class/mysql/ext/WarehouseMySqlExtDAO.class.php');
 	require_once('class/dao/WishlistDAO.class.php');
 	require_once('class/dto/Wishlist.class.php');
 	require_once('class/mysql/WishlistMySqlDAO.class.php');

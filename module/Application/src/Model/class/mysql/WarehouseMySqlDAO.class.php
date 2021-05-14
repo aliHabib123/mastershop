@@ -1,22 +1,22 @@
 <?php
 /**
- * Class that operate on table 'item_review'. Database Mysql.
+ * Class that operate on table 'warehouse'. Database Mysql.
  *
  * @author: http://phpdao.com
  * @date: 2021-05-14 19:34
  */
-class ItemReviewMySqlDAO implements ItemReviewDAO{
+class WarehouseMySqlDAO implements WarehouseDAO{
 
 	/**
 	 * Get Domain object by primry key
 	 *
 	 * @param String $id primary key
-	 * @return ItemReviewMySql 
+	 * @return WarehouseMySql 
 	 */
 	public function load($id){
-		$sql = 'SELECT * FROM item_review WHERE id = ?';
+		$sql = 'SELECT * FROM warehouse WHERE warehouse_id = ?';
 		$sqlQuery = new SqlQuery($sql);
-		$sqlQuery->set($id);
+		$sqlQuery->setNumber($id);
 		return $this->getRow($sqlQuery);
 	}
 
@@ -24,7 +24,7 @@ class ItemReviewMySqlDAO implements ItemReviewDAO{
 	 * Get all records from table
 	 */
 	public function queryAll(){
-		$sql = 'SELECT * FROM item_review';
+		$sql = 'SELECT * FROM warehouse';
 		$sqlQuery = new SqlQuery($sql);
 		return $this->getList($sqlQuery);
 	}
@@ -35,60 +35,60 @@ class ItemReviewMySqlDAO implements ItemReviewDAO{
 	 * @param $orderColumn column name
 	 */
 	public function queryAllOrderBy($orderColumn){
-		$sql = 'SELECT * FROM item_review ORDER BY '.$orderColumn;
+		$sql = 'SELECT * FROM warehouse ORDER BY '.$orderColumn;
 		$sqlQuery = new SqlQuery($sql);
 		return $this->getList($sqlQuery);
 	}
 	
 	/**
  	 * Delete record from table
- 	 * @param itemReview primary key
+ 	 * @param warehouse primary key
  	 */
-	public function delete($id){
-		$sql = 'DELETE FROM item_review WHERE id = ?';
+	public function delete($warehouse_id){
+		$sql = 'DELETE FROM warehouse WHERE warehouse_id = ?';
 		$sqlQuery = new SqlQuery($sql);
-		$sqlQuery->set($id);
+		$sqlQuery->setNumber($warehouse_id);
 		return $this->executeUpdate($sqlQuery);
 	}
 	
 	/**
  	 * Insert record to table
  	 *
- 	 * @param ItemReviewMySql itemReview
+ 	 * @param WarehouseMySql warehouse
  	 */
-	public function insert($itemReview){
-		$sql = 'INSERT INTO item_review (item_id, description, stars, user_id, spam, created_at) VALUES (?, ?, ?, ?, ?, ?)';
+	public function insert($warehouse){
+		$sql = 'INSERT INTO warehouse (title, company_id, contact_id, active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)';
 		$sqlQuery = new SqlQuery($sql);
 		
-		$sqlQuery->set($itemReview->itemId);
-		$sqlQuery->set($itemReview->description);
-		$sqlQuery->setNumber($itemReview->stars);
-		$sqlQuery->set($itemReview->userId);
-		$sqlQuery->setNumber($itemReview->spam);
-		$sqlQuery->set($itemReview->createdAt);
+		$sqlQuery->set($warehouse->title);
+		$sqlQuery->set($warehouse->companyId);
+		$sqlQuery->set($warehouse->contactId);
+		$sqlQuery->setNumber($warehouse->active);
+		$sqlQuery->set($warehouse->createdAt);
+		$sqlQuery->set($warehouse->updatedAt);
 
 		$id = $this->executeInsert($sqlQuery);	
-		$itemReview->id = $id;
+		$warehouse->warehouseId = $id;
 		return $id;
 	}
 	
 	/**
  	 * Update record in table
  	 *
- 	 * @param ItemReviewMySql itemReview
+ 	 * @param WarehouseMySql warehouse
  	 */
-	public function update($itemReview){
-		$sql = 'UPDATE item_review SET item_id = ?, description = ?, stars = ?, user_id = ?, spam = ?, created_at = ? WHERE id = ?';
+	public function update($warehouse){
+		$sql = 'UPDATE warehouse SET title = ?, company_id = ?, contact_id = ?, active = ?, created_at = ?, updated_at = ? WHERE warehouse_id = ?';
 		$sqlQuery = new SqlQuery($sql);
 		
-		$sqlQuery->set($itemReview->itemId);
-		$sqlQuery->set($itemReview->description);
-		$sqlQuery->setNumber($itemReview->stars);
-		$sqlQuery->set($itemReview->userId);
-		$sqlQuery->setNumber($itemReview->spam);
-		$sqlQuery->set($itemReview->createdAt);
+		$sqlQuery->set($warehouse->title);
+		$sqlQuery->set($warehouse->companyId);
+		$sqlQuery->set($warehouse->contactId);
+		$sqlQuery->setNumber($warehouse->active);
+		$sqlQuery->set($warehouse->createdAt);
+		$sqlQuery->set($warehouse->updatedAt);
 
-		$sqlQuery->set($itemReview->id);
+		$sqlQuery->setNumber($warehouse->warehouseId);
 		return $this->executeUpdate($sqlQuery);
 	}
 
@@ -96,91 +96,91 @@ class ItemReviewMySqlDAO implements ItemReviewDAO{
  	 * Delete all rows
  	 */
 	public function clean(){
-		$sql = 'DELETE FROM item_review';
+		$sql = 'DELETE FROM warehouse';
 		$sqlQuery = new SqlQuery($sql);
 		return $this->executeUpdate($sqlQuery);
 	}
 
-	public function queryByItemId($value){
-		$sql = 'SELECT * FROM item_review WHERE item_id = ?';
+	public function queryByTitle($value){
+		$sql = 'SELECT * FROM warehouse WHERE title = ?';
 		$sqlQuery = new SqlQuery($sql);
 		$sqlQuery->set($value);
 		return $this->getList($sqlQuery);
 	}
 
-	public function queryByDescription($value){
-		$sql = 'SELECT * FROM item_review WHERE description = ?';
+	public function queryByCompanyId($value){
+		$sql = 'SELECT * FROM warehouse WHERE company_id = ?';
 		$sqlQuery = new SqlQuery($sql);
 		$sqlQuery->set($value);
 		return $this->getList($sqlQuery);
 	}
 
-	public function queryByStars($value){
-		$sql = 'SELECT * FROM item_review WHERE stars = ?';
-		$sqlQuery = new SqlQuery($sql);
-		$sqlQuery->setNumber($value);
-		return $this->getList($sqlQuery);
-	}
-
-	public function queryByUserId($value){
-		$sql = 'SELECT * FROM item_review WHERE user_id = ?';
+	public function queryByContactId($value){
+		$sql = 'SELECT * FROM warehouse WHERE contact_id = ?';
 		$sqlQuery = new SqlQuery($sql);
 		$sqlQuery->set($value);
 		return $this->getList($sqlQuery);
 	}
 
-	public function queryBySpam($value){
-		$sql = 'SELECT * FROM item_review WHERE spam = ?';
+	public function queryByActive($value){
+		$sql = 'SELECT * FROM warehouse WHERE active = ?';
 		$sqlQuery = new SqlQuery($sql);
 		$sqlQuery->setNumber($value);
 		return $this->getList($sqlQuery);
 	}
 
 	public function queryByCreatedAt($value){
-		$sql = 'SELECT * FROM item_review WHERE created_at = ?';
+		$sql = 'SELECT * FROM warehouse WHERE created_at = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->getList($sqlQuery);
+	}
+
+	public function queryByUpdatedAt($value){
+		$sql = 'SELECT * FROM warehouse WHERE updated_at = ?';
 		$sqlQuery = new SqlQuery($sql);
 		$sqlQuery->set($value);
 		return $this->getList($sqlQuery);
 	}
 
 
-	public function deleteByItemId($value){
-		$sql = 'DELETE FROM item_review WHERE item_id = ?';
+	public function deleteByTitle($value){
+		$sql = 'DELETE FROM warehouse WHERE title = ?';
 		$sqlQuery = new SqlQuery($sql);
 		$sqlQuery->set($value);
 		return $this->executeUpdate($sqlQuery);
 	}
 
-	public function deleteByDescription($value){
-		$sql = 'DELETE FROM item_review WHERE description = ?';
+	public function deleteByCompanyId($value){
+		$sql = 'DELETE FROM warehouse WHERE company_id = ?';
 		$sqlQuery = new SqlQuery($sql);
 		$sqlQuery->set($value);
 		return $this->executeUpdate($sqlQuery);
 	}
 
-	public function deleteByStars($value){
-		$sql = 'DELETE FROM item_review WHERE stars = ?';
-		$sqlQuery = new SqlQuery($sql);
-		$sqlQuery->setNumber($value);
-		return $this->executeUpdate($sqlQuery);
-	}
-
-	public function deleteByUserId($value){
-		$sql = 'DELETE FROM item_review WHERE user_id = ?';
+	public function deleteByContactId($value){
+		$sql = 'DELETE FROM warehouse WHERE contact_id = ?';
 		$sqlQuery = new SqlQuery($sql);
 		$sqlQuery->set($value);
 		return $this->executeUpdate($sqlQuery);
 	}
 
-	public function deleteBySpam($value){
-		$sql = 'DELETE FROM item_review WHERE spam = ?';
+	public function deleteByActive($value){
+		$sql = 'DELETE FROM warehouse WHERE active = ?';
 		$sqlQuery = new SqlQuery($sql);
 		$sqlQuery->setNumber($value);
 		return $this->executeUpdate($sqlQuery);
 	}
 
 	public function deleteByCreatedAt($value){
-		$sql = 'DELETE FROM item_review WHERE created_at = ?';
+		$sql = 'DELETE FROM warehouse WHERE created_at = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->executeUpdate($sqlQuery);
+	}
+
+	public function deleteByUpdatedAt($value){
+		$sql = 'DELETE FROM warehouse WHERE updated_at = ?';
 		$sqlQuery = new SqlQuery($sql);
 		$sqlQuery->set($value);
 		return $this->executeUpdate($sqlQuery);
@@ -191,20 +191,20 @@ class ItemReviewMySqlDAO implements ItemReviewDAO{
 	/**
 	 * Read row
 	 *
-	 * @return ItemReviewMySql 
+	 * @return WarehouseMySql 
 	 */
 	protected function readRow($row){
-		$itemReview = new ItemReview();
+		$warehouse = new Warehouse();
 		
-		$itemReview->id = $row['id'];
-		$itemReview->itemId = $row['item_id'];
-		$itemReview->description = $row['description'];
-		$itemReview->stars = $row['stars'];
-		$itemReview->userId = $row['user_id'];
-		$itemReview->spam = $row['spam'];
-		$itemReview->createdAt = $row['created_at'];
+		$warehouse->warehouseId = $row['warehouse_id'];
+		$warehouse->title = $row['title'];
+		$warehouse->companyId = $row['company_id'];
+		$warehouse->contactId = $row['contact_id'];
+		$warehouse->active = $row['active'];
+		$warehouse->createdAt = $row['created_at'];
+		$warehouse->updatedAt = $row['updated_at'];
 
-		return $itemReview;
+		return $warehouse;
 	}
 	
 	protected function getList($sqlQuery){
@@ -219,7 +219,7 @@ class ItemReviewMySqlDAO implements ItemReviewDAO{
 	/**
 	 * Get row
 	 *
-	 * @return ItemReviewMySql 
+	 * @return WarehouseMySql 
 	 */
 	protected function getRow($sqlQuery){
 		$tab = QueryExecutor::execute($sqlQuery);
