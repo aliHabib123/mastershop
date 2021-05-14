@@ -7,6 +7,15 @@
  */
 class UserMySqlExtDAO extends UserMySqlDAO{
 
-	
+    public function checkLoginCredentials($email){
+		$password = 'sadsdasd';
+		$txt = "SELECT * FROM `user` WHERE `email` = ?";
+		$sqlQuery = new SqlQuery($txt);
+		//var_dump($sqlQuery);die();
+		$sqlQuery->setString($email);
+        // $sqlQuery->setString($password);
+		
+		return $this->getRow($sqlQuery);
+	}
 }
 ?>

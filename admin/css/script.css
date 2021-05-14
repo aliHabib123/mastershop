@@ -1,0 +1,22 @@
+
+/* COMMON CLASSES */
+.break { clear:both; }
+
+/* HEADER */
+
+.headerimg { background-position: center top; background-repeat: no-repeat; width:100%; height:1603px; position:absolute; }
+
+
+
+
+
+/* CONTROLS */
+.btn { height:32px; width:32px; float:left; cursor:pointer; }
+#back { background-image:url("../images/btn_back.png"); }
+#next { background-image:url("../images/btn_next.png"); }
+#control { background-image:url("../images/btn_pause.png"); }
+
+/* HEADER HAVIGATION */
+#headernav-outer { position:relative; top:5px; margin:0 auto; width:990px;}
+#headernav { padding-left:890px; }
+

@@ -9,3 +9,4 @@ phpunit.xml
 .project
 node_modules/
 package-lock.json
+admin/sessions/*

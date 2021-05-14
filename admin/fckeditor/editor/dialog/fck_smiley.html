@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!--
+ * FCKeditor - The text editor for Internet - http://www.fckeditor.net
+ * Copyright (C) 2003-2010 Frederico Caldeira Knabben
+ *
+ * == BEGIN LICENSE ==
+ *
+ * Licensed under the terms of any of the following licenses at your
+ * choice:
+ *
+ *  - GNU General Public License Version 2 or later (the "GPL")
+ *    http://www.gnu.org/licenses/gpl.html
+ *
+ *  - GNU Lesser General Public License Version 2.1 or later (the "LGPL")
+ *    http://www.gnu.org/licenses/lgpl.html
+ *
+ *  - Mozilla Public License Version 1.1 or later (the "MPL")
+ *    http://www.mozilla.org/MPL/MPL-1.1.html
+ *
+ * == END LICENSE ==
+ *
+ * Smileys (emoticons) dialog window.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="robots" content="noindex, nofollow">
+        <style type="text/css">
+.Hand {
+	cursor: pointer;
+	cursor: hand;
+}
+        </style>
+        <script src="common/fck_dialog_common.js" type="text/javascript"></script>
+        <script type="text/javascript">
+
+var dialog	= window.parent ;
+var oEditor = dialog.InnerDialogLoaded() ;
+var FCK			= oEditor.FCK ;
+window.onload = function ()
+{
+	// First of all, translate the dialog box texts
+	oEditor.FCKLanguageManager.TranslatePage(document) ;
+
+	dialog.SetAutoSize( true ) ;
+}
+
+
+function over(td)
+{
+	td.className = 'LightBackground Hand' ;
+}
+
+function out(td)
+{
+	td.className = 'DarkBackground Hand' ;
+}
+
+
+// Gets the document DOM
+var oDOM = oEditor.FCK.EditorDocument ;
+
+var oActiveEl = dialog.Selection.GetSelectedElement() ;
+
+
+function insertTooltip(){
+	oEditor.FCKUndo.SaveUndoStep() ;
+	
+	
+	var text = document.getElementById('tooltip_text').value;
+	var link = document.getElementById('tooltip_link').value;
+	var title = document.getElementById('tooltip_title').value;
+
+	// oLink: The actual selected link in the editor.
+	var oLink = dialog.Selection.GetSelection().MoveToAncestorNode( 'A' ) ;
+	if ( oLink ){
+			FCK.Selection.SelectNode( oLink );
+		}else{
+			// Create a new (empty) anchor.
+			aLinks = [ oEditor.FCK.InsertElement( 'a' ) ] ;	
+			oLink = aLinks[0];
+	}
+	
+	oLink.setAttribute("onmouseover", "ddrivetip('"+title+"')");
+	oLink.setAttribute("onmouseout", "hideddrivetip()");
+	oLink.target = "_blank";
+	oLink.setAttribute("href", link);
+	oLink.innerHTML  = text;
+	
+	
+	
+	// Select the (first) link.
+	oEditor.FCKSelection.SelectNode( );
+	
+
+	dialog.Cancel() ;
+	return true;
+	
+	
+	
+}
+
+
+function getSelText()
+{
+    var txt = '';
+     if (oEditor.getSelection)
+    {
+        txt = oEditor.getSelection();
+             }
+    else if (oEditor.getSelection)
+    {
+        txt = oEditor.getSelection();
+            }
+    else if (oEditor.selection)
+    {
+        txt = oEditor.selection.createRange().text;
+ 	 }
+    else return;
+    
+    
+	return  txt;
+}
+        </script>
+    </head>
+    <body style="overflow: hidden">
+        <table
+            cellpadding="2"
+            cellspacing="2"
+            align="center"
+            border="0"
+            width="100%"
+            height="100%"
+        >
+            <tr>
+                <td>
+                    <input
+                        type="text"
+                        value="Text details"
+                        size="40"
+                        id="tooltip_text"
+                    >
+                    <br>
+                    <input
+                        type="text"
+                        value="http://thirteencube.com"
+                        size="40"
+                        id="tooltip_link"
+                    >
+                    <br>
+                    <textarea id="tooltip_title" cols="50" rows="5">Tool tip</textarea>
+                    <br>
+                    <input type="button" value=" Add " onclick="insertTooltip()">
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
