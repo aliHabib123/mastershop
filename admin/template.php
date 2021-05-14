@@ -135,7 +135,7 @@ if ($_SESSION['companyId'] == "") {
 
 
 
-	<link rel="shortcut icon" href="favicon.ico" />
+	<!-- <link rel="shortcut icon" href="favicon.ico" /> -->
 
 
 

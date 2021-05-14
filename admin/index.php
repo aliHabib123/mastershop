@@ -18,9 +18,9 @@ Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-templa
 <!-- BEGIN HEAD -->
 <head>
 	<meta charset="utf-8" />
-	<title>CMS Login - Mastershop</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<title>CMS Login - Mastershop</title>
 	<meta content="" name="description" />
 	<meta content="" name="author" />
 	<meta name="MobileOptimized" content="320">
@@ -40,8 +40,7 @@ Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-templa
 	<link href="assets/css/themes/default.css" rel="stylesheet" type="text/css" id="style_color"/>
 	<link href="assets/css/pages/login-soft.css" rel="stylesheet" type="text/css"/>
 	<link href="assets/css/custom.css" rel="stylesheet" type="text/css"/>
-	<!-- END THEME STYLES -->
-	<link rel="shortcut icon" href="favicon.ico" />
+	<link rel="icon" type="image/png" href="../public/img/favicon.png" />
 	<script>
 function validation(frm)
 {
@@ -88,7 +87,7 @@ return true;
 				<label class="control-label visible-ie8 visible-ie9">Username</label>
 				<div class="input-icon">
 					<i class="fa fa-user"></i>
-					<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="username"/>
+					<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="email"/>
 				</div>
 			</div>
 			<div class="form-group">
@@ -129,7 +128,7 @@ return true;
 		</form>
 		<!-- END LOGIN FORM -->        
 		<!-- BEGIN FORGOT PASSWORD FORM -->
-		<form class="forget-form" action="index.html" method="post">
+		<form class="forget-form" action="" method="post">
 			<h3 >Forget Password ?</h3>
 			<p>Enter your e-mail address below to reset your password.</p>
 			<div class="form-group">
@@ -486,7 +485,6 @@ return true;
 	<!-- END CORE PLUGINS -->
 	<!-- BEGIN PAGE LEVEL PLUGINS -->
 	<script src="assets/plugins/jquery-validation/dist/jquery.validate.min.js" type="text/javascript"></script>
-	<script src="assets/plugins/backstretch/jquery.backstretch.min.js" type="text/javascript"></script>
 	<script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
 	<!-- END PAGE LEVEL PLUGINS -->
 	<!-- BEGIN PAGE LEVEL SCRIPTS -->

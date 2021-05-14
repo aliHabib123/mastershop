@@ -25,7 +25,8 @@ class SqlQuery{
 	 * @param String $value value set
 	 */
 	public function setString($value){
-		$value = mysql_real_escape_string($value);
+		$con =  ConnectionFactory::getConnection();
+		$value = mysqli_real_escape_string($con, $value);
 		$this->params[$this->idx++] = "'".$value."'";
 	}
 	
@@ -35,7 +36,8 @@ class SqlQuery{
 	 * @param String $value value to set
 	 */
 	public function set($value){
-		$value = mysql_real_escape_string($value);
+		$con =  ConnectionFactory::getConnection();
+		$value = mysqli_real_escape_string($con, $value);
 		$this->params[$this->idx++] = "'".$value."'";
 	}
 	
