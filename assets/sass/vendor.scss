@@ -32,6 +32,18 @@
   i {
     color: $menu-grey;
   }
+  span {
+    float: right;
+    a {
+      color: #fff;
+      background-color: $base-color;
+      padding: 7px 15px;
+      line-height: 1;
+      display: inline-block;
+      top: -6px;
+      position: relative;
+    }
+  }
 }
 .vendor-page-wrapper {
   padding-bottom: 40px;
@@ -155,6 +167,72 @@
           margin-bottom: 26px;
         }
       }
+    }
+  }
+  .dash-wrap{
+    margin-bottom: 30px;
+    .dash-item{
+      margin-bottom: 20px;
+      position: relative;
+      background-color: $base-color;
+      padding: 25px 15px;
+      .dash-title{
+        font-family: $fontsecondary;
+        font-weight: 300;
+        color: #fff;
+        font-size: 20px;
+        line-height: 1;
+        margin-bottom: 5px;
+        &.dark{
+          color: #000;
+        }
+        &.secondary{
+          font-size: 24px;
+          font-weight: bold;
+        }
+      }
+      .dash-subtitle{
+        font-family: $fontsecondary;
+        color: #fff;
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 1;
+        &.dark{
+          color: #000;
+        }
+        &.secondary{
+          font-weight: 300;
+          font-size: 20px;
+        }
+      }
+      .dash-icon{
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        text-align: center;
+        img{
+          width: 85%;
+          top: 50%;
+          position: relative;
+          transform: translateY(-50%);
+        }
+      }
+    }
+    > div > div:nth-child(2) .dash-item {
+      background-color:#6fa5d1;
+    }
+    > div > div:nth-child(3) .dash-item {
+      background-color: #bcd5ea;
+    }
+    > div > div:nth-child(4) .dash-item {
+      background-color: #7f8181;
+    }
+    > div > div:nth-child(5) .dash-item {
+      background-color: #d6d6d6;
+    }
+    > div > div:nth-child(6) .dash-item {
+      background-color: #e64f4f;
     }
   }
 }

@@ -1213,6 +1213,16 @@ footer {
   margin-bottom: 15px; }
   .page-date i {
     color: #acacac; }
+  .page-date span {
+    float: right; }
+    .page-date span a {
+      color: #fff;
+      background-color: #2576ba;
+      padding: 7px 15px;
+      line-height: 1;
+      display: inline-block;
+      top: -6px;
+      position: relative; }
 
 .vendor-page-wrapper {
   padding-bottom: 40px; }
@@ -1308,6 +1318,57 @@ footer {
         margin-bottom: 10px; }
       .vendor-page-wrapper .card.with-sub .card-text.txt-lrg {
         margin-bottom: 26px; }
+  .vendor-page-wrapper .dash-wrap {
+    margin-bottom: 30px; }
+    .vendor-page-wrapper .dash-wrap .dash-item {
+      margin-bottom: 20px;
+      position: relative;
+      background-color: #2576ba;
+      padding: 25px 15px; }
+      .vendor-page-wrapper .dash-wrap .dash-item .dash-title {
+        font-family: "Montserrat", sans-serif;
+        font-weight: 300;
+        color: #fff;
+        font-size: 20px;
+        line-height: 1;
+        margin-bottom: 5px; }
+        .vendor-page-wrapper .dash-wrap .dash-item .dash-title.dark {
+          color: #000; }
+        .vendor-page-wrapper .dash-wrap .dash-item .dash-title.secondary {
+          font-size: 24px;
+          font-weight: bold; }
+      .vendor-page-wrapper .dash-wrap .dash-item .dash-subtitle {
+        font-family: "Montserrat", sans-serif;
+        color: #fff;
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 1; }
+        .vendor-page-wrapper .dash-wrap .dash-item .dash-subtitle.dark {
+          color: #000; }
+        .vendor-page-wrapper .dash-wrap .dash-item .dash-subtitle.secondary {
+          font-weight: 300;
+          font-size: 20px; }
+      .vendor-page-wrapper .dash-wrap .dash-item .dash-icon {
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        text-align: center; }
+        .vendor-page-wrapper .dash-wrap .dash-item .dash-icon img {
+          width: 85%;
+          top: 50%;
+          position: relative;
+          transform: translateY(-50%); }
+    .vendor-page-wrapper .dash-wrap > div > div:nth-child(2) .dash-item {
+      background-color: #6fa5d1; }
+    .vendor-page-wrapper .dash-wrap > div > div:nth-child(3) .dash-item {
+      background-color: #bcd5ea; }
+    .vendor-page-wrapper .dash-wrap > div > div:nth-child(4) .dash-item {
+      background-color: #7f8181; }
+    .vendor-page-wrapper .dash-wrap > div > div:nth-child(5) .dash-item {
+      background-color: #d6d6d6; }
+    .vendor-page-wrapper .dash-wrap > div > div:nth-child(6) .dash-item {
+      background-color: #e64f4f; }
 
 .vendor-pl0 {
   padding-left: 0; }
