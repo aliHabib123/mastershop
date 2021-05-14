@@ -154,6 +154,20 @@ return [
                     ],
                 ],
             ],
+            'myOrders' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route'    => '/vendor/my-orders[/]',
+                    'defaults' => [
+                        'controller' => Controller\VendorController::class,
+                        'action'     => 'myOrders',
+                        'year'       => date('Y'),
+                    ],
+                    'constraints' => [
+                        'year' => '\d{4}',
+                    ],
+                ],
+            ],
             'application' => [
                 'type'    => Segment::class,
                 'options' => [

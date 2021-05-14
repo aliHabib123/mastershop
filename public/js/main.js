@@ -51,18 +51,18 @@ $(function () {
     }
   });
 
-  if($('.related-slider').length > 0){
+  if ($(".related-slider").length > 0) {
     let width = $(".related").width();
     let slideWidth = width / 5;
     if ($(window).width() < 768) {
       slideWidth = width / 2;
     }
     slideWidth = slideWidth + "px";
-    $('.related-slider').bxSlider({
+    $(".related-slider").bxSlider({
       minSlides: 1,
       maxSlides: 4,
       adaptiveHeight: true,
-      slideWidth: '250px',
+      slideWidth: "250px",
       pager: false,
       controls: true,
     });
@@ -185,12 +185,39 @@ $(function () {
   });
 
   // jQuery
-$("#mobile-number, #work-number").intlTelInput({
-  // options here
-  initialCountry: 'LB',
-  separateDialCode: true
-});
+  $("#mobile-number, #work-number").intlTelInput({
+    // options here
+    initialCountry: "LB",
+    separateDialCode: true,
+  });
 
+  // check if element is available to bind ITS ONLY ON HOMEPAGE
+  var currentDate = moment().format("DD-MM-YYYY");
+
+  var datePicker = $(".date").daterangepicker(
+    {
+      locale: {
+        format: "DD-MM-YYYY",
+      },
+      alwaysShowCalendars: true,
+      autoApply: true,
+      autoUpdateInput: true,
+      ranges: {
+        Today: [moment(), moment()],
+        Yesterday: [moment().subtract(1, "days"), moment().subtract(1, "days")],
+        "Last 7 Days": [moment().subtract(6, "days"), moment()],
+        "Last 30 Days": [moment().subtract(29, "days"), moment()],
+        "This Month": [moment().startOf("month"), moment().endOf("month")],
+        "Last Month": [
+          moment().subtract(1, "month").startOf("month"),
+          moment().subtract(1, "month").endOf("month"),
+        ],
+      },
+    },
+    function (start, end, label) {
+      console.log(start, end, label);
+    }
+  );
 });
 
 $(function () {

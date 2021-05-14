@@ -1309,7 +1309,7 @@ footer {
       .vendor-page-wrapper .card.with-sub .card-text.txt-lrg {
         margin-bottom: 26px; }
 
-.pl0 {
+.vendor-pl0 {
   padding-left: 0; }
 
 .iti {
@@ -1364,6 +1364,104 @@ footer {
   font-family: "Montserrat", sans-serif;
   font-weight: 300;
   font-size: 18px; }
+
+.filters-wrap {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  padding-top: 5px;
+  border-bottom: 1px solid #b7b7b7; }
+  .filters-wrap .form-inline > div {
+    display: flex; }
+  .filters-wrap .form-inline label {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    margin-right: 15px; }
+    .filters-wrap .form-inline label.main {
+      font-weight: 500;
+      font-size: 18px;
+      margin-right: 30px; }
+  .filters-wrap .form-inline select {
+    border-radius: 0;
+    border: 1px solid #b7b7b7;
+    margin-right: 20px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 300;
+    font-size: 16px; }
+  .filters-wrap .form-inline input {
+    max-width: 145px;
+    margin-right: 20px; }
+    .filters-wrap .form-inline input.date {
+      max-width: 210px; }
+  .filters-wrap .apply-btn {
+    background-color: #2576ba;
+    border: 1px solid #2576ba;
+    border-radius: 0;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #fff; }
+
+.orders-wrap .order-item {
+  margin-bottom: 20px;
+  line-height: 1;
+  background-color: #f9f8f8;
+  padding: 10px; }
+  .orders-wrap .order-item .order-id {
+    margin-bottom: 10px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 18px;
+    font-weight: 500; }
+    .orders-wrap .order-item .order-id span {
+      margin-left: 10px;
+      margin-left: 10px; }
+      .orders-wrap .order-item .order-id span a {
+        color: #0437b8;
+        font-family: "Montserrat", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        text-decoration: underline; }
+  .orders-wrap .order-item .items-wrap {
+    border-bottom: 1px solid #b7b7b7;
+    padding-bottom: 10px;
+    margin-bottom: 15px; }
+    .orders-wrap .order-item .items-wrap .item {
+      color: #0437b8;
+      font-family: "Montserrat", sans-serif;
+      font-size: 16px;
+      font-weight: 300;
+      margin-bottom: 5px; }
+  .orders-wrap .order-item .item-order-details {
+    font-family: "Montserrat", sans-serif;
+    font-size: 16px;
+    font-weight: 300; }
+    .orders-wrap .order-item .item-order-details.line1 {
+      margin-bottom: 10px; }
+  .orders-wrap .order-item .final-amount-label {
+    font-family: "Montserrat", sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    margin-bottom: 10px;
+    margin-top: 15px; }
+  .orders-wrap .order-item .final-amount {
+    font-family: "Montserrat", sans-serif;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px; }
+  .orders-wrap .order-item .order-status {
+    font-family: "Montserrat", sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    color: #fff;
+    padding: 10px 20px;
+    background-color: #b7b7b7;
+    display: inline-block; }
+    .orders-wrap .order-item .order-status.complete {
+      background-color: #e64f4f; }
+    .orders-wrap .order-item .order-status.pending {
+      background-color: #ffbf3d; }
+    .orders-wrap .order-item .order-status.in-progress {
+      background-color: #ff681d; }
 
 @media (max-width: 768px) {
   .middle-menu .logo-container {
@@ -1621,4 +1719,12 @@ footer {
     margin-left: 15%;
     margin-right: 15%; }
   .related {
-    width: 65%; } }
+    width: 65%; }
+  .filters-wrap .form-inline {
+    display: table-cell; }
+    .filters-wrap .form-inline > div {
+      margin-bottom: 10px; }
+  .vendor-page-wrapper {
+    padding-bottom: 10px; }
+    .vendor-page-wrapper .vendor-pl0 {
+      padding-left: 15px; } }
