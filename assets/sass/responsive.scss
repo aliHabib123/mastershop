@@ -436,4 +436,18 @@
   .related {
     width: 65%;
   }
+  .filters-wrap {
+    .form-inline {
+      display: table-cell;
+      > div {
+        margin-bottom: 10px;
+      }
+    }
+  }
+  .vendor-page-wrapper {
+    padding-bottom: 10px;
+    .vendor-pl0 {
+      padding-left: 15px;
+    }
+  }
 }
