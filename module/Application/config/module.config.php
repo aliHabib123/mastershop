@@ -168,6 +168,20 @@ return [
                     ],
                 ],
             ],
+            'myDashboard' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route'    => '/vendor/my-dashboard[/]',
+                    'defaults' => [
+                        'controller' => Controller\VendorController::class,
+                        'action'     => 'myDashboard',
+                        'year'       => date('Y'),
+                    ],
+                    'constraints' => [
+                        'year' => '\d{4}',
+                    ],
+                ],
+            ],
             'application' => [
                 'type'    => Segment::class,
                 'options' => [

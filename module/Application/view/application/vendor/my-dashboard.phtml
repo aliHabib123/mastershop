@@ -1,0 +1,111 @@
+<?php
+
+use Application\Controller\DesignController;
+
+$date = isset($_GET['date']) ? $_GET['date'] : '';
+$status = isset($_GET['status']) ? $_GET['status'] : '';
+$orderId = isset($_GET['orderId']) ? $_GET['orderId'] : '';
+?>
+<div class="main-wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 sidebar">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">My Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">My Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Update Inventory</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">My Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Warehouse Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Account Details</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-9 vendor-pl0">
+                <div class="page-date"><i class="far fa-calendar-alt"></i>&nbsp;Tuesday, April 6, 2021<span><a href="#">VIEW ALL ORDERS</a></span></div>
+                <div class="vendor-page-wrapper">
+                    <div class="dash-wrap">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="dash-item">
+                                    <div class="dash-title">DAILY INCOME</div>
+                                    <div class="dash-subtitle">LBP 210,000</div>
+                                    <div class="dash-icon">
+                                        <img src="img/dash-icon-cash.png"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="dash-item">
+                                    <div class="dash-title">WEEKLY INCOME</div>
+                                    <div class="dash-subtitle">LBP 210,000</div>
+                                    <div class="dash-icon">
+                                        <img src="img/dash-icon-cash.png"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="dash-item">
+                                    <div class="dash-title dark">MONTHLY INCOME</div>
+                                    <div class="dash-subtitle dark">LBP 210,000</div>
+                                    <div class="dash-icon">
+                                        <img src="img/dash-icon-cash.png"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="dash-item">
+                                    <div class="dash-title secondary">30</div>
+                                    <div class="dash-subtitle secondary">DAILY ORDERS</div>
+                                    <div class="dash-icon">
+                                        <img src="img/dash-icon-orders.png"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="dash-item">
+                                    <div class="dash-title dark secondary">120</div>
+                                    <div class="dash-subtitle dark secondary">PRODUCTS</div>
+                                    <div class="dash-icon">
+                                        <img src="img/dash-icon-products.png"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="dash-item">
+                                <div class="dash-title secondary">120</div>
+                                    <div class="dash-subtitle secondary">PRODUCTS SOLD</div>
+                                    <div class="dash-icon">
+                                        <img src="img/dash-icon-products-sold.png"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="orders-wrap">
+                        <?php for($i=0;$i<3;$i++){
+                            $k = ['complete', 'in-progress', 'pending'];
+                            $status = $k[mt_rand(0, count($k) - 1)];
+                            $label = strtoupper(str_replace('-', ' ', $status));
+                            $orderId = mt_rand(1000000000,9999999999);
+                            echo DesignController::orderItem($status, $label, $orderId);
+                        }?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
