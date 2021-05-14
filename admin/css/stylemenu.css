@@ -1,0 +1,351 @@
+
+* {  margin: 0;  padding: 0; }
+
+
+a { text-decoration: none;
+	color:#000000;}
+
+ul { list-style: none; }
+
+/* LEVEL ONE */
+
+ul.dropdown {
+    position: relative;
+	z-index:10000;
+	font-family: avantgarde, Geneva, sans-serif;
+    font-size: 15px; }
+
+ul.dropdown li {
+    float: left;  
+    zoom: 0;
+    margin:0px 6px; }
+/*
+ul.dropdown a:hover {
+    color: #242424;
+}
+
+ul.dropdown a:active {
+    color: #242424;
+}*/
+
+ul.dropdown li a {
+   display: block;
+   height:34px;
+   padding:10px 12px 0px 12px;
+   color: #fff;
+  }
+  
+  
+/*
+ul.dropdown li:last-child a {
+    border-right: none; color: #fff;
+}*/
+
+
+ /* Doesn't work in IE */
+ 
+ul.dropdown li.hover, ul.dropdown li:hover {
+   /*background: url('../images/leftborder.png') top left no-repeat,
+               url('../images/rightborder.png') top right no-repeat,
+			   url('../images/bg-menu.png') top right repeat-x;*/
+	 background: #ffffff;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+	behavior: url('http://localhost/projects/PAIRS/public/style/PIE/PIE.htc');	
+   position: relative;
+   height: 42px;
+   color:#242424; }
+
+ul.dropdown li.hover a { color: #242424; }
+
+ul.dropdown li a#current {
+   /*background: url('../images/leftborder.png') top left no-repeat,
+               url('../images/rightborder.png') top right no-repeat,
+			   url('../images/bg-menu.png') top right repeat-x;*/
+			   				
+   background: #ffffff;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+	behavior: url('http://localhost/projects/PAIRS/public/style/PIE/PIE.htc');		
+   position: relative;
+   height: 33px;
+   color:#242424;  }
+
+
+ul.dropdown li a#blog-ph {
+	background: #ec0810;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+	behavior: url('http://localhost/projects/PAIRS/public/style/PIE/PIE.htc');	   				
+	position: relative;
+	 height: 33px;
+	color:#fff; }
+  
+  ul.dropdown li a#blog-pa {
+	background: #ec0810;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+	behavior: url('http://localhost/projects/PAIRS/public/style/PIE/PIE.htc');	   				
+	position: relative;
+	 height: 33px;
+	color:#fff; }
+
+/* LEVEL TWO */
+
+
+ul.dropdown ul.sub_menu {
+
+    visibility: hidden;
+    position: absolute;
+	background:#fff;
+	border-left:1px solid #d5d5d5;
+	border-right:1px solid #d5d5d5;
+    top: 35px;
+    left: 0px;
+    width: 99%;
+     }
+
+ul.dropdown ul.sub_menu li {
+	/*background: url(../images/arrow-menu.png) no-repeat left top;padding-left: 10px;*/
+	
+background-image: url(../images/arrow-menu.png);
+background-repeat: no-repeat;
+background-position: 0 .2em;
+	margin:0px 0px 0px 10px;
+	text-align:left;
+	float:left;
+	font-size:12px;
+    float: none; }
+
+/* IE 6 & 7 Needs Inline Block */
+
+ul.dropdown ul.sub_menu li a {
+padding:0px 10px 0px 10px;
+	margin:0px;
+	border:0px solid #ff0000;
+	font-size:13px;
+	color:#242424;
+}
+
+ul.dropdown ul.sub_menu li a:hover { 
+	padding:0px 10px 0px 10px;
+	margin:0px;
+	border:0px solid #ff0000;
+	font-size:13px;
+	color:#ff0000;
+}
+
+/*
+ LEVEL THREE
+ */
+ul.dropdown ul ul {
+    left: 100%;
+    top: 0; 
+}
+
+ul.dropdown li:hover > ul {
+    visibility: visible;
+}
+
+/************************ For IE 7 and up ****************************/
+#ie7andup * {  margin: 0;  padding: 0; }
+
+
+#ie7andup a { text-decoration: none;
+	color:#fff; }
+
+#ie7andup ul { list-style: none; }
+
+/* LEVEL ONE */
+
+#ie7andup ul.dropdown {
+    position: relative;
+	z-index:10000;
+	font-family: avantgarde, Geneva, sans-serif;
+    font-size: 15px; }
+
+#ie7andup ul.dropdown li {
+    float: left;  
+    zoom: 0;
+    margin:0px 6px; }
+/*
+ul.dropdown a:hover {
+    color: #242424;
+}
+
+ul.dropdown a:active {
+    color: #242424;
+}*/
+
+#ie7andup ul.dropdown li a {
+   display: block;
+   height:34px;
+   padding:10px 8px 0px 8px;
+   color: #fff;
+  }
+  
+  
+/*
+ul.dropdown li:last-child a {
+    border-right: none; color: #fff;
+}*/
+
+
+ /* Doesn't work in IE */
+ 
+#ie7andup ul.dropdown li.hover, ul.dropdown li:hover {
+   /*background: url('../images/leftborder.png') top left no-repeat,
+               url('../images/rightborder.png') top right no-repeat,
+			   url('../images/bg-menu.png') top right repeat-x;*/
+	 background: #ffffff;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+	behavior: url('http://localhost/projects/PAIRS/public/style/PIE/PIE.htc');	
+   position: relative;
+   height: 42px;
+   color:#242424; }
+
+#ie7andup ul.dropdown li.hover a { color: #242424; }
+
+#ie7andup ul.dropdown li a#current {
+   /*background: url('../images/leftborder.png') top left no-repeat,
+               url('../images/rightborder.png') top right no-repeat,
+			   url('../images/bg-menu.png') top right repeat-x;*/
+			   				
+   background: #ffffff;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+	behavior: url('http://localhost/projects/PAIRS/public/style/PIE/PIE.htc');
+   position: relative;
+   height: 33px;
+   color:#242424;  }
+
+
+#ie7andup ul.dropdown li a#blog-ph {
+   /*background: url('../images/leftborder-red.png') top left no-repeat,
+               url('../images/rightborder-red.png') top right no-repeat,
+			   url('../images/bg-menu-red.png') top right repeat-x;*/
+	background: #ec0810;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+	behavior: url('http://localhost/projects/PAIRS/public/style/PIE/PIE.htc');	   				
+	position: relative;
+	 height: 33px;
+	color:#fff; }
+  
+ #ie7andup ul.dropdown li a#blog-pa {
+   /*background: url('../images/leftborder-red.png') top left no-repeat,
+               url('../images/rightborder-red.png') top right no-repeat,
+			   url('../images/bg-menu-red.png') top right repeat-x;*/
+	background: #ec0810;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+	behavior: url('http://localhost/projects/PAIRS/public/style/PIE/PIE.htc');	   				
+	position: relative;
+	 height: 33px;
+	color:#fff; }
+
+/* LEVEL TWO */
+
+
+#ie7andup ul.dropdown ul.sub_menu {
+
+    visibility: hidden;
+    position: absolute;
+	background:#fff;
+	border-left:1px solid #d5d5d5;
+	border-right:1px solid #d5d5d5;
+    top: 35px;
+    left: 0px;
+    width: 99%;
+     }
+
+#ie7andup ul.dropdown ul.sub_menu li {
+	/*background: url(../images/arrow-menu.png) no-repeat left top;padding-left: 10px;*/
+	
+background-image: url(../images/arrow-menu.png);
+background-repeat: no-repeat;
+background-position: 0 .2em;
+	margin:0px 0px 0px 10px;
+	text-align:left;
+	float:left;
+	font-size:12px;
+    float: none; }
+
+/* IE 6 & 7 Needs Inline Block */
+
+#ie7andup ul.dropdown ul.sub_menu li a {
+padding:0px 10px 0px 10px;
+	margin:0px;
+	border:0px solid #ff0000;
+	font-size:12px;
+	color:#242424;
+}
+
+#ie7andup ul.dropdown ul.sub_menu li a:hover { 
+	padding:0px 10px 0px 10px;
+	margin:0px;
+	border:0px solid #ff0000;
+	font-size:12px;
+	color:#ff0000;
+}
+
+/*
+ LEVEL THREE
+ */
+#ie7andup ul.dropdown ul ul {
+    left: 100%;
+    top: 0; 
+}
+
+#ie7andup ul.dropdown li:hover > ul {
+    visibility: visible;
+}
+
+/****************PAGING********************/
+div.pagination {
+	padding: 3px;
+	margin: 3px;
+	font-size:12px;
+	font-family:"amaranth";direction:rtl;
+	
+}
+
+div.pagination a {
+	padding: 2px 5px 2px 5px;
+	margin: 2px;
+	border: 1px solid #AAAADD;
+	text-decoration: none; /* no underline */
+	color: #af2a49;
+}
+
+div.pagination a:hover,div.pagination a:active {
+	
+	border: 1px solid #cc0000;
+	color: #af2a49;
+}
+
+div.pagination font.current {
+	padding: 2px 5px 2px 5px;
+	margin: 2px;
+	border: 1px solid #cc0000;
+	background-color: #af2a49;
+	color: #FFF;
+}
+
+div.pagination font.disabled {
+	padding: 2px 5px 2px 5px;
+	margin: 2px;
+	border: 1px solid #EEE;
+	color: #DDD;
+}
+
+/*********************************************************************/
