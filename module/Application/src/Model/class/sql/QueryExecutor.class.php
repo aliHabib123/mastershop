@@ -47,16 +47,17 @@ class QueryExecutor{
 	public static function executeUpdate($sqlQuery){
 		$transaction = Transaction::getCurrentTransaction();
 		if(!$transaction){
-			$connection = new Connection();
+			$connection = ConnectionFactory::getConnection();
 		}else{
 			$connection = $transaction->getConnection();
-		}		
+		}
+
 		$query = $sqlQuery->getQuery();
-		$result = $connection->executeQuery($query);
+		//$result = $connection->executeQuery($query);
+		$result = mysqli_query($connection, $query);
 		if(!$result){
 		    throw new Exception("SQL Error: -->".$query."<--" . mysqli_error($connection));
 		}
-		//return mysql_affected_rows();	
 		return mysqli_affected_rows($connection);
 	}
 

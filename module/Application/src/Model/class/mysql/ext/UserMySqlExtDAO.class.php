@@ -8,7 +8,6 @@
 class UserMySqlExtDAO extends UserMySqlDAO{
 
     public function checkLoginCredentials($email){
-		$password = 'sadsdasd';
 		$txt = "SELECT * FROM `user` WHERE `email` = ?";
 		$sqlQuery = new SqlQuery($txt);
 		//var_dump($sqlQuery);die();
@@ -17,5 +16,27 @@ class UserMySqlExtDAO extends UserMySqlDAO{
 		
 		return $this->getRow($sqlQuery);
 	}
+
+	public function updatePassword($password, $adminId){
+		$sql = 'UPDATE user SET password = ?  WHERE id = ?';
+		$sqlQuery = new SqlQuery($sql);
+
+		$sqlQuery->set($password);
+		$sqlQuery->set($adminId);
+		
+		return $this->executeUpdate($sqlQuery);
+	}
+
+	public function getUserCount($condition){
+		$sql = "select count(*) as count from user where $condition";
+		// /print_r($sql);die();
+		$sqlQuery = new SqlQuery($sql);
+		//print_r($this->getRow($sqlQuery));
+		return $this->execute($sqlQuery)[0]['count'];
+	}
+	public function select($condition){
+		$sql = "SELECT * FROM user WHERE $condition";
+		$sqlQuery = new SqlQuery($sql);
+		return $this->getList($sqlQuery);
+	}
 }
-?>
