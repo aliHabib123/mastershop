@@ -1,33 +1,25 @@
 <?php
+
 require "session_start.php";
-
-
-
-include "connect.php";
 include "config.php";
-include "class/Cms_admin.php";
-
-
+require_once '../module/Application/src/Model/include_dao.php';
 
 extract($_POST);
 
+$userMySqlExtDAO = new UserMySqlExtDAO();
 
-$condition = "admin_name='".addslashes(stripslashes($admin_name))."' ,user_name='".addslashes(stripslashes($user_name))."'  ,email='".addslashes(stripslashes($email))."' ";
-if ($password != "") {
-    $password = md5($password);
-    $condition.=", password='".addslashes(stripslashes($password))."'";
-}
+$password = password_hash($password, PASSWORD_DEFAULT);
 
-$return=Cms_admin::updateCondition($admin_id, $condition);
-if ($return) {
+$update = $userMySqlExtDAO->updatePassword($password, $_SESSION['adminId']);
+if ($update) {
     $num++;
 }
 
-if ($num>0) {
-    $act=3;
+if ($num > 0) {
+    $act = 3;
 } else {
-    $act=4;
+    $act = 4;
 }
 
-header("Location: display_cms_admin.php?act=".$act);
+header("Location: display_cms_admin.php?act=" . $act);
 exit();

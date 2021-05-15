@@ -1,46 +1,33 @@
 <?php
-ini_set('display_errors', '0');
-error_reporting(E_ALL ^ E_NOTICE);
+ini_set('display_errors', '1');
+ini_set('log_errors', '1');
+ini_set('error_log', './');
+error_reporting(E_ALL ^ E_DEPRECATED);
 
 require "session_start.php";
 
 include("fckeditor/fckeditor.php");
-include 'class/Company.php';
 include "connect.php";
-
 include "change_format.php";
-
 include "config.php";
+require_once '../module/Application/src/Model/include_dao.php';
 
 
 if (isset($_REQUEST['act'])) {
-    $act = $_REQUEST['act'];
+	$act = $_REQUEST['act'];
 
-    $sql = "select * from cms_msg where Msg_ID=$act";
+	$sql = "select * from cms_msg where Msg_ID=$act";
 
-    $result = mysqli_query($_SESSION['db_conn'], $sql);
+	$result = mysqli_query($_SESSION['db_conn'], $sql);
 
-    $msg = mysqli_fetch_array($result);
+	$msg = mysqli_fetch_array($result);
 
-    $text = $msg['Msg_Description'];
+	$text = $msg['Msg_Description'];
 
-    if ($act == 4) {
-        $text = '<font color="red">' . $msg['Msg_Description'] . '</font>';
-    }
+	if ($act == 4) {
+		$text = '<font color="red">' . $msg['Msg_Description'] . '</font>';
+	}
 }
-
-$companyArray = Company::select(1);
-if ($_POST) {
-    $companyId = $_POST['companyId'];
-    $_SESSION['companyId'] = $companyId;
-}
-
-
-if ($_SESSION['companyId'] == "") {
-    $_SESSION['companyId'] = "1";
-}
-
-
 ?>
 
 
@@ -242,9 +229,9 @@ if ($_SESSION['companyId'] == "") {
 
 						-->
 
-						<li><a href="edit_cms_general.php?id=1"><i class="fa fa-envelope"></i> Notification Email</a>
+						<!-- <li><a href="edit_cms_general.php?id=1"><i class="fa fa-envelope"></i> Notification Email</a>
 
-						</li>
+						</li> -->
 
 						<!-- 
 
@@ -272,7 +259,7 @@ if ($_SESSION['companyId'] == "") {
 
 						-->
 
-						<li><a href="login.php"><i class="fa fa-key"></i> Log Out</a>
+						<li><a href="logout.php"><i class="fa fa-key"></i> Log Out</a>
 
 						</li>
 
@@ -283,19 +270,6 @@ if ($_SESSION['companyId'] == "") {
 				<!-- END USER LOGIN DROPDOWN -->
 
 			</ul>
-
-			<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post" style="margin: 0px;">
-				<select style="margin-top: 15px;" name="companyId" id="companyId" onChange="submit()">
-
-					<?php foreach ($companyArray as $rowSite) { ?>
-						<option value="<?php echo $rowSite->company_id; ?>" <?php if ($_SESSION['companyId'] == $rowSite->company_id) {
-    echo 'selected="selected"';
-} ?>>
-							<?php echo $rowSite->company_name; ?>
-						</option>
-					<?php } ?>
-				</select>
-			</form>
 
 			<!-- END TOP NAVIGATION MENU -->
 
@@ -408,11 +382,7 @@ if ($_SESSION['companyId'] == "") {
 				</li>
 
 
-				<li <?php if (
-                        $_SESSION['companyId'] == 3 || $_SESSION['companyId'] == 6 || $_SESSION['companyId'] == 7 || $_SESSION['companyId'] == 1
-
-                        || $_SESSION['companyId'] == 2 || $_SESSION['companyId'] == 5 || $_SESSION['companyId'] == 8
-                    ) { ?> style="display: none" <?php } ?> class="">
+				<li class="">
 
 					<a href="display_tour.php">
 
@@ -426,7 +396,7 @@ if ($_SESSION['companyId'] == "") {
 
 
 
-				<li <?php if ($_SESSION['companyId'] == 3 || $_SESSION['companyId'] == 6 || $_SESSION['companyId'] == 1  || $_SESSION['companyId'] == 7 || $_SESSION['companyId'] == 8) { ?> style="display: none" <?php } ?> class="">
+				<li class="">
 
 					<a href="display_package.php">
 
@@ -437,23 +407,21 @@ if ($_SESSION['companyId'] == "") {
 					</a>
 
 				</li>
-				<?php if ($_SESSION['companyId'] == 2) { ?>
-					<li class="">
+				<li class="">
 
-						<a href="display_value.php">
+					<a href="display_value.php">
 
-							<i class="fa fa-heart"></i>
+						<i class="fa fa-heart"></i>
 
-							<span class="title">Values</span>
+						<span class="title">Values</span>
 
-						</a>
+					</a>
 
-					</li>
-				<?php } ?>
+				</li>
 
 
 
-				<li <?php if ($_SESSION['companyId'] == 3 || $_SESSION['companyId'] == 6 || $_SESSION['companyId'] == 7 || $_SESSION['companyId'] == 1 || $_SESSION['companyId'] == 4 || $_SESSION['companyId'] == 2 || $_SESSION['companyId'] == 8) { ?> style="display: none" <?php } ?> class="">
+				<li class="">
 
 					<a href="display_offer.php">
 
@@ -469,7 +437,7 @@ if ($_SESSION['companyId'] == "") {
 
 
 
-				<li <?php if ($_SESSION['companyId'] == 4) { ?> <?php } ?>class="">
+				<li class="">
 
 					<a href="display_testimonial.php">
 
@@ -485,7 +453,7 @@ if ($_SESSION['companyId'] == "") {
 
 
 
-				<li <?php if ($_SESSION['companyId'] == 1) { ?> style="display: none" <?php } ?> class="">
+				<li class="">
 
 					<a href="display_service.php">
 
@@ -498,22 +466,17 @@ if ($_SESSION['companyId'] == "") {
 				</li>
 
 
+				<li class="">
 
+					<a href="display_partner.php">
 
-				<?php if ($_SESSION['companyId'] != 1) { ?>
-					<li class="">
+						<i class="fa fa-user"></i>
 
-						<a href="display_partner.php">
+						<span class="title">Corporate Area Members</span>
 
-							<i class="fa fa-user"></i>
+					</a>
 
-							<span class="title">Corporate Area Members</span>
-
-						</a>
-
-					</li>
-
-				<?php } ?>
+				</li>
 
 				<li class="">
 
@@ -527,7 +490,7 @@ if ($_SESSION['companyId'] == "") {
 
 				</li>
 
-				<li <?php if ($_SESSION['companyId'] == 6 || $_SESSION['companyId'] == 4) { ?> style="display: none" <?php } ?> class="">
+				<li class="">
 
 					<a href="display_department.php">
 
@@ -551,7 +514,7 @@ if ($_SESSION['companyId'] == "") {
 
 				</li>
 
-				<li <?php if ($_SESSION['companyId'] == 6 || $_SESSION['companyId'] == 3 || $_SESSION['companyId'] == 4 || $_SESSION['companyId'] == 2 || $_SESSION['companyId'] == 5 || $_SESSION['companyId'] == 8) { ?> style="display: none" <?php } ?> class="">
+				<li class="">
 
 					<a href="display_award.php">
 
@@ -567,7 +530,7 @@ if ($_SESSION['companyId'] == "") {
 
 
 
-				<li <?php if ($_SESSION['companyId'] == 3 || $_SESSION['companyId'] == 6 || $_SESSION['companyId'] == 7 || $_SESSION['companyId'] == 4 || $_SESSION['companyId'] == 2 || $_SESSION['companyId'] == 5 || $_SESSION['companyId'] == 8) { ?> style="display: none" <?php } ?>>
+				<li>
 
 					<a class="active" href="javascript:;">
 
@@ -629,7 +592,7 @@ if ($_SESSION['companyId'] == "") {
 
 
 
-				<li <?php if ($_SESSION['companyId'] == 3 || $_SESSION['companyId'] == 7 || $_SESSION['companyId'] == 6 || $_SESSION['companyId'] == 2 || $_SESSION['companyId'] == 5 || $_SESSION['companyId'] == 8) { ?> style="display: none" <?php } ?> class="">
+				<li class="">
 
 					<a href="display_event.php">
 
@@ -647,7 +610,7 @@ if ($_SESSION['companyId'] == "") {
 
 
 
-				<li <?php if ($_SESSION['companyId'] == 3 || $_SESSION['companyId'] == 6 || $_SESSION['companyId'] == 7 || $_SESSION['companyId'] == 1 || $_SESSION['companyId'] == 2 || $_SESSION['companyId'] == 5 || $_SESSION['companyId'] == 8) { ?> style="display: none" <?php } ?> class="">
+				<li class="">
 
 					<a href="display_document.php">
 
@@ -665,7 +628,7 @@ if ($_SESSION['companyId'] == "") {
 
 
 
-				<li <?php if ($_SESSION['companyId'] == 3 || $_SESSION['companyId'] == 6 || $_SESSION['companyId'] == 7 || $_SESSION['companyId'] == 4 || $_SESSION['companyId'] == 2 || $_SESSION['companyId'] == 5 || $_SESSION['companyId'] == 8) { ?> style="display: none" <?php } ?> class="">
+				<li class="">
 
 					<a href="display_blog.php">
 
@@ -694,116 +657,102 @@ if ($_SESSION['companyId'] == "") {
 					</a>
 
 				</li>
-				<?php if ($_SESSION['companyId'] != 3 && $_SESSION['companyId'] != 4 && $_SESSION['companyId'] != 2 && $_SESSION['companyId'] != 5 && $_SESSION['companyId'] != 8 && $_SESSION['companyId'] != 6) { ?>
-					<li class="">
+				<li class="">
 
-						<a href="display_affiliation.php">
+					<a href="display_affiliation.php">
 
-							<i class="fa fa-gift"></i>
+						<i class="fa fa-gift"></i>
 
-							<span class="title">Affiliations</span>
+						<span class="title">Affiliations</span>
 
-						</a>
+					</a>
 
-					</li>
-				<?php } ?>
+				</li>
 
 
-				<?php if ($_SESSION['companyId'] == 8) { ?>
-					<li class="">
+				<li class="">
 
-						<a href="display_car.php">
+					<a href="display_car.php">
 
-							<i class="fa fa-cogs"></i>
+						<i class="fa fa-cogs"></i>
 
-							<span class="title">Cars</span>
+						<span class="title">Cars</span>
 
-						</a>
+					</a>
 
-					</li>
-				<?php } ?>
-				<?php if ($_SESSION['companyId'] == 3) { ?>
-					<li class="">
+				</li>
+				<li class="">
 
-						<a href="display_tech.php">
+					<a href="display_tech.php">
 
-							<i class="fa fa-cogs"></i>
+						<i class="fa fa-cogs"></i>
 
-							<span class="title">Travel Technology</span>
+						<span class="title">Travel Technology</span>
 
-						</a>
+					</a>
 
-					</li>
+				</li>
+				<li class="">
 
-				<?php } ?>
-				<?php if ($_SESSION['companyId'] == 1 || $_SESSION['companyId'] == 4 || $_SESSION['companyId'] == 2) { ?>
-					<li class="">
+					<a href="display_album.php">
 
-						<a href="display_album.php">
+						<i class="fa fa-cogs"></i>
 
-							<i class="fa fa-cogs"></i>
+						<span class="title">Album</span>
 
-							<span class="title">Album</span>
+					</a>
 
-						</a>
+				</li>
 
-					</li>
+				<li class="">
 
-					<li class="">
+					<a href="display_album_photo.php">
 
-						<a href="display_album_photo.php">
+						<i class="fa fa-cogs"></i>
 
-							<i class="fa fa-cogs"></i>
+						<span class="title">Album Photos</span>
 
-							<span class="title">Album Photos</span>
+					</a>
 
-						</a>
+				</li>
+				<li class="">
 
-					</li>
-					<li class="">
+					<a href="display_client.php">
 
-						<a href="display_client.php">
+						<i class="fa fa-cogs"></i>
 
-							<i class="fa fa-cogs"></i>
+						<span class="title">Client</span>
 
-							<span class="title">Client</span>
+					</a>
 
-						</a>
+				</li>
 
-					</li>
+				<li class="">
 
-				<?php } ?>
+					<a href="display_video.php">
 
-				<?php if ($_SESSION['companyId'] == 1) { ?>
-					<li class="">
+						<i class="fa fa-cogs"></i>
 
-						<a href="display_video.php">
+						<span class="title">Video</span>
 
-							<i class="fa fa-cogs"></i>
+					</a>
 
-							<span class="title">Video</span>
+				</li>
 
-						</a>
+				<li class="">
 
-					</li>
-				<?php } ?>
+					<a href="display_video.php">
 
-				<?php if ($_SESSION['companyId'] == 4) { ?>
-					<li class="">
+						<i class="fa fa-cogs"></i>
 
-						<a href="display_video.php">
+						<span class="title">Our Lebanon</span>
 
-							<i class="fa fa-cogs"></i>
+					</a>
 
-							<span class="title">Our Lebanon</span>
-
-						</a>
-
-					</li>
-				<?php } ?>
+				</li>
 
 
-				<li <?php if ($_SESSION['companyId'] == 3 || $_SESSION['companyId'] == 6 || $_SESSION['companyId'] == 7 || $_SESSION['companyId'] == 1 || $_SESSION['companyId'] == 2 || $_SESSION['companyId'] == 5 || $_SESSION['companyId'] == 8) { ?> style="display: none" <?php } ?> class="">
+				<li class="">
 
 					<a href="display_calendar.php">
 
@@ -814,7 +763,7 @@ if ($_SESSION['companyId'] == "") {
 					</a>
 
 				</li>
-				<li <?php if ($_SESSION['companyId'] == 1 || $_SESSION['companyId'] == 3 || $_SESSION['companyId'] == 4 || $_SESSION['companyId'] == 2 || $_SESSION['companyId'] == 5 || $_SESSION['companyId'] == 8) { ?> style="display: none" <?php } ?> class="">
+				<li class="">
 
 					<a href="display_registrations.php">
 
@@ -828,10 +777,7 @@ if ($_SESSION['companyId'] == "") {
 
 
 
-				<li <?php if (
-                        $_SESSION['companyId'] == 6 || $_SESSION['companyId'] == 7 || $_SESSION['companyId'] == 1 || $_SESSION['companyId'] == 4
-                        || $_SESSION['companyId'] == 2 || $_SESSION['companyId'] == 5 || $_SESSION['companyId'] == 8
-                    ) { ?> style="display: none" <?php } ?> class="">
+				<li class="">
 
 					<a href="display_solution.php">
 
@@ -842,10 +788,7 @@ if ($_SESSION['companyId'] == "") {
 					</a>
 
 				</li>
-				<li <?php if (
-                        $_SESSION['companyId'] == 6 ||  $_SESSION['companyId'] == 1 || $_SESSION['companyId'] == 4
-                        || $_SESSION['companyId'] == 2 || $_SESSION['companyId'] == 5 || $_SESSION['companyId'] == 8
-                    ) { ?> style="display: none" <?php } ?> class="">
+				<li class="">
 
 					<a href="display_travel_tip.php">
 						<i class="fa fa-table"></i>
@@ -1023,7 +966,7 @@ if ($_SESSION['companyId'] == "") {
 
 					</h3>
 
-					<?php if ($text != "") { ?>
+					<?php if (isset($text) && $text != "") { ?>
 
 						<div class="note note-success">
 
@@ -1127,7 +1070,7 @@ if ($_SESSION['companyId'] == "") {
 
 		<div class="footer-inner">
 
-			<div><?php echo date('Y');?> &copy; Powered by <a href="http://thirteencube.com">Thirteencube</a> | All rights reserved </div>
+			<div><?php echo date('Y'); ?> &copy; Powered by <a href="http://thirteencube.com">Thirteencube</a> | All rights reserved </div>
 
 		</div>
 
