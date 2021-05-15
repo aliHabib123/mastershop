@@ -38,7 +38,7 @@ if (!isset($_SESSION['AdminID'])) {
 //$Config['UserFilesPath'] = '/xampp/mytests/editors/fck_editor/' ;
 
 // Path to user files relative to the document root.
-$Config['UserFilesPath'] = 'http://saadholding.com/public/uploads/' ;
+$Config['UserFilesPath'] = 'http://localhost/mastershop/public/uploads/' ;
 
 // Fill the following value it you prefer to specify the absolute path for the
 

@@ -2,8 +2,8 @@
 include_once 'class/SimpleImage.php';
 $simpleImage = new SimpleImage();
 
-$siteName = "SAAD Holding";
-$siteLink = "http://localhost/saad-holding/";
+$siteName = "Mastershop";
+$siteLink = "http://localhost/mastershop/";
 $imagesLink = $siteLink.'public/uploads/images/';
 define("SITE_LINK", $siteLink);
 define("IMAGES_LINK", $imagesLink);
