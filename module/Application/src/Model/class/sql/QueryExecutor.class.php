@@ -62,9 +62,21 @@ class QueryExecutor{
 	}
 
 	public static function executeInsert($sqlQuery){
-		QueryExecutor::executeUpdate($sqlQuery);
-		//return mysql_insert_id();
-		return mysqli_insert_id(ConnectionFactory::getConnection());
+
+		$transaction = Transaction::getCurrentTransaction();
+		if(!$transaction){
+			$connection = ConnectionFactory::getConnection();
+		}else{
+			$connection = $transaction->getConnection();
+		}
+
+		$query = $sqlQuery->getQuery();
+		//$result = $connection->executeQuery($query);
+		$result = mysqli_query($connection, $query);
+		if(!$result){
+		    throw new Exception("SQL Error: -->".$query."<--" . mysqli_error($connection));
+		}
+		return mysqli_insert_id($connection);
 	}
 	
 	/**

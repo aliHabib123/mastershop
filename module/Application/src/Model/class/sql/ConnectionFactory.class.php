@@ -7,11 +7,6 @@
  */
 class ConnectionFactory{
 	
-	/**
-	 * Zwrocenie polaczenia
-	 *
-	 * @return polaczenie
-	 */
 	static public function getConnection(){
 		/* $conn = mysql_connect(ConnectionProperty::getHost(), ConnectionProperty::getUser(), ConnectionProperty::getPassword());
 		mysql_select_db(ConnectionProperty::getDatabase()); */
