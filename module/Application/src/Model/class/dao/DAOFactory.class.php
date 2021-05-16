@@ -15,6 +15,20 @@ class DAOFactory{
 	}
 
 	/**
+	 * @return BannerDAO
+	 */
+	public static function getBannerDAO(){
+		return new BannerMySqlExtDAO();
+	}
+
+	/**
+	 * @return BannerImageDAO
+	 */
+	public static function getBannerImageDAO(){
+		return new BannerImageMySqlExtDAO();
+	}
+
+	/**
 	 * @return BrandTypeDAO
 	 */
 	public static function getBrandTypeDAO(){

@@ -14,19 +14,19 @@ require_once '../module/Application/src/Model/include_dao.php';
 
 
 if (isset($_REQUEST['act'])) {
-	$act = $_REQUEST['act'];
+    $act = $_REQUEST['act'];
 
-	$sql = "select * from cms_msg where Msg_ID=$act";
+    $sql = "select * from cms_msg where Msg_ID=$act";
 
-	$result = mysqli_query($_SESSION['db_conn'], $sql);
+    $result = mysqli_query($_SESSION['db_conn'], $sql);
 
-	$msg = mysqli_fetch_array($result);
+    $msg = mysqli_fetch_array($result);
 
-	$text = $msg['Msg_Description'];
+    $text = $msg['Msg_Description'];
 
-	if ($act == 4) {
-		$text = '<font color="red">' . $msg['Msg_Description'] . '</font>';
-	}
+    if ($act == 4) {
+        $text = '<font color="red">' . $msg['Msg_Description'] . '</font>';
+    }
 }
 ?>
 
@@ -130,25 +130,16 @@ if (isset($_REQUEST['act'])) {
 		function deleteAjax(link, id) {
 
 			if (confirm("You're going to delete this record and all relevant records\n\n\\nAre you sure you want to proceed?") == false) {
-
 				return;
-
 			}
 
 			$.ajax({
-
 				type: "GET",
-
 				url: 'delete_' + link + '.php?id=' + id,
-
 				cache: false,
-
 				success: function() {
-
 					$('#' + id).fadeOut();
-
 				}
-
 			});
 
 		}
@@ -376,6 +367,18 @@ if (isset($_REQUEST['act'])) {
 						<i class="fa fa-home"></i>
 
 						<span class="title">Home</span>
+
+					</a>
+
+				</li>
+
+				<li class="">
+
+					<a href="display_banner.php">
+
+						<i class="fa fa-gift"></i>
+
+						<span class="title">Banners</span>
 
 					</a>
 

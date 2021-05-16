@@ -13,6 +13,14 @@
 	require_once('class/dto/Album.class.php');
 	require_once('class/mysql/AlbumMySqlDAO.class.php');
 	require_once('class/mysql/ext/AlbumMySqlExtDAO.class.php');
+	require_once('class/dao/BannerDAO.class.php');
+	require_once('class/dto/Banner.class.php');
+	require_once('class/mysql/BannerMySqlDAO.class.php');
+	require_once('class/mysql/ext/BannerMySqlExtDAO.class.php');
+	require_once('class/dao/BannerImageDAO.class.php');
+	require_once('class/dto/BannerImage.class.php');
+	require_once('class/mysql/BannerImageMySqlDAO.class.php');
+	require_once('class/mysql/ext/BannerImageMySqlExtDAO.class.php');
 	require_once('class/dao/BrandTypeDAO.class.php');
 	require_once('class/dto/BrandType.class.php');
 	require_once('class/mysql/BrandTypeMySqlDAO.class.php');

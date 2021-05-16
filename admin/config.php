@@ -5,8 +5,7 @@ $simpleImage = new SimpleImage();
 $siteName = "Mastershop";
 $siteLink = "http://localhost/mastershop/";
 $imagesLink = $siteLink.'public/uploads/images/';
-define("SITE_LINK", $siteLink);
-define("IMAGES_LINK", $imagesLink);
+
 // default images path
 $imagesPath = "../public/uploads/images/";
 
@@ -15,6 +14,12 @@ $filesPath = "../public/uploads/files/";
 
 // default audio path
 $audioPath = "../public/uploads/audio/";
+
+define("SITE_LINK", $siteLink);
+define("IMAGES_LINK", $imagesLink);
+define('IMAGES_PATH', $imagesPath);
+define('FILES_PATH', $filesPath);
+define('AUDIO_PATH', $audioPath);
 
 // images different dimension variables
 $regularImageW = 800;
