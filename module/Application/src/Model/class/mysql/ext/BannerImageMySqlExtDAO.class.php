@@ -7,6 +7,10 @@
  */
 class BannerImageMySqlExtDAO extends BannerImageMySqlDAO{
 
-	
+    public function select($condition){
+		$sql = "SELECT * FROM banner_image WHERE $condition";
+		$sqlQuery = new SqlQuery($sql);
+		return $this->getList($sqlQuery);
+	}
 }
 ?>
