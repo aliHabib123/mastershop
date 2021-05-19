@@ -77,7 +77,7 @@ function main()
 						<th><?php echo "Display Order"; ?></th>
 						<th></th>
 						<th></th>
-
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -105,6 +105,12 @@ function main()
 								<a class="btn btn-xs red" href="javascript:deleteAjax('banner', '<?php echo $banner->id; ?>')">
 									<i class="fa fa-times"></i>
 									Delete
+								</a>
+							</td>
+							<td>
+								<a class="btn btn-xs green" href="display_banner_image.php?id=<?php echo $banner->id;?>">
+									<i class="fa fa-picture-o"></i>
+									Images
 								</a>
 							</td>
 						</tr>
