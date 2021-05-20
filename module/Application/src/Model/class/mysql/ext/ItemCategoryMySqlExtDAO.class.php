@@ -7,6 +7,9 @@
  */
 class ItemCategoryMySqlExtDAO extends ItemCategoryMySqlDAO{
 
-	
+    public function select($condition){
+		$sql = "SELECT * FROM item_category WHERE $condition";
+		$sqlQuery = new SqlQuery($sql);
+		return $this->getList($sqlQuery);
+	}
 }
-?>

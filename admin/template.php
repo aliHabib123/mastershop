@@ -14,19 +14,19 @@ require_once '../module/Application/src/Model/include_dao.php';
 
 
 if (isset($_REQUEST['act'])) {
-    $act = $_REQUEST['act'];
+	$act = $_REQUEST['act'];
 
-    $sql = "select * from cms_msg where Msg_ID=$act";
+	$sql = "select * from cms_msg where Msg_ID=$act";
 
-    $result = mysqli_query($_SESSION['db_conn'], $sql);
+	$result = mysqli_query($_SESSION['db_conn'], $sql);
 
-    $msg = mysqli_fetch_array($result);
+	$msg = mysqli_fetch_array($result);
 
-    $text = $msg['Msg_Description'];
+	$text = $msg['Msg_Description'];
 
-    if ($act == 4) {
-        $text = '<font color="red">' . $msg['Msg_Description'] . '</font>';
-    }
+	if ($act == 4) {
+		$text = '<font color="red">' . $msg['Msg_Description'] . '</font>';
+	}
 }
 ?>
 
@@ -129,7 +129,7 @@ if (isset($_REQUEST['act'])) {
 	<script type="text/javascript">
 		function deleteAjax(link, id) {
 
-			if (confirm("You're going to delete this record and all relevant records\n\n\\nAre you sure you want to proceed?") == false) {
+			if (confirm("You're going to delete this record and all relevant records\nAre you sure you want to proceed?") == false) {
 				return;
 			}
 
@@ -137,8 +137,13 @@ if (isset($_REQUEST['act'])) {
 				type: "GET",
 				url: 'delete_' + link + '.php?id=' + id,
 				cache: false,
-				success: function() {
-					$('#' + id).fadeOut();
+				success: function(data) {
+					data = JSON.parse(data);
+					if (data.status) {
+						$('#' + id).fadeOut();
+					} else {
+						alert(data.msg);
+					}
 				}
 			});
 
@@ -361,29 +366,24 @@ if (isset($_REQUEST['act'])) {
 
 
 				<li class="start active">
-
 					<a href="main.php">
-
 						<i class="fa fa-home"></i>
-
 						<span class="title">Home</span>
-
 					</a>
-
 				</li>
 
 				<li class="">
-
 					<a href="display_banner.php">
-
 						<i class="fa fa-gift"></i>
-
 						<span class="title">Banners</span>
-
 					</a>
-
 				</li>
-
+				<li class="">
+					<a href="display_item_category.php">
+						<i class="fa fa-tasks"></i>
+						<span class="title">Categories</span>
+					</a>
+				</li>
 
 				<li class="">
 
@@ -571,30 +571,6 @@ if (isset($_REQUEST['act'])) {
 
 				</li>
 
-
-
-
-
-
-
-				<li class="">
-
-					<a href="display_page.php">
-
-						<i class="fa fa-tasks"></i>
-
-						<span class="title">Pages</span>
-
-					</a>
-
-				</li>
-
-
-
-
-
-
-
 				<li class="">
 
 					<a href="display_event.php">
@@ -650,16 +626,12 @@ if (isset($_REQUEST['act'])) {
 
 
 				<li class="">
-
 					<a href="display_banner.php">
-
 						<i class="fa fa-gift"></i>
-
 						<span class="title">Banners</span>
-
 					</a>
-
 				</li>
+
 				<li class="">
 
 					<a href="display_affiliation.php">
@@ -861,100 +833,6 @@ if (isset($_REQUEST['act'])) {
 
 			<!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 
-			<!-- BEGIN STYLE CUSTOMIZER -->
-
-			<div class="theme-panel hidden-xs hidden-sm">
-
-				<div class="toggler"></div>
-
-				<div class="toggler-close"></div>
-
-				<div class="theme-options">
-
-					<div class="theme-option theme-colors clearfix">
-
-						<span>THEME COLOR</span>
-
-						<ul>
-
-							<li class="color-black current color-default" data-style="default"></li>
-
-							<li class="color-blue" data-style="blue"></li>
-
-							<li class="color-brown" data-style="brown"></li>
-
-							<li class="color-purple" data-style="purple"></li>
-
-							<li class="color-grey" data-style="grey"></li>
-
-							<li class="color-white color-light" data-style="light"></li>
-
-						</ul>
-
-					</div>
-
-					<div class="theme-option">
-
-						<span>Layout</span>
-
-						<select class="layout-option form-control input-small">
-
-							<option value="fluid" selected="selected">Fluid</option>
-
-							<option value="boxed">Boxed</option>
-
-						</select>
-
-					</div>
-
-					<div class="theme-option">
-
-						<span>Header</span>
-
-						<select class="header-option form-control input-small">
-
-							<option value="fixed" selected="selected">Fixed</option>
-
-							<option value="default">Default</option>
-
-						</select>
-
-					</div>
-
-					<div class="theme-option">
-
-						<span>Sidebar</span>
-
-						<select class="sidebar-option form-control input-small">
-
-							<option value="fixed">Fixed</option>
-
-							<option value="default" selected="selected">Default</option>
-
-						</select>
-
-					</div>
-
-					<div class="theme-option">
-
-						<span>Footer</span>
-
-						<select class="footer-option form-control input-small">
-
-							<option value="fixed">Fixed</option>
-
-							<option value="default" selected="selected">Default</option>
-
-						</select>
-
-					</div>
-
-				</div>
-
-			</div>
-
-			<!-- END BEGIN STYLE CUSTOMIZER -->
-
 			<!-- BEGIN PAGE HEADER-->
 
 			<div class="row">
@@ -963,11 +841,7 @@ if (isset($_REQUEST['act'])) {
 
 					<!-- BEGIN PAGE TITLE & BREADCRUMB-->
 
-					<h3 class="page-title note note-info" align="center">
-
-						YOUR WEBSITE CMS
-
-					</h3>
+					<h3 class="page-title note note-info">YOUR WEBSITE CMS</h3>
 
 					<?php if (isset($text) && $text != "") { ?>
 
@@ -979,60 +853,13 @@ if (isset($_REQUEST['act'])) {
 
 					<?php } ?>
 
-					<!--
 
-					<ul class="page-breadcrumb breadcrumb">
 
-						<li class="btn-group">
-
-							<button type="button" class="btn blue dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
-
-							<span>Actions</span> <i class="fa fa-angle-down"></i>
-
-							</button>
-
-							<ul class="dropdown-menu pull-right" role="menu">
-
-								<li><a href="#">Action</a></li>
-
-								<li><a href="#">Another action</a></li>
-
-								<li><a href="#">Something else here</a></li>
-
-								<li class="divider"></li>
-
-								<li><a href="#">Separated link</a></li>
-
-							</ul>
-
-						</li>
-
-					
-
-						<li>
-
-							<i class="fa fa-home"></i>
-
-							<a href="index.html">Home</a> 
-
-							<i class="fa fa-angle-right"></i>
-
-						</li>
-
-						<li>
-
-							<a href="#">Data Tables</a>
-
-							<i class="fa fa-angle-right"></i>
-
-						</li>
-
-						<li><a href="#">Advanced Tables</a></li>
-
-					</ul>
-
-					 -->
-
+					<?php
+					if (function_exists('breadCrumbs')) {
+						echo breadCrumbs();
+					}
+					?>
 					<!-- END PAGE TITLE & BREADCRUMB-->
 
 				</div>
@@ -1070,23 +897,14 @@ if (isset($_REQUEST['act'])) {
 	<!-- BEGIN FOOTER -->
 
 	<div class="footer">
-
 		<div class="footer-inner">
-
 			<div><?php echo date('Y'); ?> &copy; Powered by <a href="http://thirteencube.com">Thirteencube</a> | All rights reserved </div>
-
 		</div>
-
 		<div class="footer-tools">
-
 			<span class="go-top">
-
 				<i class="fa fa-angle-up"></i>
-
 			</span>
-
 		</div>
-
 	</div>
 
 	<!-- END FOOTER -->
@@ -1094,93 +912,49 @@ if (isset($_REQUEST['act'])) {
 	<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 
 	<!-- BEGIN CORE PLUGINS -->
-
 	<!--[if lt IE 9]>
-
 	<script src="assets/plugins/respond.min.js"></script>
-
 	<script src="assets/plugins/excanvas.min.js"></script> 
-
 	<![endif]-->
-
 	<script src="assets/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
-
 	<script src="assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-
 	<script src="assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-
 	<script src="assets/plugins/bootstrap/js/bootstrap2-typeahead.min.js" type="text/javascript"></script>
-
 	<script src="assets/plugins/bootstrap-hover-dropdown/twitter-bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
-
 	<script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-
 	<script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-
 	<script src="assets/plugins/jquery.cookie.min.js" type="text/javascript"></script>
-
 	<script src="assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-
 	<!-- END CORE PLUGINS -->
 
 	<!-- BEGIN PAGE LEVEL PLUGINS -->
-
 	<script type="text/javascript" src="assets/plugins/fuelux/js/spinner.min.js"></script>
-
 	<script type="text/javascript" src="assets/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
-
 	<script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
-
 	<script type="text/javascript" src="assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-
 	<script type="text/javascript" src="assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
-
 	<script type="text/javascript" src="assets/plugins/clockface/js/clockface.js"></script>
-
 	<script type="text/javascript" src="assets/plugins/bootstrap-daterangepicker/moment.min.js"></script>
-
 	<script type="text/javascript" src="assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-
 	<script type="text/javascript" src="assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
-
 	<script type="text/javascript" src="assets/plugins/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
-
 	<script type="text/javascript" src="assets/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js"></script>
-
 	<script type="text/javascript" src="assets/plugins/jquery.input-ip-address-control-1.0.min.js"></script>
-
 	<script type="text/javascript" src="assets/plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
-
 	<script type="text/javascript" src="assets/plugins/jquery-multi-select/js/jquery.quicksearch.js"></script>
-
 	<script src="assets/plugins/jquery.pwstrength.bootstrap/src/pwstrength.js" type="text/javascript"></script>
-
 	<script src="assets/plugins/bootstrap-switch/static/js/bootstrap-switch.min.js" type="text/javascript"></script>
-
 	<script src="assets/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
-
 	<script src="assets/plugins/bootstrap-touchspin/bootstrap.touchspin.js" type="text/javascript"></script>
-
 	<!-- END PAGE LEVEL PLUGINS -->
 
 	<!-- BEGIN PAGE LEVEL SCRIPTS -->
-
 	<script src="assets/scripts/app.js"></script>
-
 	<script src="assets/scripts/form-components.js"></script>
-
-
-
 	<!-- DATE TIME -->
-
 	<script src="assets/scripts/table-advanced.js"></script>
-
 	<script type="text/javascript" src="assets/plugins/data-tables/jquery.dataTables.min.js"></script>
-
 	<script type="text/javascript" src="assets/plugins/data-tables/DT_bootstrap.js"></script>
-
-
-
 	<!-- END PAGE LEVEL SCRIPTS -->
 
 	<script>
@@ -1197,17 +971,6 @@ if (isset($_REQUEST['act'])) {
 
 
 			/*
-
-		   $('#sample_2').dataTable( {
-
-		        "order": [[ 0, "desc" ]],
-
-		        "bDestroy":true
-
-		    } );
-
-			
-
 		   $('#sample_2').dataTable( {
 
 		        "paging":   true,
