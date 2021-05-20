@@ -68,7 +68,7 @@
 	<div class="form-group">
 		<label class="col-md-3 control-label">Display Order</label>
 		<div class="col-md-3">
-			<input  name="display_order" type="number"  class="form-control" id="title" value="" placeholder="Ex: 1">
+			<input  name="display_order" type="number"  class="form-control" id="title" value="0" placeholder="Ex: 1">
 		</div>
 	</div>
 	
