@@ -7,6 +7,9 @@
  */
 class ItemBrandMySqlExtDAO extends ItemBrandMySqlDAO{
 
-	
+    public function select($condition){
+		$sql = "SELECT * FROM item_brand WHERE $condition";
+		$sqlQuery = new SqlQuery($sql);
+		return $this->getList($sqlQuery);
+	}
 }
-?>

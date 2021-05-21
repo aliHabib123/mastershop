@@ -11,3 +11,4 @@ node_modules/
 package-lock.json
 admin/sessions/*
 public/uploads/*
+error_log.log

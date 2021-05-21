@@ -1,9 +1,4 @@
 <?php
-ini_set('display_errors', '1');
-ini_set('log_errors', '1');
-ini_set('error_log', './');
-error_reporting(E_ALL ^ E_DEPRECATED);
-
 require "session_start.php";
 
 include("fckeditor/fckeditor.php");
@@ -382,6 +377,12 @@ if (isset($_REQUEST['act'])) {
 					<a href="display_item_category.php">
 						<i class="fa fa-tasks"></i>
 						<span class="title">Categories</span>
+					</a>
+				</li>
+				<li class="">
+					<a href="display_item_brand.php">
+						<i class="fa fa-tasks"></i>
+						<span class="title">Brands</span>
 					</a>
 				</li>
 
