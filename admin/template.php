@@ -384,6 +384,12 @@ if (isset($_REQUEST['act'])) {
 						<span class="title">Categories</span>
 					</a>
 				</li>
+				<li class="">
+					<a href="display_item_brand.php">
+						<i class="fa fa-tasks"></i>
+						<span class="title">Brands</span>
+					</a>
+				</li>
 
 				<li class="">
 
