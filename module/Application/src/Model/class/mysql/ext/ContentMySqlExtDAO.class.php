@@ -7,6 +7,10 @@
  */
 class ContentMySqlExtDAO extends ContentMySqlDAO{
 
-	
+    public function select($condition){
+		$sql = "SELECT * FROM content WHERE $condition";
+		$sqlQuery = new SqlQuery($sql);
+		return $this->getList($sqlQuery);
+	}
 }
 ?>

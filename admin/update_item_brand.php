@@ -6,7 +6,6 @@ include "change_format.php";
 include "resize.php";
 include '../module/Application/src/Model/include_dao.php';
 
-//$id = $_GET['id'];
 $itemBrandMysqlExtDAO = new ItemBrandMySqlExtDAO();
 
 extract($_POST);
