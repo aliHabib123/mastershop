@@ -9,7 +9,7 @@ function main()
 		$orderBy = $_REQUEST["orderBy"];
 		$fieldName = $_REQUEST["fieldName"];
 	}
-	$condition = " type = '$contentType' and ";
+	$condition = " type = '$contentType' and lang = 1 and ";
 	if (isset($_REQUEST["keywords"]) && !empty($_REQUEST["keywords"])) {
 		$keywords = trim($_REQUEST["keywords"]);
 		$condition .= " title like '%$keywords%' and ";
@@ -93,7 +93,13 @@ function main()
 							<td><?php echo $row->title?></td>
 							<td><img style="max-height: 100px;" src="<?php echo IMAGES_LINK.$row->image?>"/></td>
 							<td><?php echo substr(strip_tags($row->details), 0, 30); if(strlen($row->details) > 30) echo "...";  ?></td>
-							<td><?php echo $row->lang;?></td>
+							<td>
+							<?php if($row->lang == 1){
+								echo 'English';
+							} else {
+								echo 'Arabic';
+                            }?>
+							</td>
 							<td><?php echo $row->displayOrder;?></td>
 
 							<td>
@@ -108,12 +114,21 @@ function main()
 									Delete
 								</a>
 							</td>
-							<td>
+							<?php if(!$row->translationId){?>
+								<td>
 								<a class="btn btn-xs green" href="new_page.php?id=<?php echo $row->id;?>">
 									<i class="fa fa-picture-o"></i>
 									Translate
 								</a>
 							</td>
+								<?php } else{ ?>
+									<td>
+								<a class="btn btn-xs green" href="edit_page.php?id=<?php echo $row->translationId;?>">
+									<i class="fa fa-picture-o"></i>
+									Edit Translation
+								</a>
+							</td>
+									<?php }?>
 						</tr>
 					<?php
 					}

@@ -1,4 +1,10 @@
-<?php function main(){?>
+<?php function main(){
+	$translate = false;
+	$pageId = 0;
+	if(isset($_GET['id']) && !empty($_GET['id'])){
+		$pageId = $_GET['id'];
+		$translate = true;
+	}?>
 		
 <div class="portlet box green">
 	<div class="portlet-title">
@@ -7,7 +13,7 @@
 	<div class="portlet-body form">
 	<form action="insert_page.php" method="post" enctype="multipart/form-data" name="frm" id="frm"  class="form-horizontal form-bordered">
 	<div class="form-body">
-				
+				<input type="hidden" name="translation_id" value="<?php echo $pageId;?>"/>
 
 	<div class="form-group">
 		<label class="col-md-3 control-label">Title</label>
@@ -46,13 +52,13 @@
 	      ?>
 		</div>
     </div>
-	<div class="form-group">
+	<div class="form-group" style="display:none">
 		<label class="control-label col-md-3">Language</label>
 		<div class="col-md-4">
 			<select  class="form-control select2me" data-placeholder="Select..." name="lang" id="lang">
 			<option selected="selected" value="0">--- Select Language ---</option>
-			   <option value="1">English</option>
-			   <option value="2">Arabic</option>
+			   <option value="1" <?php if(!$translate){echo 'selected';}?>>English</option>
+			   <option value="2" <?php if($translate){echo 'selected';}?>>Arabic</option>
 			</select>
 		</div>
 	</div>

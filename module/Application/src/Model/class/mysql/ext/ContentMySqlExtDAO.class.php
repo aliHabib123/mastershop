@@ -12,5 +12,15 @@ class ContentMySqlExtDAO extends ContentMySqlDAO{
 		$sqlQuery = new SqlQuery($sql);
 		return $this->getList($sqlQuery);
 	}
+
+	public function updateTranslation($id, $translationId){
+		$sql = 'UPDATE content SET translation_id = ? WHERE id = ?';
+		$sqlQuery = new SqlQuery($sql);
+	
+		$sqlQuery->set($translationId);
+
+		$sqlQuery->set($id);
+		return $this->executeUpdate($sqlQuery);
+	}
 }
 ?>
