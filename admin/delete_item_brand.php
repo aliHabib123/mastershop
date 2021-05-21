@@ -21,7 +21,8 @@ if (isset($_REQUEST['id'])) {
             unlink(IMAGES_PATH . "med_" . $banner->image);
             unlink(IMAGES_PATH . "small_" . $banner->image);
         }
-
+        $brandCategoryMapping = DAOFactory::getBrandCategoryMappingDAO();
+        $deleteMapping = $brandCategoryMapping->deleteByBrandId($id);
         $response = [
             'status' => true,
             'msg' => 'Deleted',

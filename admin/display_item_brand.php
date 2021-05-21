@@ -32,12 +32,12 @@ function main()
 	<div class="portlet box blue">
 		<div class="portlet-title">
 			<div class="caption">
-				<i class="fa fa-globe"></i>BRAND MANAGEMENT
+				<i class="fa fa-globe"></i>BRANDS MANAGEMENT
 				<!--
-				<form name="myform223" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+				<form name="myform223" action="<?php //echo $_SERVER['PHP_SELF'] ?>" method="post">
 					<div>
 						Search by banner caption: 
-						<input type="text" value="<?php echo $keywords ?>" name="keywords" id="keywords" style="width:300px; height:20px;"> &nbsp; 
+						<input type="text" value="<?php //echo $keywords ?>" name="keywords" id="keywords" style="width:300px; height:20px;"> &nbsp; 
 						<input type="submit" style="" value="   Search   " />
 					</div>
 				</form>

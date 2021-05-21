@@ -49,6 +49,31 @@ function main()
 					</div>
 
 					<div class="form-group">
+						<?php
+						$categoriesMySqlExtDAO = DAOFactory::getItemCategoryDAO();
+						$categories = $categoriesMySqlExtDAO->queryAll();
+						$brandCategoryMappingMySqlExtDAO = DAOFactory::getBrandCategoryMappingDAO();
+						$brandCatgeoryMapping = $brandCategoryMappingMySqlExtDAO->queryByBrandId($res->id);
+						$brandCatgeoryMapping = array_map(function ($a) {
+							return $a->categoryId;
+						}, $brandCatgeoryMapping); ?>
+						<label class="control-label col-md-3">Type</label>
+						<div class="col-md-4">
+							<select class="form-control select2me" data-placeholder="Select..." name="categories[]" id="categories" multiple>
+								<?php
+								foreach ($categories as $row) {
+									$sel = "";
+									if (in_array($row->id, $brandCatgeoryMapping)) {
+										$sel = "selected";
+									} ?>
+									<option value="<?php echo $row->id; ?>" <?php echo $sel; ?>><?php echo $row->name; ?></option>
+								<?php
+								} ?>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
 						<label class="col-md-3 control-label">Display Order</label>
 						<div class="col-md-3">
 							<input name="display_order" type="number" class="form-control" id="display_order" value="<?php echo $res->displayOrder ?>" placeholder="Ex: 1">

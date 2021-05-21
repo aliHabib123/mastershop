@@ -24,9 +24,20 @@ $obj =  new ItemBrandMySqlDAO();
 $obj->name = $name;
 $obj->image = $image;
 $obj->displayOrder = $display_order;
+$obj->brandTypeId = 0;
 
 $insert = $itemBrandMysqlExtDAO->insert($obj);
+
 if ($insert) {
+    if(isset($categories) && !empty($categories)){
+        $brandCategoryMappingMySqlExtDAO = DAOFactory::getBrandCategoryMappingDAO();
+        foreach($categories as $row){
+            $brandCategoryMappingObj = new BrandCategoryMapping();
+            $brandCategoryMappingObj->brandId = $insert;
+            $brandCategoryMappingObj->categoryId = $row;
+            $brandCategoryMappingMySqlExtDAO->insert($brandCategoryMappingObj);
+        }
+    }
     $act = 1;
 } else {
     $act = 2;

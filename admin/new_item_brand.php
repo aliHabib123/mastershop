@@ -1,5 +1,4 @@
-<?php function main(){
-//print_r($_SESSION['companyId']);?>
+<?php function main(){?>
 
 
 		
@@ -35,6 +34,23 @@
 					<a href="#" class="btn red fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash-o"></i> Remove</a>
 				</div>
 			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<?php 
+		$categoriesMySqlExtDAO = DAOFactory::getItemCategoryDAO();
+		$categories = $categoriesMySqlExtDAO->queryAll();
+		?>
+		<label class="control-label col-md-3">Type</label>
+		<div class="col-md-4">
+			<select  class="form-control select2me" data-placeholder="Select..." name="categories[]" id="categories" multiple>
+			<?php 
+			foreach($categories as $row){
+                ?>
+				<option value="<?php echo $row->id;?>"><?php echo $row->name;?></option>
+			<?php
+            }?>
+			</select>
 		</div>
 	</div>
 	<div class="form-group">
