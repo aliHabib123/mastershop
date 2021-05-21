@@ -12,22 +12,21 @@ $contentMySqlExtDAO = new ContentMySqlExtDAO();
 
 if (isset($_REQUEST['id'])) {
 	$id = $_REQUEST['id'];
-	if (false) {
-		$response['msg'] = "This banner has images, delete them first";
-	} else {
-		$content = $contentMySqlExtDAO->load($id);
-		$delete = $contentMySqlExtDAO->delete($id);
-		if ($delete) {
-			if (is_file(IMAGES_PATH . $content->image)) {
-				unlink(IMAGES_PATH . $content->image);
-				unlink(IMAGES_PATH . "med_" . $content->image);
-				unlink(IMAGES_PATH . "small_" . $content->image);
-			}
-			$response = [
-				'status' => true,
-				'msg' => 'Deleted',
-			];
+	$content = $contentMySqlExtDAO->load($id);
+	if ($content->translationId != 0) {
+		$contentMySqlExtDAO->delete($content->translationId);
+	}
+	$delete = $contentMySqlExtDAO->delete($id);
+	if ($delete) {
+		if (is_file(IMAGES_PATH . $content->image)) {
+			unlink(IMAGES_PATH . $content->image);
+			unlink(IMAGES_PATH . "med_" . $content->image);
+			unlink(IMAGES_PATH . "small_" . $content->image);
 		}
+		$response = [
+			'status' => true,
+			'msg' => 'Deleted',
+		];
 	}
 }
 echo json_encode($response);

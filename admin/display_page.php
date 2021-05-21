@@ -33,7 +33,7 @@ function main()
 	<div class="portlet box blue">
 		<div class="portlet-title">
 			<div class="caption">
-				<i class="fa fa-globe"></i>BANNER MANAGEMENT
+				<i class="fa fa-globe"></i>PAGES MANAGEMENT
 				<!--
 				<form name="myform223" action="<?php //echo $_SERVER['PHP_SELF'] ?>" method="post">
 					<div>
