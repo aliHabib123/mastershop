@@ -29,6 +29,13 @@ class DAOFactory{
 	}
 
 	/**
+	 * @return BrandCategoryMappingDAO
+	 */
+	public static function getBrandCategoryMappingDAO(){
+		return new BrandCategoryMappingMySqlExtDAO();
+	}
+
+	/**
 	 * @return BrandTypeDAO
 	 */
 	public static function getBrandTypeDAO(){

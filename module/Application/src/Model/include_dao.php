@@ -21,6 +21,10 @@
 	require_once('class/dto/BannerImage.class.php');
 	require_once('class/mysql/BannerImageMySqlDAO.class.php');
 	require_once('class/mysql/ext/BannerImageMySqlExtDAO.class.php');
+	require_once('class/dao/BrandCategoryMappingDAO.class.php');
+	require_once('class/dto/BrandCategoryMapping.class.php');
+	require_once('class/mysql/BrandCategoryMappingMySqlDAO.class.php');
+	require_once('class/mysql/ext/BrandCategoryMappingMySqlExtDAO.class.php');
 	require_once('class/dao/BrandTypeDAO.class.php');
 	require_once('class/dto/BrandType.class.php');
 	require_once('class/mysql/BrandTypeMySqlDAO.class.php');
