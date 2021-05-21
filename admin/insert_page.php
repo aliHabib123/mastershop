@@ -9,6 +9,8 @@ include '../module/Application/src/Model/include_dao.php';
 $contentMysqlExtDAO = new ContentMySqlExtDAO();
 extract($_POST);
 
+$translate = (isset($translation_id) && $translation_id != 0) ? true : false;
+//var_dump($translate);die();
 $active=radio_button($active);
 $image=upload_image("image", "$imagesPath");
 if (is_file($imagesPath.$image)) {
@@ -29,8 +31,15 @@ $obj->lang = $lang;
 $obj->displayOrder = $display_order;
 $obj->type = 'page';
 
+if($translate){
+    $obj->translationId = $translation_id;
+ }
+
 $insert = $contentMysqlExtDAO->insert($obj);
 if ($insert) {
+    if($translate){
+        $contentMysqlExtDAO->updateTranslation($translation_id, $insert);
+    }
     $act=1;
 } else {
     $act=2;

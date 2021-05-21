@@ -4,7 +4,9 @@ function main()
 {
     $id=$_REQUEST["id"];
     $contentMySqlExtDAO = new ContentMySqlExtDAO();
-    $page = $contentMySqlExtDAO->load($id); ?>
+    $page = $contentMySqlExtDAO->load($id); 
+	$translate = (isset($page->translationId)) ? true : false;
+	?>
 <link href="css/css.css" rel="stylesheet" type="text/css" />
 <script language="JavaScript" type="text/javascript" src="javascript/pop_up.js"></script>
 <script language="JavaScript" type="text/javascript" src="javascript/delete_file_confirmation.js"></script>
@@ -59,7 +61,7 @@ function main()
 	      ?>
 		</div>
     </div>
-	<div class="form-group">
+	<div class="form-group" <?php if($translate){echo 'style="display:none;"';}?>>
 		<label class="control-label col-md-3">Language</label>
 		<div class="col-md-4">
 			<select  class="form-control select2me" data-placeholder="Select..." name="lang" id="lang">
