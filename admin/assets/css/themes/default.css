@@ -6,7 +6,7 @@ Default theme
 Reset and overrides  
 ***/
 body {
-  background-color: #3d3d3d !important;
+  background-color: #2576ba !important;
 }
 /***
 Page header
@@ -14,10 +14,10 @@ Page header
 .header {
   filter: none !important;
   background-image: none !important;
-  background-color: #212121 !important;
+  background-color: #2576ba !important;
 }
 .header .btn-navbar {
-  background-color: #212121 !important;
+  background-color: #2576ba !important;
 }
 .header .navbar-nav .dropdown-toggle:hover,
 .header .navbar-nav .dropdown.open .dropdown-toggle {
@@ -30,10 +30,10 @@ Page header
 Page sidebar
 ***/
 .page-sidebar {
-  background-color: #3d3d3d;
+  background-color: #2576ba;
 }
 ul.page-sidebar-menu > li > a {
-  border-top: 1px solid #5c5c5c !important;
+  border-top: 1px solid #2576ba !important;
   color: #ffffff !important;
 }
 ul.page-sidebar-menu > li:last-child > a {
@@ -48,7 +48,7 @@ ul.page-sidebar-menu > li:hover > a {
   background: #303030;
 }
 ul.page-sidebar-menu > li.active > a {
-  background: #e02222 !important;
+  background: #ef0101 !important;
   border-top-color: transparent !important;
   color: #ffffff;
 }
