@@ -9,6 +9,14 @@ include '../module/Application/src/Model/include_dao.php';
 $contentMysqlExtDAO = new ContentMySqlExtDAO();
 extract($_POST);
 
+$slug = slugify($title);
+$c=1;
+while($contentMysqlExtDAO->queryBySlug($slug)){
+    $slug = slugify($title);
+    $slug = $slug.'-'.$c;
+    $c++;
+}
+
 $translate = (isset($translation_id) && $translation_id != 0) ? true : false;
 //var_dump($translate);die();
 $active=radio_button($active);
@@ -30,6 +38,8 @@ $obj->details = $details;
 $obj->lang = $lang;
 $obj->displayOrder = $display_order;
 $obj->type = 'page';
+$obj->slug = $slug;
+$obj->canDelete = 1;
 
 if($translate){
     $obj->translationId = $translation_id;

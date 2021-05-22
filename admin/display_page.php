@@ -109,10 +109,12 @@ function main()
 								</a>
 							</td>
 							<td>
-								<a class="btn btn-xs red" href="javascript:deleteAjax('page', '<?php echo $row->id; ?>')">
+								<?php if($row->canDelete){?>
+									<a class="btn btn-xs red" href="javascript:deleteAjax('page', '<?php echo $row->id; ?>')">
 									<i class="fa fa-times"></i>
 									Delete
 								</a>
+									<?php }?>
 							</td>
 							<?php if(!$row->translationId){?>
 								<td>

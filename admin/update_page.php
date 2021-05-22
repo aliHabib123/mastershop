@@ -11,6 +11,17 @@ $contentMysqlExtDAO = new ContentMySqlExtDAO();
 
 extract($_POST);
 
+$newSlug = slugify($title);
+if($slug != $newSlug){
+    $c=1;
+    while($contentMysqlExtDAO->queryBySlug($newSlug)){
+        $newSlug = slugify($title);
+        $newSlug = $newSlug.'-'.$c;
+        $c++;
+    }
+}
+
+
 if ($_FILES['image']['size'] > 0) {
     $newImage=upload_image("image", $imagesPath);
     if (is_file($imagesPath.$newImage)) {
@@ -39,6 +50,7 @@ $obj->details = $details;
 $obj->lang = $lang;
 $obj->displayOrder = $display_order;
 $obj->type = 'page';
+$obj->slug = $newSlug;
 
 $update = $contentMysqlExtDAO->update($obj);
 
