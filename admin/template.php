@@ -214,6 +214,12 @@ if (isset($_REQUEST['act'])) {
 						<span class="title">Pages</span>
 					</a>
 				</li>
+				<li class="">
+					<a href="display_ad.php">
+						<i class="fa fa-bell"></i>
+						<span class="title">Ads</span>
+					</a>
+				</li>
 				<li>
 					<a class="active" href="javascript:;">
 						<i class="fa fa-bell"></i>

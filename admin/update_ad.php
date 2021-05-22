@@ -9,7 +9,7 @@ include '../module/Application/src/Model/include_dao.php';
 $contentMysqlExtDAO = new ContentMySqlExtDAO();
 
 extract($_POST);
-$page = $contentMysqlExtDAO->load($id);
+$ad = $contentMysqlExtDAO->load($id);
 
 $newSlug = slugify($title);
 if ($slug != $newSlug) {
@@ -49,9 +49,11 @@ $obj->image = $image;
 $obj->details = $details;
 $obj->lang = $lang;
 $obj->displayOrder = $display_order;
-$obj->type = 'page';
+$obj->type = 'ad';
 $obj->slug = $newSlug;
-$obj->canDelete = $page->canDelete;
+$obj->canDelete = $ad->canDelete;
+
+$obj->customUrl = $custom_url;
 
 $update = $contentMysqlExtDAO->update($obj);
 
@@ -65,5 +67,5 @@ if ($num > 0) {
     $act = 4;
 }
 
-header("Location: display_page.php?act=" . $act);
+header("Location: display_ad.php?act=" . $act);
 exit();
