@@ -57,7 +57,7 @@ class ContentMySqlDAO implements ContentDAO{
  	 * @param ContentMySql content
  	 */
 	public function insert($content){
-		$sql = 'INSERT INTO content (parent_id, title, subtitle, details, image, file, album_id, display_order, active, type, mime_type, lang, translation_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+		$sql = 'INSERT INTO content (parent_id, title, subtitle, details, image, file, album_id, custom_url, slug, display_order, active, type, mime_type, lang, translation_id, can_delete) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($content->parentId);
@@ -67,12 +67,15 @@ class ContentMySqlDAO implements ContentDAO{
 		$sqlQuery->set($content->image);
 		$sqlQuery->set($content->file);
 		$sqlQuery->setNumber($content->albumId);
+		$sqlQuery->set($content->customUrl);
+		$sqlQuery->set($content->slug);
 		$sqlQuery->setNumber($content->displayOrder);
 		$sqlQuery->setNumber($content->active);
 		$sqlQuery->set($content->type);
 		$sqlQuery->set($content->mimeType);
 		$sqlQuery->setNumber($content->lang);
 		$sqlQuery->set($content->translationId);
+		$sqlQuery->set($content->canDelete);
 
 		$id = $this->executeInsert($sqlQuery);	
 		$content->id = $id;
@@ -85,7 +88,7 @@ class ContentMySqlDAO implements ContentDAO{
  	 * @param ContentMySql content
  	 */
 	public function update($content){
-		$sql = 'UPDATE content SET parent_id = ?, title = ?, subtitle = ?, details = ?, image = ?, file = ?, album_id = ?, display_order = ?, active = ?, type = ?, mime_type = ?, lang = ?, translation_id = ? WHERE id = ?';
+		$sql = 'UPDATE content SET parent_id = ?, title = ?, subtitle = ?, details = ?, image = ?, file = ?, album_id = ?, custom_url = ?, slug = ?, display_order = ?, active = ?, type = ?, mime_type = ?, lang = ?, translation_id = ?, can_delete = ? WHERE id = ?';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($content->parentId);
@@ -95,12 +98,15 @@ class ContentMySqlDAO implements ContentDAO{
 		$sqlQuery->set($content->image);
 		$sqlQuery->set($content->file);
 		$sqlQuery->setNumber($content->albumId);
+		$sqlQuery->set($content->customUrl);
+		$sqlQuery->set($content->slug);
 		$sqlQuery->setNumber($content->displayOrder);
 		$sqlQuery->setNumber($content->active);
 		$sqlQuery->set($content->type);
 		$sqlQuery->set($content->mimeType);
 		$sqlQuery->setNumber($content->lang);
 		$sqlQuery->set($content->translationId);
+		$sqlQuery->set($content->canDelete);
 
 		$sqlQuery->set($content->id);
 		return $this->executeUpdate($sqlQuery);
@@ -164,6 +170,20 @@ class ContentMySqlDAO implements ContentDAO{
 		return $this->getList($sqlQuery);
 	}
 
+	public function queryByCustomUrl($value){
+		$sql = 'SELECT * FROM content WHERE custom_url = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->getList($sqlQuery);
+	}
+
+	public function queryBySlug($value){
+		$sql = 'SELECT * FROM content WHERE slug = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->getList($sqlQuery);
+	}
+
 	public function queryByDisplayOrder($value){
 		$sql = 'SELECT * FROM content WHERE display_order = ?';
 		$sqlQuery = new SqlQuery($sql);
@@ -201,6 +221,13 @@ class ContentMySqlDAO implements ContentDAO{
 
 	public function queryByTranslationId($value){
 		$sql = 'SELECT * FROM content WHERE translation_id = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->getList($sqlQuery);
+	}
+
+	public function queryByCanDelete($value){
+		$sql = 'SELECT * FROM content WHERE can_delete = ?';
 		$sqlQuery = new SqlQuery($sql);
 		$sqlQuery->set($value);
 		return $this->getList($sqlQuery);
@@ -256,6 +283,20 @@ class ContentMySqlDAO implements ContentDAO{
 		return $this->executeUpdate($sqlQuery);
 	}
 
+	public function deleteByCustomUrl($value){
+		$sql = 'DELETE FROM content WHERE custom_url = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->executeUpdate($sqlQuery);
+	}
+
+	public function deleteBySlug($value){
+		$sql = 'DELETE FROM content WHERE slug = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->executeUpdate($sqlQuery);
+	}
+
 	public function deleteByDisplayOrder($value){
 		$sql = 'DELETE FROM content WHERE display_order = ?';
 		$sqlQuery = new SqlQuery($sql);
@@ -298,6 +339,13 @@ class ContentMySqlDAO implements ContentDAO{
 		return $this->executeUpdate($sqlQuery);
 	}
 
+	public function deleteByCanDelete($value){
+		$sql = 'DELETE FROM content WHERE can_delete = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->executeUpdate($sqlQuery);
+	}
+
 
 	
 	/**
@@ -316,12 +364,15 @@ class ContentMySqlDAO implements ContentDAO{
 		$content->image = $row['image'];
 		$content->file = $row['file'];
 		$content->albumId = $row['album_id'];
+		$content->customUrl = $row['custom_url'];
+		$content->slug = $row['slug'];
 		$content->displayOrder = $row['display_order'];
 		$content->active = $row['active'];
 		$content->type = $row['type'];
 		$content->mimeType = $row['mime_type'];
 		$content->lang = $row['lang'];
 		$content->translationId = $row['translation_id'];
+		$content->canDelete = $row['can_delete'];
 
 		return $content;
 	}

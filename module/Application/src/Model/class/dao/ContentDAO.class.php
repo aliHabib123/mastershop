@@ -65,6 +65,10 @@ interface ContentDAO{
 
 	public function queryByAlbumId($value);
 
+	public function queryByCustomUrl($value);
+
+	public function queryBySlug($value);
+
 	public function queryByDisplayOrder($value);
 
 	public function queryByActive($value);
@@ -77,6 +81,7 @@ interface ContentDAO{
 
 	public function queryByTranslationId($value);
 
+	public function queryByCanDelete($value);
 
 	public function deleteByParentId($value);
 
@@ -92,6 +97,10 @@ interface ContentDAO{
 
 	public function deleteByAlbumId($value);
 
+	public function deleteByCustomUrl($value);
+
+	public function deleteBySlug($value);
+
 	public function deleteByDisplayOrder($value);
 
 	public function deleteByActive($value);
@@ -103,6 +112,8 @@ interface ContentDAO{
 	public function deleteByLang($value);
 
 	public function deleteByTranslationId($value);
+
+	public function deleteByCanDelete($value);
 
 
 }
