@@ -24,12 +24,12 @@ class InstalledVersions
 private static $installed = array (
   'root' => 
   array (
-    'pretty_version' => '1.2.x-dev',
-    'version' => '1.2.9999999.9999999-dev',
+    'pretty_version' => 'dev-master',
+    'version' => 'dev-master',
     'aliases' => 
     array (
     ),
-    'reference' => NULL,
+    'reference' => 'ee20521d8f572fbc0d1e5b0a76f1a947dafd30b5',
     'name' => 'laminas/laminas-mvc-skeleton',
   ),
   'versions' => 
@@ -104,6 +104,15 @@ private static $installed = array (
       ),
       'reference' => '1940ccf30e058b2fd66f5a9d696f1b5e0027b082',
     ),
+    'laminas/laminas-filter' => 
+    array (
+      'pretty_version' => '2.11.0',
+      'version' => '2.11.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'dd295a15f5c13d0c13d69ca0107190b1f2083d91',
+    ),
     'laminas/laminas-http' => 
     array (
       'pretty_version' => '2.14.1',
@@ -151,12 +160,12 @@ private static $installed = array (
     ),
     'laminas/laminas-mvc-skeleton' => 
     array (
-      'pretty_version' => '1.2.x-dev',
-      'version' => '1.2.9999999.9999999-dev',
+      'pretty_version' => 'dev-master',
+      'version' => 'dev-master',
       'aliases' => 
       array (
       ),
-      'reference' => NULL,
+      'reference' => 'ee20521d8f572fbc0d1e5b0a76f1a947dafd30b5',
     ),
     'laminas/laminas-router' => 
     array (
@@ -290,6 +299,13 @@ private static $installed = array (
       'replaced' => 
       array (
         0 => '^3.2.1',
+      ),
+    ),
+    'zendframework/zend-filter' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '^2.9.2',
       ),
     ),
     'zendframework/zend-http' => 

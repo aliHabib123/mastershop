@@ -35,6 +35,7 @@ class ComposerStaticInit9e10135d77035a32187b1831600bf5ae
             'Laminas\\Loader\\' => 15,
             'Laminas\\Json\\' => 13,
             'Laminas\\Http\\' => 13,
+            'Laminas\\Filter\\' => 15,
             'Laminas\\EventManager\\' => 21,
             'Laminas\\Escaper\\' => 16,
             'Laminas\\DevelopmentMode\\' => 24,
@@ -120,6 +121,10 @@ class ComposerStaticInit9e10135d77035a32187b1831600bf5ae
         'Laminas\\Http\\' => 
         array (
             0 => __DIR__ . '/..' . '/laminas/laminas-http/src',
+        ),
+        'Laminas\\Filter\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laminas/laminas-filter/src',
         ),
         'Laminas\\EventManager\\' => 
         array (
