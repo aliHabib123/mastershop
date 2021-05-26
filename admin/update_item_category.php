@@ -10,6 +10,16 @@ $id = $_GET['id'];
 $itemCategoryMysqlExtDAO = new ItemCategoryMySqlExtDAO();
 
 extract($_POST);
+
+$newSlug = slugify($name);
+if ($slug != $newSlug) {
+    $c = 1;
+    while ($itemCategoryMysqlExtDAO->queryBySlug($newSlug)) {
+        $newSlug = slugify($name);
+        $newSlug = $newSlug . '-' . $c;
+        $c++;
+    }
+}
 $active = radio_button($active);
 $isFeatured=radio_button($is_featured);
 
@@ -41,6 +51,7 @@ $obj->active = $active;
 $obj->parentId = $parent_id;
 $obj->displayOrder = $display_order;
 $obj->isFeatured = $isFeatured;
+$obj->slug = $newSlug;
 
 $update = $itemCategoryMysqlExtDAO->update($obj);
 

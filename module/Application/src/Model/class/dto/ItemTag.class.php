@@ -8,8 +8,15 @@
 	class ItemTag{
 		
 		var $id;
-		var $name;
-		var $displayOrder;
-		
+
+		var $name;
+
+		var $slug;
+
+		var $type;
+
+		var $displayOrder;
+
+		
 	}
 ?>

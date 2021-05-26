@@ -53,10 +53,18 @@ interface ItemTagDAO{
 
 	public function queryByName($value);
 
+	public function queryBySlug($value);
+
+	public function queryByType($value);
+
 	public function queryByDisplayOrder($value);
 
 
 	public function deleteByName($value);
+
+	public function deleteBySlug($value);
+
+	public function deleteByType($value);
 
 	public function deleteByDisplayOrder($value);
 
