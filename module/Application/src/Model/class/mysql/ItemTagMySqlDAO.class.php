@@ -57,10 +57,12 @@ class ItemTagMySqlDAO implements ItemTagDAO{
  	 * @param ItemTagMySql itemTag
  	 */
 	public function insert($itemTag){
-		$sql = 'INSERT INTO item_tag (name, display_order) VALUES (?, ?)';
+		$sql = 'INSERT INTO item_tag (name, slug, type, display_order) VALUES (?, ?, ?, ?)';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($itemTag->name);
+		$sqlQuery->set($itemTag->slug);
+		$sqlQuery->set($itemTag->type);
 		$sqlQuery->setNumber($itemTag->displayOrder);
 
 		$id = $this->executeInsert($sqlQuery);	
@@ -74,10 +76,12 @@ class ItemTagMySqlDAO implements ItemTagDAO{
  	 * @param ItemTagMySql itemTag
  	 */
 	public function update($itemTag){
-		$sql = 'UPDATE item_tag SET name = ?, display_order = ? WHERE id = ?';
+		$sql = 'UPDATE item_tag SET name = ?, slug = ?, type = ?, display_order = ? WHERE id = ?';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($itemTag->name);
+		$sqlQuery->set($itemTag->slug);
+		$sqlQuery->set($itemTag->type);
 		$sqlQuery->setNumber($itemTag->displayOrder);
 
 		$sqlQuery->setNumber($itemTag->id);
@@ -100,6 +104,20 @@ class ItemTagMySqlDAO implements ItemTagDAO{
 		return $this->getList($sqlQuery);
 	}
 
+	public function queryBySlug($value){
+		$sql = 'SELECT * FROM item_tag WHERE slug = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->getList($sqlQuery);
+	}
+
+	public function queryByType($value){
+		$sql = 'SELECT * FROM item_tag WHERE type = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->getList($sqlQuery);
+	}
+
 	public function queryByDisplayOrder($value){
 		$sql = 'SELECT * FROM item_tag WHERE display_order = ?';
 		$sqlQuery = new SqlQuery($sql);
@@ -110,6 +128,20 @@ class ItemTagMySqlDAO implements ItemTagDAO{
 
 	public function deleteByName($value){
 		$sql = 'DELETE FROM item_tag WHERE name = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->executeUpdate($sqlQuery);
+	}
+
+	public function deleteBySlug($value){
+		$sql = 'DELETE FROM item_tag WHERE slug = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->executeUpdate($sqlQuery);
+	}
+
+	public function deleteByType($value){
+		$sql = 'DELETE FROM item_tag WHERE type = ?';
 		$sqlQuery = new SqlQuery($sql);
 		$sqlQuery->set($value);
 		return $this->executeUpdate($sqlQuery);
@@ -134,6 +166,8 @@ class ItemTagMySqlDAO implements ItemTagDAO{
 		
 		$itemTag->id = $row['id'];
 		$itemTag->name = $row['name'];
+		$itemTag->slug = $row['slug'];
+		$itemTag->type = $row['type'];
 		$itemTag->displayOrder = $row['display_order'];
 
 		return $itemTag;

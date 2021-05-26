@@ -9,6 +9,14 @@ include '../module/Application/src/Model/include_dao.php';
 $itemCategoryMysqlExtDAO = new ItemCategoryMySqlExtDAO();
 extract($_POST);
 
+$slug = slugify($name);
+$c=1;
+while($itemCategoryMysqlExtDAO->queryBySlug($slug)){
+    $slug = slugify($title);
+    $slug = $slug.'-'.$c;
+    $c++;
+}
+
 $active=radio_button($active);
 $isFeatured=radio_button($is_featured);
 $image=upload_image("image", "$imagesPath");
@@ -29,6 +37,7 @@ $obj->parentId = $parent_id;
 $obj->displayOrder = $display_order;
 $obj->active = $active;
 $obj->isFeatured = $isFeatured;
+$obj->slug = $slug;
 
 $insert = $itemCategoryMysqlExtDAO->insert($obj);
 if ($insert) {

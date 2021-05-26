@@ -1,3 +1,9 @@
+<?php
+
+use Application\Controller\CategoryController;
+
+$level1Categories = CategoryController::getCategories('parent_id = 0 ORDER BY display_order ASC, name ASC, id DESC');
+?>
 <header>
     <div class="upper-menu-container">
         <div class="container">
@@ -111,11 +117,10 @@
                     <div class="input-group-prepend all-cat-btn">
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All <span class="d-none d-sm-inline-block">Categories</span></button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                            <div role="separator" class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Separated link</a>
+                            <?php foreach($level1Categories as $cat){?>
+                                <a class="dropdown-item" href="#"><?php echo $cat->name;?></a>
+                            <?php }?>
+                            <!-- <div role="separator" class="dropdown-divider"></div> -->
                         </div>
                     </div>
                     <input type="text" class="form-control" aria-label="All Categories" placeholder="Search for anything">

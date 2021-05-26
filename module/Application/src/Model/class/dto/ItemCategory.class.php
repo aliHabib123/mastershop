@@ -15,6 +15,8 @@
 
 		var $parentId;
 
+		var $slug;
+
 		var $displayOrder;
 
 		var $active;

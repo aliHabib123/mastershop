@@ -778,7 +778,13 @@ img.centervh {
     .middle-menu .search-container .all-cat-btn button {
       background-color: #2576ba;
       border: 1px solid #2576ba;
-      color: #fff; }
+      color: #fff;
+      border-radius: 0; }
+      .middle-menu .search-container .all-cat-btn button:focus, .middle-menu .search-container .all-cat-btn button:active {
+        background-color: #2576ba;
+        border: 1px solid #2576ba;
+        color: #fff;
+        box-shadow: none !important; }
     .middle-menu .search-container .search-button button {
       margin-left: 15px;
       border-radius: 0px;
@@ -786,7 +792,8 @@ img.centervh {
       border: 1px solid #2576ba;
       color: #fff;
       padding-left: 20px;
-      padding-right: 20px; }
+      padding-right: 20px;
+      box-shadow: none !important; }
       .middle-menu .search-container .search-button button:hover {
         background-color: #fff;
         color: #2576ba; }
