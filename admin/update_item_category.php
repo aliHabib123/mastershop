@@ -11,6 +11,7 @@ $itemCategoryMysqlExtDAO = new ItemCategoryMySqlExtDAO();
 
 extract($_POST);
 $active = radio_button($active);
+$isFeatured=radio_button($is_featured);
 
 if ($_FILES['image']['size'] > 0) {
     $newImage = upload_image("image", $imagesPath);
@@ -39,6 +40,7 @@ $obj->image = $image;
 $obj->active = $active;
 $obj->parentId = $parent_id;
 $obj->displayOrder = $display_order;
+$obj->isFeatured = $isFeatured;
 
 $update = $itemCategoryMysqlExtDAO->update($obj);
 

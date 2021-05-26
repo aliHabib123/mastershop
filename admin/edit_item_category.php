@@ -57,6 +57,14 @@ function main()
 						</div>
 					</div>
 					<div class="form-group">
+						<label class="col-md-3 control-label">Is Featured</label>
+						<div class="col-md-9">
+							<div class="make-switch" data-on="warning" data-off="danger">
+								<input type="checkbox" class="toggle" name="is_featured" <?php if ($category->isFeatured == "1") { echo "checked"; } ?> />
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
 						<label class="control-label col-md-3">Parent Category</label>
 						<div class="col-md-4">
 							<select  class="form-control select2me" data-placeholder="Select..." name="parent_id" id="parent_id">

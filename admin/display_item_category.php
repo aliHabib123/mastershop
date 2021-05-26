@@ -63,6 +63,7 @@ function main()
 						<label><input type="checkbox" checked data-column="<?php echo "3"; ?>"><?php echo "Parent"; ?></label>
 						<label><input type="checkbox" checked data-column="<?php echo "4"; ?>"><?php echo "Display Order"; ?></label>
 						<label><input type="checkbox" checked data-column="<?php echo "5"; ?>"><?php echo "Active"; ?></label>
+						<label><input type="checkbox" checked data-column="<?php echo "6"; ?>"><?php echo "Featured"; ?></label>
 					</div>
 				</div>
 				<div class="btn-group">
@@ -90,6 +91,7 @@ function main()
 						<th><?php echo "Parent"; ?></th>
 						<th><?php echo "Display Order"; ?></th>
 						<th><?php echo "Active"; ?></th>
+						<th><?php echo "Featured"; ?></th>
 						<th></th>
 						<th></th>
 						<?php if (!$subIdSet) {?>
@@ -110,6 +112,7 @@ function main()
 							<td><?php echo $row->parentId; ?></td>
 							<td><?php echo $row->displayOrder; ?></td>
 							<td><?php echo $row->active; ?></td>
+							<td><?php echo $row->isFeatured; ?></td>
 
 							<td>
 								<a class="btn btn-xs yellow" href="edit_item_category.php?id=<?php echo $row->id; ?>">
