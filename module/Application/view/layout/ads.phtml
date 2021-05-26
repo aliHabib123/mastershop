@@ -1,0 +1,66 @@
+<?php
+
+use Application\Controller\HelperController;
+
+$count =  count($this->ads);
+?>
+<div class="container ads-container">
+    <div class="row">
+        <?php if ($count == 3) { ?>
+
+            <div class="col-md-6">
+                <div class="ad1">
+                    <a href="<?php echo $this->ads[0]->customUrl ?>">
+                        <img src="<?php echo HelperController::getImageUrl($this->ads[0]->image); ?>" />
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="ad2">
+                            <a href="<?php echo $this->ads[1]->customUrl ?>">
+                                <img src="<?php echo HelperController::getImageUrl($this->ads[1]->image); ?>" />
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="ad3">
+                            <a href="<?php echo $this->ads[2]->customUrl ?>">
+                                <img src="<?php echo HelperController::getImageUrl($this->ads[2]->image); ?>" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <?php } elseif ($count == 2) { ?>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="ad2">
+                            <a href="<?php echo $this->ads[0]->customUrl ?>">
+                                <img src="<?php echo HelperController::getImageUrl($this->ads[0]->image); ?>" />
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="ad3">
+                            <a href="<?php echo $this->ads[1]->customUrl ?>">
+                                <img src="<?php echo HelperController::getImageUrl($this->ads[1]->image); ?>" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php } elseif ($count == 1) { ?>
+            <div class="col-md-12">
+                <div class="ad1">
+                    <a href="<?php echo $this->ads[0]->customUrl ?>">
+                        <img src="<?php echo HelperController::getImageUrl($this->ads[0]->image); ?>" />
+                    </a>
+                </div>
+            </div>
+        <?php } ?>
+    </div>
+</div>

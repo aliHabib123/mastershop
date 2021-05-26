@@ -144,6 +144,7 @@ $(function () {
       adaptiveHeight: true,
       slideWidth: slideWidth,
       pager: false,
+      infiniteLoop: true,
     };
     if ($(window).width() < 768) {
       slideWidth = width / 2;

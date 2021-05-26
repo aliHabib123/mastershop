@@ -17,8 +17,19 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
+        $langId = HelperController::langId(HelperController::filterInput($this->params('lang')));
+        $bannerLocation = ($langId==1) ? 1 : 2;
+        $banners = ContentController::getBanners($bannerLocation);
+        $ads = ContentController::getContent("type = 'ad' and lang = $langId ORDER BY display_order asc LIMIT 3");
+        $featuredCategories = CategoryController::getCategories("is_featured = 1");
+        
         $this->layout()->withBanner = true;
-        return new ViewModel();
+        $this->layout()->banners = $banners;
+        $data = [
+            'ads' => $ads,
+            'featuredCategories' => $featuredCategories,
+        ];
+        return new ViewModel($data);
     }
     public function testAction()
     {

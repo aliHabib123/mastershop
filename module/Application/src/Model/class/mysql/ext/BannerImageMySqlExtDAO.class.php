@@ -12,5 +12,11 @@ class BannerImageMySqlExtDAO extends BannerImageMySqlDAO{
 		$sqlQuery = new SqlQuery($sql);
 		return $this->getList($sqlQuery);
 	}
+
+	public function getBannerImagesByLocation($loaction){
+		$sql = "SELECT a.*, b.`location` FROM banner_image a LEFT OUTER JOIN banner b ON a.`banner_id` = b.`id` WHERE b.`location` = $loaction";
+		$sqlQuery = new SqlQuery($sql);
+		return $this->getList($sqlQuery);
+	}
 }
 ?>

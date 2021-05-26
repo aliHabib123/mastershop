@@ -18,12 +18,13 @@ return [
     'router' => [
         'routes' => [
             'home' => [
-                'type'    => Literal::class,
+                'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/',
+                    'route'    => '/[:lang]',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
                         'action'     => 'index',
+                        'lang' => 'en',
                     ],
                 ],
             ],
@@ -62,7 +63,6 @@ return [
                     'defaults' => [
                         'controller' => Controller\ProductController::class,
                         'action'     => 'todaysDeals',
-                        'year'       => date('Y'),
                     ],
                     'constraints' => [
                         'year' => '\d{4}',
@@ -196,9 +196,11 @@ return [
     ],
     'controllers' => [
         'factories' => [
+            Controller\ContentController::class => InvokableFactory::class,
             Controller\IndexController::class => InvokableFactory::class,
             Controller\DesignController::class => InvokableFactory::class,
             Controller\ProductController::class => InvokableFactory::class,
+            Controller\CategoryController::class => InvokableFactory::class,
             Controller\VendorController::class => InvokableFactory::class,
             Controller\HelperController::class => InvokableFactory::class,
         ],

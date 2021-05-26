@@ -8,16 +8,29 @@
 	class ItemCategory{
 		
 		var $id;
-		var $name;
-		var $image;
-		var $parentId;
-		var $displayOrder;
-		var $active;
-		var $langId;
-		var $translationId;
-		var $isStatic;
-		var $createdAt;
-		var $updatedAt;
-		
+
+		var $name;
+
+		var $image;
+
+		var $parentId;
+
+		var $displayOrder;
+
+		var $active;
+
+		var $langId;
+
+		var $translationId;
+
+		var $isStatic;
+
+		var $isFeatured;
+
+		var $createdAt;
+
+		var $updatedAt;
+
+		
 	}
 ?>
