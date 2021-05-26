@@ -22,6 +22,7 @@ return array(
     'Laminas\\Loader\\' => array($vendorDir . '/laminas/laminas-loader/src'),
     'Laminas\\Json\\' => array($vendorDir . '/laminas/laminas-json/src'),
     'Laminas\\Http\\' => array($vendorDir . '/laminas/laminas-http/src'),
+    'Laminas\\Filter\\' => array($vendorDir . '/laminas/laminas-filter/src'),
     'Laminas\\EventManager\\' => array($vendorDir . '/laminas/laminas-eventmanager/src'),
     'Laminas\\Escaper\\' => array($vendorDir . '/laminas/laminas-escaper/src'),
     'Laminas\\DevelopmentMode\\' => array($vendorDir . '/laminas/laminas-development-mode/src'),

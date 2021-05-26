@@ -67,6 +67,8 @@ interface ItemCategoryDAO{
 
 	public function queryByIsStatic($value);
 
+	public function queryByIsFeatured($value);
+
 	public function queryByCreatedAt($value);
 
 	public function queryByUpdatedAt($value);
@@ -87,6 +89,8 @@ interface ItemCategoryDAO{
 	public function deleteByTranslationId($value);
 
 	public function deleteByIsStatic($value);
+
+	public function deleteByIsFeatured($value);
 
 	public function deleteByCreatedAt($value);
 

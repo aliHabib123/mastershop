@@ -57,7 +57,7 @@ class ItemCategoryMySqlDAO implements ItemCategoryDAO{
  	 * @param ItemCategoryMySql itemCategory
  	 */
 	public function insert($itemCategory){
-		$sql = 'INSERT INTO item_category (name, image, parent_id, display_order, active, lang_id, translation_id, is_static, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+		$sql = 'INSERT INTO item_category (name, image, parent_id, display_order, active, lang_id, translation_id, is_static, is_featured, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($itemCategory->name);
@@ -68,6 +68,7 @@ class ItemCategoryMySqlDAO implements ItemCategoryDAO{
 		$sqlQuery->setNumber($itemCategory->langId);
 		$sqlQuery->set($itemCategory->translationId);
 		$sqlQuery->setNumber($itemCategory->isStatic);
+		$sqlQuery->setNumber($itemCategory->isFeatured);
 		$sqlQuery->set($itemCategory->createdAt);
 		$sqlQuery->set($itemCategory->updatedAt);
 
@@ -82,7 +83,7 @@ class ItemCategoryMySqlDAO implements ItemCategoryDAO{
  	 * @param ItemCategoryMySql itemCategory
  	 */
 	public function update($itemCategory){
-		$sql = 'UPDATE item_category SET name = ?, image = ?, parent_id = ?, display_order = ?, active = ?, lang_id = ?, translation_id = ?, is_static = ?, created_at = ?, updated_at = ? WHERE id = ?';
+		$sql = 'UPDATE item_category SET name = ?, image = ?, parent_id = ?, display_order = ?, active = ?, lang_id = ?, translation_id = ?, is_static = ?, is_featured = ?, created_at = ?, updated_at = ? WHERE id = ?';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($itemCategory->name);
@@ -93,6 +94,7 @@ class ItemCategoryMySqlDAO implements ItemCategoryDAO{
 		$sqlQuery->setNumber($itemCategory->langId);
 		$sqlQuery->set($itemCategory->translationId);
 		$sqlQuery->setNumber($itemCategory->isStatic);
+		$sqlQuery->setNumber($itemCategory->isFeatured);
 		$sqlQuery->set($itemCategory->createdAt);
 		$sqlQuery->set($itemCategory->updatedAt);
 
@@ -160,6 +162,13 @@ class ItemCategoryMySqlDAO implements ItemCategoryDAO{
 
 	public function queryByIsStatic($value){
 		$sql = 'SELECT * FROM item_category WHERE is_static = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->setNumber($value);
+		return $this->getList($sqlQuery);
+	}
+
+	public function queryByIsFeatured($value){
+		$sql = 'SELECT * FROM item_category WHERE is_featured = ?';
 		$sqlQuery = new SqlQuery($sql);
 		$sqlQuery->setNumber($value);
 		return $this->getList($sqlQuery);
@@ -236,6 +245,13 @@ class ItemCategoryMySqlDAO implements ItemCategoryDAO{
 		return $this->executeUpdate($sqlQuery);
 	}
 
+	public function deleteByIsFeatured($value){
+		$sql = 'DELETE FROM item_category WHERE is_featured = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->setNumber($value);
+		return $this->executeUpdate($sqlQuery);
+	}
+
 	public function deleteByCreatedAt($value){
 		$sql = 'DELETE FROM item_category WHERE created_at = ?';
 		$sqlQuery = new SqlQuery($sql);
@@ -269,6 +285,7 @@ class ItemCategoryMySqlDAO implements ItemCategoryDAO{
 		$itemCategory->langId = $row['lang_id'];
 		$itemCategory->translationId = $row['translation_id'];
 		$itemCategory->isStatic = $row['is_static'];
+		$itemCategory->isFeatured = $row['is_featured'];
 		$itemCategory->createdAt = $row['created_at'];
 		$itemCategory->updatedAt = $row['updated_at'];
 

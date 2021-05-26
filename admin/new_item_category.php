@@ -83,6 +83,14 @@
 			</div>
 		</div>
 	</div>
+	<div class="form-group">
+		<label class="col-md-3 control-label">Is Featured</label>
+		<div class="col-md-9">
+			<div class="make-switch" data-on="warning" data-off="danger">
+				<input type="checkbox" class="toggle"  name="is_featured"/>
+			</div>
+		</div>
+	</div>
 	
 
 	

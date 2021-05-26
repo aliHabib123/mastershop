@@ -1,28 +1,27 @@
-<div class="main-banner-container">
-<div class="" id="main-banner">
-  <div>
-      <div class="banner-item">
-        <div class="banner-item_img"><img src="img/banner.png" title="Funky roots"></div>
-        <div class="banner-item_caption1">UP TO 60%</div>
-        <div class="banner-item_caption2">Happy mother's day</div>
-        <div class="banner-item_button"><a href="#">START SHOPPING</a></div>
-      </div>
+<?php
+
+use Application\Controller\HelperController;
+
+if ($this->banners) { ?>
+  <div class="main-banner-container">
+    <div class="" id="main-banner">
+      <?php foreach ($this->banners as $row) { ?>
+        <div>
+          <div class="banner-item">
+            <div class="banner-item_img"><img src="<?php echo HelperController::getImageUrl($row->imageName); ?>" title="Funky roots"></div>
+            <?php if ($row->caption1) { ?>
+              <div class="banner-item_caption1"><?php echo $row->caption1; ?></div>
+            <?php } ?>
+            <?php if ($row->caption2) { ?>
+              <div class="banner-item_caption2"><?php echo $row->caption2; ?></div>
+            <?php } ?>
+            <?php if ($row->buttonText && $row->buttonLink) { ?>
+              <div class="banner-item_button"><a href="<?php echo $row->buttonLink; ?>"><?php echo $row->buttonText; ?></a></div>
+            <?php } ?>
+          </div>
+        </div>
+      <?php } ?>
+    </div>
   </div>
-  <div>
-      <div class="banner-item">
-        <div class="banner-item_img"><img src="img/banner.png" title="Funky roots"></div>
-        <div class="banner-item_caption1">UP TO 60%</div>
-        <div class="banner-item_caption2">Happy mother's day</div>
-        <div class="banner-item_button"><a href="#">START SHOPPING</a></div>
-      </div>
-  </div>
-  <div>
-      <div class="banner-item">
-        <div class="banner-item_img"><img src="img/banner.png" title="Funky roots"></div>
-        <div class="banner-item_caption1">UP TO 60%</div>
-        <div class="banner-item_caption2">Happy mother's day</div>
-        <div class="banner-item_button"><a href="#">START SHOPPING</a></div>
-      </div>
-  </div>
-</div>
-</div>
+<?php }
+?>

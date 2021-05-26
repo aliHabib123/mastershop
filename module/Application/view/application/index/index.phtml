@@ -5,6 +5,8 @@
  */
 
 use Application\Controller\DesignController;
+use Application\Controller\HelperController;
+
 ?>
 <div class="container">
     <div class="row">
@@ -14,34 +16,12 @@ use Application\Controller\DesignController;
         <div class="col-md-12">
             <div class="categories-slider-wrapper">
                 <div id="categories-slider">
+                    <?php foreach($this->featuredCategories as $cat){?>
                     <div>
-                        <div class="cat-img"><a href="#"><img src="img/cosmetics.jpg" /></a></div>
-                        <div class="cat-title"><a href="#">Cosmetics</a></div>
+                        <div class="cat-img"><a href="#"><img src="<?php echo HelperController::getImageUrl($cat->image);?>" /></a></div>
+                        <div class="cat-title"><a href="#"><?php echo $cat->name;?></a></div>
                     </div>
-                    <div>
-                        <div class="cat-img"><a href="#"><img src="img/electronics.jpg" /></a></div>
-                        <div class="cat-title"><a href="#">Electronics</a></div>
-                    </div>
-                    <div>
-                        <div class="cat-img"><a href=""><img src="img/home.jpg" /></a></div>
-                        <div class="cat-title"><a href="#">Home</a></div>
-                    </div>
-                    <div>
-                        <div class="cat-img"><a href="#"><img src="img/toys.jpg" /></a></div>
-                        <div class="cat-title"><a href="#">Toys</a></div>
-                    </div>
-                    <div>
-                        <div class="cat-img"><a href="#"><img src="img/gadgets.jpg" /></a></div>
-                        <div class="cat-title"><a href="#">Gadgets</a></div>
-                    </div>
-                    <div>
-                        <div class="cat-img"><a href=""><img src="img/home.jpg" /></a></div>
-                        <div class="cat-title"><a href="#">Home</a></div>
-                    </div>
-                    <div>
-                        <div class="cat-img"><a href="#"><img src="img/electronics.jpg" /></a></div>
-                        <div class="cat-title"><a href="#">Electronics</a></div>
-                    </div>
+                    <?php }?>
                 </div>
             </div>
         </div>
@@ -142,33 +122,6 @@ use Application\Controller\DesignController;
         </div>
     </div>
 </div>
-
-<div class="container ads-container">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="ad1">
-                <a href="#">
-                    <img src="img/ad1.png" />
-                </a>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="ad2">
-                        <a href="#">
-                            <img src="img/ad2.png" />
-                        </a>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="ad3">
-                        <a href="#">
-                            <img src="img/ad2.png" />
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<?php if ($this->ads) {
+        echo $this->partial('layout/ads');
+    } ?>
