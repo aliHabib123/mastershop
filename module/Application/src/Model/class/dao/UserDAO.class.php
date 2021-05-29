@@ -63,6 +63,8 @@ interface UserDAO{
 
 	public function queryByEmail($value);
 
+	public function queryByDob($value);
+
 	public function queryByPassword($value);
 
 	public function queryByMobile($value);
@@ -113,6 +115,8 @@ interface UserDAO{
 	public function deleteByNiceName($value);
 
 	public function deleteByEmail($value);
+
+	public function deleteByDob($value);
 
 	public function deleteByPassword($value);
 
