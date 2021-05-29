@@ -24,6 +24,12 @@ define('FILE_URL', BASE_URL . 'uploads/files/');
 define('V2_SITE_KEY', '');
 define('V2_SECRET_KEY', '');
 
+//Facebook API
+define('FB_APP_ID', '525058595541703');
+define('FB_APP_SECRET', '333f0ebb23829ec05aa9998cf3259e45');
+define('FB_DEFAULT_GRAPH_VERSION', 'v2.10');
+
+//Google API
 define('OAUTH_PUBLIC_KEY', '553406392339-3rfcfvflmghl341mrl362n19mkmq3oh4.apps.googleusercontent.com');
 define('OAUTH_SECRET_KEY', '2vkD3ukNRdjeDmU5CJ7ojfyO');
 

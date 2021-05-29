@@ -182,6 +182,52 @@ return [
                     ],
                 ],
             ],
+
+            //Facebook
+            'facebookCallback' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/facebook-callback',
+                    'defaults' => [
+                        'controller' => Controller\FacebookController::class,
+                        'action'     => 'callback',
+                    ],
+                ],
+            ],
+            //End Facebook
+
+            // User Routes
+            'logout' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/logout',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'logout',
+                    ],
+                ],
+            ],
+            'submitRegister' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/submit-register',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'submitRegister',
+                    ],
+                ],
+            ],
+            'submitLogin' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/submit-login',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'submitLogin',
+                    ],
+                ],
+            ],
+            // End User Routes
             'application' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -197,6 +243,9 @@ return [
     'controllers' => [
         'factories' => [
             Controller\ContentController::class => InvokableFactory::class,
+            Controller\UserController::class => InvokableFactory::class,
+            Controller\FacebookController::class => InvokableFactory::class,
+            Controller\GoogleController::class => InvokableFactory::class,
             Controller\IndexController::class => InvokableFactory::class,
             Controller\DesignController::class => InvokableFactory::class,
             Controller\ProductController::class => InvokableFactory::class,

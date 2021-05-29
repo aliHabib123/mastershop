@@ -15,7 +15,10 @@
         "laminas/laminas-development-mode": "^3.2",
         "laminas/laminas-skeleton-installer": "^0.2 || ^1.0",
         "laminas/laminas-mvc": "^3.1.1",
-        "laminas/laminas-filter": "^2.11"
+        "laminas/laminas-filter": "^2.11",
+        "facebook/graph-sdk": "^5.7",
+        "google/apiclient": "^2.0",
+        "laminas/laminas-session": "^2.10"
     },
     "autoload": {
         "psr-4": {

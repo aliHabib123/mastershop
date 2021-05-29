@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-mvc-skeleton for the canonical source repository
- * @copyright https://github.com/laminas/laminas-mvc-skeleton/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-mvc-skeleton/blob/master/LICENSE.md New BSD License
- */
-
 declare(strict_types=1);
 
 namespace Application\Controller;
@@ -13,6 +7,7 @@ namespace Application\Controller;
 use Laminas\Filter\HtmlEntities;
 use Laminas\Filter\StringTrim;
 use Laminas\Filter\StripTags;
+use Laminas\Json\Json;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\Validator\Digits;
 use Laminas\Validator\NotEmpty;
@@ -95,5 +90,20 @@ class HelperController extends AbstractActionController
     public static function getFileUrl($fileName)
     {
         return BASE_URL . upload_file_dir . $fileName;
+    }
+
+    public static function getCurrentUrl()
+    {
+        $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        return $url;
+    }
+
+    public static function createJsonResponse($status, $message)
+    {
+        $array = [
+            "status"=>$status,
+            "msg"=> $message
+        ];
+        return Json::encode($array);
     }
 }

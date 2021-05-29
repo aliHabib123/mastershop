@@ -17,6 +17,7 @@ class ProductController extends AbstractActionController
 {
     public function indexAction()
     {
+        var_dump($_SESSION);
         return new ViewModel();
     }
     public function detailsAction()
