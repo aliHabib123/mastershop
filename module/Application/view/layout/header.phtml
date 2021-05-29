@@ -11,7 +11,21 @@ $level1Categories = CategoryController::getCategories('parent_id = 0 ORDER BY di
                 <div class="row">
                     <div class="col-md-3 col-6">
                         <div class="signin-register">
-                            Hi <a href="javascript:void(0);" class="signin" data-toggle="modal" data-target="#login-modal">Sign in</a> or <a href="javascript:void(0);" class="register" data-toggle="modal" data-target="#signup-modal">Register</a>
+                            <?php if (isset($_SESSION['user'])) { ?>
+                                HI 
+                                <div class="dropdown user-dropdown">
+                                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <?php echo $_SESSION['user']->firstName; ?>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="<?php echo MAIN_URL . 'logout';?>">Logout</a>
+                                        <a class="dropdown-item" href="javascript:void(0);">Edit Profile</a>
+                                        <a class="dropdown-item" href="javascript:void(0);">My Orders</a>
+                                    </div>
+                                </div>
+                            <?php } else { ?>
+                                Hi <a href="javascript:void(0);" class="signin" data-toggle="modal" data-target="#login-modal">Sign in</a> or <a href="javascript:void(0);" class="register" data-toggle="modal" data-target="#signup-modal">Register</a>
+                            <?php } ?>
                         </div>
                     </div>
                     <div class="col-md-6 col-6 d-none d-sm-block">
@@ -117,9 +131,9 @@ $level1Categories = CategoryController::getCategories('parent_id = 0 ORDER BY di
                     <div class="input-group-prepend all-cat-btn">
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All <span class="d-none d-sm-inline-block">Categories</span></button>
                         <div class="dropdown-menu">
-                            <?php foreach($level1Categories as $cat){?>
-                                <a class="dropdown-item" href="#"><?php echo $cat->name;?></a>
-                            <?php }?>
+                            <?php foreach ($level1Categories as $cat) { ?>
+                                <a class="dropdown-item" href="#"><?php echo $cat->name; ?></a>
+                            <?php } ?>
                             <!-- <div role="separator" class="dropdown-divider"></div> -->
                         </div>
                     </div>

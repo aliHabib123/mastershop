@@ -319,3 +319,17 @@
     }
   }
 }
+.dropdown.user-dropdown {
+  display: inline-block;
+  margin-left: 5px;
+  button{
+    padding: 0;
+    line-height: 1;
+    background-color: transparent;
+    border: none;
+    color: #5a5a5a;
+    font-family: $fontsecondary;
+    font-weight: normal;
+    vertical-align: initial;
+  }
+}

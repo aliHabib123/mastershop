@@ -479,6 +479,32 @@ img.centervh {
   max-width: 100%;
   max-height: 100%; }
 
+.fb-button-wrapper {
+  text-align: center; }
+  .fb-button-wrapper.in-register {
+    margin-bottom: 30px; }
+  .fb-button-wrapper a {
+    color: #fff;
+    background-color: #4267b2;
+    width: 240px;
+    display: inline-block;
+    padding: 10px 15px;
+    line-height: 1;
+    border-radius: 5px;
+    text-transform: capitalize;
+    font-family: "Montserrat", sans-serif; }
+
+.or {
+  text-align: center;
+  margin-bottom: 26px; }
+
+.notice-area {
+  text-align: center; }
+  .notice-area .error {
+    color: red; }
+  .notice-area .success {
+    color: green; }
+
 @media (min-width: 768px) {
   .panel-group {
     width: 400px; }
@@ -728,6 +754,19 @@ img.centervh {
       .middle-menu .search-container .search-button button:hover {
         background-color: #fff;
         color: #2576ba; }
+
+.dropdown.user-dropdown {
+  display: inline-block;
+  margin-left: 5px; }
+  .dropdown.user-dropdown button {
+    padding: 0;
+    line-height: 1;
+    background-color: transparent;
+    border: none;
+    color: #5a5a5a;
+    font-family: "Montserrat", sans-serif;
+    font-weight: normal;
+    vertical-align: initial; }
 
 .main-banner-container .bx-wrapper {
   margin-bottom: 0;

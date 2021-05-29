@@ -248,3 +248,14 @@ $(function () {
     }
   );
 });
+
+
+//Register/Login
+$(function () {
+
+});
+
+function showMsg(selector, status, msg) {
+  let html = `<div class="${status ? 'success' : 'error'}">${msg}</div>`;
+  $(selector).html(html);
+}

@@ -238,12 +238,12 @@ body {
 .main-wrapper {
   margin-bottom: 30px;
 }
-.mb0{
-  .main-wrapper{
+.mb0 {
+  .main-wrapper {
     margin-bottom: 0;
   }
 }
-.pr0{
+.pr0 {
   padding-right: 0;
 }
 .item-col {
@@ -482,7 +482,7 @@ body {
       border-color: initial;
     }
   }
-  .confirm-password{
+  .confirm-password {
     margin-bottom: 30px;
   }
   .centered-button {
@@ -499,7 +499,7 @@ body {
       padding: 7px 15px;
       line-height: 1;
     }
-    button[type="submit"].signup-button{
+    button[type="submit"].signup-button {
       background-color: $button-color;
       color: #fff;
       font-size: 16px;
@@ -564,6 +564,37 @@ img.centervh {
   transform: translateX(-50%) translateY(-50%);
   max-width: 100%;
   max-height: 100%;
+}
+.fb-button-wrapper {
+  text-align: center;
+  &.in-register {
+    margin-bottom: 30px;
+  }
+  a {
+    color: #fff;
+    background-color: #4267b2;
+    width: 240px;
+    display: inline-block;
+    padding: 10px 15px;
+    line-height: 1;
+    border-radius: 5px;
+    text-transform: capitalize;
+    font-family: $fontsecondary;
+  }
+  //4267B2
+}
+.or {
+  text-align: center;
+  margin-bottom: 26px;
+}
+.notice-area {
+  text-align: center;
+  .error {
+    color: red;
+  }
+  .success {
+    color: green;
+  }
 }
 @media (min-width: 768px) {
   .panel-group {
