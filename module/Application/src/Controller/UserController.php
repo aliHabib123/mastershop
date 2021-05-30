@@ -11,7 +11,11 @@ use UserMySqlExtDAO;
 
 class UserController extends AbstractActionController
 {
-    public function registeOrLoginrUser($userInfo)
+    public static $ADMIN = 1;
+    public static $SUPPLIER = 2;
+    public static $CUSTOMER = 3;
+
+    public function registeOrLoginUser($userInfo)
     {
         $user = $this->getUserInfoByEmail($userInfo->email);
         if (!$user) {
@@ -38,6 +42,9 @@ class UserController extends AbstractActionController
         $obj->fullName = $user->firstName . ' ' . $user->lastName;
         if ($user->fullName) {
             $obj->fullName = $user->fullName;
+        }
+        if ($user->userType) {
+            $obj->userType = $user->userType;
         }
         $obj->email = $user->email;
         $obj->id = $user->id;
@@ -85,6 +92,7 @@ class UserController extends AbstractActionController
                 $userObj->fullName = $fullname;
                 $userObj->email = $email;
                 $userObj->dob = $birthday;
+                $userObj->userType = UserController::$CUSTOMER;
                 $userObj->password = password_hash($password, PASSWORD_DEFAULT);
     
                 $user = $this->registerUser($userObj);
@@ -148,6 +156,9 @@ class UserController extends AbstractActionController
         $userObj->lastName = $userInfo->lastName;
         $userObj->fullName = $userInfo->fullName;
         $userObj->email = $userInfo->email;
+        if ($userInfo->userType) {
+            $userObj->userType = $userInfo->userType;
+        }
         if ($userInfo->dob) {
             $userObj->dob = $userInfo->dob;
         }

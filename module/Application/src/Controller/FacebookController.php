@@ -106,9 +106,10 @@ class FacebookController extends AbstractActionController
             $user->lastName = $userInfo->getLastName();
             $user->fullName = $userInfo->getName();
             $user->email = $userInfo->getEmail();
+            $user->userType = UserController::$CUSTOMER;
 
             $userClass = new UserController();
-            $user = $userClass->registeOrLoginrUser($user);
+            $user = $userClass->registeOrLoginUser($user);
 
         }
         $redirectUrl = urldecode($_GET['redirectUrl']);

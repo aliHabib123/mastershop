@@ -12,3 +12,5 @@ package-lock.json
 admin/sessions/*
 public/uploads/*
 error_log.log
+module/Application/src/facebook_login/*
+module/Application/src/google_login/*
