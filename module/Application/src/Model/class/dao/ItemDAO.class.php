@@ -90,6 +90,10 @@ interface ItemDAO{
 
 	public function queryByTranslationId($value);
 
+	public function queryByAlbumId($value);
+
+	public function queryBySlug($value);
+
 	public function queryByCreatedAt($value);
 
 	public function queryByUpdatedAt($value);
@@ -136,6 +140,10 @@ interface ItemDAO{
 	public function deleteByLangId($value);
 
 	public function deleteByTranslationId($value);
+
+	public function deleteByAlbumId($value);
+
+	public function deleteBySlug($value);
 
 	public function deleteByCreatedAt($value);
 

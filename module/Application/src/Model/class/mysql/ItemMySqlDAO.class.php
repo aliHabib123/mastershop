@@ -54,7 +54,7 @@ class ItemMySqlDAO implements ItemDAO{
  	 * @param ItemMySql item
  	 */
 	public function insert($item){
-		$sql = 'INSERT INTO item (title, description, image, regular_price, sale_price, weight, height, width, sku, qty, specification, color, size, dimensions, status, is_featured, is_new, supplier_id, display_order, lang_id, translation_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+		$sql = 'INSERT INTO item (title, description, image, regular_price, sale_price, weight, height, width, sku, qty, specification, color, size, dimensions, status, is_featured, is_new, supplier_id, display_order, lang_id, translation_id, album_id, slug, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($item->title);
@@ -78,6 +78,8 @@ class ItemMySqlDAO implements ItemDAO{
 		$sqlQuery->setNumber($item->displayOrder);
 		$sqlQuery->setNumber($item->langId);
 		$sqlQuery->set($item->translationId);
+		$sqlQuery->set($item->albumId);
+		$sqlQuery->set($item->slug);
 		$sqlQuery->set($item->createdAt);
 		$sqlQuery->set($item->updatedAt);
 
@@ -92,7 +94,7 @@ class ItemMySqlDAO implements ItemDAO{
  	 * @param ItemMySql item
  	 */
 	public function update($item){
-		$sql = 'UPDATE item SET title = ?, description = ?, image = ?, regular_price = ?, sale_price = ?, weight = ?, height = ?, width = ?, sku = ?, qty = ?, specification = ?, color = ?, size = ?, dimensions = ?, status = ?, is_featured = ?, is_new = ?, supplier_id = ?, display_order = ?, lang_id = ?, translation_id = ?, created_at = ?, updated_at = ? WHERE id = ?';
+		$sql = 'UPDATE item SET title = ?, description = ?, image = ?, regular_price = ?, sale_price = ?, weight = ?, height = ?, width = ?, sku = ?, qty = ?, specification = ?, color = ?, size = ?, dimensions = ?, status = ?, is_featured = ?, is_new = ?, supplier_id = ?, display_order = ?, lang_id = ?, translation_id = ?, album_id = ?, slug = ?, created_at = ?, updated_at = ? WHERE id = ?';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($item->title);
@@ -116,6 +118,8 @@ class ItemMySqlDAO implements ItemDAO{
 		$sqlQuery->setNumber($item->displayOrder);
 		$sqlQuery->setNumber($item->langId);
 		$sqlQuery->set($item->translationId);
+		$sqlQuery->set($item->albumId);
+		$sqlQuery->set($item->slug);
 		$sqlQuery->set($item->createdAt);
 		$sqlQuery->set($item->updatedAt);
 
@@ -274,6 +278,20 @@ class ItemMySqlDAO implements ItemDAO{
 
 	public function queryByTranslationId($value){
 		$sql = 'SELECT * FROM item WHERE translation_id = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->getList($sqlQuery);
+	}
+
+	public function queryByAlbumId($value){
+		$sql = 'SELECT * FROM item WHERE album_id = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->getList($sqlQuery);
+	}
+
+	public function queryBySlug($value){
+		$sql = 'SELECT * FROM item WHERE slug = ?';
 		$sqlQuery = new SqlQuery($sql);
 		$sqlQuery->set($value);
 		return $this->getList($sqlQuery);
@@ -441,6 +459,20 @@ class ItemMySqlDAO implements ItemDAO{
 		return $this->executeUpdate($sqlQuery);
 	}
 
+	public function deleteByAlbumId($value){
+		$sql = 'DELETE FROM item WHERE album_id = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->executeUpdate($sqlQuery);
+	}
+
+	public function deleteBySlug($value){
+		$sql = 'DELETE FROM item WHERE slug = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->executeUpdate($sqlQuery);
+	}
+
 	public function deleteByCreatedAt($value){
 		$sql = 'DELETE FROM item WHERE created_at = ?';
 		$sqlQuery = new SqlQuery($sql);
@@ -487,6 +519,8 @@ class ItemMySqlDAO implements ItemDAO{
 		$item->displayOrder = $row['display_order'];
 		$item->langId = $row['lang_id'];
 		$item->translationId = $row['translation_id'];
+		$item->albumId = $row['album_id'];
+		$item->slug = $row['slug'];
 		$item->createdAt = $row['created_at'];
 		$item->updatedAt = $row['updated_at'];
 

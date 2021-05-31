@@ -26,6 +26,8 @@
 		var $displayOrder;
 		var $langId;
 		var $translationId;
+		var $albumId;
+		var $slug;
 		var $createdAt;
 		var $updatedAt;
 		
