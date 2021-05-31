@@ -112,21 +112,18 @@ class HelperController extends AbstractActionController
         return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length);
     }
 
-    public static function downloadFile($url = "", $imageName, $suffix = "")
+    public static function downloadFile($url = "", $prefix="")
     {
         $res = false;
         if ($url && $url != "" && getimagesize($url)) {
             $ext = pathinfo($url, PATHINFO_EXTENSION);
             // Initialize the cURL session
             $ch = curl_init($url);
-            // Use basename() function to return
-            // the base name of file
 
-            $file_name = $imageName . $suffix . '.' . $ext;
-
-            // while (is_file(BASE_PATH.upload_file_dir . $file_name)) {
-            //     $file_name = $prefix . HelperController::random(10) . '.' . $ext;
-            // }
+            $file_name = $prefix . '_' . HelperController::random(10) . '.' . $ext;
+            while (is_file(BASE_PATH.upload_image_dir . $file_name)) {
+                $file_name = $prefix . '_' . HelperController::random(10) . '.' . $ext;
+            }
 
             // Save file into file location
             $save_file_loc = BASE_PATH . upload_image_dir . $file_name;
@@ -153,9 +150,8 @@ class HelperController extends AbstractActionController
         $filePath = BASE_PATH . upload_image_dir . $imageName;
         if (file_exists($filePath)) {
             unlink($filePath);
-            echo "File Successfully Delete.";
-        } else {
-            echo "File does not exists";
+            return true;
         }
+        return false;
     }
 }
