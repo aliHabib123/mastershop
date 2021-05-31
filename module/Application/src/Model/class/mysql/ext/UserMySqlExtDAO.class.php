@@ -39,4 +39,14 @@ class UserMySqlExtDAO extends UserMySqlDAO{
 		$sqlQuery = new SqlQuery($sql);
 		return $this->getList($sqlQuery);
 	}
+
+	public function updateFile($supplierId, $fileName){
+		$sql = 'UPDATE user SET uploaded_file = ?  WHERE id = ?';
+		$sqlQuery = new SqlQuery($sql);
+
+		$sqlQuery->set($fileName);
+		$sqlQuery->set($supplierId);
+		
+		return $this->executeUpdate($sqlQuery);
+	}
 }

@@ -57,7 +57,7 @@ class UserMySqlDAO implements UserDAO{
  	 * @param UserMySql user
  	 */
 	public function insert($user){
-		$sql = 'INSERT INTO user (first_name, middle_name, last_name, full_name, nice_name, email, dob, password, mobile, tel_1, tel_2, company_name, contact_person, activation_code, status, country, city, state, postcode, user_type, address_1, address_2, address_3, deleted, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+		$sql = 'INSERT INTO user (first_name, middle_name, last_name, full_name, nice_name, email, dob, password, mobile, tel_1, tel_2, company_name, contact_person, activation_code, status, country, city, state, postcode, user_type, address_1, address_2, address_3, uploaded_file, deleted, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($user->firstName);
@@ -83,6 +83,7 @@ class UserMySqlDAO implements UserDAO{
 		$sqlQuery->set($user->address1);
 		$sqlQuery->set($user->address2);
 		$sqlQuery->set($user->address3);
+		$sqlQuery->set($user->uploadedFile);
 		$sqlQuery->setNumber($user->deleted);
 		$sqlQuery->set($user->createdAt);
 		$sqlQuery->set($user->updatedAt);
@@ -98,7 +99,7 @@ class UserMySqlDAO implements UserDAO{
  	 * @param UserMySql user
  	 */
 	public function update($user){
-		$sql = 'UPDATE user SET first_name = ?, middle_name = ?, last_name = ?, full_name = ?, nice_name = ?, email = ?, dob = ?, password = ?, mobile = ?, tel_1 = ?, tel_2 = ?, company_name = ?, contact_person = ?, activation_code = ?, status = ?, country = ?, city = ?, state = ?, postcode = ?, user_type = ?, address_1 = ?, address_2 = ?, address_3 = ?, deleted = ?, created_at = ?, updated_at = ? WHERE id = ?';
+		$sql = 'UPDATE user SET first_name = ?, middle_name = ?, last_name = ?, full_name = ?, nice_name = ?, email = ?, dob = ?, password = ?, mobile = ?, tel_1 = ?, tel_2 = ?, company_name = ?, contact_person = ?, activation_code = ?, status = ?, country = ?, city = ?, state = ?, postcode = ?, user_type = ?, address_1 = ?, address_2 = ?, address_3 = ?, uploaded_file = ?, deleted = ?, created_at = ?, updated_at = ? WHERE id = ?';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($user->firstName);
@@ -124,6 +125,7 @@ class UserMySqlDAO implements UserDAO{
 		$sqlQuery->set($user->address1);
 		$sqlQuery->set($user->address2);
 		$sqlQuery->set($user->address3);
+		$sqlQuery->set($user->uploadedFile);
 		$sqlQuery->setNumber($user->deleted);
 		$sqlQuery->set($user->createdAt);
 		$sqlQuery->set($user->updatedAt);
@@ -297,6 +299,13 @@ class UserMySqlDAO implements UserDAO{
 
 	public function queryByAddress3($value){
 		$sql = 'SELECT * FROM user WHERE address_3 = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->getList($sqlQuery);
+	}
+
+	public function queryByUploadedFile($value){
+		$sql = 'SELECT * FROM user WHERE uploaded_file = ?';
 		$sqlQuery = new SqlQuery($sql);
 		$sqlQuery->set($value);
 		return $this->getList($sqlQuery);
@@ -485,6 +494,13 @@ class UserMySqlDAO implements UserDAO{
 		return $this->executeUpdate($sqlQuery);
 	}
 
+	public function deleteByUploadedFile($value){
+		$sql = 'DELETE FROM user WHERE uploaded_file = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->executeUpdate($sqlQuery);
+	}
+
 	public function deleteByDeleted($value){
 		$sql = 'DELETE FROM user WHERE deleted = ?';
 		$sqlQuery = new SqlQuery($sql);
@@ -540,6 +556,7 @@ class UserMySqlDAO implements UserDAO{
 		$user->address1 = $row['address_1'];
 		$user->address2 = $row['address_2'];
 		$user->address3 = $row['address_3'];
+		$user->uploadedFile = $row['uploaded_file'];
 		$user->deleted = $row['deleted'];
 		$user->createdAt = $row['created_at'];
 		$user->updatedAt = $row['updated_at'];

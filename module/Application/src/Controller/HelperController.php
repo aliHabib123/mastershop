@@ -101,9 +101,61 @@ class HelperController extends AbstractActionController
     public static function createJsonResponse($status, $message)
     {
         $array = [
-            "status"=>$status,
-            "msg"=> $message
+            "status" => $status,
+            "msg" => $message
         ];
         return Json::encode($array);
+    }
+
+    public static function random($length = 10)
+    {
+        return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length);
+    }
+
+    public static function downloadFile($url = "", $imageName, $suffix = "")
+    {
+        $res = false;
+        if ($url && $url != "" && getimagesize($url)) {
+            $ext = pathinfo($url, PATHINFO_EXTENSION);
+            // Initialize the cURL session
+            $ch = curl_init($url);
+            // Use basename() function to return
+            // the base name of file
+
+            $file_name = $imageName . $suffix . '.' . $ext;
+
+            // while (is_file(BASE_PATH.upload_file_dir . $file_name)) {
+            //     $file_name = $prefix . HelperController::random(10) . '.' . $ext;
+            // }
+
+            // Save file into file location
+            $save_file_loc = BASE_PATH . upload_image_dir . $file_name;
+            // Open file
+            $fp = fopen($save_file_loc, 'wb');
+            // It set an option for a cURL transfer
+            curl_setopt($ch, CURLOPT_FILE, $fp);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            // Perform a cURL session
+            $res = curl_exec($ch);
+            // Closes a cURL session and frees all resources
+            curl_close($ch);
+            // Close file
+            fclose($fp);
+            if ($res) {
+                $res = $file_name;
+            }
+        }
+        return $res;
+    }
+
+    public static function deleteImage($imageName)
+    {
+        $filePath = BASE_PATH . upload_image_dir . $imageName;
+        if (file_exists($filePath)) {
+            unlink($filePath);
+            echo "File Successfully Delete.";
+        } else {
+            echo "File does not exists";
+        }
     }
 }
