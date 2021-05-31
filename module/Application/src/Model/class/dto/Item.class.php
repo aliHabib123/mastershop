@@ -1,9 +1,6 @@
 <?php
 	/**
 	 * Object represents table 'item'
-	 *
-     	 * @author: http://phpdao.com
-     	 * @date: 2021-05-14 19:34	 
 	 */
 	class Item{
 		
@@ -18,6 +15,10 @@
 		var $width;
 		var $sku;
 		var $qty;
+		var $specification;
+		var $color;
+		var $size;
+		var $dimensions;
 		var $status;
 		var $isFeatured;
 		var $isNew;

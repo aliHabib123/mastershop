@@ -1,9 +1,6 @@
 <?php
 /**
  * Intreface DAO
- *
- * @author: http://phpdao.com
- * @date: 2021-05-14 19:34
  */
 interface ItemDAO{
 
@@ -71,6 +68,14 @@ interface ItemDAO{
 
 	public function queryByQty($value);
 
+	public function queryBySpecification($value);
+
+	public function queryByColor($value);
+
+	public function queryBySize($value);
+
+	public function queryByDimensions($value);
+
 	public function queryByStatus($value);
 
 	public function queryByIsFeatured($value);
@@ -109,6 +114,14 @@ interface ItemDAO{
 	public function deleteBySku($value);
 
 	public function deleteByQty($value);
+
+	public function deleteBySpecification($value);
+
+	public function deleteByColor($value);
+
+	public function deleteBySize($value);
+
+	public function deleteByDimensions($value);
 
 	public function deleteByStatus($value);
 
