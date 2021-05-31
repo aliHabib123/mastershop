@@ -249,13 +249,46 @@ $(function () {
   );
 });
 
-
-//Register/Login
+//Import
 $(function () {
-
+  $("#import-form").submit(function (e) {
+    var formData = new FormData(this);
+    var formUrl = $(this).attr("action");
+    $.ajax({
+      url: formUrl,
+      type: "POST",
+      dataType: "json",
+      data: formData,
+      mimeType: "multipart/form-data",
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function () {
+        showMsg(".notice-area", true, "Importing your file, please dont click anywhere...");
+      },
+      success: function (response) {
+        showMsg(".notice-area", response.status, response.msg);
+        if (response.status == true) {
+          //location.href = response.redirectUrl;
+        }
+      },
+      error: function () {
+        showMsg(".notice-area", false, "An error occured, please try again!");
+      },
+    });
+    e.preventDefault();
+  });
 });
 
 function showMsg(selector, status, msg) {
-  let html = `<div class="${status ? 'success' : 'error'}">${msg}</div>`;
+  let html = `<div class="${status ? "success" : "error"}">${msg}</div>`;
   $(selector).html(html);
 }
+
+// document
+//   .querySelector(".custom-file-input")
+//   .addEventListener("change", function (e) {
+//     var name = this.files[0].name;
+//     var nextSibling = e.target.nextElementSibling;
+//     nextSibling.innerText = name;
+//   });

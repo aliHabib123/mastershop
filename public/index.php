@@ -18,6 +18,8 @@ define('upload_image_dir', 'uploads/images/');
 define('upload_file_dir', 'uploads/files/');
 define('IMAGE_URL', BASE_URL . 'uploads/images/');
 define('FILE_URL', BASE_URL . 'uploads/files/');
+define('PRODUCT_PLACEHOLDER_IMAGE_URL', BASE_URL.'img/placeholder.jpg');
+define('PRODUCT_PLACEHOLDER_THUMBNAIL_URL', BASE_URL.'img/placeholder.jpg');
 
 
 #Google Recaptcha V2
@@ -52,6 +54,9 @@ if (php_sapi_name() === 'cli-server') {
 }
 // Require Dao files
 require_once 'module/Application/src/Model/include_dao.php';
+
+// Required Excel Import files
+require_once 'module/Application/src/Import/Classes/PHPExcel.php';
 
 // Composer autoloading
 include __DIR__ . '/../vendor/autoload.php';
