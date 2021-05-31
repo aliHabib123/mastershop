@@ -65,6 +65,10 @@
 	require_once('class/dto/ItemBrand.class.php');
 	require_once('class/mysql/ItemBrandMySqlDAO.class.php');
 	require_once('class/mysql/ext/ItemBrandMySqlExtDAO.class.php');
+	require_once('class/dao/ItemBrandMappingDAO.class.php');
+	require_once('class/dto/ItemBrandMapping.class.php');
+	require_once('class/mysql/ItemBrandMappingMySqlDAO.class.php');
+	require_once('class/mysql/ext/ItemBrandMappingMySqlExtDAO.class.php');
 	require_once('class/dao/ItemCategoryDAO.class.php');
 	require_once('class/dto/ItemCategory.class.php');
 	require_once('class/mysql/ItemCategoryMySqlDAO.class.php');

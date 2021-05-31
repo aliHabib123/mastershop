@@ -97,6 +97,8 @@ interface UserDAO{
 
 	public function queryByAddress3($value);
 
+	public function queryByUploadedFile($value);
+
 	public function queryByDeleted($value);
 
 	public function queryByCreatedAt($value);
@@ -149,6 +151,8 @@ interface UserDAO{
 	public function deleteByAddress2($value);
 
 	public function deleteByAddress3($value);
+
+	public function deleteByUploadedFile($value);
 
 	public function deleteByDeleted($value);
 

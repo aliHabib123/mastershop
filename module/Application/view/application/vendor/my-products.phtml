@@ -1,34 +1,14 @@
 <?php
 
 use Application\Controller\DesignController;
+use Application\Controller\ProductController;
+
 ?>
 <div class="main-wrapper">
     <div class="container">
         <div class="row">
             <div class="col-md-3 sidebar">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">My Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">My Products</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Update Inventory</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">My Orders</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Warehouse Details</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contact Details</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Account Details</a>
-                    </li>
-                </ul>
+                <?php echo DesignController::getVendorSidebar('products'); ?>
             </div>
             <div class="col-md-9 vendor-pl0">
                 <div class="page-date"><i class="far fa-calendar-alt"></i>&nbsp;Tuesday, April 6, 2021</div>
@@ -46,65 +26,53 @@ use Application\Controller\DesignController;
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="product-img">
-                                            <img class="centervh" src="img/product.png" />
-                                        </div>
-                                        <div class="product-details">
-                                            Taurus precise trimmer 2V<br>
-                                            LBP 574,992
-                                        </div>
-                                    </td>
-                                    <td class="text-center">PENDING</td>
-                                    <td class="text-center">5</td>
-                                    <td class="text-center">3</td>
-                                    <td class="text-center">2</td>
-                                    <td>
-                                        23,000 LBP
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="product-img">
-                                            <img class="centervh" src="img/product.png" />
-                                        </div>
-                                        <div class="product-details">
-                                            Taurus precise trimmer 2V<br>
-                                            LBP 574,992
-                                        </div>
-                                    </td>
-                                    <td class="text-center">PENDING</td>
-                                    <td class="text-center">5</td>
-                                    <td class="text-center">3</td>
-                                    <td class="text-center">2</td>
-                                    <td>
-                                        23,000 LBP
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="product-img">
-                                            <img class="centervh" src="img/product.png" />
-                                        </div>
-                                        <div class="product-details">
-                                            Taurus precise trimmer 2V<br>
-                                            LBP 574,992
-                                        </div>
-                                    </td>
-                                    <td class="text-center">PENDING</td>
-                                    <td class="text-center">5</td>
-                                    <td class="text-center">3</td>
-                                    <td class="text-center">2</td>
-                                    <td>
-                                        23,000 LBP
-                                    </td>
-                                </tr>
+                                <?php foreach ($this->items as $row) { ?>
+                                    <tr id="<?php echo $row->id;?>">
+                                        <td>
+                                            <div class="product-img">
+                                                <img class="centervh" src="<?php echo ProductController::getProductImage($row->image);?>" />
+                                            </div>
+                                            <div class="product-details">
+                                                <?php echo substr(strip_tags($row->title), 0, 25); ?><br>
+                                                LBP <?php echo ProductController::getFinalPrice($row->regularPrice, $row->salePrice);?>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">PENDING</td>
+                                        <td class="text-center">n/a</td>
+                                        <td class="text-center">n/a</td>
+                                        <td class="text-center">2</td>
+                                        <td>
+                                            23,000 LBP
+                                        </td>
+                                    </tr>
+                                <?php } ?>
                             </tbody>
                         </table>
                     </div>
+                </div>
+                <div class="col-md-12">
+                    <div id="my-products-pagination" class="product-pagination text-center"></div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+$(function(){
+    //alert('s');
+      //Pagination
+  $("#my-products-pagination").twbsPagination({
+    totalPages: <?php echo $this->totalPages;?>,
+    visiblePages: 5,
+    first: "",
+    last: "",
+    next: '<i class="fas fa-chevron-right"></i>',
+    prev: '<i class="fas fa-chevron-left"></i>',
+    startPage: <?php echo $this->currentPage;?>,
+    initiateStartPageClick: false,
+    onPageClick: function (event, page) {
+      location.href = '<?php echo MAIN_URL."vendor/my-products?page=";?>' + page;
+    },
+  });
+});
+</script>

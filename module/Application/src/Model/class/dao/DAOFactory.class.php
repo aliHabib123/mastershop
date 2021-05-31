@@ -106,6 +106,13 @@ class DAOFactory{
 	}
 
 	/**
+	 * @return ItemBrandMappingDAO
+	 */
+	public static function getItemBrandMappingDAO(){
+		return new ItemBrandMappingMySqlExtDAO();
+	}
+
+	/**
 	 * @return ItemCategoryDAO
 	 */
 	public static function getItemCategoryDAO(){

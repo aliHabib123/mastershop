@@ -26,6 +26,9 @@ return [
                         'action'     => 'index',
                         'lang' => 'en',
                     ],
+                    'constraints' => [
+                        'lang' => '(en|ar)',
+                    ],
                 ],
             ],
             'products' => [
@@ -182,6 +185,17 @@ return [
                     ],
                 ],
             ],
+            'submitImport' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/submit-import',
+                    'defaults' => [
+                        'controller' => Controller\ImportController::class,
+                        'action'     => 'submitImport',
+                    ],
+                ],
+            ],
+            // End supplier routes
 
             //Facebook
             'facebookCallback' => [
@@ -250,8 +264,10 @@ return [
             Controller\DesignController::class => InvokableFactory::class,
             Controller\ProductController::class => InvokableFactory::class,
             Controller\CategoryController::class => InvokableFactory::class,
+            Controller\BrandController::class => InvokableFactory::class,
             Controller\VendorController::class => InvokableFactory::class,
             Controller\HelperController::class => InvokableFactory::class,
+            Controller\ImportController::class => InvokableFactory::class,
         ],
     ],
     'view_manager' => [

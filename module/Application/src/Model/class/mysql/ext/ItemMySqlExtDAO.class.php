@@ -7,6 +7,15 @@
  */
 class ItemMySqlExtDAO extends ItemMySqlDAO{
 
-	
+	public function select($condition = '1', $limit = 0, $offset = 0){
+        $sql = "SELECT * FROM item WHERE $condition";
+
+        if($limit != 0){
+            $sql .= " LIMIT $limit OFFSET $offset";
+        }
+        
+		$sqlQuery = new SqlQuery($sql);
+		return $this->getList($sqlQuery);
+    }
 }
 ?>

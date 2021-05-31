@@ -201,12 +201,12 @@ body {
 .item-col {
   margin-bottom: 25px; }
 
-#product-pagination.text-center .pagination {
+.product-pagination.text-center .pagination {
   display: inline-flex; }
 
-#product-pagination ul.pagination li {
+.product-pagination ul.pagination li {
   display: inline-block; }
-  #product-pagination ul.pagination li a {
+  .product-pagination ul.pagination li a {
     border: none;
     border-radius: 50%;
     width: 35px;
@@ -214,7 +214,7 @@ body {
     color: #797979;
     font-family: "Montserrat Alternates", sans-serif;
     font-size: 16px; }
-  #product-pagination ul.pagination li.active a {
+  .product-pagination ul.pagination li.active a {
     background-color: #2576ba;
     color: #fff; }
 

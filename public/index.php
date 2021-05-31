@@ -19,16 +19,16 @@ define('upload_file_dir', 'uploads/files/');
 define('IMAGE_URL', BASE_URL . 'uploads/images/');
 define('FILE_URL', BASE_URL . 'uploads/files/');
 
-
+// Placeholder Images
+define('PRODUCT_PLACEHOLDER_IMAGE_URL', BASE_URL.'img/placeholder.jpg');
+define('PRODUCT_PLACEHOLDER_THUMBNAIL_URL', BASE_URL.'img/placeholder.jpg');
 #Google Recaptcha V2
 define('V2_SITE_KEY', '');
 define('V2_SECRET_KEY', '');
-
 //Facebook API
 define('FB_APP_ID', '525058595541703');
 define('FB_APP_SECRET', '333f0ebb23829ec05aa9998cf3259e45');
 define('FB_DEFAULT_GRAPH_VERSION', 'v2.10');
-
 //Google API
 define('OAUTH_PUBLIC_KEY', '553406392339-3rfcfvflmghl341mrl362n19mkmq3oh4.apps.googleusercontent.com');
 define('OAUTH_SECRET_KEY', '2vkD3ukNRdjeDmU5CJ7ojfyO');
@@ -52,6 +52,9 @@ if (php_sapi_name() === 'cli-server') {
 }
 // Require Dao files
 require_once 'module/Application/src/Model/include_dao.php';
+
+// Required Excel Import files
+require_once 'module/Application/src/Import/Classes/PHPExcel.php';
 
 // Composer autoloading
 include __DIR__ . '/../vendor/autoload.php';

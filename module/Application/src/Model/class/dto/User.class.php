@@ -55,6 +55,8 @@
 
 		var $address3;
 
+		var $uploadedFile;
+
 		var $deleted;
 
 		var $createdAt;
