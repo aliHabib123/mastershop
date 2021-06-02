@@ -43,13 +43,14 @@ if ($_FILES['image']['size'] > 0) {
     $image = $current_image;
 }
 
-$obj =  new ItemCategoryMySqlDAO();
+$obj =  new ItemCategory();
 $obj->id = $id;
 $obj->name = $name;
 $obj->image = $image;
 $obj->active = $active;
 $obj->parentId = $parent_id;
 $obj->displayOrder = $display_order;
+$obj->megaMenuDisplayOrder = $mega_menu_display_order;
 $obj->isFeatured = $isFeatured;
 $obj->slug = $newSlug;
 
