@@ -1,9 +1,6 @@
 <?php
 /**
  * Intreface DAO
- *
- * @author: http://phpdao.com
- * @date: 2021-05-14 19:34
  */
 interface ItemCategoryDAO{
 
@@ -61,6 +58,8 @@ interface ItemCategoryDAO{
 
 	public function queryByDisplayOrder($value);
 
+	public function queryByMegaMenuDisplayOrder($value);
+
 	public function queryByActive($value);
 
 	public function queryByLangId($value);
@@ -85,6 +84,8 @@ interface ItemCategoryDAO{
 	public function deleteBySlug($value);
 
 	public function deleteByDisplayOrder($value);
+
+	public function deleteByMegaMenuDisplayOrder($value);
 
 	public function deleteByActive($value);
 
