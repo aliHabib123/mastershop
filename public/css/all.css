@@ -523,7 +523,8 @@ img.centervh {
   color: #fff; }
 
 .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li ul.dropdown-menu li.grid-list > div > div {
-  margin-bottom: 15px; }
+  margin-bottom: 15px;
+  padding-bottom: 30px; }
 
 .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li ul.dropdown-menu li.grid-list .main-cat-name {
   margin-bottom: 5px; }
