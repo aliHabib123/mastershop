@@ -1,5 +1,5 @@
 <!-- The Modal -->
-<div class="modal" id="add-warehouse-modal">
+<div class="modal" id="edit-warehouse-modal">
 
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -15,7 +15,7 @@
                 <div class="modal-subtitle">Add new warehuse to manage your stock.</div>
                 <div class="notice-area"></div>
                 <div class="vendor-page-wrapper">
-                    <form action="<?php echo MAIN_URL . 'add-warehouse' ?>" id="add-warehouse">
+                    <form action="<?php echo MAIN_URL . 'edit-warehouse' ?>" id="edit-warehouse">
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-6 input-wrap">
@@ -24,7 +24,7 @@
                                             <label for="email">*First Name</label>
                                         </div>
                                         <div class="col-md-8">
-                                            <input type="text" class="form-control" placeholder="" name="first-name">
+                                            <input type="text" class="form-control" placeholder="" name="first-name" id="first-name">
                                         </div>
                                     </div>
                                 </div>
@@ -34,7 +34,7 @@
                                             <label for="email">*Last Name</label>
                                         </div>
                                         <div class="col-md-8">
-                                            <input type="text" class="form-control" placeholder="" name="last-name">
+                                            <input type="text" class="form-control" placeholder="" name="last-name" id="last-name">
                                         </div>
                                     </div>
                                 </div>
@@ -44,7 +44,7 @@
                                             <label for="email">*Email Address</label>
                                         </div>
                                         <div class="col-md-8">
-                                            <input type="email" class="form-control" placeholder="" name="email">
+                                            <input type="email" class="form-control" placeholder="" name="email" id="email">
                                         </div>
                                     </div>
                                 </div>
@@ -64,13 +64,15 @@
                                             <label for="email">Warehouse Name</label>
                                         </div>
                                         <div class="col-md-8">
-                                            <input type="text" class="form-control" placeholder="" name="warehouse-name">
+                                            <input id="warehouse-name" type="text" class="form-control" placeholder="" name="warehouse-name">
                                         </div>
+                                        <input type="hidden" id="contact-id" name="contact-id">
+                                        <input type="hidden" id="warehouse-id" name="warehouse-id">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn submit-btn">SAVE</button>
+                        <button type="submit" class="btn submit-btn">UPDATE</button>
                     </form>
                 </div>
 
@@ -80,7 +82,7 @@
 </div>
 
 <script type="text/javascript">
-    $("#add-warehouse").submit(function(e) {
+    $("#edit-warehouse").submit(function(e) {
         var formData = new FormData(this);
         var formUrl = $(this).attr('action');
         $.ajax({
@@ -96,6 +98,7 @@
                 showMsg('.notice-area', true, 'Adding warehouse, please wait...');
             },
             success: function(response) {
+                console.log(response);
                 showMsg('.notice-area', response.status, response.msg);
                 if (response.status == true) {
                     const html = `<tr id="${response.warehouse.id}">
@@ -118,9 +121,23 @@
                                         <a data-id="${response.warehouse.id}" data-contact-id="${response.warehouse.contactId}" class="delete-warehouse" href="${mainUrl+'delete-warehouse'}"><i class="fas fa-trash-alt"></i></a>
                                     </td>
                                 </tr>`;
+
+                    // const h = `<a 
+                    //             data-warehouse-id="${response.warehouse.id}"
+                    //             data-contact-id="${response.warehouse.contactId}"
+                    //             data-title="${response.warehouse.title}"
+                    //             data-mobile="${response.warehouse.mobile}"
+                    //             data-email="${response.warehouse.email}"
+                    //             data-first-name="${response.warehouse.firstName}"
+                    //             data-last-name="${response.warehouse.lastName}"
+                    //             data-href="${mainUrl+'edit-warehouse'}"
+                    //             class="edit-warehouse"><i class="fas fa-pen"></i></a>`;
                     showMsg('.notice-area', response.status, '');
-                    $('#add-warehouse')[0].reset();
-                    $('#add-warehouse-modal').modal('hide')
+                    $('#edit-warehouse')[0].reset();
+                    $('#edit-warehouse-modal').modal('hide');
+                    $("#warehouse-tbody")
+                        .find("tr#" + response.warehouse.id)
+                        .remove();
                     $('#warehouse-tbody').prepend(html).fadeIn(500);
                 }
             },
@@ -130,4 +147,17 @@
         });
         e.preventDefault();
     });
+</script>
+
+<script>
+    // var warehouseId = $(this).data('warehouseId');
+    // var contactId = $(this).data('contactId');   
+    // var warehouseName = $(this).data('warehouseName');    
+
+    // $('#edit-warehouse-modal #warehouse-id').val(warehouseId);  
+    // $('#edit-warehouse-modal #contact-id').val(contactId);  
+    // $('#edit-warehouse-modal #warehouse-name').val(warehouseName);  
+    // $('#name').val(name);  
+    // $('#duration').val(duration);  
+    // $('#date').val(date); 
 </script>

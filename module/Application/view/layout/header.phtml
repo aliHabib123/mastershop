@@ -2,7 +2,21 @@
 
 use Application\Controller\CategoryController;
 
+global $categories;
 $level1Categories = CategoryController::getCategories('parent_id = 0 ORDER BY display_order ASC, name ASC, id DESC');
+$categories = $level1Categories;
+//print_r($categories);echo '<br>';
+$c =0;
+foreach($level1Categories as $row){
+    $categories[$c]->subcategories = CategoryController::getCategories("parent_id = $row->id and active = 1 ORDER BY display_order ASC, name ASC, id DESC");
+    $c1=0;
+    foreach($categories[$c]->subcategories as $row1){
+        $categories[$c]->subcategories[$c1]->subsubcategories = CategoryController::getCategories("parent_id = $row1->id and active = 1 ORDER BY display_order ASC, name ASC, id DESC");
+        $c1++;
+    }
+    $c++;
+}
+//print_r($categories);
 ?>
 <header>
     <div class="upper-menu-container">

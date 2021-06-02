@@ -14,6 +14,7 @@ class UserController extends AbstractActionController
     public static $ADMIN = 1;
     public static $SUPPLIER = 2;
     public static $CUSTOMER = 3;
+    public static $WAREHOUSE_MANAGER = 4;
 
     public function registeOrLoginUser($userInfo)
     {
@@ -164,6 +165,9 @@ class UserController extends AbstractActionController
         }
         if ($userInfo->password) {
             $userObj->password = $userInfo->password;
+        }
+        if ($userInfo->mobile) {
+            $userObj->mobile = $userInfo->mobile;
         }
         $userId = $userMySqlExtDAO->insert($userObj);
 

@@ -1,6 +1,7 @@
 <?php
 
 use Application\Controller\DesignController;
+
 ?>
 <div class="main-wrapper">
     <div class="container">
@@ -17,46 +18,37 @@ use Application\Controller\DesignController;
                                 <tr>
                                     <th>ID</th>
                                     <th>LABEL</th>
-                                    <th>MANAGER FULL NAME</th>
+                                    <th>FULL NAME</th>
                                     <th>MOBILE NUMBER</th>
-                                    <th>MANAGER EMAIL</th>
+                                    <th>EMAIL</th>
                                     <th>&nbsp;</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>123</td>
-                                    <td>Warehouse 1</td>
-                                    <td>Cristelle Boustany</td>
-                                    <td>+96176000000</td>
-                                    <td>cboustany@healdco.com</td>
-                                    <td>
-                                        <a class="" href="#"><i class="fas fa-pen"></i></a>
-                                        <a href="#"><i class="fas fa-trash-alt"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>123</td>
-                                    <td>Warehouse 1</td>
-                                    <td>Cristelle Boustany</td>
-                                    <td>+96176000000</td>
-                                    <td>cboustany@healdco.com</td>
-                                    <td>
-                                        <a class="" href="#"><i class="fas fa-pen"></i></a>
-                                        <a href="#"><i class="fas fa-trash-alt"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>123</td>
-                                    <td>Warehouse 1</td>
-                                    <td>Cristelle Boustany</td>
-                                    <td>+96176000000</td>
-                                    <td>cboustany@healdco.com</td>
-                                    <td>
-                                        <a class="edit" href="#"><i class="fas fa-pen"></i></a>
-                                        <a class="delete" href="#"><i class="fas fa-trash-alt"></i></a>
-                                    </td>
-                                </tr>
+                            <tbody id="warehouse-tbody">
+                               <?php if ($this->warehouses) {
+    foreach ($this->warehouses as $row) {?>
+                                     <tr id="<?php echo $row->warehouseId; ?>">
+                                        <td><?php echo $row->warehouseId; ?></td>
+                                        <td><?php echo $row->title;?></td>
+                                        <td><?php echo $row->firstName . ' ' . $row->lastName;?></td>
+                                        <td><?php echo $row->mobile;?></td>
+                                        <td><?php echo $row->email;?></td>
+                                        <td>
+                                            <a 
+                                            data-warehouse-id="<?php echo $row->warehouseId; ?>"
+                                            data-contact-id="<?php echo $row->contactId; ?>"
+                                            data-title="<?php echo $row->title;?>"
+                                            data-mobile="<?php echo $row->mobile;?>"
+                                            data-email="<?php echo $row->email;?>"
+                                            data-first-name="<?php echo $row->firstName;?>"
+                                            data-last-name="<?php echo $row->lastName;?>"
+                                            data-href="<?php echo MAIN_URL.'edit-warehouse'; ?>"
+                                            class="edit-warehouse"><i class="fas fa-pen"></i></a>
+                                            <a class="delete-warehouse" data-contact-id="<?php echo $row->contactId;?>" data-id="<?php echo $row->warehouseId;?>" href="<?php echo MAIN_URL.'delete-warehouse';?>"><i class="fas fa-trash-alt"></i></a>
+                                        </td>
+                                    </tr>
+                                <?php }
+}?>
                             </tbody>
                         </table>
                     </div>

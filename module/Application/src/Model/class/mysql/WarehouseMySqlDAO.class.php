@@ -203,6 +203,10 @@ class WarehouseMySqlDAO implements WarehouseDAO{
 		$warehouse->active = $row['active'];
 		$warehouse->createdAt = $row['created_at'];
 		$warehouse->updatedAt = $row['updated_at'];
+		$warehouse->firstName = $row['first_name'];
+		$warehouse->lastName = $row['last_name'];
+		$warehouse->mobile = $row['mobile'];
+		$warehouse->email = $row['email'];
 
 		return $warehouse;
 	}

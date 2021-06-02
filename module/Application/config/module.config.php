@@ -195,6 +195,36 @@ return [
                     ],
                 ],
             ],
+            'addWarehouse' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/add-warehouse',
+                    'defaults' => [
+                        'controller' => Controller\VendorController::class,
+                        'action'     => 'addWarehouse',
+                    ],
+                ],
+            ],
+            'deleteWarehouse' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/delete-warehouse',
+                    'defaults' => [
+                        'controller' => Controller\VendorController::class,
+                        'action'     => 'deleteWarehouse',
+                    ],
+                ],
+            ],
+            'editWarehouse' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/edit-warehouse',
+                    'defaults' => [
+                        'controller' => Controller\VendorController::class,
+                        'action'     => 'editWarehouse',
+                    ],
+                ],
+            ],
             // End supplier routes
 
             //Facebook

@@ -1,3 +1,8 @@
+<?php
+global $categories;
+    //print_r($level1Categories);
+?>
+
 <div class="lower-menu d-none d-sm-block">
         <div class="container">
             <div class="mega-menu">
@@ -8,78 +13,27 @@
                     <div id="navbar-collapse-grid" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
                             <!-- Grid 12 Menu -->
-                            <li class="nav-item dropdown yamm-fw"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle">Electronics<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li class="grid-list">
-                                        <div class="grid-container card-columns">
-                                            <div class="grid-item card">
-                                                <div class="main-cat-name"><a href="#">Large Appliance</a></div>
-                                                <ul class="subcategories">
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                </ul>
+
+                            <?php foreach($categories as $row){?>
+                                <li class="nav-item dropdown yamm-fw"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle"><?php echo $row->name?><b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li class="grid-list">
+                                            <div class="grid-container card-columns">
+                                            <?php foreach($row->subcategories as $row1){?>
+                                                <div class="grid-item card">
+                                                    <div class="main-cat-name"><a href="#"><?php echo $row1->name?></a></div>
+                                                    <ul class="subcategories">
+                                                        <?php foreach($row1->subsubcategories as $row2){?>
+                                                            <li><a href=""><?php echo $row2->name?></a></li>
+                                                        <?php }?>
+                                                    </ul>
+                                                </div>
+                                                <?php }?>
                                             </div>
-                                            <div class="grid-item card ">
-                                                <div class="main-cat-name"><a href="#">Small Appliance1</a></div>
-                                                <ul class="subcategories">
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="grid-item card">
-                                                <div class="main-cat-name"><a href="#">Small Appliance2</a></div>
-                                                <ul class="subcategories">
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="grid-item card">
-                                                <div class="main-cat-name"><a href="#">Small Appliance3</a></div>
-                                                <ul class="subcategories">
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="grid-item card">
-                                                <div class="main-cat-name"><a href="#">Small Appliance4</a></div>
-                                                <ul class="subcategories">
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
+                                        </li>
+                                    </ul>
+                                </li>
+                            <?php }?>
                             <!--
               <Aside>Menu </Aside>
               -->
