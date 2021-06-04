@@ -148,7 +148,7 @@ $(function () {
     };
     if ($(window).width() < 768) {
       slideWidth = width / 2;
-      alert(slideWidth);
+      //alert(slideWidth);
       config = {
         minSlides: 1,
         maxSlides: 2,
@@ -324,7 +324,7 @@ $("html").on("click", ".delete-warehouse", function (e) {
         console.log(response);
         showMsg(".notice-area", response.status, response.msg);
         if (response.status == true) {
-          alert("ok");
+          //alert("ok");
           console.log($(this).closest("tr"));
           $("#warehouse-tbody")
             .find("tr#" + warehouseId)

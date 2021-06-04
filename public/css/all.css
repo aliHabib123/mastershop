@@ -2330,7 +2330,7 @@ a.list-group-item,
       font-size: 11px; }
     .upper-menu-container .upper-menu .custom-menu li.wishlist a:last-child {
       padding: 0;
-      position: absolute; }
+      position: relative; }
   .specifications {
     margin-top: 30px;
     margin-bottom: 10px; }
