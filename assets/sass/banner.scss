@@ -149,6 +149,9 @@
           a {
             padding-right: 0;
             color: $base-color;
+            &.light{
+              color: #fff;
+            }
           }
         }
         &:first-child {

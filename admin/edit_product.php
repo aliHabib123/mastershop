@@ -14,6 +14,7 @@ function main()
 		'daily-deals' => false,
 		'best-offers' => false,
 		'spotlight' => false,
+		'promotions' => false,
 	];
 	foreach($mapping as $map){
 		if($map->tagId == 1){
@@ -33,6 +34,9 @@ function main()
 		}
 		if($map->tagId == 6){
 			$tags['spotlight'] = true;
+		}
+		if($map->tagId == 7){
+			$tags['promotions'] = true;
 		}
 	}
 	$item = $itemMySqlExtDAO->load($id);
@@ -141,6 +145,16 @@ function main()
 							</div>
 						</div>
 					</div>	
+					<div class="form-group">
+						<label class="col-md-3 control-label">Is Promotions</label>
+						<div class="col-md-9">
+							<div class="make-switch" data-on="warning" data-off="danger">
+								<input type="checkbox" class="toggle"  name="promotions" <?php if ($tags['promotions']) {
+										echo "checked";
+									} ?>/>
+							</div>
+						</div>
+					</div>
 					<!-- <div class="form-group">
 						<label class="col-md-3 control-label">Display Order</label>
 						<div class="col-md-3">

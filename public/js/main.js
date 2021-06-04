@@ -394,7 +394,8 @@ $("html").on("click", ".wishlist-add", function (e) {
   e.preventDefault();
 });
 
-$("#search-categories.dropdown-menu a").click(function () {
+$("#search-categories.dropdown-menu a").click(function (e) {
+  e.preventDefault();
   let selText = $(this).text();
   let selId = $(this).data("id");
   $(this)

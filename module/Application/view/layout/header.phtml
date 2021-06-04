@@ -33,7 +33,7 @@ foreach($level1Categories as $row){
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" href="<?php echo MAIN_URL . 'logout';?>">Logout</a>
-                                        <a class="dropdown-item" href="javascript:void(0);">Edit Profile</a>
+                                        <a class="dropdown-item" href="<?php echo MAIN_URL.'my-profile';?>">Edit Profile</a>
                                         <a class="dropdown-item" href="javascript:void(0);">My Orders</a>
                                     </div>
                                 </div>
@@ -112,8 +112,8 @@ foreach($level1Categories as $row){
                                                 </div>
                                             </div>
                                             <div class="compact-cart-buttons">
-                                                <a href="#" class="to-cart">Continue to cart</a>
-                                                <a href="#" class="to-checkout">Continue to checkout</a>
+                                                <a href="<?php echo MAIN_URL.'cart'?>" class="to-cart">Continue to cart</a>
+                                                <a href="javascript:void(0);" class="to-checkout">Continue to checkout</a>
                                             </div>
                                         </div>
                                     </form>
@@ -148,7 +148,7 @@ foreach($level1Categories as $row){
                         <div class="dropdown-menu" id="search-categories">
                             <a class="dropdown-item" href="#" data-id="0">All <span class="d-none d-sm-inline-block">Categories</span></a>
                             <?php foreach ($level1Categories as $cat) { ?>
-                                <a class="dropdown-item" href="#" data-slug="<?php echo $cat->slug;?>" data-id="<?php echo $cat->id;?>"><?php echo $cat->name; ?></a>
+                                <a class="dropdown-item" href="javascript:void();" data-slug="<?php echo $cat->slug;?>" data-id="<?php echo $cat->id;?>"><?php echo $cat->name; ?></a>
                             <?php } ?>
                             <!-- <div role="separator" class="dropdown-divider"></div> -->
                         </div>

@@ -35,12 +35,13 @@ class ProductController extends AbstractActionController
     public static $DAILY_DEALS = 4;
     public static $BEST_OFFERS = 5;
     public static $SPOTLIGHT = 6;
+    public static $PROMOTIONS = 7;
     public function indexAction()
-    {   
+    {
         $page = 1;
         $limit = 12;
         $offset = 0;
-        if(isset($_GET['page']) && $_GET['page'] != ""){
+        if (isset($_GET['page']) && $_GET['page'] != "") {
             $page = $_GET['page'];
             $offset = ($page - 1) * $limit;
         }
@@ -58,16 +59,16 @@ class ProductController extends AbstractActionController
             $categorySlug = $cat3;
         } elseif ($cat2) {
             $categorySlug = $cat2;
-        } elseif($cat1) {
+        } elseif ($cat1) {
             $categorySlug = $cat1;
         }
-        if($cat1){
+        if ($cat1) {
             $completeSlug .= "/".$cat1;
         }
-        if($cat2){
+        if ($cat2) {
             $completeSlug .= "/".$cat2;
         }
-        if($cat3){
+        if ($cat3) {
             $completeSlug .= "/".$cat3;
         }
         if ($categorySlug != "") {
@@ -76,18 +77,54 @@ class ProductController extends AbstractActionController
                 $categoryId = $categoryInfo[0]->id;
             }
         }
+        $categoryArray = [];
+        if ($categoryId) {
+            if ($cat3) {
+                $cat3Info = $itemCategoryMySqlExtDAO->queryBySlug($cat3);
+                array_push($categoryArray, $cat3Info[0]->id);
+            } elseif ($cat2 && !$cat3) {
+                $cat2Info = $itemCategoryMySqlExtDAO->queryBySlug($cat2);
+                $cat2Id = $cat2Info[0]->id;
+                $categoriesLevel2 = CategoryController::getCategories("parent_id = $cat2Id");
+                foreach ($categoriesLevel2 as $row) {
+                    array_push($categoryArray, $row->id);
+                }
+                //array_push($categoryArray, $cat2Info[0]->id);
+            } elseif ($cat1 && !$cat2 && !$cat3) {
+                $cat1Info = $itemCategoryMySqlExtDAO->queryBySlug($cat1);
+                $cat1Id = $cat1Info[0]->id;
+                $categoriesLevel1 = CategoryController::getCategories("parent_id = $cat1Id");
+                foreach ($categoriesLevel1 as $row) {
+                    array_push($categoryArray, $row->id);
+                    $cat2Info = $itemCategoryMySqlExtDAO->queryBySlug($row->slug);
+                    $cat2Id = $cat2Info[0]->id;
+                    $categoriesLevel2 = CategoryController::getCategories("parent_id = $cat2Id");
+                    foreach ($categoriesLevel2 as $row) {
+                        array_push($categoryArray, $row->id);
+                    }
+                }
+            }
+        }
         //echo $completeSlug.'<br>';
-        $items = self::getItems($categoryId, $search, false, $limit, $offset);
-        $itemsCount = count(self::getItems($categoryId, $search, false));
+        $items = self::getItems($categoryArray, $search, false, "", $limit, $offset);
+        $itemsCount = count(self::getItems($categoryArray, $search, false));
         $totalPages = ceil($itemsCount / $limit);
         // var_dump($cat1);
         // var_dump($cat2);
         // var_dump($cat3);
+        $isSearchPage = false;
+        if ($search != false) {
+            $isSearchPage = true;
+        }
         $data = [
             'items' => $items,
             'totalPages' => $totalPages,
             'currentPage' => $page,
             'completeSlug' => $completeSlug,
+            'isSearch' => $isSearchPage,
+            'cat1' => $cat1,
+            'cat2' => $cat2,
+            'cat3' => $cat3,
         ];
         //print_r($items);
         return new ViewModel($data);
@@ -101,7 +138,7 @@ class ProductController extends AbstractActionController
         $page = 1;
         $limit = 12;
         $offset = 0;
-        if(isset($_GET['page']) && $_GET['page'] != ""){
+        if (isset($_GET['page']) && $_GET['page'] != "") {
             $page = $_GET['page'];
             $offset = ($page - 1) * $limit;
         }
@@ -109,9 +146,37 @@ class ProductController extends AbstractActionController
         $itemTagMySqlExtDAO = new ItemTagMySqlExtDAO();
         $tagInfo = $itemTagMySqlExtDAO->queryBySlug('todays-deals');
         $tagId = $tagInfo[0]->id;
-        $items = self::getItems(false, false, $tagId, $limit, $offset);
+        $items = self::getItems(false, false, $tagId, "", $limit, $offset);
+        $spotLight = self::getItems(false, false, self::$SPOTLIGHT, "RAND(),", 1, $offset);
         $itemsCount = count(self::getItems(false, false, $tagId));
         $totalPages = ceil($itemsCount / $limit);
+        //print_r($spotLight);
+        $data = [
+            'items' => $items,
+            'totalPages' => $totalPages,
+            'currentPage' => $page,
+            'spotlight' => $spotLight[0],
+        ];
+        //print_r($items);
+        return new ViewModel($data);
+    }
+    public function latestArrivalsAction()
+    {
+        $page = 1;
+        $limit = 12;
+        $offset = 0;
+        if (isset($_GET['page']) && $_GET['page'] != "") {
+            $page = $_GET['page'];
+            $offset = ($page - 1) * $limit;
+        }
+        $search = (isset($_GET['search']) && $_GET['search'] != "") ? $_GET['search'] : false;
+        $itemTagMySqlExtDAO = new ItemTagMySqlExtDAO();
+        $tagInfo = $itemTagMySqlExtDAO->queryBySlug('latest-arrivals');
+        $tagId = $tagInfo[0]->id;
+        $items = self::getItems(false, false, $tagId, "", $limit, $offset);
+        $itemsCount = count(self::getItems(false, false, $tagId));
+        $totalPages = ceil($itemsCount / $limit);
+        //print_r($spotLight);
         $data = [
             'items' => $items,
             'totalPages' => $totalPages,
@@ -120,9 +185,31 @@ class ProductController extends AbstractActionController
         //print_r($items);
         return new ViewModel($data);
     }
-    public function latestArrivalsAction()
+
+    public function promotionsAction()
     {
-        return new ViewModel();
+        $page = 1;
+        $limit = 12;
+        $offset = 0;
+        if (isset($_GET['page']) && $_GET['page'] != "") {
+            $page = $_GET['page'];
+            $offset = ($page - 1) * $limit;
+        }
+        $search = (isset($_GET['search']) && $_GET['search'] != "") ? $_GET['search'] : false;
+        $itemTagMySqlExtDAO = new ItemTagMySqlExtDAO();
+        $tagInfo = $itemTagMySqlExtDAO->queryBySlug('promotions');
+        $tagId = $tagInfo[0]->id;
+        $items = self::getItems(false, false, $tagId, "", $limit, $offset);
+        $itemsCount = count(self::getItems(false, false, $tagId));
+        $totalPages = ceil($itemsCount / $limit);
+        //print_r($spotLight);
+        $data = [
+            'items' => $items,
+            'totalPages' => $totalPages,
+            'currentPage' => $page,
+        ];
+        //print_r($items);
+        return new ViewModel($data);
     }
 
     public static function insertItems($items, $supplierId, $fileName)
@@ -331,10 +418,10 @@ class ProductController extends AbstractActionController
     {
     }
 
-    public static function getItems($categoryId = false, $search = false, $tagId = false, $limit = 0, $offset = 0)
+    public static function getItems($categoryId = false, $search = false, $tagId = false, $orderBy = "", $limit = 0, $offset = 0)
     {
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
-        $items = $itemMySqlExtDAO->getItems($categoryId, $search, $tagId, $limit, $offset);
+        $items = $itemMySqlExtDAO->getItems($categoryId, $search, $tagId, $orderBy, $limit, $offset);
         return $items;
     }
 }

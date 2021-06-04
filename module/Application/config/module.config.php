@@ -86,6 +86,20 @@ return [
                     ],
                 ],
             ],
+            'promotions' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route'    => '/promotions[/]',
+                    'defaults' => [
+                        'controller' => Controller\ProductController::class,
+                        'action'     => 'promotions',
+                        'year'       => date('Y'),
+                    ],
+                    'constraints' => [
+                        'year' => '\d{4}',
+                    ],
+                ],
+            ],
             // Supplier Routes
             'contactDetails' => [
                 'type' => Segment::class,

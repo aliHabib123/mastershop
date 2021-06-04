@@ -1,6 +1,8 @@
 <?php
 
 use Application\Controller\DesignController;
+use Application\Controller\HelperController;
+
 ?>
 <div class="main-wrapper">
     <div class="small-banner-container with-breadcrumb">
@@ -17,8 +19,8 @@ use Application\Controller\DesignController;
         <div class="banner-breadcrumb">
             <div class="container">
                 <ul>
-                    <li><a href="#"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
-                    <li><a>Large Appliances</a></li>
+                    <li><a href="<?php echo MAIN_URL; ?>"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
+                    <li><a class="light">Todays Deals</a></li>
                 </ul>
             </div>
         </div>
@@ -27,44 +29,51 @@ use Application\Controller\DesignController;
         <div class="breadcrumb-c-inner">
             <div class="container">
                 <ul>
-                    <li><a href="#"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
-                    <li><a>Large Appliances</a></li>
+                    <li><a href="<?php echo MAIN_URL; ?>"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
+                    <li><a class="">Todays Deals</a></li>
                 </ul>
             </div>
         </div>
     </div>
-    <div class="spotlight-deals">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 d-block d-sm-none">
-                <div class="spotlight-deals_title">SPOTLIGHT DEALS <span><a href="#"><img src="img/arrow-right-grey.png" /></a></span></div>
-                </div>
-                <div class="col-md-4 spotlight-deals_img">
-                    <div class="sale-tag">10%</div>
-                    <a href="#">
-                        <img src="img/product.png" />
-                    </a>
-                </div>
-                <div class="col-md-8">
-                    <div class="spotlight-deals_title d-none d-sm-block">SPOTLIGHT DEALS
-                    <!-- <span><a href="#"><img src="img/arrow-right-grey.png" /></a></span> -->
+    <?php if ($this->spotlight) {
+        $percentage = round(100 - ($this->spotlight->salePrice/$this->spotlight->regularPrice) * 100);
+        $href = MAIN_URL . 'product/' . $this->spotlight->slug;
+        $title = $this->spotlight->title;
+        $imageUrl = ($this->spotlight->image !="" && $this->spotlight->image != null) ? HelperController::getImageUrl($this->spotlight->image) : PRODUCT_PLACEHOLDER_IMAGE_URL;?>
+        <div class="spotlight-deals">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 d-block d-sm-none">
+                        <div class="spotlight-deals_title">SPOTLIGHT DEALS <span><a href="<?php echo $href;; ?>">
+                                    <img src="img/arrow-right-grey.png" /></a></span>
+                        </div>
                     </div>
-                    <div class="spotlight-deals_item_title">
-                        <a href="#">
-                            Panasonic DECT 6.0 Expandable Cordless Phone
-                            with Answering Machine and Smart Call Block
+                    <div class="col-md-4 spotlight-deals_img">
+                        <div class="sale-tag"><?php echo $percentage;?>%</div>
+                        <a href="<?php echo $href; ?>">
+                            <img src="<?php echo $imageUrl;?>" />
                         </a>
                     </div>
-                    <div class="spotlight-deals_price1">1,290,000</div>
-                    <div class="spotlight-deals_price2">890,000<span>LBP</span></div>
-                    <div class="spotlight-deals_buttons">
-                        <a href="#" class="add-to-wishlist"><img src="img/heart-off.png" />Add to Wishlist</a>
-                        <a href="#" class="add-to-wishlist"><img src="img/cart.png" />Add to Cart</a>
+                    <div class="col-md-8">
+                        <div class="spotlight-deals_title d-none d-sm-block">SPOTLIGHT DEALS
+                            <span><a href="<?php echo $href; ?>"><img src="img/arrow-right-grey.png" /></a></span>
+                        </div>
+                        <div class="spotlight-deals_item_title">
+                            <a href="<?php echo $href; ?>">
+                                <?php echo $title; ?>
+                            </a>
+                        </div>
+                        <div class="spotlight-deals_price1"><?php echo number_format($this->spotlight->regularPrice)?></div>
+                        <div class="spotlight-deals_price2"><?php echo number_format($this->spotlight->salePrice);?> <span>LBP</span></div>
+                        <div class="spotlight-deals_buttons">
+                            <a href="javascript:void(0);" class="add-to-wishlist wishlist-add" data-item-id="<?php echo $this->spotlight->id;?>"><img src="img/heart-off.png" />Add to Wishlist</a>
+                            <a href="javascript:void(0);" class="add-to-wishlist"><img src="img/cart.png" />Add to Cart</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    <?php } ?>
     <div class="container">
         <div class="row">
             <div class="col-md-12 with-margin">
@@ -73,7 +82,7 @@ use Application\Controller\DesignController;
         </div>
         <div class="row">
             <?php ?>
-            <?php foreach($this->items as $item) { ?>
+            <?php foreach ($this->items as $item) { ?>
                 <div class="col-6 col-md-2 item-col">
                     <?php echo DesignController::item($item); ?>
                 </div>
@@ -103,7 +112,7 @@ use Application\Controller\DesignController;
             startPage: <?php echo $this->currentPage; ?>,
             initiateStartPageClick: false,
             onPageClick: function(event, page) {
-                location.href = '<?php echo MAIN_URL . 'todays-eals' . "/?page="; ?>' + page;
+                location.href = '<?php echo MAIN_URL . 'todays-deals' . "/?page="; ?>' + page;
             },
         });
     });

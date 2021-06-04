@@ -20,7 +20,7 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
         return $this->getList($sqlQuery);
     }
 
-    public function getItems($categoryId = false, $search = false, $tagId = false, $limit = 0, $offset = 0)
+    public function getItems($categoryId = false, $search = false, $tagId = false, $orderBy = "", $limit = 0, $offset = 0)
     {
         $sql = "SELECT
                     a.*,
@@ -39,8 +39,16 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
         }
 
         $sql .= " WHERE 1";
-        if ($categoryId) {
-            $sql .= " AND b.`category_id` = $categoryId";
+       
+        if(is_array($categoryId)){
+            if ($categoryId && count($categoryId) > 0) {
+                $categoryId = implode(',', $categoryId);
+                $sql .= " AND b.`category_id` IN ($categoryId)";
+            }
+        } else {
+            if ($categoryId) {
+                $sql .= " AND b.`category_id` = $categoryId";
+            }
         }
         if ($tagId) {
             $sql .= " AND c.`tag_id` = $tagId";
@@ -48,7 +56,12 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
         if ($search) {
             $sql .= " AND (a.`title` LIKE '%$search%' OR a.`description` LIKE '%$search%' OR a.`specification` LIKE '%$search%')";
         }
-        $sql .= " ORDER BY a.`display_order` ASC, a.`id` DESC";
+        $sql .= " ORDER BY";
+
+        if($orderBy != ""){
+            $sql .= " ".$orderBy;
+        }
+        $sql .= "  a.`display_order` ASC, a.`id` DESC";
 
         if ($limit != 0) {
             $sql .= " LIMIT $limit OFFSET $offset";
