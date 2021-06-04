@@ -25,13 +25,11 @@ class IndexController extends AbstractActionController
         $ads = ContentController::getContent("type = 'ad' and lang = $langId ORDER BY display_order asc LIMIT 3");
         $featuredCategories = CategoryController::getCategories("is_featured = 1");
 
-        //Daily DEALS
+        //Daily DEALS, PICKED FOR YOU and BEST OFFERS
         $dailyDeals = ProductController::getItems(false, false, ProductController::$DAILY_DEALS, 10, 0);
         $pickedForYou = ProductController::getItems(false, false, ProductController::$PICKED_FOR_YOU, 10, 0);
         $bestOffers = ProductController::getItems(false, false, ProductController::$BEST_OFFERS, 10, 0);
-        print_r($dailyDeals);echo '<br>';
-        print_r($pickedForYou);echo '<br>';
-        print_r($bestOffers);echo '<br>';
+
         $this->layout()->withBanner = true;
         $this->layout()->banners = $banners;
         $data = [

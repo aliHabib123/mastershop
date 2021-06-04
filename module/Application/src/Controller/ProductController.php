@@ -30,10 +30,11 @@ use UserMySqlExtDAO;
 class ProductController extends AbstractActionController
 {
     public static $TODAYS_DEALS = 1;
-    public static $LATEST_ARRIVALS = 1;
-    public static $PICKED_FOR_YOU = 1;
-    public static $DAILY_DEALS = 1;
-    public static $BEST_OFFERS = 1;
+    public static $LATEST_ARRIVALS = 2;
+    public static $PICKED_FOR_YOU = 3;
+    public static $DAILY_DEALS = 4;
+    public static $BEST_OFFERS = 5;
+    public static $SPOTLIGHT = 6;
     public function indexAction()
     {   
         $page = 1;
