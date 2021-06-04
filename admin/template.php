@@ -220,7 +220,13 @@ if (isset($_REQUEST['act'])) {
 						<span class="title">Ads</span>
 					</a>
 				</li>
-				<li>
+				<li class="">
+					<a href="display_product.php">
+						<i class="fa fa-bell"></i>
+						<span class="title">Products</span>
+					</a>
+				</li>
+				<!-- <li>
 					<a class="active" href="javascript:;">
 						<i class="fa fa-bell"></i>
 						<span class="title">Jobs</span>
@@ -238,7 +244,7 @@ if (isset($_REQUEST['act'])) {
 							</a>
 						</li>
 					</ul>
-				</li>
+				</li> -->
 			</ul>
 
 			<!-- END SIDEBAR MENU -->

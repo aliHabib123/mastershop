@@ -11,14 +11,14 @@ use Application\Controller\DesignController;
             <div class="container">
                 <div class="banner-title1">NEW FOR YOU</div>
                 <div class="banner-title2">Get Ready!</div>
-                <div class="banner-title3">Get a chance and catch our latest products and deals.</div>
+                <div class="banner-title3">Get a chance and see our promotions.</div>
             </div>
         </div>
         <div class="banner-breadcrumb">
             <div class="container">
                 <ul>
                     <li><a href="<?php echo MAIN_URL;?>"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
-                    <li><a class="light">Latest Arrivals</a></li>
+                    <li><a class="light">Promotions</a></li>
                 </ul>
             </div>
         </div>
@@ -28,29 +28,15 @@ use Application\Controller\DesignController;
             <div class="container">
                 <ul>
                     <li><a href="<?php echo MAIN_URL;?>"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
-                    <li><a>Latest Arrivals</a></li>
+                    <li><a>Promotions</a></li>
                 </ul>
-            </div>
-        </div>
-    </div>
-    <div class="container ads-c">
-        <div class="row">
-            <div class="col-md-6 ad-col">
-                <a href="<?php echo MAIN_URL;?>">
-                    <img src="img/ad2.png"/>
-                </a>
-            </div>
-            <div class="col-md-6 ad-col">
-                <a href="<?php echo MAIN_URL;?>">
-                    <img src="img/ad2.png"/>
-                </a>
             </div>
         </div>
     </div>
     <div class="container">
         <div class="row">
             <div class="col-md-12 with-margin">
-                <?php echo DesignController::mainTitle("LATEST ARRIVALS") ?>
+                <?php echo DesignController::mainTitle("PROMOTIONS") ?>
             </div>
         </div>
         <div class="row">
@@ -84,7 +70,7 @@ use Application\Controller\DesignController;
             startPage: <?php echo $this->currentPage; ?>,
             initiateStartPageClick: false,
             onPageClick: function(event, page) {
-                location.href = '<?php echo MAIN_URL . 'latest-arrivals' . "/?page="; ?>' + page;
+                location.href = '<?php echo MAIN_URL . 'promotions' . "/?page="; ?>' + page;
             },
         });
     });

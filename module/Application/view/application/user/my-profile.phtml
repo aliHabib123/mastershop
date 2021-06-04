@@ -24,9 +24,9 @@
                                 </div><span class="badge badge-secondary">6</span>
                             </div>
                         </a><a class="list-group-item" href="#"><i class="fa fa-user text-muted"></i>Profile Settings</a><a class="list-group-item" href="#"><i class="fa fa-map-marker text-muted"></i>Addresses</a>
-                        <a class="list-group-item" href="#">
+                        <a class="list-group-item" href="<?php echo MAIN_URL.'my-wishlist';?>">
                             <div class="d-flex justify-content-between align-items-center">
-                                <div><i class="fa fa-heart mr-1 text-muted"></i>
+                                <div><i class="fa fa-heart mr-1"></i>
                                     <div class="d-inline-block font-weight-medium text-uppercase">My Wishlist</div>
                                 </div><span class="badge badge-secondary"><?php echo count($_SESSION['user']->wishlist);?></span>
                             </div>

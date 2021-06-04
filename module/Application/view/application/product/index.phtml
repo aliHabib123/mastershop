@@ -2,6 +2,29 @@
 
 use Application\Controller\DesignController;
 
+$title = $categoryName = "All Products";
+$itemCategoryMySqlExtDAO = new ItemCategoryMySqlExtDAO();
+if($this->isSearch){
+    $title = "Search Result";
+    $description = "Looking for items with keyword: <b>". $_GET['search'] .'</b>'; 
+} else{
+    if($this->cat1){
+        $categoryInfo = $itemCategoryMySqlExtDAO->queryBySlug($this->cat1);
+        $title = $categoryInfo[0]->name;
+        $description = "Shop the latest ".strtolower($title)." products in the market";
+        $categoryName = $title;
+    }
+}
+if($this->cat2){
+    $categoryInfo2 = $itemCategoryMySqlExtDAO->queryBySlug($this->cat2);
+    $title2 = $categoryInfo2[0]->name;
+    $categoryName = $title2;
+}
+if($this->cat3){
+    $categoryInfo3 = $itemCategoryMySqlExtDAO->queryBySlug($this->cat3);
+    $title3 = $categoryInfo3[0]->name;
+    $categoryName = $title3;
+}
 ?>
 <div class="main-wrapper pb30">
     <div class="small-banner-container with-breadcrumb">
@@ -10,15 +33,15 @@ use Application\Controller\DesignController;
         </div>
         <div class="small-banner-caption-container">
             <div class="container">
-                <div class="banner-title">Electronics</div>
-                <div class="banner-brief">Shop the latest electronic products in the market</div>
+                <div class="banner-title"><?php echo $title;?></div>
+                <div class="banner-brief"><?php echo $description;?></div>
             </div>
         </div>
         <div class="banner-breadcrumb">
             <div class="container">
                 <ul>
                     <li><a href="<?php echo MAIN_URL;?>"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
-                    <li><a>Large Appliances</a></li>
+                    <li><a><?php echo $categoryName;?></a></li>
                 </ul>
             </div>
         </div>
@@ -27,8 +50,8 @@ use Application\Controller\DesignController;
         <div class="breadcrumb-c-inner">
             <div class="container">
                 <ul>
-                    <li><a href="#"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
-                    <li><a>Large Appliances</a></li>
+                    <li><a href="<?php echo MAIN_URL;?>"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
+                    <li><a><?php echo $categoryName;?></a></li>
                 </ul>
             </div>
         </div>

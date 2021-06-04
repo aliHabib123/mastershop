@@ -314,6 +314,15 @@ body {
       padding: 5px 10px;
       line-height: 1;
       transform: rotate(-90deg);
+      z-index: 9;
+    }
+    img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      max-width: 100%;
+      max-height: 100%;
     }
   }
   &_title {
@@ -599,16 +608,16 @@ img.centervh {
     color: green;
   }
 }
-.content{
-  .page-details{
+.content {
+  .page-details {
     margin-top: 30px;
     font-family: $fontsecondary;
     text-align: left;
     font-size: 16px;
   }
-  .page-banner{
+  .page-banner {
     margin-top: 20px;
-    img{
+    img {
       width: 100%;
     }
   }
