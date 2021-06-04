@@ -172,18 +172,18 @@ $(function () {
     }, 250);
   });
 
-  //Pagination
-  $("#product-pagination").twbsPagination({
-    totalPages: 35,
-    visiblePages: 5,
-    first: "",
-    last: "",
-    next: '<i class="fas fa-chevron-right"></i>',
-    prev: '<i class="fas fa-chevron-left"></i>',
-    onPageClick: function (event, page) {
-      //alert(page);
-    },
-  });
+  // //Pagination
+  // $("#product-pagination").twbsPagination({
+  //   totalPages: 35,
+  //   visiblePages: 5,
+  //   first: "",
+  //   last: "",
+  //   next: '<i class="fas fa-chevron-right"></i>',
+  //   prev: '<i class="fas fa-chevron-left"></i>',
+  //   onPageClick: function (event, page) {
+  //     //alert(page);
+  //   },
+  // });
 
   // jQuery
   $("#mobile-number, #work-number").intlTelInput({
@@ -264,7 +264,11 @@ $(function () {
       cache: false,
       processData: false,
       beforeSend: function () {
-        showMsg(".notice-area", true, "Importing your file, please dont click anywhere...");
+        showMsg(
+          ".notice-area",
+          true,
+          "Importing your file, please dont click anywhere..."
+        );
       },
       success: function (response) {
         showMsg(".notice-area", response.status, response.msg);
@@ -285,10 +289,123 @@ function showMsg(selector, status, msg) {
   $(selector).html(html);
 }
 
-// document
+// var element =  document.getElementById('elementId');
+// if(typeof( document.querySelector(".custom-file-input")) != undefined){
+//   document
 //   .querySelector(".custom-file-input")
 //   .addEventListener("change", function (e) {
 //     var name = this.files[0].name;
 //     var nextSibling = e.target.nextElementSibling;
 //     nextSibling.innerText = name;
 //   });
+
+// }
+//warehouse
+$("html").on("click", ".delete-warehouse", function (e) {
+  if (confirm("Are you sure?")) {
+    let warehouseId = $(this).data("id");
+    let contactId = $(this).data("contactId");
+    let href = $(this).attr("href");
+    console.log(warehouseId, contactId, href);
+    // let data = { warehouseId: "warehouseId", contactId: "contactId" };
+    $.ajax({
+      url: href,
+      type: "POST",
+      dataType: "json",
+      data: { warehouseId: warehouseId, contactId: contactId },
+      // mimeType: "multipart/form-data",
+      // contentType: false,
+      // cache: false,
+      // processData: true,
+      beforeSend: function () {
+        showMsg(".notice-area", true, "Logging you in, please wait...");
+      },
+      success: function (response) {
+        console.log(response);
+        showMsg(".notice-area", response.status, response.msg);
+        if (response.status == true) {
+          alert("ok");
+          console.log($(this).closest("tr"));
+          $("#warehouse-tbody")
+            .find("tr#" + warehouseId)
+            .remove();
+        }
+      },
+      error: function () {
+        showMsg(".notice-area", false, "An error occured, please try again!");
+      },
+    });
+    e.preventDefault();
+  }
+});
+//edit-warehouse
+$("html").on("click", ".edit-warehouse", function (e) {
+  e.preventDefault();
+  $("#edit-warehouse-modal").modal("show");
+  var warehouseId = $(this).data("warehouseId");
+  var contactId = $(this).data("contactId");
+  var warehouseName = $(this).data("title");
+  var email = $(this).data("email");
+  var mobile = $(this).data("mobile");
+  var lastName = $(this).data("lastName");
+  var firstName = $(this).data("firstName");
+
+  $("#edit-warehouse-modal #warehouse-id").val(warehouseId);
+  $("#edit-warehouse-modal #contact-id").val(contactId);
+  $("#edit-warehouse-modal #warehouse-name").val(warehouseName);
+  $("#edit-warehouse-modal #email").val(email);
+  $("#edit-warehouse-modal #mobile-number").val(mobile);
+  $("#edit-warehouse-modal #first-name").val(firstName);
+  $("#edit-warehouse-modal #last-name").val(lastName);
+});
+
+$("html").on("click", ".wishlist-add", function (e) {
+  let itemId = $(this).data("itemId");
+  let customerId = $(this).data("customerId");
+  console.log(itemId, customerId);
+  // let data = { warehouseId: "warehouseId", contactId: "contactId" };
+  $.ajax({
+    url: mainUrl + "add-to-wishlist",
+    type: "POST",
+    dataType: "json",
+    data: { itemId: itemId, customerId: customerId },
+    // mimeType: "multipart/form-data",
+    // contentType: false,
+    // cache: false,
+    // processData: true,
+    beforeSend: function () {
+      //showMsg(".notice-area", true, "Logging you in, please wait...");
+    },
+    success: function (response) {
+      console.log(response);
+      //showMsg(".notice-area", response.status, response.msg);
+      if (response.added == true) {
+        //alert("ok");
+        //console.log($(e.currentTarget));
+        $(e.currentTarget).find("img").attr("src", "img/heart-on.png");
+      } else if (response.deleted) {
+        $(e.currentTarget).find("img").attr("src", "img/heart-off.png");
+      }
+    },
+    error: function () {
+      showMsg(".notice-area", false, "An error occured, please try again!");
+    },
+  });
+  e.preventDefault();
+});
+
+$("#search-categories.dropdown-menu a").click(function () {
+  let selText = $(this).text();
+  let selId = $(this).data("id");
+  $(this)
+    .parent()
+    .parent()
+    .find(".dropdown-toggle")
+    .html(selText + ' <span class="caret"></span>');
+  $("#selected-category").val(selId);
+  let href = mainUrl + "products/";
+  if (selId != 0) {
+    href += $(this).data("slug");
+  }
+  $(this).closest("form").attr("action", href);
+});

@@ -30,11 +30,12 @@ if (is_file($imagesPath.$image)) {
     $image="";
 }
 
-$obj =  new ItemCategoryMySqlDAO();
+$obj =  new ItemCategory();
 $obj->name = $name;
 $obj->image = $image;
 $obj->parentId = $parent_id;
 $obj->displayOrder = $display_order;
+$obj->megaMenuDisplayOrder = $mega_menu_display_order;
 $obj->active = $active;
 $obj->isFeatured = $isFeatured;
 $obj->slug = $slug;

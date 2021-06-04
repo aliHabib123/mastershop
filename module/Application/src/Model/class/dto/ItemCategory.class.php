@@ -1,38 +1,23 @@
 <?php
 	/**
 	 * Object represents table 'item_category'
-	 *
-     	 * @author: http://phpdao.com
-     	 * @date: 2021-05-14 19:34	 
 	 */
 	class ItemCategory{
 		
 		var $id;
-
-		var $name;
-
-		var $image;
-
-		var $parentId;
-
-		var $slug;
-
-		var $displayOrder;
-
-		var $active;
-
-		var $langId;
-
-		var $translationId;
-
-		var $isStatic;
-
-		var $isFeatured;
-
-		var $createdAt;
-
-		var $updatedAt;
-
-		
+		var $name;
+		var $image;
+		var $parentId;
+		var $slug;
+		var $displayOrder;
+		var $megaMenuDisplayOrder;
+		var $active;
+		var $langId;
+		var $translationId;
+		var $isStatic;
+		var $isFeatured;
+		var $createdAt;
+		var $updatedAt;
+		
 	}
 ?>

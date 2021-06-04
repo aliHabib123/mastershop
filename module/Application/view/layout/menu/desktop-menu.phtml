@@ -1,180 +1,136 @@
+<?php
+global $categories;
+//print_r($level1Categories);
+?>
+
 <div class="lower-menu d-none d-sm-block">
-        <div class="container">
-            <div class="mega-menu">
-                <nav class="navbar navbar-expand-md yamm">
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse-grid" aria-controls="navbar-collapse-grid" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div id="navbar-collapse-grid" class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav">
-                            <!-- Grid 12 Menu -->
-                            <li class="nav-item dropdown yamm-fw"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle">Electronics<b class="caret"></b></a>
+    <div class="container">
+        <div class="mega-menu">
+            <nav class="navbar navbar-expand-md yamm">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse-grid" aria-controls="navbar-collapse-grid" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div id="navbar-collapse-grid" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <!-- Grid 12 Menu -->
+
+                        <?php foreach ($categories as $row) { ?>
+                            <li class="nav-item dropdown yamm-fw"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle"><?php echo $row->name ?><b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li class="grid-list">
                                         <div class="grid-container card-columns">
-                                            <div class="grid-item card">
-                                                <div class="main-cat-name"><a href="#">Large Appliance</a></div>
-                                                <ul class="subcategories">
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="grid-item card ">
-                                                <div class="main-cat-name"><a href="#">Small Appliance1</a></div>
-                                                <ul class="subcategories">
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="grid-item card">
-                                                <div class="main-cat-name"><a href="#">Small Appliance2</a></div>
-                                                <ul class="subcategories">
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="grid-item card">
-                                                <div class="main-cat-name"><a href="#">Small Appliance3</a></div>
-                                                <ul class="subcategories">
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="grid-item card">
-                                                <div class="main-cat-name"><a href="#">Small Appliance4</a></div>
-                                                <ul class="subcategories">
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                    <li><a href="">Test 1</a></li>
-                                                </ul>
-                                            </div>
+                                            <?php foreach ($row->subcategories as $row1) { ?>
+                                                <div class="grid-item card">
+                                                    <div class="main-cat-name"><a href="<?php echo MAIN_URL.'products/'.$row->slug."/".$row1->slug;?>"><?php echo $row1->name ?></a></div>
+                                                    <ul class="subcategories">
+                                                        <?php foreach ($row1->subsubcategories as $row2) { ?>
+                                                            <li><a href="<?php echo MAIN_URL.'products/'.$row->slug."/".$row1->slug."/".$row2->slug;?>"><?php echo $row2->name ?></a></li>
+                                                        <?php } ?>
+                                                    </ul>
+                                                </div>
+                                            <?php } ?>
                                         </div>
                                     </li>
                                 </ul>
                             </li>
-                            <!--
+                        <?php } ?>
+                        <!--
               <Aside>Menu </Aside>
               -->
-                            <li class="dropdown yamm-fw" id="brands-li"><a href="#" data-toggle="dropdown" class="nav-link  dropdown-toggle">Cards<b class="caret"></b></a>
-                                <div class="dropdown-menu">
-                                    <form>
-                                        <div>
-                                            <div class="brands-categories">
-                                                <ul>
-                                                    <li id="lg-apple" class="active"><a href="#">Electronics</a></li>
-                                                    <li id="lg"><a href="#">Electronics</a></li>
-                                                    <li id="apple"><a href="#">Electronics</a></li>
-                                                    <li><a href="#">Electronics</a></li>
-                                                    <li><a href="#">Electronics</a></li>
-                                                </ul>
+                        <li class="dropdown yamm-fw" id="brands-li"><a href="#" data-toggle="dropdown" class="nav-link  dropdown-toggle">Shop By Brands<b class="caret"></b></a>
+                            <div class="dropdown-menu">
+                                <form>
+                                    <div>
+                                        <div class="brands-categories">
+                                            <ul>
+                                                <li id="lg-apple" class="active"><a href="#">Electronics</a></li>
+                                                <li id="lg"><a href="#">Electronics</a></li>
+                                                <li id="apple"><a href="#">Electronics</a></li>
+                                                <li><a href="#">Electronics</a></li>
+                                                <li><a href="#">Electronics</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="brands-slider-container">
+                                            <div class="brands-slider" id="brands-slider-lg-apple">
+                                                <div>
+                                                    <a href="#"><img src="img/lg.png" /></a>
+                                                </div>
+                                                <div>
+                                                    <a href="#"><img src="img/apple.png" /></a>
+                                                </div>
+                                                <div>
+                                                    <a href="#"><img src="img/lg.png" /></a>
+                                                </div>
+                                                <div>
+                                                    <a href="#"><img src="img/apple.png" /></a>
+                                                </div>
+                                                <div>
+                                                    <a href="#"><img src="img/lg.png" /></a>
+                                                </div>
+                                                <div>
+                                                    <a href="#"><img src="img/apple.png" /></a>
+                                                </div>
                                             </div>
-                                            <div class="brands-slider-container">
-                                                <div class="brands-slider" id="brands-slider-lg-apple">
-                                                    <div>
-                                                        <a href="#"><img src="img/lg.png" /></a>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#"><img src="img/apple.png" /></a>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#"><img src="img/lg.png" /></a>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#"><img src="img/apple.png" /></a>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#"><img src="img/lg.png" /></a>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#"><img src="img/apple.png" /></a>
-                                                    </div>
+                                            <div class="brands-slider" id="brands-slider-lg">
+                                                <div>
+                                                    <a href="#"><img src="img/lg.png" /></a>
                                                 </div>
-                                                <div class="brands-slider" id="brands-slider-lg">
-                                                    <div>
-                                                        <a href="#"><img src="img/lg.png" /></a>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#"><img src="img/lg.png" /></a>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#"><img src="img/lg.png" /></a>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#"><img src="img/lg.png" /></a>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#"><img src="img/lg.png" /></a>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#"><img src="img/lg.png" /></a>
-                                                    </div>
+                                                <div>
+                                                    <a href="#"><img src="img/lg.png" /></a>
                                                 </div>
-                                                <div class="brands-slider" id="brands-slider-apple">
-                                                    <div>
-                                                        <a href="#"><img src="img/apple.png" /></a>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#"><img src="img/apple.png" /></a>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#"><img src="img/apple.png" /></a>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#"><img src="img/apple.png" /></a>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#"><img src="img/apple.png" /></a>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#"><img src="img/apple.png" /></a>
-                                                    </div>
+                                                <div>
+                                                    <a href="#"><img src="img/lg.png" /></a>
+                                                </div>
+                                                <div>
+                                                    <a href="#"><img src="img/lg.png" /></a>
+                                                </div>
+                                                <div>
+                                                    <a href="#"><img src="img/lg.png" /></a>
+                                                </div>
+                                                <div>
+                                                    <a href="#"><img src="img/lg.png" /></a>
+                                                </div>
+                                            </div>
+                                            <div class="brands-slider" id="brands-slider-apple">
+                                                <div>
+                                                    <a href="#"><img src="img/apple.png" /></a>
+                                                </div>
+                                                <div>
+                                                    <a href="#"><img src="img/apple.png" /></a>
+                                                </div>
+                                                <div>
+                                                    <a href="#"><img src="img/apple.png" /></a>
+                                                </div>
+                                                <div>
+                                                    <a href="#"><img src="img/apple.png" /></a>
+                                                </div>
+                                                <div>
+                                                    <a href="#"><img src="img/apple.png" /></a>
+                                                </div>
+                                                <div>
+                                                    <a href="#"><img src="img/apple.png" /></a>
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
-                                </div>
-                            </li>
-                            <!--
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                        <!--
               <Nesting>Menu </Nesting>
               -->
-                            <li class="dropdown yamm-fw"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle">Images<b class="caret"></b></a>
+                        <li class="dropdown yamm-fw"><a href="#" class="nav-link">Promotions</a></li>
+                        <li class="dropdown yamm-fw"><a href="#" class="nav-link">Latest Products</a></li>
+                        <!-- <li class="dropdown yamm-fw"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle">Images<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li>
 
                                     </li>
                                 </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
+                            </li> -->
+                    </ul>
+                </div>
+            </nav>
         </div>
     </div>
+</div>

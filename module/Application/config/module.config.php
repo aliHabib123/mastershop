@@ -195,6 +195,36 @@ return [
                     ],
                 ],
             ],
+            'addWarehouse' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/add-warehouse',
+                    'defaults' => [
+                        'controller' => Controller\VendorController::class,
+                        'action'     => 'addWarehouse',
+                    ],
+                ],
+            ],
+            'deleteWarehouse' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/delete-warehouse',
+                    'defaults' => [
+                        'controller' => Controller\VendorController::class,
+                        'action'     => 'deleteWarehouse',
+                    ],
+                ],
+            ],
+            'editWarehouse' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/edit-warehouse',
+                    'defaults' => [
+                        'controller' => Controller\VendorController::class,
+                        'action'     => 'editWarehouse',
+                    ],
+                ],
+            ],
             // End supplier routes
 
             //Facebook
@@ -241,7 +271,62 @@ return [
                     ],
                 ],
             ],
+            'myProfile' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/my-profile',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'myProfile',
+                    ],
+                ],
+            ],
+            'myWishlist' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/my-wishlist',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'myWishlist',
+                    ],
+                ],
+            ],
+
+            'addToWishlist' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/add-to-wishlist',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'addToWishlist',
+                    ],
+                ],
+            ],
+
+            'deleteFromWishlist' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/delete-from-wishlist',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'deleteFromWishlist',
+                    ],
+                ],
+            ],
             // End User Routes
+            'content' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route'    => '/page[/:slug][/]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'content',
+                    ],
+                    'constraints' => [
+                        'year' => '\d{4}',
+                    ],
+                ],
+            ],
             'application' => [
                 'type'    => Segment::class,
                 'options' => [

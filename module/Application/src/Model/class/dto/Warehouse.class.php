@@ -8,12 +8,27 @@
 	class Warehouse{
 		
 		var $warehouseId;
-		var $title;
-		var $companyId;
-		var $contactId;
-		var $active;
-		var $createdAt;
-		var $updatedAt;
-		
+
+		var $title;
+
+		var $companyId;
+
+		var $contactId;
+
+		var $active;
+
+		var $createdAt;
+
+		var $updatedAt;
+
+		//+
+		var $firstName;
+
+		var $lastName;
+
+		var $mobile;
+
+		var $email;
+
 	}
 ?>

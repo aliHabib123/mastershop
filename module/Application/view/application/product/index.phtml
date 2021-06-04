@@ -1,8 +1,9 @@
 <?php
 
 use Application\Controller\DesignController;
+
 ?>
-<div class="main-wrapper">
+<div class="main-wrapper pb30">
     <div class="small-banner-container with-breadcrumb">
         <div class="small-banner_img">
             <img src="img/small-banner.jpg" />
@@ -16,14 +17,14 @@ use Application\Controller\DesignController;
         <div class="banner-breadcrumb">
             <div class="container">
                 <ul>
-                    <li><a href="#"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
+                    <li><a href="<?php echo MAIN_URL;?>"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
                     <li><a>Large Appliances</a></li>
                 </ul>
             </div>
         </div>
     </div>
     <div class="breadcrumb-c d-block d-sm-none">
-    <div class="breadcrumb-c-inner">
+        <div class="breadcrumb-c-inner">
             <div class="container">
                 <ul>
                     <li><a href="#"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
@@ -84,16 +85,40 @@ use Application\Controller\DesignController;
             </div>
             <div class="col-md-9">
                 <div class="row">
-                    <?php for ($i = 0; $i < 16; $i++) { ?>
-                        <div class="col-md-3 col-6 item-col">
-                            <?php echo DesignController::item(); ?>
+                    <?php if ($this->items) { ?>
+                        <?php foreach ($this->items as $item) { ?>
+                            <div class="col-md-3 col-6 item-col">
+                                <?php echo DesignController::item($item); ?>
+                            </div>
+                        <?php } ?>
+                        <div class="col-md-12">
+                            <div id="product-pagination" class="product-pagination text-center"></div>
                         </div>
+                    <?php } else { ?>
+                        <div class="col-md-12"><h3 style="text-align: center;display: block;margin-top: 30px;">No Items Found</h3></div>
                     <?php } ?>
-                    <div class="col-md-12">
-                        <div id="product-pagination" class="product-pagination text-center"></div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(function() {
+        //alert('s');
+        //Pagination
+        $("#product-pagination").twbsPagination({
+            totalPages: <?php echo $this->totalPages; ?>,
+            visiblePages: 5,
+            first: "",
+            last: "",
+            next: '<i class="fas fa-chevron-right"></i>',
+            prev: '<i class="fas fa-chevron-left"></i>',
+            startPage: <?php echo $this->currentPage; ?>,
+            initiateStartPageClick: false,
+            onPageClick: function(event, page) {
+                location.href = '<?php echo MAIN_URL . 'products' . $this->completeSlug . "/?page="; ?>' + page;
+            },
+        });
+    });
+</script>

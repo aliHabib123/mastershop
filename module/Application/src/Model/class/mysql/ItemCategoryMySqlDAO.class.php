@@ -1,9 +1,6 @@
 <?php
 /**
  * Class that operate on table 'item_category'. Database Mysql.
- *
- * @author: http://phpdao.com
- * @date: 2021-05-14 19:34
  */
 class ItemCategoryMySqlDAO implements ItemCategoryDAO{
 
@@ -57,7 +54,7 @@ class ItemCategoryMySqlDAO implements ItemCategoryDAO{
  	 * @param ItemCategoryMySql itemCategory
  	 */
 	public function insert($itemCategory){
-		$sql = 'INSERT INTO item_category (name, image, parent_id, slug, display_order, active, lang_id, translation_id, is_static, is_featured, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+		$sql = 'INSERT INTO item_category (name, image, parent_id, slug, display_order, mega_menu_display_order, active, lang_id, translation_id, is_static, is_featured, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($itemCategory->name);
@@ -65,6 +62,7 @@ class ItemCategoryMySqlDAO implements ItemCategoryDAO{
 		$sqlQuery->setNumber($itemCategory->parentId);
 		$sqlQuery->set($itemCategory->slug);
 		$sqlQuery->setNumber($itemCategory->displayOrder);
+		$sqlQuery->setNumber($itemCategory->megaMenuDisplayOrder);
 		$sqlQuery->setNumber($itemCategory->active);
 		$sqlQuery->setNumber($itemCategory->langId);
 		$sqlQuery->set($itemCategory->translationId);
@@ -84,7 +82,7 @@ class ItemCategoryMySqlDAO implements ItemCategoryDAO{
  	 * @param ItemCategoryMySql itemCategory
  	 */
 	public function update($itemCategory){
-		$sql = 'UPDATE item_category SET name = ?, image = ?, parent_id = ?, slug = ?, display_order = ?, active = ?, lang_id = ?, translation_id = ?, is_static = ?, is_featured = ?, created_at = ?, updated_at = ? WHERE id = ?';
+		$sql = 'UPDATE item_category SET name = ?, image = ?, parent_id = ?, slug = ?, display_order = ?, mega_menu_display_order = ?, active = ?, lang_id = ?, translation_id = ?, is_static = ?, is_featured = ?, created_at = ?, updated_at = ? WHERE id = ?';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($itemCategory->name);
@@ -92,6 +90,7 @@ class ItemCategoryMySqlDAO implements ItemCategoryDAO{
 		$sqlQuery->setNumber($itemCategory->parentId);
 		$sqlQuery->set($itemCategory->slug);
 		$sqlQuery->setNumber($itemCategory->displayOrder);
+		$sqlQuery->setNumber($itemCategory->megaMenuDisplayOrder);
 		$sqlQuery->setNumber($itemCategory->active);
 		$sqlQuery->setNumber($itemCategory->langId);
 		$sqlQuery->set($itemCategory->translationId);
@@ -143,6 +142,13 @@ class ItemCategoryMySqlDAO implements ItemCategoryDAO{
 
 	public function queryByDisplayOrder($value){
 		$sql = 'SELECT * FROM item_category WHERE display_order = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->setNumber($value);
+		return $this->getList($sqlQuery);
+	}
+
+	public function queryByMegaMenuDisplayOrder($value){
+		$sql = 'SELECT * FROM item_category WHERE mega_menu_display_order = ?';
 		$sqlQuery = new SqlQuery($sql);
 		$sqlQuery->setNumber($value);
 		return $this->getList($sqlQuery);
@@ -233,6 +239,13 @@ class ItemCategoryMySqlDAO implements ItemCategoryDAO{
 		return $this->executeUpdate($sqlQuery);
 	}
 
+	public function deleteByMegaMenuDisplayOrder($value){
+		$sql = 'DELETE FROM item_category WHERE mega_menu_display_order = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->setNumber($value);
+		return $this->executeUpdate($sqlQuery);
+	}
+
 	public function deleteByActive($value){
 		$sql = 'DELETE FROM item_category WHERE active = ?';
 		$sqlQuery = new SqlQuery($sql);
@@ -298,6 +311,7 @@ class ItemCategoryMySqlDAO implements ItemCategoryDAO{
 		$itemCategory->parentId = $row['parent_id'];
 		$itemCategory->slug = $row['slug'];
 		$itemCategory->displayOrder = $row['display_order'];
+		$itemCategory->megaMenuDisplayOrder = $row['mega_menu_display_order'];
 		$itemCategory->active = $row['active'];
 		$itemCategory->langId = $row['lang_id'];
 		$itemCategory->translationId = $row['translation_id'];

@@ -1,0 +1,31 @@
+<?php
+
+use Application\Controller\HelperController;
+use Application\Controller\DesignController;
+?>
+<div class="main-wrapper">
+    <?php
+    // echo $this->page->title;
+    // echo '<br>';
+    // echo $this->page->details;
+    ?>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <?php echo DesignController::mainTitle(strtoupper($this->page->title)); ?>
+            </div>
+            <?php if ($this->page->image) { ?>
+                <div class="col-md-12">
+                    <div class="page-banner">
+                        <img src="<?php echo HelperController::getImageUrl($this->page->image); ?>" alt="<?php echo $this->page->title; ?>" />
+                    </div>
+                </div>
+            <?php } ?>
+            <div class="col-md-12">
+                <div class="page-details">
+                    <?php echo $this->page->details; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

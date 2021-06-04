@@ -16,12 +16,12 @@ use Application\Controller\HelperController;
         <div class="col-md-12">
             <div class="categories-slider-wrapper">
                 <div id="categories-slider">
-                    <?php foreach($this->featuredCategories as $cat){?>
-                    <div>
-                        <div class="cat-img"><a href="#"><img src="<?php echo HelperController::getImageUrl($cat->image);?>" /></a></div>
-                        <div class="cat-title"><a href="#"><?php echo $cat->name;?></a></div>
-                    </div>
-                    <?php }?>
+                    <?php foreach ($this->featuredCategories as $cat) { ?>
+                        <div>
+                            <div class="cat-img"><a href="<?php echo MAIN_URL . 'products/' . $cat->slug; ?>"><img src="<?php echo HelperController::getImageUrl($cat->image); ?>" /></a></div>
+                            <div class="cat-title"><a href="<?php echo MAIN_URL . 'products/' . $cat->slug; ?>"><?php echo $cat->name; ?></a></div>
+                        </div>
+                    <?php } ?>
                 </div>
             </div>
         </div>
@@ -40,82 +40,25 @@ use Application\Controller\HelperController;
                 </div>
                 <div class="special-tags-slider-container">
                     <div class="special-tags-slider" id="special-tags-slider-daily-deals">
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
+                        <?php foreach ($this->dailyDeals as $row) {
+                            echo '<div>';
+                            echo DesignController::item($row);
+                            echo '</div>';
+                        } ?>
                     </div>
                     <div class="special-tags-slider" id="special-tags-slider-best-offers">
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
+                        <?php foreach ($this->pickedForYou as $row) {
+                            echo '<div>';
+                            echo DesignController::item($row);
+                            echo '</div>';
+                        } ?>
                     </div>
                     <div class="special-tags-slider" id="special-tags-slider-picked-for-you">
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item(); ?>
-                        </div>
+                    <?php foreach ($this->bestOffers as $row) {
+                            echo '<div>';
+                            echo DesignController::item($row);
+                            echo '</div>';
+                        } ?>
                     </div>
                 </div>
             </div>
@@ -123,5 +66,5 @@ use Application\Controller\HelperController;
     </div>
 </div>
 <?php if ($this->ads) {
-        echo $this->partial('layout/ads');
-    } ?>
+    echo $this->partial('layout/ads');
+} ?>

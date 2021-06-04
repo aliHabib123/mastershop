@@ -20,6 +20,7 @@ use ItemBrandMappingMySqlExtDAO;
 use ItemCategoryMappingMySqlExtDAO;
 use ItemCategoryMySqlExtDAO;
 use ItemMySqlExtDAO;
+use ItemTagMySqlExtDAO;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use stdClass;
@@ -28,10 +29,67 @@ use UserMySqlExtDAO;
 
 class ProductController extends AbstractActionController
 {
+    public static $TODAYS_DEALS = 1;
+    public static $LATEST_ARRIVALS = 1;
+    public static $PICKED_FOR_YOU = 1;
+    public static $DAILY_DEALS = 1;
+    public static $BEST_OFFERS = 1;
     public function indexAction()
-    {
-        var_dump($_SESSION);
-        return new ViewModel();
+    {   
+        $page = 1;
+        $limit = 12;
+        $offset = 0;
+        if(isset($_GET['page']) && $_GET['page'] != ""){
+            $page = $_GET['page'];
+            $offset = ($page - 1) * $limit;
+        }
+        $search = (isset($_GET['search']) && $_GET['search'] != "") ? $_GET['search'] : false;
+        $itemCategoryMySqlExtDAO = new ItemCategoryMySqlExtDAO();
+        $itemMySqlExtDAO = new ItemMySqlExtDAO();
+        $cat1 = $this->params('cat1') ? HelperController::filterInput($this->params('cat1')) : false;
+        $cat2 = $this->params('cat2') ? HelperController::filterInput($this->params('cat2')) : false;
+        $cat3 = $this->params('cat3') ? HelperController::filterInput($this->params('cat3')) : false;
+
+        $categorySlug = "";
+        $categoryId = false;
+        $completeSlug = "";
+        if ($cat3) {
+            $categorySlug = $cat3;
+        } elseif ($cat2) {
+            $categorySlug = $cat2;
+        } elseif($cat1) {
+            $categorySlug = $cat1;
+        }
+        if($cat1){
+            $completeSlug .= "/".$cat1;
+        }
+        if($cat2){
+            $completeSlug .= "/".$cat2;
+        }
+        if($cat3){
+            $completeSlug .= "/".$cat3;
+        }
+        if ($categorySlug != "") {
+            $categoryInfo = $itemCategoryMySqlExtDAO->queryBySlug($categorySlug);
+            if ($categoryInfo) {
+                $categoryId = $categoryInfo[0]->id;
+            }
+        }
+        //echo $completeSlug.'<br>';
+        $items = self::getItems($categoryId, $search, false, $limit, $offset);
+        $itemsCount = count(self::getItems($categoryId, $search, false));
+        $totalPages = ceil($itemsCount / $limit);
+        // var_dump($cat1);
+        // var_dump($cat2);
+        // var_dump($cat3);
+        $data = [
+            'items' => $items,
+            'totalPages' => $totalPages,
+            'currentPage' => $page,
+            'completeSlug' => $completeSlug,
+        ];
+        //print_r($items);
+        return new ViewModel($data);
     }
     public function detailsAction()
     {
@@ -39,7 +97,27 @@ class ProductController extends AbstractActionController
     }
     public function todaysDealsAction()
     {
-        return new ViewModel();
+        $page = 1;
+        $limit = 12;
+        $offset = 0;
+        if(isset($_GET['page']) && $_GET['page'] != ""){
+            $page = $_GET['page'];
+            $offset = ($page - 1) * $limit;
+        }
+        $search = (isset($_GET['search']) && $_GET['search'] != "") ? $_GET['search'] : false;
+        $itemTagMySqlExtDAO = new ItemTagMySqlExtDAO();
+        $tagInfo = $itemTagMySqlExtDAO->queryBySlug('todays-deals');
+        $tagId = $tagInfo[0]->id;
+        $items = self::getItems(false, false, $tagId, $limit, $offset);
+        $itemsCount = count(self::getItems(false, false, $tagId));
+        $totalPages = ceil($itemsCount / $limit);
+        $data = [
+            'items' => $items,
+            'totalPages' => $totalPages,
+            'currentPage' => $page,
+        ];
+        //print_r($items);
+        return new ViewModel($data);
     }
     public function latestArrivalsAction()
     {
@@ -59,7 +137,7 @@ class ProductController extends AbstractActionController
         $itemBrandMappingMySqlExtDAO = new ItemBrandMappingMySqlExtDAO();
 
         // Get Categories
-        $categories = CategoryController::getCategories('parent_id = 0 ORDER BY display_order ASC, name ASC, id DESC');
+        $categories = CategoryController::getCategories('1 ORDER BY display_order ASC, name ASC, id DESC');
         foreach ($categories as $cat) {
             $categoriesIdsNames[$cat->name] = $cat->id;
         }
@@ -86,26 +164,26 @@ class ProductController extends AbstractActionController
             $prefix = $supplierId . '-' . HelperController::slugify($row['SKU']);
             $image = HelperController::downloadFile($row['Image 1'], $prefix);
             $imagesArray = [];
-            if($row['Image 2'] != ""){
+            if ($row['Image 2'] != "") {
                 $image1 = HelperController::downloadFile($row['Image 2'], $prefix);
-                if($image1){
+                if ($image1) {
                     array_push($imagesArray, $image1);
                 }
             }
-            if($row['Image 3'] != ""){
+            if ($row['Image 3'] != "") {
                 $image2 = HelperController::downloadFile($row['Image 3'], $prefix);
-                if($image2){
+                if ($image2) {
                     array_push($imagesArray, $image2);
                 }
             }
-            if($row['Image 4'] != ""){
+            if ($row['Image 4'] != "") {
                 $image3 = HelperController::downloadFile($row['Image 4'], $prefix);
-                if($image3){
+                if ($image3) {
                     array_push($imagesArray, $image3);
                 }
             }
 
-            if($imagesArray){
+            if ($imagesArray) {
                 $albumMySqlExtDAO = new AlbumMySqlExtDAO();
                 $albumImageMySqlExtDAO = new ImageMySqlExtDAO();
                 $albumObj = new Album();
@@ -113,7 +191,7 @@ class ProductController extends AbstractActionController
                 $albumObj->active = 1;
                 $albumId = $albumMySqlExtDAO->insert($albumObj);
 
-                foreach($imagesArray as $albumImageItem){
+                foreach ($imagesArray as $albumImageItem) {
                     $albumImageObj = new Image();
                     $albumImageObj->albumId = $albumId;
                     $albumImageObj->imageName = $albumImageItem;
@@ -130,13 +208,12 @@ class ProductController extends AbstractActionController
             $itemExists = $itemMySqlExtDAO->queryBySku($row['SKU']);
             $date = date('Y-m-d H:i:s');
             if ($itemExists) {
-
                 // delete image
                 HelperController::deleteImage($itemExists[0]->image);
                 // delete album and images
-                if($itemExists[0]->albumId != 0){
+                if ($itemExists[0]->albumId != 0) {
                     $oldImages = $albumImageMySqlExtDAO->queryByAlbumId($itemExists[0]->albumId);
-                    foreach($oldImages as $oldImage){
+                    foreach ($oldImages as $oldImage) {
                         HelperController::deleteImage($oldImage->imageName);
                         $albumImageMySqlExtDAO->deleteByAlbumId($itemExists[0]->albumId);
                     }
@@ -231,9 +308,9 @@ class ProductController extends AbstractActionController
     public static function getFinalPrice($regularPrice, $salePrice)
     {
         if ($salePrice != "" && $salePrice != null && $salePrice != 0) {
-            return $salePrice;
+            return number_format(floatval($salePrice));
         } elseif ($regularPrice != "" && $regularPrice != null && $regularPrice != 0) {
-            return $regularPrice;
+            return number_format(floatval($regularPrice));
         } else {
             return 'n/a';
         }
@@ -249,7 +326,14 @@ class ProductController extends AbstractActionController
         return PRODUCT_PLACEHOLDER_IMAGE_URL;
     }
 
-    public static function productImages(string $itemId, array $images){
+    public static function productImages(string $itemId, array $images)
+    {
+    }
 
+    public static function getItems($categoryId = false, $search = false, $tagId = false, $limit = 0, $offset = 0)
+    {
+        $itemMySqlExtDAO = new ItemMySqlExtDAO();
+        $items = $itemMySqlExtDAO->getItems($categoryId, $search, $tagId, $limit, $offset);
+        return $items;
     }
 }

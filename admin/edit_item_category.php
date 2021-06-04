@@ -87,7 +87,12 @@ function main()
 						</div>
 					</div>
 
-
+					<div class="form-group">
+						<label class="col-md-3 control-label">Mega Menu Display Order</label>
+						<div class="col-md-3">
+							<input name="mega_menu_display_order" type="number" class="form-control" id="mega_menu_display_order" value="<?php echo $category->megaMenuDisplayOrder;?>" placeholder="Ex: 1">
+						</div>
+					</div>
 					<br />
 					<div class="row">
 						<div class="col-md-12">

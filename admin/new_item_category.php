@@ -76,6 +76,12 @@
 		</div>
 	</div>
 	<div class="form-group">
+		<label class="col-md-3 control-label">Mega Menu Display Order</label>
+		<div class="col-md-3">
+			<input  name="mega_menu_display_order" type="number"  class="form-control" id="mega_menu_display_order" value="0" placeholder="Ex: 1">
+		</div>
+	</div>
+	<div class="form-group">
 		<label class="col-md-3 control-label">Is active</label>
 		<div class="col-md-9">
 			<div class="make-switch" data-on="warning" data-off="danger">

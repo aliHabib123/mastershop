@@ -8,6 +8,8 @@
   &_title {
     margin-bottom: 10px;
     margin-top: 10px;
+    min-height: 58px;
+    line-height: 1.2;
     a {
       color: #000;
     }
@@ -16,10 +18,20 @@
     color: $base-color;
   }
   &_img {
+    height: 195px;
+    overflow: hidden;
+    position: relative;
     img {
-      width: 100%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      max-width: 100%;
+      max-height: 100%;
     }
     a {
+      display: block;
+      height: 100%;
     }
   }
   &_cart_heart {
