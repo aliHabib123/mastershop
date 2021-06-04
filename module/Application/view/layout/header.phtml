@@ -44,9 +44,9 @@ foreach($level1Categories as $row){
                     </div>
                     <div class="col-md-6 col-6 d-none d-sm-block">
                         <ul class="custom-menu custom-menu-centered">
-                            <li><a href="#">Todays Deals</a></li>
-                            <li><a href="#">Latest Arrivals</a></li>
-                            <li><a href="#">About us</a></li>
+                            <li><a href="<?php echo MAIN_URL.'todays-deals';?>">Todays Deals</a></li>
+                            <li><a href="<?php echo MAIN_URL.'latest-arrivals';?>">Latest Arrivals</a></li>
+                            <li><a href="<?php echo MAIN_URL.'page/about-us';?>">About us</a></li>
                             <li class="dropdown pointer">
                                 <a class="dropdown-toggle" data-toggle="dropdown">Help & Contact
                                     <span class="caret"></span></a>
@@ -67,8 +67,8 @@ foreach($level1Categories as $row){
                     <div class="col-md-3 col-6">
                         <ul class="custom-menu custom-menu-right">
                             <li class="wishlist">
-                                <a href="#" class="d-none d-sm-inline-block">my wishlist</a>
-                                <a href="#" class="d-inline-block d-sm-none"><i class="far fa-heart"></i></a>
+                                <a href="<?php echo MAIN_URL.'my-wishlist';?>" class="d-none d-sm-inline-block">my wishlist</a>
+                                <a href="<?php echo MAIN_URL.'my-wishlist';?>" class="d-inline-block d-sm-none"><i class="far fa-heart"></i></a>
                             </li>
                             <!-- <li class="bell-icon"><a href=""><i class="far fa-bell"></i></a></li> -->
                             <!-- <li class="cart-icon"><a href="#"><i class="fas fa-shopping-cart"></i><span class="badge">5</span></a></li> -->
@@ -124,8 +124,8 @@ foreach($level1Categories as $row){
                                     <img src="img/uk.png" />
                                     <span class="caret"></span></a>
                                 <ul class="dropdown-menu dropdown-menu-right">
-                                    <li><a href="#"><img src="img/uk.png" /></a></li>
-                                    <li><a href="#"><img src="img/leb.png" /></a></li>
+                                    <li><a href="javascript:void(0);"><img src="img/uk.png" /></a></li>
+                                    <li><a href="javascript:void(0);"><img src="img/leb.png" /></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -138,27 +138,31 @@ foreach($level1Categories as $row){
 
         <div class="middle-menu clearfix">
             <div class="logo-container">
-                <a href="#"><img src="img/logo.png" /></a>
+                <a href="<?php echo MAIN_URL?>"><img src="img/logo.png" /></a>
             </div>
             <div class="search-container">
+                <form action="<?php echo MAIN_URL.'products/'?>" method="GET">
                 <div class="input-group">
                     <div class="input-group-prepend all-cat-btn">
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All <span class="d-none d-sm-inline-block">Categories</span></button>
-                        <div class="dropdown-menu">
+                        <div class="dropdown-menu" id="search-categories">
+                            <a class="dropdown-item" href="#" data-id="0">All <span class="d-none d-sm-inline-block">Categories</span></a>
                             <?php foreach ($level1Categories as $cat) { ?>
-                                <a class="dropdown-item" href="#"><?php echo $cat->name; ?></a>
+                                <a class="dropdown-item" href="#" data-slug="<?php echo $cat->slug;?>" data-id="<?php echo $cat->id;?>"><?php echo $cat->name; ?></a>
                             <?php } ?>
                             <!-- <div role="separator" class="dropdown-divider"></div> -->
                         </div>
                     </div>
-                    <input type="text" class="form-control" aria-label="All Categories" placeholder="Search for anything">
+                    <input type="hidden" id="selected-category" value="0">
+                    <input type="text" class="form-control" aria-label="All Categories" placeholder="Search for anything" name="search">
                     <div class="input-group-append search-button">
-                        <button class="btn btn-outline-secondary" type="button">
+                        <button class="btn btn-outline-secondary" type="submit">
                             <span class="d-none d-sm-inline-block">SEARCH</span>
                             <i class="fas fa-search d-block d-sm-none"></i>
                         </button>
                     </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>

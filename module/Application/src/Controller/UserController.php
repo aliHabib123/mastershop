@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Application\Controller;
 
+use ItemMySqlExtDAO;
 use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
 use stdClass;
 use User;
 use UserMySqlExtDAO;
+use Wishlist;
+use WishlistMySqlExtDAO;
 
 class UserController extends AbstractActionController
 {
@@ -37,6 +41,11 @@ class UserController extends AbstractActionController
 
     public function setUserSession($user)
     {
+        $wishListMySqlExtDAO = new WishlistMySqlExtDAO();
+        $wishlistArr = $wishListMySqlExtDAO->queryByCustomerId($user->id);
+        $itemIdsArray = array_map(function ($e) {
+            return $e->itemId;
+        }, $wishlistArr);
         $obj = new stdClass();
         $obj->firstName = $user->firstName;
         $obj->lastName = $user->lastName;
@@ -49,6 +58,9 @@ class UserController extends AbstractActionController
         }
         $obj->email = $user->email;
         $obj->id = $user->id;
+        $obj->joinDate = $user->createdAt;
+        $obj->wishlist = $itemIdsArray;
+
         $_SESSION['user'] = $obj;
     }
 
@@ -151,6 +163,7 @@ class UserController extends AbstractActionController
 
     public function registerUser($userInfo)
     {
+        $date = date('Y-m-d H:i:s');
         $userMySqlExtDAO = new UserMySqlExtDAO();
         $userObj = new User();
         $userObj->firstName = $userInfo->firstName;
@@ -169,11 +182,101 @@ class UserController extends AbstractActionController
         if ($userInfo->mobile) {
             $userObj->mobile = $userInfo->mobile;
         }
+        $userObj->createdAt = $date;
+        $userObj->updatedAt = $date;
         $userId = $userMySqlExtDAO->insert($userObj);
 
         if ($userId) {
             $user = $userMySqlExtDAO->load($userId);
         }
         return $user;
+    }
+
+    public function myProfileAction(){
+        return new ViewModel();
+    }
+    public function myWishlistAction(){
+
+        $itemMySqlExtDAO = new ItemMySqlExtDAO();
+        $wishlist = [];
+        if(count($_SESSION['user']->wishlist)){
+            $list = implode(',', $_SESSION['user']->wishlist);
+            $cond = "id IN ($list)";
+            $wishlist = $itemMySqlExtDAO->select($cond);
+        }
+        return new ViewModel([
+            'wishlist' => $wishlist,
+        ]);
+    }
+
+    public function addToWishlistAction()
+    {
+        $result = false;
+        $msg = "Error";
+        $added = false;
+        $deleted = false;
+
+        $itemId = HelperController::filterInput($this->getRequest()->getPost('itemId'));
+        $wishlistMySqlExtDAO = new WishlistMySqlExtDAO();
+        $obj = new Wishlist();
+        $obj->itemId = $itemId;
+        $obj->customerId = $_SESSION['user']->id;
+
+        if(in_array($itemId, $_SESSION['user']->wishlist)){
+            $del = $wishlistMySqlExtDAO->deleteFromWishlist($obj);
+        if($del){
+            $flipped = array_flip($_SESSION['user']->wishlist);
+            unset($flipped[$itemId]);
+            $_SESSION['user']->wishlist = array_flip($flipped);
+            $result = true;
+            $msg = "Deleted from wishlist";
+            $deleted = true;
+        }
+        } else {
+           
+            $add = $wishlistMySqlExtDAO->insert($obj);
+            if($add){
+                array_push($_SESSION['user']->wishlist, $itemId);
+                $result = true;
+                $msg = "Added to wishlist";
+                $added = true;
+            }
+        }
+
+        $response = json_encode([
+            'status' => $result,
+            'msg' => $msg,
+            'added' => $added,
+            'deleted' => $deleted,
+        ]);
+        print_r($response);
+        return $this->response;
+    }
+
+    public function deleteFromWishlistAction()
+    {
+        $result = false;
+        $msg = "Error";
+
+        $itemId = HelperController::filterInput($this->getRequest()->getPost('itemId'));
+
+        $wishlistMySqlExtDAO = new WishlistMySqlExtDAO();
+        $obj = new Wishlist();
+        $obj->itemId = $itemId;
+        $obj->customerId = $_SESSION['user']->id;
+        $del = $wishlistMySqlExtDAO->deleteFromWishlist($obj);
+        if($del){
+            $flipped = array_flip($_SESSION['user']->wishlist);
+            unset($flipped[$itemId]);
+            $$_SESSION['user']->wishlist = array_flip($flipped);
+            $result = true;
+            $msg = "Deleted from wishlist";
+        }
+        $response = json_encode([
+            'status' => $result,
+            'msg' => $msg,
+        ]);
+        print_r($response);
+        return $this->response;
     }
 }

@@ -46,7 +46,9 @@ use Application\Controller\DesignController;
                     </a>
                 </div>
                 <div class="col-md-8">
-                    <div class="spotlight-deals_title d-none d-sm-block">SPOTLIGHT DEALS <span><a href="#"><img src="img/arrow-right-grey.png" /></a></span></div>
+                    <div class="spotlight-deals_title d-none d-sm-block">SPOTLIGHT DEALS
+                    <!-- <span><a href="#"><img src="img/arrow-right-grey.png" /></a></span> -->
+                    </div>
                     <div class="spotlight-deals_item_title">
                         <a href="#">
                             Panasonic DECT 6.0 Expandable Cordless Phone
@@ -70,9 +72,10 @@ use Application\Controller\DesignController;
             </div>
         </div>
         <div class="row">
-            <?php for ($i = 0; $i < 20; $i++) { ?>
+            <?php ?>
+            <?php foreach($this->items as $item) { ?>
                 <div class="col-6 col-md-2 item-col">
-                    <?php echo DesignController::item(); ?>
+                    <?php echo DesignController::item($item); ?>
                 </div>
             <?php } ?>
 
@@ -80,8 +83,28 @@ use Application\Controller\DesignController;
 
         <div class="row">
             <div class="col-md-12">
-                <div id="product-pagination" class="text-center"></div>
+                <div id="product-pagination" class="product-pagination text-center"></div>
             </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(function() {
+        //alert('s');
+        //Pagination
+        $("#product-pagination").twbsPagination({
+            totalPages: <?php echo $this->totalPages; ?>,
+            visiblePages: 5,
+            first: "",
+            last: "",
+            next: '<i class="fas fa-chevron-right"></i>',
+            prev: '<i class="fas fa-chevron-left"></i>',
+            startPage: <?php echo $this->currentPage; ?>,
+            initiateStartPageClick: false,
+            onPageClick: function(event, page) {
+                location.href = '<?php echo MAIN_URL . 'todays-eals' . "/?page="; ?>' + page;
+            },
+        });
+    });
+</script>

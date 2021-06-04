@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Application\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
+use stdClass;
 
 class DesignController extends AbstractActionController
 {
@@ -18,25 +19,33 @@ class DesignController extends AbstractActionController
         $html = "<div class='secondary-title'>$title</div>";
         return $html;
     }
-    public static function item()
+    public static function item(object $item)
     {
+        $customerId = $_SESSION['user']->id;
+        $price = ProductController::getFinalPrice($item->regularPrice, $item->salePrice);
+        if ($price != "n/a") {
+            $price .= " LBP";
+        }
+        $image = ($item->image != "" && $item->image != null) ? HelperController::getImageUrl($item->image) : PRODUCT_PLACEHOLDER_IMAGE_URL;
+        $url = MAIN_URL . 'product/' . $item->slug;
+        $imageSrc = (in_array($item->id, $_SESSION['user']->wishlist)) ? "img/heart-on.png" : "img/heart-off.png";
         $html = "<div class='item-wrapper'>
                     <div class='item-wrapper_img'>
-                        <a href='#'>
-                            <img src='img/product.png' />
+                        <a href='$url'>
+                            <img class='' src='$image' />
                         </a>
                     </div>
                     <div class='item-wrapper_title'>
-                        <a href='#'>
-                        Tefal Fondue Inox & Design
+                        <a href='$url'>
+                        $item->title
                         </a>
                     </div>
                     <div class='item-wrapper_price'>
-                        1,290,000 LBP
+                        $price
                     </div>
                     <div class='item-wrapper_cart_heart'>
-                        <a class='heart off' href='#'>
-                            <img src='img/heart-off.png' />
+                        <a class='heart wishlist-add off' href='#' data-item-id='$item->id' data-customer-id='$customerId'>
+                            <img src='$imageSrc' />
                         </a>
                         <a class='cart' href='#'>
                             <img src='img/cart.png' />
@@ -76,13 +85,13 @@ class DesignController extends AbstractActionController
 
     public static function getVendorSidebar($activePage = 'dashboard')
     {
-        $dashboardActive = "";
-        $productsActive = "";
-        $inventoryActive = "";
-        $ordersActive = "";
-        $warehouseActive = "";
-        $contactDetailsActive = "";
-        $accountDetailsActive = "";
+        $dashboardActive = ($activePage == "dashboard") ? "active" : "";
+        $productsActive = ($activePage == "products") ? "active" : "";
+        $inventoryActive = ($activePage == "inventory") ? "active" : "";
+        $ordersActive = ($activePage == "orders") ? "active" : "";
+        $warehouseActive = ($activePage == "warehouse") ? "active" : "";
+        $contactDetailsActive = ($activePage == "contact") ? "active" : "";
+        $accountDetailsActive = ($activePage == "account") ? "active" : "";
         $dashboardUrl = MAIN_URL . 'vendor/my-dashboard';
         $productsUrl = MAIN_URL . 'vendor/my-products';
         $inventoryUrl = MAIN_URL . 'vendor/inventory';
@@ -90,31 +99,6 @@ class DesignController extends AbstractActionController
         $warehouseUrl = MAIN_URL . 'vendor/warehouse';
         $contacturl = MAIN_URL . 'vendor/contact';
         $accountUrl = MAIN_URL . 'vendor/account';
-        switch ($activePage) {
-            case 'dashboard':
-                $dashboardActive = 'active';
-                break;
-            case 'products':
-                $productsActive = 'active';
-                break;
-            case 'inventory':
-                $inventoryActive = 'active';
-                break;
-            case 'orders':
-                $ordersActive = 'active';
-                break;
-            case 'warehouse':
-                $warehouseActive = 'active';
-                break;
-            case 'contact':
-                $contactDetailsActive = 'active';
-                break;
-            case 'account':
-                $accountDetailsActive = 'active';
-                break;
-            default:
-                $dashboardActive = 'active';
-        }
         return "<ul class='nav flex-column'>
                     <li class='nav-item'>
                         <a class='nav-link $dashboardActive' href='$dashboardUrl'>My Dashboard</a>

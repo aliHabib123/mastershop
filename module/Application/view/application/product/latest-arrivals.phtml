@@ -54,9 +54,10 @@ use Application\Controller\DesignController;
             </div>
         </div>
         <div class="row">
+        <?php $obj = new stdClass();?>
             <?php for ($i = 0; $i < 20; $i++) { ?>
                 <div class="col-6 col-md-2 item-col">
-                    <?php echo DesignController::item(); ?>
+                    <?php echo DesignController::item($obj); ?>
                 </div>
             <?php } ?>
 

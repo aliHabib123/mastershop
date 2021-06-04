@@ -72,6 +72,7 @@ class QueryExecutor{
 		}
 
 		$query = $sqlQuery->getQuery();
+		//echo $query;
 		//$result = $connection->executeQuery($query);
 		$result = mysqli_query($connection, $query);
 		if(!$result){

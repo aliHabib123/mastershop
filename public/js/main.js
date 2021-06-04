@@ -172,18 +172,18 @@ $(function () {
     }, 250);
   });
 
-  //Pagination
-  $("#product-pagination").twbsPagination({
-    totalPages: 35,
-    visiblePages: 5,
-    first: "",
-    last: "",
-    next: '<i class="fas fa-chevron-right"></i>',
-    prev: '<i class="fas fa-chevron-left"></i>',
-    onPageClick: function (event, page) {
-      //alert(page);
-    },
-  });
+  // //Pagination
+  // $("#product-pagination").twbsPagination({
+  //   totalPages: 35,
+  //   visiblePages: 5,
+  //   first: "",
+  //   last: "",
+  //   next: '<i class="fas fa-chevron-right"></i>',
+  //   prev: '<i class="fas fa-chevron-left"></i>',
+  //   onPageClick: function (event, page) {
+  //     //alert(page);
+  //   },
+  // });
 
   // jQuery
   $("#mobile-number, #work-number").intlTelInput({
@@ -357,4 +357,55 @@ $("html").on("click", ".edit-warehouse", function (e) {
   $("#edit-warehouse-modal #mobile-number").val(mobile);
   $("#edit-warehouse-modal #first-name").val(firstName);
   $("#edit-warehouse-modal #last-name").val(lastName);
+});
+
+$("html").on("click", ".wishlist-add", function (e) {
+  let itemId = $(this).data("itemId");
+  let customerId = $(this).data("customerId");
+  console.log(itemId, customerId);
+  // let data = { warehouseId: "warehouseId", contactId: "contactId" };
+  $.ajax({
+    url: mainUrl + "add-to-wishlist",
+    type: "POST",
+    dataType: "json",
+    data: { itemId: itemId, customerId: customerId },
+    // mimeType: "multipart/form-data",
+    // contentType: false,
+    // cache: false,
+    // processData: true,
+    beforeSend: function () {
+      //showMsg(".notice-area", true, "Logging you in, please wait...");
+    },
+    success: function (response) {
+      console.log(response);
+      //showMsg(".notice-area", response.status, response.msg);
+      if (response.added == true) {
+        //alert("ok");
+        //console.log($(e.currentTarget));
+        $(e.currentTarget).find("img").attr("src", "img/heart-on.png");
+      } else if (response.deleted) {
+        $(e.currentTarget).find("img").attr("src", "img/heart-off.png");
+      }
+    },
+    error: function () {
+      showMsg(".notice-area", false, "An error occured, please try again!");
+    },
+  });
+  e.preventDefault();
+});
+
+$("#search-categories.dropdown-menu a").click(function () {
+  let selText = $(this).text();
+  let selId = $(this).data("id");
+  $(this)
+    .parent()
+    .parent()
+    .find(".dropdown-toggle")
+    .html(selText + ' <span class="caret"></span>');
+  $("#selected-category").val(selId);
+  let href = mainUrl + "products/";
+  if (selId != 0) {
+    href += $(this).data("slug");
+  }
+  $(this).closest("form").attr("action", href);
 });
