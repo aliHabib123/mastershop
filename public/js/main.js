@@ -378,12 +378,16 @@ $("html").on("click", ".wishlist-add", function (e) {
     },
     success: function (response) {
       console.log(response);
+      alertify.set('notifier','position', 'top-right');
       //showMsg(".notice-area", response.status, response.msg);
       if (response.added == true) {
         //alert("ok");
         //console.log($(e.currentTarget));
+        
+        alertify.success('Added to wishlist.'); 
         $(e.currentTarget).find("img").attr("src", "img/heart-on.png");
       } else if (response.deleted) {
+        alertify.success('Deleted from wishlist.'); 
         $(e.currentTarget).find("img").attr("src", "img/heart-off.png");
       }
     },
