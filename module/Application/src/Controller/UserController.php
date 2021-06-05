@@ -36,7 +36,7 @@ class UserController extends AbstractActionController
     public function getUserInfoByEmail(string $email)
     {
         $userMySqlExtDAO = new UserMySqlExtDAO();
-        return $userMySqlExtDAO->queryByEmail($email);
+        return $userMySqlExtDAO->getUserByEmailAndType($email, UserController::$CUSTOMER);
     }
 
     public function setUserSession($user)

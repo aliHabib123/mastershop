@@ -1,4 +1,7 @@
 <?php
+
+use Application\Controller\UserController;
+
 /**
  * Class that operate on table 'user'. Database Mysql.
  *
@@ -48,5 +51,12 @@ class UserMySqlExtDAO extends UserMySqlDAO{
 		$sqlQuery->set($supplierId);
 		
 		return $this->executeUpdate($sqlQuery);
+	}
+	public function getUserByEmailAndType($value, $type = 3){
+		$sql = 'SELECT * FROM user WHERE email = ? AND user_type = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		$sqlQuery->set($type);
+		return $this->getList($sqlQuery);
 	}
 }

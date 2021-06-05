@@ -28,7 +28,12 @@ class DesignController extends AbstractActionController
         }
         $image = ($item->image != "" && $item->image != null) ? HelperController::getImageUrl($item->image) : PRODUCT_PLACEHOLDER_IMAGE_URL;
         $url = MAIN_URL . 'product/' . $item->slug;
-        $imageSrc = (in_array($item->id, $_SESSION['user']->wishlist)) ? "img/heart-on.png" : "img/heart-off.png";
+
+        $imageSrc = "img/heart-off.png";
+        if(isset($_SESSION['user'])){
+            $imageSrc = (in_array($item->id, $_SESSION['user']->wishlist)) ? "img/heart-on.png" : "img/heart-off.png";
+        }
+        
         $html = "<div class='item-wrapper'>
                     <div class='item-wrapper_img'>
                         <a href='$url'>
