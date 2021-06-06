@@ -369,25 +369,18 @@ $("html").on("click", ".wishlist-add", function (e) {
     type: "POST",
     dataType: "json",
     data: { itemId: itemId, customerId: customerId },
-    // mimeType: "multipart/form-data",
-    // contentType: false,
-    // cache: false,
-    // processData: true,
     beforeSend: function () {
       //showMsg(".notice-area", true, "Logging you in, please wait...");
     },
     success: function (response) {
       console.log(response);
-      alertify.set('notifier','position', 'top-right');
+      alertify.set("notifier", "position", "top-right");
       //showMsg(".notice-area", response.status, response.msg);
       if (response.added == true) {
-        //alert("ok");
-        //console.log($(e.currentTarget));
-        
-        alertify.success('Added to wishlist.'); 
+        alertify.success("Added to wishlist.");
         $(e.currentTarget).find("img").attr("src", "img/heart-on.png");
       } else if (response.deleted) {
-        alertify.success('Deleted from wishlist.'); 
+        alertify.success("Deleted from wishlist.");
         $(e.currentTarget).find("img").attr("src", "img/heart-off.png");
       }
     },
@@ -398,6 +391,99 @@ $("html").on("click", ".wishlist-add", function (e) {
   e.preventDefault();
 });
 
+$("html").on("click", ".cart-add", function (e) {
+  let itemId = $(this).data("itemId");
+  console.log(itemId);
+  // let data = { warehouseId: "warehouseId", contactId: "contactId" };
+  $.ajax({
+    url: mainUrl + "add-to-cart",
+    type: "POST",
+    dataType: "json",
+    data: { itemId: itemId },
+    beforeSend: function () {
+      //showMsg(".notice-area", true, "Logging you in, please wait...");
+    },
+    success: function (response) {
+      console.log(response);
+      alertify.set("notifier", "position", "top-right");
+      //showMsg(".notice-area", response.status, response.msg);
+      if (response.status == true) {
+        alertify.success("Added to cart.");
+      }
+    },
+    error: function () {
+      showMsg(".notice-area", false, "An error occured, please try again!");
+    },
+  });
+  e.preventDefault();
+});
+$("html").on("click", ".cart-delete", function (e) {
+  let itemId = $(this).data("itemId");
+  console.log(e);
+  // let data = { warehouseId: "warehouseId", contactId: "contactId" };
+  $.ajax({
+    url: mainUrl + "delete-from-cart",
+    type: "POST",
+    dataType: "json",
+    data: { itemId: itemId },
+    beforeSend: function () {
+      //showMsg(".notice-area", true, "Logging you in, please wait...");
+      $('#checkout-btn').addClass('disabled');
+    },
+    success: function (response) {
+      console.log(response);
+      if (response.status == true) {
+        $(e.target).closest("tr").remove().fadeOut(1000);
+        $("#cart-total").html(response.total);
+        if (!response.haveItems) {
+          location.href = mainUrl + "my-cart";
+        }
+      }
+      $('#checkout-btn').removeClass('disabled');
+    },
+    error: function () {
+      $('#checkout-btn').removeClass('disabled');
+    },
+  });
+  e.preventDefault();
+});
+$("html").on("click", ".cart-update", function (e) {
+  let itemId = $(this).data("itemId");
+  let cartQty = $(this).closest("tr").find("input").val();
+  // console.log($(this));
+  // console.log(itemId, cartQty);
+  // let data = { warehouseId: "warehouseId", contactId: "contactId" };
+  $.ajax({
+    url: mainUrl + "update-cart",
+    type: "POST",
+    dataType: "json",
+    data: { itemId: itemId, cartQty: cartQty },
+    beforeSend: function () {
+      $('#checkout-btn').addClass('disabled');
+    },
+    success: function (response) {
+      
+      console.log(response);
+      //showMsg(".notice-area", response.status, response.msg);
+      if (response.status == true) {
+        //item-subtotal
+        $("#cart-item-" + itemId)
+          .find(".item-subtotal")
+          .html(response.subtotal);
+
+        $("#cart-total").html(response.total);
+      }
+      $("#cart-item-" + itemId)
+        .find("input")
+        .val(response.qty);
+        $('#checkout-btn').removeClass('disabled');
+    },
+    error: function () {
+      $('#checkout-btn').removeClass('disabled');
+    },
+  });
+  e.preventDefault();
+});
 $("#search-categories.dropdown-menu a").click(function (e) {
   e.preventDefault();
   let selText = $(this).text();
@@ -414,3 +500,8 @@ $("#search-categories.dropdown-menu a").click(function (e) {
   }
   $(this).closest("form").attr("action", href);
 });
+
+
+$('a.disabled').click(function(e){
+  e.preventDefault();
+})

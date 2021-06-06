@@ -327,6 +327,56 @@ return [
                     ],
                 ],
             ],
+            'myCart' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/my-cart',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'myCart',
+                    ],
+                ],
+            ],
+            'addToCart' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/add-to-cart',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'addToCart',
+                    ],
+                ],
+            ],
+            'deleteFromCart' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/delete-from-cart',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'deleteFromCart',
+                    ],
+                ],
+            ],
+            'updateCart' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/update-cart',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'updateCart',
+                    ],
+                ],
+            ],
+            'checkout' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/checkout',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'checkout',
+                    ],
+                ],
+            ],
             // End User Routes
             'content' => [
                 'type' => Segment::class,

@@ -30,10 +30,10 @@ class DesignController extends AbstractActionController
         $url = MAIN_URL . 'product/' . $item->slug;
 
         $imageSrc = "img/heart-off.png";
-        if(isset($_SESSION['user'])){
+        if (isset($_SESSION['user'])) {
             $imageSrc = (in_array($item->id, $_SESSION['user']->wishlist)) ? "img/heart-on.png" : "img/heart-off.png";
         }
-        
+
         $html = "<div class='item-wrapper'>
                     <div class='item-wrapper_img'>
                         <a href='$url'>
@@ -52,7 +52,7 @@ class DesignController extends AbstractActionController
                         <a class='heart wishlist-add off' href='#' data-item-id='$item->id' data-customer-id='$customerId'>
                             <img src='$imageSrc' />
                         </a>
-                        <a class='cart' href='#'>
+                        <a class='cart cart-add' href='javascript:void(0);' data-item-id='$item->id'>
                             <img src='img/cart.png' />
                         </a>
                     </div>
@@ -127,5 +127,48 @@ class DesignController extends AbstractActionController
                         <a class='nav-link $accountDetailsActive' href='$accountUrl'>Account Details</a>
                     </li>
                 </ul>";
+    }
+
+    public static function cartItem($item)
+    {
+        $customerId = $_SESSION['user']->id;
+        $price = ProductController::getFinalPrice($item->regularPrice, $item->salePrice);
+        $rawPrice = ProductController::getFinalPrice($item->regularPrice, $item->salePrice, true);
+        $subtotalRaw = $rawPrice * $item->cartQty;
+        $subtotal = number_format($subtotalRaw) . " LBP";
+        if ($price != "n/a") {
+            $price .= " LBP";
+        }
+        $image = ($item->image != "" && $item->image != null) ? HelperController::getImageUrl($item->image) : PRODUCT_PLACEHOLDER_IMAGE_URL;
+        //$url = MAIN_URL . 'product/' . $item->slug;
+        $title = $item->title;
+        //print_r($item);
+
+        $html = "<tr id='cart-item-$item->id'>
+                    <td>
+                        <div class=\"img-wrap\"><img src=\"$image\" class=\"img-thumbnail img-sm\"></div>
+                    </td>
+                    <td> <h6 class=\"title text-truncate\">$title</h6></td>
+                    <td><b>$price</b></td>
+                    <td class='cart-qty'>
+                        <span class='cart-qty-span'><input class='form-control' min='1' type='number' value=\"$item->cartQty\"/></span>
+                        <span class='cart-update-wrap'>
+                            <a href='javascript:void(0);' data-item-id='$item->id' class='cart-update btn btn-outline-success btn-round'>
+                                <i class='far fa-save'></i>
+                            </a>
+                        </span>
+                    </td>
+                    <td>
+                        <b class='item-subtotal'>$subtotal</b>
+                    </td>
+                    <td class=\"text-right\">
+                        <a href=\"javasript:void(0);\" data-item-id='$item->id' class=\"cart-delete btn btn-outline-danger btn-round\"><i class='fas fa-trash-alt'></i></a>
+                    </td>
+                </tr>";
+
+                $obj = new stdClass();
+                $obj->html = $html;
+                $obj->subtotal = $subtotalRaw;
+                return $obj;
     }
 }

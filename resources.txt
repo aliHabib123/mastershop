@@ -9,3 +9,6 @@ https://dimsemenov.com/plugins/magnific-popup/
 
 My Wishlist
 https://www.bootdey.com/snippets/view/bs4-wishlist-profile-page#css
+
+My Cart
+https://bootsnipp.com/snippets/O5mM8
