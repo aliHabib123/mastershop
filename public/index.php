@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 ini_set("display_errors", "On");
+ini_set('log_errors', '1');
+ini_set('error_log', 'C:\xampp\htdocs\mastershop\error_log.log');
 error_reporting(E_ERROR | E_COMPILE_ERROR | E_CORE_ERROR | E_RECOVERABLE_ERROR | E_USER_ERROR | E_PARSE);
 
 define('MODE', 'dev'); //dev or prod
@@ -21,7 +23,7 @@ define('FILE_URL', BASE_URL . 'uploads/files/');
 
 // Placeholder Images
 define('PRODUCT_PLACEHOLDER_IMAGE_URL', BASE_URL.'img/placeholder.jpg');
-define('PRODUCT_PLACEHOLDER_THUMBNAIL_URL', BASE_URL.'img/placeholder.jpg');
+define('PRODUCT_PLACEHOLDER_THUMBNAIL_URL', BASE_URL.'img/placeholder_thumbnail.jpg');
 define('USER_AVATAR_URL', BASE_URL.'img/empty_avatar.jpg');
 define('USER_AVATAR_BG_URL', BASE_URL.'img/avatar_bg_small.jpg');
 #Google Recaptcha V2

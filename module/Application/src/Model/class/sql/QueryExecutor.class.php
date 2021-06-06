@@ -21,6 +21,7 @@ class QueryExecutor{
 			$connection = $transaction->getConnection();
 		}		
 		$query = $sqlQuery->getQuery();
+		//echo $query;
 //                $pos = strpos($query, "null");
 //                if ($pos != false) {
 //                    if(true) {

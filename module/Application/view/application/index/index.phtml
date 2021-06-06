@@ -18,7 +18,7 @@ use Application\Controller\HelperController;
                 <div id="categories-slider">
                     <?php foreach ($this->featuredCategories as $cat) { ?>
                         <div>
-                            <div class="cat-img"><a href="<?php echo MAIN_URL . 'products/' . $cat->slug; ?>"><img src="<?php echo HelperController::getImageUrl($cat->image); ?>" /></a></div>
+                            <div class="cat-img hover08"><a href="<?php echo MAIN_URL . 'products/' . $cat->slug; ?>"><img src="<?php echo HelperController::getImageUrl($cat->image); ?>" /></a></div>
                             <div class="cat-title"><a href="<?php echo MAIN_URL . 'products/' . $cat->slug; ?>"><?php echo $cat->name; ?></a></div>
                         </div>
                     <?php } ?>

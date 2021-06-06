@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Application\Controller;
 
+use Cart;
+use CartMySqlExtDAO;
 use ItemMySqlExtDAO;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use Laminas\View\View;
 use stdClass;
 use User;
 use UserMySqlExtDAO;
@@ -41,11 +44,19 @@ class UserController extends AbstractActionController
 
     public function setUserSession($user)
     {
+        //Wishlist Items
         $wishListMySqlExtDAO = new WishlistMySqlExtDAO();
         $wishlistArr = $wishListMySqlExtDAO->queryByCustomerId($user->id);
         $itemIdsArray = array_map(function ($e) {
             return $e->itemId;
         }, $wishlistArr);
+        //Wishlist Items
+        $cartMySqlExtDAO = new CartMySqlExtDAO();
+        $cartArr = $cartMySqlExtDAO->queryByUserId($user->id);
+        $cartItemIdsArray = array_map(function ($e) {
+            return $e->itemId;
+        }, $cartArr);
+
         $obj = new stdClass();
         $obj->firstName = $user->firstName;
         $obj->lastName = $user->lastName;
@@ -60,6 +71,7 @@ class UserController extends AbstractActionController
         $obj->id = $user->id;
         $obj->joinDate = $user->createdAt;
         $obj->wishlist = $itemIdsArray;
+        $obj->cart = $cartItemIdsArray;
 
         $_SESSION['user'] = $obj;
     }
@@ -107,9 +119,9 @@ class UserController extends AbstractActionController
                 $userObj->dob = $birthday;
                 $userObj->userType = UserController::$CUSTOMER;
                 $userObj->password = password_hash($password, PASSWORD_DEFAULT);
-    
+
                 $user = $this->registerUser($userObj);
-    
+
                 if ($user) {
                     $this->setUserSession($user);
                     $result = true;
@@ -192,14 +204,16 @@ class UserController extends AbstractActionController
         return $user;
     }
 
-    public function myProfileAction(){
+    public function myProfileAction()
+    {
         return new ViewModel();
     }
-    public function myWishlistAction(){
+    public function myWishlistAction()
+    {
 
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
         $wishlist = [];
-        if(count($_SESSION['user']->wishlist)){
+        if (count($_SESSION['user']->wishlist)) {
             $list = implode(',', $_SESSION['user']->wishlist);
             $cond = "id IN ($list)";
             $wishlist = $itemMySqlExtDAO->select($cond);
@@ -222,20 +236,20 @@ class UserController extends AbstractActionController
         $obj->itemId = $itemId;
         $obj->customerId = $_SESSION['user']->id;
 
-        if(in_array($itemId, $_SESSION['user']->wishlist)){
+        if (in_array($itemId, $_SESSION['user']->wishlist)) {
             $del = $wishlistMySqlExtDAO->deleteFromWishlist($obj);
-        if($del){
-            $flipped = array_flip($_SESSION['user']->wishlist);
-            unset($flipped[$itemId]);
-            $_SESSION['user']->wishlist = array_flip($flipped);
-            $result = true;
-            $msg = "Deleted from wishlist";
-            $deleted = true;
-        }
+            if ($del) {
+                $flipped = array_flip($_SESSION['user']->wishlist);
+                unset($flipped[$itemId]);
+                $_SESSION['user']->wishlist = array_flip($flipped);
+                $result = true;
+                $msg = "Deleted from wishlist";
+                $deleted = true;
+            }
         } else {
-           
+
             $add = $wishlistMySqlExtDAO->insert($obj);
-            if($add){
+            if ($add) {
                 array_push($_SESSION['user']->wishlist, $itemId);
                 $result = true;
                 $msg = "Added to wishlist";
@@ -253,6 +267,116 @@ class UserController extends AbstractActionController
         return $this->response;
     }
 
+    public function addToCartAction()
+    {
+        $result = false;
+        $msg = "Error";
+
+        $itemId = HelperController::filterInput($this->getRequest()->getPost('itemId'));
+        $cartMySqlExtDAO = new CartMySqlExtDAO();
+        $obj = new Cart();
+        $obj->itemId = $itemId;
+        $obj->userId = $_SESSION['user']->id;
+        $obj->qty = 1;
+
+        $exist = $cartMySqlExtDAO->getCartItems($itemId, $_SESSION['user']->id);
+        if ($exist) {
+            $qty = intval($exist->qty) + 1;
+            $add = $cartMySqlExtDAO->incrementCartItems($itemId, $_SESSION['user']->id, $qty);
+        } else {
+            $add = $cartMySqlExtDAO->insert($obj);
+            array_push($_SESSION['user']->cart, $itemId);
+        }
+
+        if ($add) {
+            $result = true;
+            $msg = "Added to cart";
+        }
+
+        $response = json_encode([
+            'status' => $result,
+            'msg' => $msg,
+        ]);
+        print_r($response);
+        return $this->response;
+    }
+
+    public function deleteFromCartAction()
+    {
+        $result = false;
+        $msg = "Error";
+        $haveItems = true;
+        $total = 0;
+        $itemId = HelperController::filterInput($this->getRequest()->getPost('itemId'));
+        $cartMySqlExtDAO = new CartMySqlExtDAO();
+        $delete = $cartMySqlExtDAO->deleteCartQty($itemId, $_SESSION['user']->id);
+        //$delete = $cartMySqlExtDAO->delete($cartId);
+        if ($delete) {
+            $flipped = array_flip($_SESSION['user']->cart);
+            unset($flipped[$itemId]);
+            $_SESSION['user']->cart = array_flip($flipped);
+            $itemMySqlExtDAO = new ItemMySqlExtDAO();
+            $items = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
+            if(!$items){
+                $haveItems = false;
+            } else {
+                foreach($items as $item){
+                    $rawPrice = ProductController::getFinalPrice($item->regularPrice, $item->salePrice, true);
+                    $subtotalRaw = $rawPrice * $item->cartQty;
+                    $total += $subtotalRaw;
+                }
+            }
+            $result = true;
+            $msg = "Deleted from cart";
+        }
+        $response = json_encode([
+            'status' => $result,
+            'msg' => $msg,
+            'haveItems' => $haveItems,
+            'total' => number_format($total)." LBP",
+        ]);
+        print_r($response);
+        return $this->response;
+    }
+
+    public function updateCartAction()
+    {
+        $result = false;
+        $msg = "Error";
+        $total = 0;
+        $subtotal = 0;
+        $itemId = HelperController::filterInput($this->getRequest()->getPost('itemId'));
+        $cartQty = HelperController::filterInput($this->getRequest()->getPost('cartQty'));
+        if($cartQty <= 0 || !is_numeric($cartQty)){
+            $cartQty = 1;
+        }
+        $cartMySqlExtDAO = new CartMySqlExtDAO();
+        $update = $cartMySqlExtDAO->updateCartQty($itemId, $_SESSION['user']->id, $cartQty);
+
+        if ($update) {
+            $itemMySqlExtDAO = new ItemMySqlExtDAO();
+            $items = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
+            foreach($items as $item){
+                $rawPrice = ProductController::getFinalPrice($item->regularPrice, $item->salePrice, true);
+                $subtotalRaw = $rawPrice * $item->cartQty;
+                $total += $subtotalRaw;
+                if($item->id == $itemId){
+                    $subtotal = number_format($subtotalRaw)." LBP";
+                }
+            }
+            $result = true;
+            $msg = "Qty Updated";
+        }
+        $response = json_encode([
+            'status' => $result,
+            'msg' => $msg,
+            'total' => number_format($total)." LBP",
+            'subtotal' => $subtotal,
+            'qty' => $cartQty,
+        ]);
+        print_r($response);
+        return $this->response;
+    }
     public function deleteFromWishlistAction()
     {
         $result = false;
@@ -265,7 +389,7 @@ class UserController extends AbstractActionController
         $obj->itemId = $itemId;
         $obj->customerId = $_SESSION['user']->id;
         $del = $wishlistMySqlExtDAO->deleteFromWishlist($obj);
-        if($del){
+        if ($del) {
             $flipped = array_flip($_SESSION['user']->wishlist);
             unset($flipped[$itemId]);
             $$_SESSION['user']->wishlist = array_flip($flipped);
@@ -278,5 +402,22 @@ class UserController extends AbstractActionController
         ]);
         print_r($response);
         return $this->response;
+    }
+
+    public function myCartAction()
+    {
+        $itemMySqlExtDAO = new ItemMySqlExtDAO();
+        $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
+        return new ViewModel([
+            'items' => $cartItems,
+        ]);
+    }
+
+    public function checkoutAction(){
+        $itemMySqlExtDAO = new ItemMySqlExtDAO();
+        $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
+        return new ViewModel([
+            'items' => $cartItems,
+        ]);
     }
 }

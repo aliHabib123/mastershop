@@ -1,11 +1,25 @@
 //Mega Menu
 .mega-menu {
   nav.navbar {
+    padding: 0 1rem;
     .navbar-collapse {
       > ul.navbar-nav {
         > li {
           > a {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
             color: #fff;
+            &:hover,
+            &:focus,
+            &:active {
+              -webkit-transition: all .3s ease;
+              -moz-transition: all .3s ease;
+              -o-transition: all .3s ease;
+              -ms-transition: all .3s ease;
+              transition: all .3s ease;
+              background-color: #fff;
+              color: $base-color;
+            }
           }
           ul.dropdown-menu {
             li.grid-list {
@@ -27,6 +41,9 @@
                   font-weight: bold;
                   color: #000;
                   border-bottom: 2px solid $border-color-main;
+                  &:hover{
+                    color: $base-color;
+                  }
                 }
               }
               .subcategories {
@@ -36,6 +53,9 @@
                 li {
                   a {
                     color: #000;
+                    &:hover{
+                      color: $base-color;
+                    }
                   }
                 }
               }
@@ -162,6 +182,9 @@
   cursor: pointer;
 }
 .upper-menu-container {
+  .dropdown-about {
+    cursor: default;
+  }
   border-bottom: 1px solid $border-color-main;
   margin-bottom: 10px;
   .upper-menu {
@@ -323,7 +346,7 @@
 .dropdown.user-dropdown {
   display: inline-block;
   margin-left: 5px;
-  button{
+  button {
     padding: 0;
     line-height: 1;
     background-color: transparent;

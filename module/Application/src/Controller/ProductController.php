@@ -393,12 +393,18 @@ class ProductController extends AbstractActionController
         return $delete;
     }
 
-    public static function getFinalPrice($regularPrice, $salePrice)
+    public static function getFinalPrice($regularPrice, $salePrice, $raw=false)
     {
         if ($salePrice != "" && $salePrice != null && $salePrice != 0) {
-            return number_format(floatval($salePrice));
+            if(!$raw){
+                return number_format(floatval($salePrice));
+            }
+            return floatval($salePrice);
         } elseif ($regularPrice != "" && $regularPrice != null && $regularPrice != 0) {
-            return number_format(floatval($regularPrice));
+            if(!$raw){
+                return number_format(floatval($regularPrice));
+            }
+            return $regularPrice;
         } else {
             return 'n/a';
         }
