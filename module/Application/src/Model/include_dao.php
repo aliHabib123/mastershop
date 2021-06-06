@@ -33,10 +33,18 @@
 	require_once('class/dto/Cart.class.php');
 	require_once('class/mysql/CartMySqlDAO.class.php');
 	require_once('class/mysql/ext/CartMySqlExtDAO.class.php');
+	require_once('class/dao/CityDAO.class.php');
+	require_once('class/dto/City.class.php');
+	require_once('class/mysql/CityMySqlDAO.class.php');
+	require_once('class/mysql/ext/CityMySqlExtDAO.class.php');
 	require_once('class/dao/ContentDAO.class.php');
 	require_once('class/dto/Content.class.php');
 	require_once('class/mysql/ContentMySqlDAO.class.php');
 	require_once('class/mysql/ext/ContentMySqlExtDAO.class.php');
+	require_once('class/dao/CountryDAO.class.php');
+	require_once('class/dto/Country.class.php');
+	require_once('class/mysql/CountryMySqlDAO.class.php');
+	require_once('class/mysql/ext/CountryMySqlExtDAO.class.php');
 	require_once('class/dao/DeliveryDAO.class.php');
 	require_once('class/dto/Delivery.class.php');
 	require_once('class/mysql/DeliveryMySqlDAO.class.php');
