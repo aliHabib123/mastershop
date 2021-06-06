@@ -171,4 +171,32 @@ class DesignController extends AbstractActionController
                 $obj->subtotal = $subtotalRaw;
                 return $obj;
     }
+
+    public static function checkOutItem($item)
+    {
+        $customerId = $_SESSION['user']->id;
+        $price = ProductController::getFinalPrice($item->regularPrice, $item->salePrice);
+        $rawPrice = ProductController::getFinalPrice($item->regularPrice, $item->salePrice, true);
+        $subtotalRaw = $rawPrice * $item->cartQty;
+        $subtotal = number_format($subtotalRaw) . " LBP";
+        if ($price != "n/a") {
+            $price .= " LBP";
+        }
+        $image = ($item->image != "" && $item->image != null) ? HelperController::getImageUrl($item->image) : PRODUCT_PLACEHOLDER_IMAGE_URL;
+        //$url = MAIN_URL . 'product/' . $item->slug;
+        $title = $item->title;
+        //print_r($item);
+
+        $html = "<tr id='cart-item-$item->id'>
+                    <td> <h6 class=\"title text-truncate\">$title <b>X $item->cartQty</b></h6></td>
+                    <td class='text-right'>
+                        <b class='item-subtotal'>$subtotal</b>
+                    </td>
+                </tr>";
+
+                $obj = new stdClass();
+                $obj->html = $html;
+                $obj->subtotal = $subtotalRaw;
+                return $obj;
+    }
 }
