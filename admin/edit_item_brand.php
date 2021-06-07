@@ -50,8 +50,8 @@ function main()
 
 					<div class="form-group">
 						<?php
-						$categoriesMySqlExtDAO = DAOFactory::getItemCategoryDAO();
-						$categories = $categoriesMySqlExtDAO->queryAll();
+						$categoriesMySqlExtDAO = new ItemCategoryMySqlExtDAO();
+						$categories = $categoriesMySqlExtDAO->select('parent_id = 0');
 						$brandCategoryMappingMySqlExtDAO = DAOFactory::getBrandCategoryMappingDAO();
 						$brandCatgeoryMapping = $brandCategoryMappingMySqlExtDAO->queryByBrandId($res->id);
 						$brandCatgeoryMapping = array_map(function ($a) {

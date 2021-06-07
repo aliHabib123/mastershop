@@ -38,8 +38,8 @@
 	</div>
 	<div class="form-group">
 		<?php 
-		$categoriesMySqlExtDAO = DAOFactory::getItemCategoryDAO();
-		$categories = $categoriesMySqlExtDAO->queryAll();
+		$categoriesMySqlExtDAO = new ItemCategoryMySqlExtDAO();
+		$categories = $categoriesMySqlExtDAO->select('parent_id = 0');
 		?>
 		<label class="control-label col-md-3">Type</label>
 		<div class="col-md-4">

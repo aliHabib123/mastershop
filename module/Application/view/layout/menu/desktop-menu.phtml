@@ -1,6 +1,11 @@
 <?php
+
+use Application\Controller\HelperController;
+
 global $categories;
-//print_r($level1Categories);
+$brandCategoryMappingMySqlExtDAO = new BrandCategoryMappingMySqlExtDAO();
+$itemBrandMySqlExtDAO = new ItemBrandMySqlExtDAO();
+$distinctBrandCategories = $brandCategoryMappingMySqlExtDAO->getDistinctCategories();
 ?>
 
 <div class="lower-menu d-none d-sm-block">
@@ -21,10 +26,10 @@ global $categories;
                                         <div class="grid-container card-columns">
                                             <?php foreach ($row->subcategories as $row1) { ?>
                                                 <div class="grid-item card">
-                                                    <div class="main-cat-name"><a href="<?php echo MAIN_URL.'products/'.$row->slug."/".$row1->slug;?>"><?php echo $row1->name ?></a></div>
+                                                    <div class="main-cat-name"><a href="<?php echo MAIN_URL . 'products/' . $row->slug . "/" . $row1->slug; ?>"><?php echo $row1->name ?></a></div>
                                                     <ul class="subcategories">
                                                         <?php foreach ($row1->subsubcategories as $row2) { ?>
-                                                            <li><a href="<?php echo MAIN_URL.'products/'.$row->slug."/".$row1->slug."/".$row2->slug;?>"><?php echo $row2->name ?></a></li>
+                                                            <li><a href="<?php echo MAIN_URL . 'products/' . $row->slug . "/" . $row1->slug . "/" . $row2->slug; ?>"><?php echo $row2->name ?></a></li>
                                                         <?php } ?>
                                                     </ul>
                                                 </div>
@@ -43,74 +48,29 @@ global $categories;
                                     <div>
                                         <div class="brands-categories">
                                             <ul>
-                                                <li id="lg-apple" class="active"><a href="#">Electronics</a></li>
-                                                <li id="lg"><a href="#">Electronics</a></li>
-                                                <li id="apple"><a href="#">Electronics</a></li>
-                                                <li><a href="#">Electronics</a></li>
-                                                <li><a href="#">Electronics</a></li>
+                                                <?php
+                                                $c = 0;
+                                                foreach ($distinctBrandCategories as $row) {
+                                                    $active = "";
+                                                    if ($c == 0) {
+                                                        $active = "active";
+                                                    } ?>
+                                                    <li id="category-<?php echo $row->categoryId; ?>" class="<?php echo $active; ?>"><a href="#"><?php echo $row->categoryName; ?></a></li>
+                                                <?php $c++;
+                                                } ?>
                                             </ul>
                                         </div>
                                         <div class="brands-slider-container">
-                                            <div class="brands-slider" id="brands-slider-lg-apple">
-                                                <div>
-                                                    <a href="#"><img src="img/lg.png" /></a>
+                                            <?php foreach ($distinctBrandCategories as $row) {
+                                                $brands = $itemBrandMySqlExtDAO->getBrandsByCategoryId($row->categoryId); ?>
+                                                <div class="brands-slider" id="brands-slider-category-<?php echo $row->categoryId; ?>">
+                                                    <?php foreach ($brands as $brand) { ?>
+                                                        <div>
+                                                            <a href="<?php echo MAIN_URL . 'products/' . $row->categorySlug . "?brand=" . $brand->id; ?>"><img src="<?php echo HelperController::getImageUrl($brand->image); ?>" /></a>
+                                                        </div>
+                                                    <?php } ?>
                                                 </div>
-                                                <div>
-                                                    <a href="#"><img src="img/apple.png" /></a>
-                                                </div>
-                                                <div>
-                                                    <a href="#"><img src="img/lg.png" /></a>
-                                                </div>
-                                                <div>
-                                                    <a href="#"><img src="img/apple.png" /></a>
-                                                </div>
-                                                <div>
-                                                    <a href="#"><img src="img/lg.png" /></a>
-                                                </div>
-                                                <div>
-                                                    <a href="#"><img src="img/apple.png" /></a>
-                                                </div>
-                                            </div>
-                                            <div class="brands-slider" id="brands-slider-lg">
-                                                <div>
-                                                    <a href="#"><img src="img/lg.png" /></a>
-                                                </div>
-                                                <div>
-                                                    <a href="#"><img src="img/lg.png" /></a>
-                                                </div>
-                                                <div>
-                                                    <a href="#"><img src="img/lg.png" /></a>
-                                                </div>
-                                                <div>
-                                                    <a href="#"><img src="img/lg.png" /></a>
-                                                </div>
-                                                <div>
-                                                    <a href="#"><img src="img/lg.png" /></a>
-                                                </div>
-                                                <div>
-                                                    <a href="#"><img src="img/lg.png" /></a>
-                                                </div>
-                                            </div>
-                                            <div class="brands-slider" id="brands-slider-apple">
-                                                <div>
-                                                    <a href="#"><img src="img/apple.png" /></a>
-                                                </div>
-                                                <div>
-                                                    <a href="#"><img src="img/apple.png" /></a>
-                                                </div>
-                                                <div>
-                                                    <a href="#"><img src="img/apple.png" /></a>
-                                                </div>
-                                                <div>
-                                                    <a href="#"><img src="img/apple.png" /></a>
-                                                </div>
-                                                <div>
-                                                    <a href="#"><img src="img/apple.png" /></a>
-                                                </div>
-                                                <div>
-                                                    <a href="#"><img src="img/apple.png" /></a>
-                                                </div>
-                                            </div>
+                                            <?php } ?>
                                         </div>
                                     </div>
                                 </form>
@@ -119,15 +79,8 @@ global $categories;
                         <!--
               <Nesting>Menu </Nesting>
               -->
-                        <li class="dropdown yamm-fw"><a href="<?php echo MAIN_URL.'promotions';?>" class="nav-link">Promotions</a></li>
-                        <li class="dropdown yamm-fw"><a href="<?php echo MAIN_URL.'latest-arrivals';?>" class="nav-link">Latest Products</a></li>
-                        <!-- <li class="dropdown yamm-fw"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle">Images<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li>
-
-                                    </li>
-                                </ul>
-                            </li> -->
+                        <li class="dropdown yamm-fw"><a href="<?php echo MAIN_URL . 'promotions'; ?>" class="nav-link">Promotions</a></li>
+                        <li class="dropdown yamm-fw"><a href="<?php echo MAIN_URL . 'latest-arrivals'; ?>" class="nav-link">Latest Products</a></li>
                     </ul>
                 </div>
             </nav>
