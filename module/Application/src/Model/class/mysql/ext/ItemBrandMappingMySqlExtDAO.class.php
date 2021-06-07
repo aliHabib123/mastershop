@@ -27,5 +27,11 @@ class ItemBrandMappingMySqlExtDAO extends ItemBrandMappingMySqlDAO{
 		$id = $this->executeInsert($sqlQuery);
 		return $id;
     }
+	public function getItemBrand($itemId){
+		$sql = "SELECT a.*, b.name, b.image FROM item_brand_mapping a LEFT OUTER JOIN item_brand b ON a.`brand_id`= b.`id` WHERE a.`item_id` = ?";
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($itemId);
+		return $this->getRow($sqlQuery);
+	}
 }
 ?>

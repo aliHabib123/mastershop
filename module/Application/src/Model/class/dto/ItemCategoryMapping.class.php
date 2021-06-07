@@ -8,8 +8,13 @@
 	class ItemCategoryMapping{
 		
 		var $id;
-		var $itemId;
-		var $categoryId;
-		
+
+		var $itemId;
+
+		var $categoryId;
+
+		var $categoryName;
+
+		var $parentId;
 	}
 ?>

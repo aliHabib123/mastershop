@@ -11,8 +11,16 @@ if (defined('RUNNING_FROM_ROOT')) {
 <?php
 $htmlClass = isset($this->htmlClass) ? $this->htmlClass : '';
 $userCountry = "LB";
-if (isset($_SESSION['user']) && $_SESSION['user']->country != "" && $_SESSION['user']->country != null) {
-    $userCountry = $_SESSION['user']->country;
+$isLoggedIn = false;
+$userType = false;
+if (isset($_SESSION['user'])) {
+    if($_SESSION['user']->country != "" && $_SESSION['user']->country != null){
+        $userCountry = $_SESSION['user']->country;
+    }
+    if($_SESSION['user']->id){
+        $isLoggedIn = true;
+        $userType = $_SESSION['user']->userType;
+    }
 }
 ?>
 <html lang="en" class="<?php echo $htmlClass; ?>">
@@ -35,7 +43,7 @@ if (isset($_SESSION['user']) && $_SESSION['user']->country != "" && $_SESSION['u
     <link rel="stylesheet" href="js/intl-tel-input-master/css/intlTelInput.css">
     <!-- Alertify CSS -->
     <link rel="stylesheet" href="js/alertifyjs/css/alertify.min.css">
-    <link rel="stylesheet" href="css/all.css?v=1.0.0" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/all.css?v=1.0.1" crossorigin="anonymous">
 </head>
 
 <body>
@@ -69,11 +77,13 @@ if (isset($_SESSION['user']) && $_SESSION['user']->country != "" && $_SESSION['u
     <script src="js/alertifyjs/alertify.min.js"></script>
 
 
-    <script src="js/main.js?v=1.0.0"></script>
+    <script src="js/main.js?v=1.0.1"></script>
     <script src="bootstrap/js/bootstrap.min.js" crossorigin="anonymous"></script>
     <script type="text/javascript">
         const mainUrl = '<?php echo MAIN_URL; ?>';
         const userCountry = '<?php echo $userCountry; ?>';
+        const isLoggedIn = '<?php echo $isLoggedIn; ?>';
+        const userType = '<?php echo $userType; ?>';
     </script>
 </body>
 
