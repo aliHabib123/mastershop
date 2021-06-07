@@ -319,6 +319,7 @@ body {
         filter: brightness(0) invert(1); }
 
 .compact-cart-wrapper .compact-cart-item {
+  cursor: default;
   border-bottom: 1px solid #818181;
   padding-bottom: 5px;
   margin-bottom: 10px; }
@@ -558,18 +559,39 @@ a.disabled {
   -webkit-transition: 0.3s ease-in-out;
   transition: 0.3s ease-in-out; }
 
+.btn.focus,
+.btn:focus {
+  outline: 0;
+  box-shadow: none; }
+
+.dropdown.category-dropdown:hover > .dropdown-menu {
+  display: block; }
+
+.dropdown.category-dropdown > .dropdown-toggle:active {
+  /*Without this, clicking will make it sticky*/
+  pointer-events: none; }
+
+.dropdown-toggle::after {
+  vertical-align: middle; }
+
+.form-control:focus {
+  box-shadow: none; }
+
+.form-control {
+  border-radius: 0; }
+
 .mega-menu nav.navbar {
-  padding: 0 1rem; }
+  padding: 0; }
   .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li > a {
     padding-top: 1rem;
     padding-bottom: 1rem;
     color: #fff; }
     .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li > a:hover, .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li > a:focus, .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li > a:active {
-      -webkit-transition: all .3s ease;
-      -moz-transition: all .3s ease;
-      -o-transition: all .3s ease;
-      -ms-transition: all .3s ease;
-      transition: all .3s ease;
+      -webkit-transition: all 0.3s ease;
+      -moz-transition: all 0.3s ease;
+      -o-transition: all 0.3s ease;
+      -ms-transition: all 0.3s ease;
+      transition: all 0.3s ease;
       background-color: #fff;
       color: #2576ba; }
   .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li ul.dropdown-menu li.grid-list > div > div {
@@ -712,6 +734,12 @@ a.disabled {
     padding-left: 0;
     list-style: none;
     margin-bottom: 0; }
+    .upper-menu-container .upper-menu .custom-menu.custom-menu-centered li.show a {
+      color: #fff;
+      background-color: #ef0101; }
+    .upper-menu-container .upper-menu .custom-menu.custom-menu-centered li a:hover, .upper-menu-container .upper-menu .custom-menu.custom-menu-centered li a:active, .upper-menu-container .upper-menu .custom-menu.custom-menu-centered li a:focus {
+      color: #fff;
+      background-color: #ef0101; }
     .upper-menu-container .upper-menu .custom-menu li a {
       color: #000;
       padding: 5px;
@@ -822,6 +850,8 @@ a.disabled {
     font-family: "Montserrat", sans-serif;
     font-weight: normal;
     vertical-align: initial; }
+  .dropdown.user-dropdown button:not(::after) {
+    color: #2576ba; }
 
 .main-banner-container .bx-wrapper {
   margin-bottom: 0;
@@ -1284,9 +1314,11 @@ a.disabled {
 
 .checkout-form-wrapper {
   margin-top: 30px;
-  padding: 10px;
-  border: 2px solid #818181;
-  border-radius: 5px; }
+  border-radius: 5px;
+  margin-bottom: 40px; }
+
+.order-complete-btn-wrap {
+  margin-top: 30px; }
 
 footer {
   background-color: #f6f6f6;
@@ -2213,6 +2245,100 @@ a.list-group-item,
     width: 260px !important; }
   .card-wrapper .jp-card {
     min-width: 250px !important; } }
+
+.careers-page {
+  font-family: "Montserrat", sans-serif;
+  /* ===== Career ===== */ }
+  .careers-page .careers-header {
+    margin-top: 20px; }
+  .careers-page .filter-result .job-box {
+    -webkit-box-shadow: 0 0 35px 0 rgba(130, 130, 130, 0.2);
+    box-shadow: 0 0 35px 0 rgba(130, 130, 130, 0.2);
+    border-radius: 10px;
+    padding: 10px 35px; }
+  .careers-page ul {
+    list-style: none;
+    padding-left: 0;
+    padding-right: 0; }
+  .careers-page .list-disk li {
+    list-style: none;
+    margin-bottom: 12px; }
+  .careers-page .list-disk li:last-child {
+    margin-bottom: 0; }
+  .careers-page .job-box .img-holder {
+    height: 65px;
+    width: 65px;
+    background-color: #4e63d7;
+    background-image: -webkit-gradient(linear, left top, right top, from(rgba(78, 99, 215, 0.9)), to(#5a85dd));
+    background-image: linear-gradient(to right, rgba(78, 99, 215, 0.9) 0%, #5a85dd 100%);
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border-radius: 65px; }
+  .careers-page .career-title {
+    background-color: #4e63d7;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+    border-radius: 10px 10px 0 0;
+    background-image: -webkit-gradient(linear, left top, right top, from(rgba(78, 99, 215, 0.9)), to(#5a85dd));
+    background-image: linear-gradient(to right, rgba(78, 99, 215, 0.9) 0%, #5a85dd 100%); }
+  .careers-page .job-overview {
+    -webkit-box-shadow: 0 0 35px 0 rgba(130, 130, 130, 0.2);
+    box-shadow: 0 0 35px 0 rgba(130, 130, 130, 0.2);
+    border-radius: 10px; }
+  @media (min-width: 992px) {
+    .careers-page .job-overview {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 70px; } }
+  .careers-page .job-overview .job-detail ul {
+    margin-bottom: 28px; }
+  .careers-page .job-overview .job-detail ul li {
+    opacity: 0.75;
+    font-weight: 600;
+    margin-bottom: 15px; }
+  .careers-page .job-overview .job-detail ul li i {
+    font-size: 20px;
+    position: relative;
+    top: 1px; }
+  .careers-page .job-overview .overview-bottom,
+  .careers-page .job-overview .overview-top {
+    padding: 35px; }
+  .careers-page .job-content ul li {
+    font-weight: 600;
+    opacity: 0.75;
+    border-bottom: 1px solid #ccc;
+    padding: 10px 5px; }
+  @media (min-width: 768px) {
+    .careers-page .job-content ul li {
+      border-bottom: 0;
+      padding: 0; } }
+  .careers-page .job-content ul li i {
+    font-size: 20px;
+    position: relative;
+    top: 1px; }
+  .careers-page .mb-30 {
+    margin-bottom: 30px; }
+  .careers-page .form-wrapper {
+    margin-top: 30px; }
+
+.contact-page .map-wrapper {
+  margin-top: 30px;
+  margin-bottom: 30px; }
+
+.contact-page .form-wrapper {
+  margin-top: 20px;
+  margin-bottom: 30px; }
 
 @media (max-width: 768px) {
   .middle-menu .logo-container {

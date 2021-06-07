@@ -11,6 +11,7 @@ use Laminas\Json\Json;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\Validator\Digits;
 use Laminas\Validator\NotEmpty;
+use stdClass;
 
 class HelperController extends AbstractActionController
 {
@@ -112,7 +113,7 @@ class HelperController extends AbstractActionController
         return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length);
     }
 
-    public static function downloadFile($url = "", $prefix="")
+    public static function downloadFile($url = "", $prefix = "")
     {
         $res = false;
         if ($url && $url != "" && getimagesize($url)) {
@@ -121,7 +122,7 @@ class HelperController extends AbstractActionController
             $ch = curl_init($url);
 
             $file_name = $prefix . '_' . HelperController::random(10) . '.' . $ext;
-            while (is_file(BASE_PATH.upload_image_dir . $file_name)) {
+            while (is_file(BASE_PATH . upload_image_dir . $file_name)) {
                 $file_name = $prefix . '_' . HelperController::random(10) . '.' . $ext;
             }
 
@@ -153,5 +154,31 @@ class HelperController extends AbstractActionController
             return true;
         }
         return false;
+    }
+
+    public static function passwordStrength($password = "")
+    {
+        $msg = "Invalid pass";
+        $result = false;
+        if ($password != "" && $password != null) {
+            // Validate password strength
+            $uppercase = preg_match('@[A-Z]@', $password);
+            $lowercase = preg_match('@[a-z]@', $password);
+            $number    = preg_match('@[0-9]@', $password);
+            $specialChars = preg_match('@[^\w]@', $password);
+
+            if (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8) {
+                $msg = 'Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.';
+                $result = false;
+            } else {
+                $msg = 'Strong password.';
+                $result = true;
+            }
+        }
+
+        $ret = new stdClass();
+        $ret->msg = $msg;
+        $ret->status = $result;
+        return $ret;
     }
 }

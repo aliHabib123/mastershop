@@ -1,7 +1,15 @@
 <?php
 
 use Application\Controller\CategoryController;
+use Application\Controller\HelperController;
+use Application\Controller\ProductController;
 
+$cartCount = 0;
+if($_SESSION['user']){
+    $cartCount = count($_SESSION['user']->cart);
+    $itemMySqlExtDAO = new ItemMySqlExtDAO();
+    $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
+}
 global $categories;
 $level1Categories = CategoryController::getCategories('parent_id = 0 ORDER BY display_order ASC, name ASC, id DESC');
 $categories = $level1Categories;
@@ -32,9 +40,8 @@ foreach($level1Categories as $row){
                                     <?php echo $_SESSION['user']->firstName; ?>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="<?php echo MAIN_URL . 'logout';?>">Logout</a>
                                         <a class="dropdown-item" href="<?php echo MAIN_URL.'my-profile';?>">Edit Profile</a>
-                                        <a class="dropdown-item" href="javascript:void(0);">My Orders</a>
+                                        <a class="dropdown-item" href="<?php echo MAIN_URL . 'logout';?>">Logout</a>
                                     </div>
                                 </div>
                             <?php } else { ?>
@@ -74,43 +81,30 @@ foreach($level1Categories as $row){
                             <!-- <li class="cart-icon"><a href="#"><i class="fas fa-shopping-cart"></i><span class="badge">5</span></a></li> -->
                             <li class="dropdown pointer cart-icon">
                                 <a class="dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fas fa-shopping-cart"></i><span class="badge">5</span>
+                                    <i class="fas fa-shopping-cart"></i><span class="badge"><?php echo $cartCount;?></span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <form>
                                         <div class="compact-cart-wrapper">
-                                            <div class="compact-cart-item">
-                                                <div class="row">
-                                                    <div class="col-md-3 compact-cart-img">
-                                                        <img src="img/product.png" />
-                                                    </div>
-                                                    <div class="col-md-9">
-                                                        <div class="compact-cart-title">
-                                                            Tefal Fondue Inox
-                                                            Design &
+                                            <?php foreach($cartItems as $row){?>
+                                                <div class="compact-cart-item">
+                                                    <div class="row">
+                                                        <div class="col-md-3 compact-cart-img">
+                                                            <img src="img/product.png" />
                                                         </div>
-                                                        <div class="compact-cart-price">
-                                                            1,290,000 LBP
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="compact-cart-item">
-                                                <div class="row">
-                                                    <div class="col-md-3 compact-cart-img">
-                                                        <img src="img/product.png" />
-                                                    </div>
-                                                    <div class="col-md-9">
-                                                        <div class="compact-cart-title">
-                                                            Tefal Fondue Inox
-                                                            Design &
-                                                        </div>
-                                                        <div class="compact-cart-price">
-                                                            1,290,000 LBP
+                                                        <div class="col-md-9">
+                                                            <div class="compact-cart-title">
+                                                                <?php echo substr($row->title, 0, 500);?>
+                                                            </div>
+                                                            <div class="compact-cart-price">
+                                                                <?php $price = ProductController::getFinalPrice($row->regularPrice, $row->salePrice);
+                                                                echo $price;
+                                                                ?>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            <?php }?>
                                             <div class="compact-cart-buttons">
                                                 <a href="<?php echo MAIN_URL.'my-cart'?>" class="to-cart">Continue to cart</a>
                                                 <a href="<?php echo MAIN_URL.'checkout';?>" class="to-checkout">Continue to checkout</a>

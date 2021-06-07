@@ -394,7 +394,11 @@
 }
 .checkout-form-wrapper {
   margin-top: 30px;
-  padding: 10px;
-  border: 2px solid $base-grey;
+  // padding: 10px;
+  // border: 1px solid $base-grey;
   border-radius: 5px;
+  margin-bottom: 40px;
+}
+.order-complete-btn-wrap{
+  margin-top: 30px;
 }

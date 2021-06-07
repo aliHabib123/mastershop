@@ -1,7 +1,7 @@
 //Mega Menu
 .mega-menu {
   nav.navbar {
-    padding: 0 1rem;
+    padding: 0;
     .navbar-collapse {
       > ul.navbar-nav {
         > li {
@@ -12,11 +12,11 @@
             &:hover,
             &:focus,
             &:active {
-              -webkit-transition: all .3s ease;
-              -moz-transition: all .3s ease;
-              -o-transition: all .3s ease;
-              -ms-transition: all .3s ease;
-              transition: all .3s ease;
+              -webkit-transition: all 0.3s ease;
+              -moz-transition: all 0.3s ease;
+              -o-transition: all 0.3s ease;
+              -ms-transition: all 0.3s ease;
+              transition: all 0.3s ease;
               background-color: #fff;
               color: $base-color;
             }
@@ -41,7 +41,7 @@
                   font-weight: bold;
                   color: #000;
                   border-bottom: 2px solid $border-color-main;
-                  &:hover{
+                  &:hover {
                     color: $base-color;
                   }
                 }
@@ -53,7 +53,7 @@
                 li {
                   a {
                     color: #000;
-                    &:hover{
+                    &:hover {
                       color: $base-color;
                     }
                   }
@@ -204,6 +204,24 @@
       padding-left: 0;
       list-style: none;
       margin-bottom: 0;
+      &.custom-menu-centered {
+        li {
+          &.show {
+            a {
+              color: #fff;
+              background-color: $base-red;
+            }
+          }
+          a {
+            &:hover,
+            &:active,
+            &:focus {
+              color: #fff;
+              background-color: $base-red;
+            }
+          }
+        }
+      }
       li {
         a {
           color: #000;
@@ -355,5 +373,8 @@
     font-family: $fontsecondary;
     font-weight: normal;
     vertical-align: initial;
+  }
+  button:not(::after){
+    color: $base-color;
   }
 }

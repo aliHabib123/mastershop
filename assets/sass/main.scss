@@ -396,6 +396,7 @@ body {
 }
 .compact-cart-wrapper {
   .compact-cart-item {
+    cursor: default;
     border-bottom: 1px solid $base-grey;
     padding-bottom: 5px;
     margin-bottom: 10px;
@@ -658,4 +659,26 @@ a.disabled {
   filter: grayscale(100%);
   -webkit-transition: 0.3s ease-in-out;
   transition: 0.3s ease-in-out;
+}
+.btn.focus,
+.btn:focus {
+  outline: 0;
+  box-shadow: none;
+}
+.dropdown.category-dropdown:hover > .dropdown-menu {
+  display: block;
+}
+
+.dropdown.category-dropdown > .dropdown-toggle:active {
+  /*Without this, clicking will make it sticky*/
+  pointer-events: none;
+}
+.dropdown-toggle::after {
+  vertical-align: middle;
+}
+.form-control:focus {
+  box-shadow: none;
+}
+.form-control{
+  border-radius: 0;
 }

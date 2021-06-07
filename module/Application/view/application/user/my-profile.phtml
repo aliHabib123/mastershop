@@ -1,3 +1,4 @@
+<?php $userInfo = $this->userInfo; ?>
 <div class="main-wrapper pt30">
     <div class="container mb-4">
         <div class="row">
@@ -17,13 +18,15 @@
                 </div>
                 <div class="wizard">
                     <nav class="list-group list-group-flush">
-                        <a class="list-group-item active" href="#">
+                        <a class="list-group-item" href="javscript:void(0);">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div><i class="fa fa-shopping-bag mr-1 text-muted"></i>
                                     <div class="d-inline-block font-weight-medium text-uppercase">Orders List</div>
                                 </div><span class="badge badge-secondary">6</span>
                             </div>
-                        </a><a class="list-group-item" href="#"><i class="fa fa-user text-muted"></i>Profile Settings</a><a class="list-group-item" href="#"><i class="fa fa-map-marker text-muted"></i>Addresses</a>
+                        </a>
+                        <a class="list-group-item active" href="#"><i class="fa fa-user text-muted"></i>My Profile</a>
+                        <!-- <a class="list-group-item" href="#"><i class="fa fa-map-marker text-muted"></i>Addresses</a> -->
                         <a class="list-group-item" href="<?php echo MAIN_URL . 'my-wishlist'; ?>">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div><i class="fa fa-heart mr-1"></i>
@@ -31,57 +34,87 @@
                                 </div><span class="badge badge-secondary"><?php echo count($_SESSION['user']->wishlist); ?></span>
                             </div>
                         </a>
-                        <a class="list-group-item" href="#">
+                        <!-- <a class="list-group-item" href="#">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div><i class="fa fa-tag mr-1 text-muted"></i>
                                     <div class="d-inline-block font-weight-medium text-uppercase">My Tickets</div>
                                 </div><span class="badge badge-secondary">4</span>
                             </div>
-                        </a>
+                        </a> -->
                     </nav>
                 </div>
             </div>
             <!-- Wishlist-->
             <div class="col-lg-8 pb-5">
                 <div class="edit-profile-wrap vendor-page-wrapper">
-                    <form action="<?php echo MAIN_URL . 'add-warehouse' ?>" id="add-warehouse">
+                    <div class="notice-area"></div>
+                    <form action="<?php echo MAIN_URL . 'update-user'; ?>" id="update-user" method="POST" autocomplete="off">
+                        <input autocomplete="off" name="hidden" type="text" style="display:none;">
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-6 input-wrap">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                        <label for="email">*First Name</label>
-                                            <input type="text" class="form-control" placeholder="" name="first-name">
-                                        </div>
-                                    </div>
+                                    <label for="email">First Name *</label>
+                                    <input type="text" class="form-control" placeholder="" name="first-name" value="<?php echo $userInfo->firstName ?>">
                                 </div>
                                 <div class="col-md-6 input-wrap">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                        <label for="email">*Last Name</label>
-                                            <input type="text" class="form-control" placeholder="" name="last-name">
-                                        </div>
-                                    </div>
+                                    <label for="email">Last Name *</label>
+                                    <input type="text" class="form-control" placeholder="" name="last-name" value="<?php echo $userInfo->lastName ?>">
                                 </div>
                                 <div class="col-md-6 input-wrap">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                        <label for="email">*Email Address</label>
-                                            <input type="email" class="form-control" placeholder="" name="email">
-                                        </div>
-                                    </div>
+                                    <label for="email">Email Address *</label>
+                                    <input type="email" class="form-control" placeholder="" name="email" value="<?php echo $userInfo->email ?>" readonly>
                                 </div>
                                 <div class="col-md-6 input-wrap">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                        <label for="email">*Mobile Number</label>
-                                            <input name="mobile" type="text" class="form-control" placeholder="" id="mobile-number" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-                                        </div>
-                                    </div>
+                                    <label for="email">Mobile Number *</label>
+                                    <input name="mobile" type="text" class="form-control" placeholder="" value="<?php echo $userInfo->mobile ?>" id="mobile-number" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                </div>
+                                <div class="col-md-6 input-wrap">
+                                    <label for="tel1">Telephone 1</label>
+                                    <input type="text" class="form-control" placeholder="" name="tel1" value="<?php echo $userInfo->tel1; ?>">
+                                </div>
+                                <div class="col-md-6 input-wrap">
+                                    <label for="tel2">Telephone 2</label>
+                                    <input type="text" class="form-control" placeholder="" name="tel2" value="<?php echo $userInfo->tel2; ?>">
+                                </div>
+                                <div class="col-md-6 input-wrap">
+                                    <label for="country">Country:</label>
+                                    <select class="form-control" id="country" name="country">
+                                        <option value="LB">Lebanon</option>
+                                        <!-- <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option> -->
+                                    </select>
+                                </div>
+                                <div class="col-md-6 input-wrap">
+                                    <label for="city">City:</label>
+                                    <select class="form-control" id="city" name="city">
+                                        <option>Select City</option>
+                                        <?php foreach ($this->cities as $city) {
+                                            $selected = "";
+                                            if ($city->city == $userInfo->city) {
+                                                $selected = "selected";
+                                            } ?>
+                                            <option value="<?php echo $city->city ?>" <?php echo $selected; ?>><?php echo $city->city ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 input-wrap">
+                                    <label for="email">Password</label>
+                                    <input type="password" class="form-control" placeholder="" name="password" autocomplete="new-password">
+                                    <span>Leave empty for no update</span>
+                                </div>
+                                <div class="col-md-6 input-wrap">
+                                    <label for="email">Confirm Password</label>
+                                    <input type="password" class="form-control" placeholder="" name="confirm-password" autocomplete="off">
+                                    <span>Leave empty for no update</span>
+                                </div>
+                                <div class="col-md-12 input-wrap">
+                                    <label for="address">Address:</label>
+                                    <textarea class="form-control" style="min-height: 200px;" name="address"><?php echo $userInfo->address1; ?></textarea>
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn submit-btn">SAVE</button>
+                        <button type="submit" class="btn submit-btn">UPDATE</button>
                     </form>
                 </div>
             </div>

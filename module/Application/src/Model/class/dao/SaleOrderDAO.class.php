@@ -1,9 +1,6 @@
 <?php
 /**
  * Intreface DAO
- *
- * @author: http://phpdao.com
- * @date: 2021-05-14 19:34
  */
 interface SaleOrderDAO{
 
@@ -71,6 +68,8 @@ interface SaleOrderDAO{
 
 	public function queryByAddressId($value);
 
+	public function queryByDeliveryAddress($value);
+
 	public function queryByCreatedAt($value);
 
 	public function queryByCreatedAtGmt($value);
@@ -97,6 +96,8 @@ interface SaleOrderDAO{
 	public function deleteByNote($value);
 
 	public function deleteByAddressId($value);
+
+	public function deleteByDeliveryAddress($value);
 
 	public function deleteByCreatedAt($value);
 

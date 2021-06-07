@@ -188,7 +188,7 @@ $(function () {
   // jQuery
   $("#mobile-number, #work-number").intlTelInput({
     // options here
-    initialCountry: "LB",
+    initialCountry: userCountry,
     separateDialCode: true,
   });
 
@@ -428,7 +428,7 @@ $("html").on("click", ".cart-delete", function (e) {
     data: { itemId: itemId },
     beforeSend: function () {
       //showMsg(".notice-area", true, "Logging you in, please wait...");
-      $('#checkout-btn').addClass('disabled');
+      $("#checkout-btn").addClass("disabled");
     },
     success: function (response) {
       console.log(response);
@@ -439,10 +439,10 @@ $("html").on("click", ".cart-delete", function (e) {
           location.href = mainUrl + "my-cart";
         }
       }
-      $('#checkout-btn').removeClass('disabled');
+      $("#checkout-btn").removeClass("disabled");
     },
     error: function () {
-      $('#checkout-btn').removeClass('disabled');
+      $("#checkout-btn").removeClass("disabled");
     },
   });
   e.preventDefault();
@@ -459,10 +459,9 @@ $("html").on("click", ".cart-update", function (e) {
     dataType: "json",
     data: { itemId: itemId, cartQty: cartQty },
     beforeSend: function () {
-      $('#checkout-btn').addClass('disabled');
+      $("#checkout-btn").addClass("disabled");
     },
     success: function (response) {
-      
       console.log(response);
       //showMsg(".notice-area", response.status, response.msg);
       if (response.status == true) {
@@ -476,10 +475,10 @@ $("html").on("click", ".cart-update", function (e) {
       $("#cart-item-" + itemId)
         .find("input")
         .val(response.qty);
-        $('#checkout-btn').removeClass('disabled');
+      $("#checkout-btn").removeClass("disabled");
     },
     error: function () {
-      $('#checkout-btn').removeClass('disabled');
+      $("#checkout-btn").removeClass("disabled");
     },
   });
   e.preventDefault();
@@ -501,7 +500,109 @@ $("#search-categories.dropdown-menu a").click(function (e) {
   $(this).closest("form").attr("action", href);
 });
 
-
-$('a.disabled').click(function(e){
+$("a.disabled").click(function (e) {
   e.preventDefault();
-})
+});
+
+$("#update-user").submit(function (e) {
+  var formData = new FormData(this);
+  var formUrl = $(this).attr("action");
+  $.ajax({
+    url: formUrl,
+    type: "POST",
+    dataType: "json",
+    data: formData,
+    mimeType: "multipart/form-data",
+    contentType: false,
+    cache: false,
+    processData: false,
+    beforeSend: function () {
+      showMsg(".notice-area", true, "Updating user info...");
+    },
+    success: function (response) {
+      showMsg(".notice-area", response.status, response.msg);
+      $("html, body").animate(
+        { scrollTop: $(".notice-area").offset().top - 100 },
+        1000
+      );
+      if (response.status == true) {
+        //location.href = response.redirectUrl;
+      }
+    },
+    error: function () {
+      showMsg(".notice-area", false, "An error occured, please try again!");
+    },
+  });
+  e.preventDefault();
+});
+
+//order-complete
+$("#order-complete").submit(function (e) {
+  var formData = new FormData(this);
+  var formUrl = $(this).attr("action");
+  $.ajax({
+    url: formUrl,
+    type: "POST",
+    dataType: "json",
+    data: formData,
+    mimeType: "multipart/form-data",
+    contentType: false,
+    cache: false,
+    processData: false,
+    beforeSend: function () {
+      $(".complete-btn").addClass("disabled");
+      showMsg(".notice-area", true, "sending Order ...");
+    },
+    success: function (response) {
+      showMsg(".notice-area", response.status, response.msg);
+      $("html, body").animate(
+        { scrollTop: $(".notice-area").offset().top - 100 },
+        500
+      );
+      // if (response.status == true) {
+      //   location.href = response.redirectUrl;
+      // } else{
+      // }
+      $(".complete-btn").removeClass("disabled");
+      location.href = response.redirectUrl;
+    },
+    error: function () {
+      $(".complete-btn").removeClass("disabled");
+      showMsg(".notice-area", false, "An error occured, please try again!");
+    },
+  });
+  e.preventDefault();
+});
+
+$("#contact-submit").submit(function (e) {
+  var formData = new FormData(this);
+  var formUrl = $(this).attr("action");
+  $.ajax({
+    url: formUrl,
+    type: "POST",
+    dataType: "json",
+    data: formData,
+    mimeType: "multipart/form-data",
+    contentType: false,
+    cache: false,
+    processData: false,
+    beforeSend: function () {
+      showMsg(".notice-area", true, "sending Your Message ...");
+    },
+    success: function (response) {
+      showMsg(".notice-area", response.status, response.msg);
+      $("html, body").animate(
+        { scrollTop: $(".notice-area").offset().top - 100 },
+        500
+      );
+      if (response.status == true) {
+        $("#contact-submit")[0].reset();
+      }
+      //location.href = response.redirectUrl;
+    },
+    error: function () {
+      showMsg(".notice-area", false, "An error occured, please try again!");
+    },
+  });
+  e.preventDefault();
+});
