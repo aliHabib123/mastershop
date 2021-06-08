@@ -161,6 +161,7 @@
   left: 0;
   right: 0;
   padding: 15px;
+  margin-top: -1px;
 }
 .list-unstyled,
 .list-unstyled ul {
@@ -374,7 +375,18 @@
     font-weight: normal;
     vertical-align: initial;
   }
-  button:not(::after){
+  button:not(::after) {
     color: $base-color;
+  }
+}
+.yamm-fw.category-dropdown:hover {
+  > a {
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    background-color: #fff;
+    color: $base-color !important;
   }
 }

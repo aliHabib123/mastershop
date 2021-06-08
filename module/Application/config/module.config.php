@@ -255,6 +255,16 @@ return [
             //End Facebook
 
             // User Routes
+            'loginRequired' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/login-required',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'loginRequired',
+                    ],
+                ],
+            ],
             'logout' => [
                 'type'    => Literal::class,
                 'options' => [

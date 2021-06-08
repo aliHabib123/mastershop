@@ -123,10 +123,11 @@ class DesignController extends AbstractActionController
                     <li class='nav-item'>
                         <a class='nav-link $contactDetailsActive' href='$contacturl'>Contact Details</a>
                     </li>
-                    <li class='nav-item'>
-                        <a class='nav-link $accountDetailsActive' href='$accountUrl'>Account Details</a>
-                    </li>
+                    
                 </ul>";
+                /**<li class='nav-item'>
+                        <a class='nav-link $accountDetailsActive' href='$accountUrl'>Account Details</a>
+                    </li> */
     }
 
     public static function cartItem($item)

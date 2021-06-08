@@ -211,6 +211,7 @@ class UserController extends AbstractActionController
 
     public function myProfileAction()
     {
+        self::checkCustomerLoggedIn();
         $cityMySqlExtDAO = new CityMySqlExtDAO();
         $cities = $cityMySqlExtDAO->queryAllOrderBy('city ASC');
         $userMysqlExtDAO = new UserMySqlExtDAO();
@@ -222,6 +223,7 @@ class UserController extends AbstractActionController
     }
     public function myWishlistAction()
     {
+        self::checkCustomerLoggedIn();
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
         $wishlist = [];
         if (count($_SESSION['user']->wishlist)) {
@@ -416,6 +418,7 @@ class UserController extends AbstractActionController
 
     public function myCartAction()
     {
+        self::checkCustomerLoggedIn();
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
         $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
         return new ViewModel([
@@ -425,8 +428,13 @@ class UserController extends AbstractActionController
 
     public function checkoutAction()
     {
+        self::checkCustomerLoggedIn();
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
         $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
+        if(count($cartItems)<=0){
+            header('Location: '.MAIN_URL.'my-cart');
+            exit();
+        }
 
         $userMySqlExtDAO = new UserMySqlExtDAO();
         $userInfo = $userMySqlExtDAO->load($_SESSION['user']->id);
@@ -507,6 +515,7 @@ class UserController extends AbstractActionController
     }
 
     public function orderCompleteAction(){
+        self::checkCustomerLoggedIn();
         $result = false;
         $msg = "Error";
         $redirectUrl = MAIN_URL.'order-result?res=fail';
@@ -588,6 +597,7 @@ class UserController extends AbstractActionController
     }
 
     public function orderResultAction(){
+        self::checkCustomerLoggedIn();
         // $textArray = [
         //     'Hi There,',
         //     '',
@@ -598,5 +608,26 @@ class UserController extends AbstractActionController
         // $emailBody = MailController::getOrderCompleteEmail();
         // echo $emailBody;die();
         return new ViewModel();
+    }
+
+    public function loginRequiredAction(){
+        return new ViewModel();
+    }
+
+    public static function checkCustomerLoggedIn(){
+        $redirectUrl = urlencode(HelperController::getCurrentUrl());
+        $url = MAIN_URL.'login-required?redirectUrl='.$redirectUrl;
+        if(!isset($_SESSION['user']) || $_SESSION['user']->userType != UserController::$CUSTOMER){
+            header('Location: '.$url);
+            exit();
+        }
+    }
+    public static function checkVendorLoggedIn(){
+        $redirectUrl = urlencode(HelperController::getCurrentUrl());
+        $url = MAIN_URL.'login-required?redirectUrl='.$redirectUrl;
+        if(!isset($_SESSION['user']) || $_SESSION['user']->userType != UserController::$SUPPLIER){
+            header('Location: '.$url);
+            exit();
+        }
     }
 }

@@ -32,6 +32,7 @@ class VendorController extends AbstractActionController
     }
     public function warehouseDetailsAction()
     {
+        UserController::checkVendorLoggedIn();
         $warehouseMySqlExtDAO = new WarehouseMySqlExtDAO();
         $warehouses = $warehouseMySqlExtDAO->getWarehouseBySupplierId($_SESSION['user']->id);
 
@@ -43,6 +44,7 @@ class VendorController extends AbstractActionController
     }
     public function inventoryAction()
     {
+        UserController::checkVendorLoggedIn();
         $this->layout()->htmlClass = 'mb0';
 
         $userMySqlExtDAO = new UserMySqlExtDAO();
@@ -54,6 +56,7 @@ class VendorController extends AbstractActionController
     }
     public function myProductsAction()
     {
+        UserController::checkVendorLoggedIn();
         $limit = 10;
         $offset = 0;
         $page = (isset($_GET['page']) && !empty($_GET['page'])) ? $_GET['page'] : 1;
@@ -83,6 +86,7 @@ class VendorController extends AbstractActionController
     }
     public function myDashboardAction()
     {
+        UserController::checkVendorLoggedIn();
         $this->layout()->htmlClass = 'mb0';
         return new ViewModel();
     }
