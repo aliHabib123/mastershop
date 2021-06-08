@@ -1,0 +1,13 @@
+<div class="main-wrapper shopping-cart t30">
+    <h3 style="display: block; text-align: center;margin-top: 3rem;">The page you are trying to access requires a logged in user!</h3>
+    <div class="go-shopping">
+        <a href="javascript:void(0);" data-toggle="modal" data-target="#login-modal">Login</a>
+    </div>
+</div>
+<?php $redirectUrl = urlencode($_GET['redirectUrl']);?>
+<script>
+    const redirectUrl = '<?php echo $redirectUrl;?>';
+    $(function(){
+        $('input[name="redirectUrl"]').val(redirectUrl);
+    });
+</script>

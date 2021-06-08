@@ -2,8 +2,6 @@
 
 /**
  * DAOFactory
- * @author: http://phpdao.com
- * @date: ${date}
  */
 class DAOFactory{
 	
@@ -50,10 +48,24 @@ class DAOFactory{
 	}
 
 	/**
+	 * @return CityDAO
+	 */
+	public static function getCityDAO(){
+		return new CityMySqlExtDAO();
+	}
+
+	/**
 	 * @return ContentDAO
 	 */
 	public static function getContentDAO(){
 		return new ContentMySqlExtDAO();
+	}
+
+	/**
+	 * @return CountryDAO
+	 */
+	public static function getCountryDAO(){
+		return new CountryMySqlExtDAO();
 	}
 
 	/**

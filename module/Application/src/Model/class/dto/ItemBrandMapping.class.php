@@ -8,8 +8,14 @@
 	class ItemBrandMapping{
 		
 		var $id;
-		var $itemId;
-		var $brandId;
-		
+
+		var $itemId;
+
+		var $brandId;
+
+		var $name;
+
+		var $image;
+		
 	}
 ?>

@@ -27,5 +27,20 @@ class ItemCategoryMappingMySqlExtDAO extends ItemCategoryMappingMySqlDAO{
 		$id = $this->executeInsert($sqlQuery);
 		return $id;
     }
+	
+	public function getItemCategory($itemId){
+		$sql = "SELECT a.*, b.name, b.parent_id FROM item_category_mapping a LEFT OUTER JOIN item_category b ON a.`category_id`= b.`id` WHERE a.`item_id` = ?";
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($itemId);
+		return $this->getRow($sqlQuery);
+	}
+
+	public function getListOfItemsInCategory($categoryId, $excludeId){
+		$sql = "SELECT * FROM item_category_mapping WHERE category_id = ? AND item_id != ? ORDER BY RAND() LIMIT 10 OFFSET 0";
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($categoryId);
+		$sqlQuery->set($excludeId);
+		return $this->getList($sqlQuery);
+	}
 }
 ?>

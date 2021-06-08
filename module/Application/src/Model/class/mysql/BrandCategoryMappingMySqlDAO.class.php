@@ -135,6 +135,7 @@ class BrandCategoryMappingMySqlDAO implements BrandCategoryMappingDAO{
 		$brandCategoryMapping->id = $row['id'];
 		$brandCategoryMapping->brandId = $row['brand_id'];
 		$brandCategoryMapping->categoryId = $row['category_id'];
+		$brandCategoryMapping->categoryName = $row['name'];
 
 		return $brandCategoryMapping;
 	}

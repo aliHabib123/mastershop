@@ -8,8 +8,12 @@
 	class BrandCategoryMapping{
 		
 		var $id;
-		var $brandId;
-		var $categoryId;
-		
+
+		var $brandId;
+
+		var $categoryId;
+
+		var $categoryName;
+		
 	}
 ?>

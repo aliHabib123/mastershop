@@ -255,6 +255,16 @@ return [
             //End Facebook
 
             // User Routes
+            'loginRequired' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/login-required',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'loginRequired',
+                    ],
+                ],
+            ],
             'logout' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -377,6 +387,36 @@ return [
                     ],
                 ],
             ],
+            'orderComplete' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/order-complete',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'orderComplete',
+                    ],
+                ],
+            ],
+            'orderResult' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/order-result',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'orderResult',
+                    ],
+                ],
+            ],
+            'updateUser' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/update-user',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'updateUser',
+                    ],
+                ],
+            ],
             // End User Routes
             'content' => [
                 'type' => Segment::class,
@@ -388,6 +428,46 @@ return [
                     ],
                     'constraints' => [
                         'year' => '\d{4}',
+                    ],
+                ],
+            ],
+            'contactUs' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/contact-us',
+                    'defaults' => [
+                        'controller' => Controller\ContactController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
+            'contactSubmit' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/contact-submit',
+                    'defaults' => [
+                        'controller' => Controller\ContactController::class,
+                        'action'     => 'contactSubmit',
+                    ],
+                ],
+            ],
+            'careers' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/careers',
+                    'defaults' => [
+                        'controller' => Controller\CareerController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
+            'career' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/career/:id',
+                    'defaults' => [
+                        'controller' => Controller\CareerController::class,
+                        'action'     => 'details',
                     ],
                 ],
             ],
@@ -417,6 +497,9 @@ return [
             Controller\VendorController::class => InvokableFactory::class,
             Controller\HelperController::class => InvokableFactory::class,
             Controller\ImportController::class => InvokableFactory::class,
+            Controller\MailController::class => InvokableFactory::class,
+            Controller\ContactController::class => InvokableFactory::class,
+            Controller\CareerController::class => InvokableFactory::class,
         ],
     ],
     'view_manager' => [

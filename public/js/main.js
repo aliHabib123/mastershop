@@ -188,7 +188,7 @@ $(function () {
   // jQuery
   $("#mobile-number, #work-number").intlTelInput({
     // options here
-    initialCountry: "LB",
+    initialCountry: userCountry,
     separateDialCode: true,
   });
 
@@ -215,9 +215,7 @@ $(function () {
         ],
       },
     },
-    function (start, end, label) {
-      console.log(start, end, label);
-    }
+    function (start, end, label) {}
   );
 });
 
@@ -289,43 +287,23 @@ function showMsg(selector, status, msg) {
   $(selector).html(html);
 }
 
-// var element =  document.getElementById('elementId');
-// if(typeof( document.querySelector(".custom-file-input")) != undefined){
-//   document
-//   .querySelector(".custom-file-input")
-//   .addEventListener("change", function (e) {
-//     var name = this.files[0].name;
-//     var nextSibling = e.target.nextElementSibling;
-//     nextSibling.innerText = name;
-//   });
-
-// }
 //warehouse
 $("html").on("click", ".delete-warehouse", function (e) {
   if (confirm("Are you sure?")) {
     let warehouseId = $(this).data("id");
     let contactId = $(this).data("contactId");
     let href = $(this).attr("href");
-    console.log(warehouseId, contactId, href);
-    // let data = { warehouseId: "warehouseId", contactId: "contactId" };
     $.ajax({
       url: href,
       type: "POST",
       dataType: "json",
       data: { warehouseId: warehouseId, contactId: contactId },
-      // mimeType: "multipart/form-data",
-      // contentType: false,
-      // cache: false,
-      // processData: true,
       beforeSend: function () {
         showMsg(".notice-area", true, "Logging you in, please wait...");
       },
       success: function (response) {
-        console.log(response);
         showMsg(".notice-area", response.status, response.msg);
         if (response.status == true) {
-          //alert("ok");
-          console.log($(this).closest("tr"));
           $("#warehouse-tbody")
             .find("tr#" + warehouseId)
             .remove();
@@ -360,9 +338,13 @@ $("html").on("click", ".edit-warehouse", function (e) {
 });
 
 $("html").on("click", ".wishlist-add", function (e) {
+  alertify.set("notifier", "position", "top-right");
+  if (isLoggedIn == "") {
+    alertify.error("Please Login.");
+    return false;
+  }
   let itemId = $(this).data("itemId");
   let customerId = $(this).data("customerId");
-  console.log(itemId, customerId);
   // let data = { warehouseId: "warehouseId", contactId: "contactId" };
   $.ajax({
     url: mainUrl + "add-to-wishlist",
@@ -373,9 +355,6 @@ $("html").on("click", ".wishlist-add", function (e) {
       //showMsg(".notice-area", true, "Logging you in, please wait...");
     },
     success: function (response) {
-      console.log(response);
-      alertify.set("notifier", "position", "top-right");
-      //showMsg(".notice-area", response.status, response.msg);
       if (response.added == true) {
         alertify.success("Added to wishlist.");
         $(e.currentTarget).find("img").attr("src", "img/heart-on.png");
@@ -392,8 +371,12 @@ $("html").on("click", ".wishlist-add", function (e) {
 });
 
 $("html").on("click", ".cart-add", function (e) {
+  alertify.set("notifier", "position", "top-right");
+  if (isLoggedIn == "") {
+    alertify.error("Please Login.");
+    return false;
+  }
   let itemId = $(this).data("itemId");
-  console.log(itemId);
   // let data = { warehouseId: "warehouseId", contactId: "contactId" };
   $.ajax({
     url: mainUrl + "add-to-cart",
@@ -404,8 +387,6 @@ $("html").on("click", ".cart-add", function (e) {
       //showMsg(".notice-area", true, "Logging you in, please wait...");
     },
     success: function (response) {
-      console.log(response);
-      alertify.set("notifier", "position", "top-right");
       //showMsg(".notice-area", response.status, response.msg);
       if (response.status == true) {
         alertify.success("Added to cart.");
@@ -419,7 +400,6 @@ $("html").on("click", ".cart-add", function (e) {
 });
 $("html").on("click", ".cart-delete", function (e) {
   let itemId = $(this).data("itemId");
-  console.log(e);
   // let data = { warehouseId: "warehouseId", contactId: "contactId" };
   $.ajax({
     url: mainUrl + "delete-from-cart",
@@ -428,10 +408,9 @@ $("html").on("click", ".cart-delete", function (e) {
     data: { itemId: itemId },
     beforeSend: function () {
       //showMsg(".notice-area", true, "Logging you in, please wait...");
-      $('#checkout-btn').addClass('disabled');
+      $("#checkout-btn").addClass("disabled");
     },
     success: function (response) {
-      console.log(response);
       if (response.status == true) {
         $(e.target).closest("tr").remove().fadeOut(1000);
         $("#cart-total").html(response.total);
@@ -439,10 +418,10 @@ $("html").on("click", ".cart-delete", function (e) {
           location.href = mainUrl + "my-cart";
         }
       }
-      $('#checkout-btn').removeClass('disabled');
+      $("#checkout-btn").removeClass("disabled");
     },
     error: function () {
-      $('#checkout-btn').removeClass('disabled');
+      $("#checkout-btn").removeClass("disabled");
     },
   });
   e.preventDefault();
@@ -450,20 +429,15 @@ $("html").on("click", ".cart-delete", function (e) {
 $("html").on("click", ".cart-update", function (e) {
   let itemId = $(this).data("itemId");
   let cartQty = $(this).closest("tr").find("input").val();
-  // console.log($(this));
-  // console.log(itemId, cartQty);
-  // let data = { warehouseId: "warehouseId", contactId: "contactId" };
   $.ajax({
     url: mainUrl + "update-cart",
     type: "POST",
     dataType: "json",
     data: { itemId: itemId, cartQty: cartQty },
     beforeSend: function () {
-      $('#checkout-btn').addClass('disabled');
+      $("#checkout-btn").addClass("disabled");
     },
     success: function (response) {
-      
-      console.log(response);
       //showMsg(".notice-area", response.status, response.msg);
       if (response.status == true) {
         //item-subtotal
@@ -476,10 +450,10 @@ $("html").on("click", ".cart-update", function (e) {
       $("#cart-item-" + itemId)
         .find("input")
         .val(response.qty);
-        $('#checkout-btn').removeClass('disabled');
+      $("#checkout-btn").removeClass("disabled");
     },
     error: function () {
-      $('#checkout-btn').removeClass('disabled');
+      $("#checkout-btn").removeClass("disabled");
     },
   });
   e.preventDefault();
@@ -501,7 +475,109 @@ $("#search-categories.dropdown-menu a").click(function (e) {
   $(this).closest("form").attr("action", href);
 });
 
-
-$('a.disabled').click(function(e){
+$("a.disabled").click(function (e) {
   e.preventDefault();
-})
+});
+
+$("#update-user").submit(function (e) {
+  var formData = new FormData(this);
+  var formUrl = $(this).attr("action");
+  $.ajax({
+    url: formUrl,
+    type: "POST",
+    dataType: "json",
+    data: formData,
+    mimeType: "multipart/form-data",
+    contentType: false,
+    cache: false,
+    processData: false,
+    beforeSend: function () {
+      showMsg(".notice-area", true, "Updating user info...");
+    },
+    success: function (response) {
+      showMsg(".notice-area", response.status, response.msg);
+      $("html, body").animate(
+        { scrollTop: $(".notice-area").offset().top - 100 },
+        1000
+      );
+      if (response.status == true) {
+        //location.href = response.redirectUrl;
+      }
+    },
+    error: function () {
+      showMsg(".notice-area", false, "An error occured, please try again!");
+    },
+  });
+  e.preventDefault();
+});
+
+//order-complete
+$("#order-complete").submit(function (e) {
+  var formData = new FormData(this);
+  var formUrl = $(this).attr("action");
+  $.ajax({
+    url: formUrl,
+    type: "POST",
+    dataType: "json",
+    data: formData,
+    mimeType: "multipart/form-data",
+    contentType: false,
+    cache: false,
+    processData: false,
+    beforeSend: function () {
+      $(".complete-btn").addClass("disabled");
+      showMsg(".notice-area", true, "sending Order ...");
+    },
+    success: function (response) {
+      showMsg(".notice-area", response.status, response.msg);
+      $("html, body").animate(
+        { scrollTop: $(".notice-area").offset().top - 100 },
+        500
+      );
+      // if (response.status == true) {
+      //   location.href = response.redirectUrl;
+      // } else{
+      // }
+      $(".complete-btn").removeClass("disabled");
+      location.href = response.redirectUrl;
+    },
+    error: function () {
+      $(".complete-btn").removeClass("disabled");
+      showMsg(".notice-area", false, "An error occured, please try again!");
+    },
+  });
+  e.preventDefault();
+});
+
+$("#contact-submit").submit(function (e) {
+  var formData = new FormData(this);
+  var formUrl = $(this).attr("action");
+  $.ajax({
+    url: formUrl,
+    type: "POST",
+    dataType: "json",
+    data: formData,
+    mimeType: "multipart/form-data",
+    contentType: false,
+    cache: false,
+    processData: false,
+    beforeSend: function () {
+      showMsg(".notice-area", true, "sending Your Message ...");
+    },
+    success: function (response) {
+      showMsg(".notice-area", response.status, response.msg);
+      $("html, body").animate(
+        { scrollTop: $(".notice-area").offset().top - 100 },
+        500
+      );
+      if (response.status == true) {
+        $("#contact-submit")[0].reset();
+      }
+      //location.href = response.redirectUrl;
+    },
+    error: function () {
+      showMsg(".notice-area", false, "An error occured, please try again!");
+    },
+  });
+  e.preventDefault();
+});

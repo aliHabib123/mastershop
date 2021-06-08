@@ -131,7 +131,43 @@ class ProductController extends AbstractActionController
     }
     public function detailsAction()
     {
-        return new ViewModel();
+        $slug = HelperController::filterInput($this->params('slug'));
+        $itemMySqlExtDAO = new ItemMySqlExtDAO();
+        $item = $itemMySqlExtDAO->queryBySlug($slug);
+        $item = $item[0];
+
+        //Get Categories
+        $itemCategoryMappingMySqlExtDAO = new ItemCategoryMappingMySqlExtDAO();
+        $itemCategory = $itemCategoryMappingMySqlExtDAO->getItemCategory($item->id);
+        $itemCategoryMySqlExtDAO = new ItemCategoryMySqlExtDAO();
+        $parentCategory = $itemCategoryMySqlExtDAO->load($itemCategory->parentId);
+        $mainCategory = $itemCategoryMySqlExtDAO->load($parentCategory->parentId);
+
+        //Get Brand
+        $itemBrandMappingMySqlExtDAO = new ItemBrandMappingMySqlExtDAO();
+        $itemBrand = $itemBrandMappingMySqlExtDAO->getItemBrand($item->id);
+
+        //Album Images
+        $imageMySqlExtDAO = new ImageMySqlExtDAO();
+        $images = $imageMySqlExtDAO->queryByAlbumId($item->albumId);
+
+        // Related Products
+        $related = self::getRelatedProducts($itemCategory->categoryId, $item->id);
+        $relatedIds = array_map(function ($e) {
+            return $e->itemId;
+        }, $related);
+        $relatedIds = implode(',', $relatedIds);
+        $relatedProducts = $itemMySqlExtDAO->select("id IN($relatedIds)");
+
+        return new ViewModel([
+            'item' => $item,
+            'itemCategory' => $itemCategory,
+            'parentCategory' => $parentCategory,
+            'mainCategory' => $mainCategory,
+            'itemBrand' => $itemBrand,
+            'images' => $images,
+            'relatedProducts' => $relatedProducts,
+        ]);
     }
     public function todaysDealsAction()
     {
@@ -429,5 +465,11 @@ class ProductController extends AbstractActionController
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
         $items = $itemMySqlExtDAO->getItems($categoryId, $search, $tagId, $orderBy, $limit, $offset);
         return $items;
+    }
+
+    public static function getRelatedProducts($categoryId, $excludeId){
+        $itemCategoryMappingMySqlExtDAO = new ItemCategoryMappingMySqlExtDAO();
+        $list = $itemCategoryMappingMySqlExtDAO->getListOfItemsInCategory($categoryId, $excludeId);
+        return $list;
     }
 }

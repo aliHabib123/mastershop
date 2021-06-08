@@ -8,7 +8,7 @@ $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
 $password = $_POST['password'];
 
 $userMySqlExtDAO =  new UserMySqlExtDAO();
-$admin = $userMySqlExtDAO->checkLoginCredentials($email);
+$admin = $userMySqlExtDAO->checkLoginCredentials($email, 1);
 if ($admin && password_verify($password, $admin->password)) {
     $_SESSION['adminId'] = $admin->id;
     $_SESSION['adminName'] = $admin->firstName;

@@ -6,10 +6,15 @@ namespace Application\Controller;
 
 use Cart;
 use CartMySqlExtDAO;
+use CityMySqlExtDAO;
 use ItemMySqlExtDAO;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Laminas\View\View;
+use SaleOrder;
+use SaleOrderItem;
+use SaleOrderItemMySqlExtDAO;
+use SaleOrderMySqlExtDAO;
 use stdClass;
 use User;
 use UserMySqlExtDAO;
@@ -206,11 +211,19 @@ class UserController extends AbstractActionController
 
     public function myProfileAction()
     {
-        return new ViewModel();
+        self::checkCustomerLoggedIn();
+        $cityMySqlExtDAO = new CityMySqlExtDAO();
+        $cities = $cityMySqlExtDAO->queryAllOrderBy('city ASC');
+        $userMysqlExtDAO = new UserMySqlExtDAO();
+        $userInfo = $userMysqlExtDAO->load($_SESSION['user']->id);
+        return new ViewModel([
+            'cities' => $cities,
+            'userInfo' => $userInfo,
+        ]);
     }
     public function myWishlistAction()
     {
-
+        self::checkCustomerLoggedIn();
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
         $wishlist = [];
         if (count($_SESSION['user']->wishlist)) {
@@ -247,7 +260,6 @@ class UserController extends AbstractActionController
                 $deleted = true;
             }
         } else {
-
             $add = $wishlistMySqlExtDAO->insert($obj);
             if ($add) {
                 array_push($_SESSION['user']->wishlist, $itemId);
@@ -317,10 +329,10 @@ class UserController extends AbstractActionController
             $_SESSION['user']->cart = array_flip($flipped);
             $itemMySqlExtDAO = new ItemMySqlExtDAO();
             $items = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
-            if(!$items){
+            if (!$items) {
                 $haveItems = false;
             } else {
-                foreach($items as $item){
+                foreach ($items as $item) {
                     $rawPrice = ProductController::getFinalPrice($item->regularPrice, $item->salePrice, true);
                     $subtotalRaw = $rawPrice * $item->cartQty;
                     $total += $subtotalRaw;
@@ -333,7 +345,7 @@ class UserController extends AbstractActionController
             'status' => $result,
             'msg' => $msg,
             'haveItems' => $haveItems,
-            'total' => number_format($total)." LBP",
+            'total' => number_format($total) . " LBP",
         ]);
         print_r($response);
         return $this->response;
@@ -347,7 +359,7 @@ class UserController extends AbstractActionController
         $subtotal = 0;
         $itemId = HelperController::filterInput($this->getRequest()->getPost('itemId'));
         $cartQty = HelperController::filterInput($this->getRequest()->getPost('cartQty'));
-        if($cartQty <= 0 || !is_numeric($cartQty)){
+        if ($cartQty <= 0 || !is_numeric($cartQty)) {
             $cartQty = 1;
         }
         $cartMySqlExtDAO = new CartMySqlExtDAO();
@@ -356,12 +368,12 @@ class UserController extends AbstractActionController
         if ($update) {
             $itemMySqlExtDAO = new ItemMySqlExtDAO();
             $items = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
-            foreach($items as $item){
+            foreach ($items as $item) {
                 $rawPrice = ProductController::getFinalPrice($item->regularPrice, $item->salePrice, true);
                 $subtotalRaw = $rawPrice * $item->cartQty;
                 $total += $subtotalRaw;
-                if($item->id == $itemId){
-                    $subtotal = number_format($subtotalRaw)." LBP";
+                if ($item->id == $itemId) {
+                    $subtotal = number_format($subtotalRaw) . " LBP";
                 }
             }
             $result = true;
@@ -370,7 +382,7 @@ class UserController extends AbstractActionController
         $response = json_encode([
             'status' => $result,
             'msg' => $msg,
-            'total' => number_format($total)." LBP",
+            'total' => number_format($total) . " LBP",
             'subtotal' => $subtotal,
             'qty' => $cartQty,
         ]);
@@ -406,6 +418,7 @@ class UserController extends AbstractActionController
 
     public function myCartAction()
     {
+        self::checkCustomerLoggedIn();
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
         $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
         return new ViewModel([
@@ -413,11 +426,208 @@ class UserController extends AbstractActionController
         ]);
     }
 
-    public function checkoutAction(){
+    public function checkoutAction()
+    {
+        self::checkCustomerLoggedIn();
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
         $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
+        if(count($cartItems)<=0){
+            header('Location: '.MAIN_URL.'my-cart');
+            exit();
+        }
+
+        $userMySqlExtDAO = new UserMySqlExtDAO();
+        $userInfo = $userMySqlExtDAO->load($_SESSION['user']->id);
+
+        $cityMySqlExtDAO = new CityMySqlExtDAO();
+        $cities = $cityMySqlExtDAO->queryAllOrderBy('city ASC');
+
         return new ViewModel([
             'items' => $cartItems,
+            'userInfo' => $userInfo,
+            'cities' => $cities,
         ]);
+    }
+
+    public function updateUserAction()
+    {
+        $result = false;
+        $msg = "Nothing changed";
+
+        $firstName = HelperController::filterInput($this->getRequest()->getPost('first-name'));
+        $lastName = HelperController::filterInput($this->getRequest()->getPost('last-name'));
+        //$email = HelperController::filterInput($this->getRequest()->getPost('email'));
+        $mobile = HelperController::filterInput($this->getRequest()->getPost('mobile'));
+        $tel1 = HelperController::filterInput($this->getRequest()->getPost('tel1'));
+        $tel2 = HelperController::filterInput($this->getRequest()->getPost('tel2'));
+        $country = HelperController::filterInput($this->getRequest()->getPost('country'));
+        $city = HelperController::filterInput($this->getRequest()->getPost('city'));
+        $address = HelperController::filterInput($this->getRequest()->getPost('address'));
+        $password = HelperController::filterInput($this->getRequest()->getPost('password'));
+        $confirmPassword = HelperController::filterInput($this->getRequest()->getPost('confirm-password'));
+
+        $checkPassword = false;
+        if($password != ""){
+            $checkPassword = true;
+        }
+        $passwordStrength = HelperController::passwordStrength($password);
+
+        if ($firstName == "" || $lastName == "" || $mobile == "" || $country == "" || $city == "" || $address == "") {
+            $msg = "Please fill all inputs";
+        } elseif ($password != "" && $password != $confirmPassword) {
+            $msg = "Passwords do not match";
+        } elseif ($checkPassword && $passwordStrength->status == false) {
+            //echo 'here';
+            $msg = $passwordStrength->msg;
+        } else {
+            //echo 'here1';
+            $userMySqlExtDAO = new UserMySqlExtDAO();
+            $userInfo = $userMySqlExtDAO->load($_SESSION['user']->id);
+
+            $userInfo->firstName = $firstName;
+            $userInfo->lastName = $lastName;
+            $userInfo->fullName = $firstName . " " . $lastName;
+            $userInfo->mobile = $mobile;
+            $userInfo->tel1 = $tel1;
+            $userInfo->tel2 = $tel2;
+            $userInfo->country = $country;
+            $userInfo->city = $city;
+            $userInfo->address1 = $address;
+            $userInfo->updatedAt = date('Y-m-d H:i:s');
+
+            if ($passwordStrength->status) {
+                $userInfo->password = password_hash($password, PASSWORD_DEFAULT);
+            }
+            $updateUser = $userMySqlExtDAO->update($userInfo);
+
+            if ($updateUser) {
+                $result = true;
+                $msg = "successfully Updated User Info";
+            }
+        }
+        $response = json_encode([
+            'status' => $result,
+            'msg' => $msg,
+        ]);
+
+        print_r($response);
+        return $this->response;
+    }
+
+    public function orderCompleteAction(){
+        self::checkCustomerLoggedIn();
+        $result = false;
+        $msg = "Error";
+        $redirectUrl = MAIN_URL.'order-result?res=fail';
+        $fullName = HelperController::filterInput($this->getRequest()->getPost('full-name'));
+        $email = HelperController::filterInput($this->getRequest()->getPost('email'));
+        $mobile = HelperController::filterInput($this->getRequest()->getPost('mobile'));
+        $country = HelperController::filterInput($this->getRequest()->getPost('country'));
+        $city = HelperController::filterInput($this->getRequest()->getPost('city'));
+        $deliveryAddress = HelperController::filterInput($this->getRequest()->getPost('delivery-address'));
+        $notes = HelperController::filterInput($this->getRequest()->getPost('notes'));
+
+        if($fullName == "" || $email == "" || $mobile == "" || $country == "" || $city == "" || $deliveryAddress == ""){
+            $msg = "Please fill all inputs!";
+        } else {
+            $itemMySqlExtDAO = new ItemMySqlExtDAO();
+            $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
+            if(!$cartItems){
+                $msg = "Nothing in cart!";
+            } else {
+                $saleOrderMySqlExtDAO = new SaleOrderMySqlExtDAO();
+                $saleOrderItemMySqlExtDAO = new SaleOrderItemMySqlExtDAO();
+                $saleOrderObj = new SaleOrder();
+                $saleOrderObj->numItemsSold = count($cartItems);
+                $saleOrderObj->status = 'pending';
+                $saleOrderObj->customerId = $_SESSION['user']->id;
+                $saleOrderObj->deliveryAddress = $deliveryAddress;
+
+                $insertSaleOrder = $saleOrderMySqlExtDAO->insert($saleOrderObj);
+
+                if($insertSaleOrder){
+                    $c=0;
+                    foreach($cartItems as $row){
+                        $saleOrderItemObj = new SaleOrderItem();
+                        $saleOrderItemObj->saleOrderId = $insertSaleOrder;
+                        $saleOrderItemObj->itemId = $row->id;
+                        $saleOrderItemObj->qty = $row->cartQty;
+                        $saleOrderItemObj->price = ProductController::getFinalPrice($row->regularPrice, $row->salePrice, true);
+                        $insertSaleOrderItem = $saleOrderItemMySqlExtDAO->insert($saleOrderItemObj);
+                        if($insertSaleOrderItem){
+                            $c++;
+                        }
+                        if(count($cartItems) == $c){
+                            $cartMySqlExtDAO = new CartMySqlExtDAO();
+                            $delete = $cartMySqlExtDAO->deleteByUserId($_SESSION['user']->id);
+                            $_SESSION['user']->cart = [];
+                            $msg = "Order Success";
+                            $redirectUrl = MAIN_URL.'order-result?res=success';
+                            $result = true;
+                        }
+                    }
+                }
+            }
+        }        
+        // if($cartItems){
+        //     $userMySqlExtDAO = new UserMySqlExtDAO();
+        //     $userInfo = $userMySqlExtDAO->load($_SESSION['user']->id);
+        // }
+
+        //$emailBody = MailController::getEmailHtmlTemplate("test");
+        // $to = "";
+        // $subject = "";
+        // $send = MailController::sendMail($to, $subject, $emailBody);
+        // $success = true;
+        // if($result){
+        //     header('Location: '.MAIN_URL.'order-result?res=success');
+        //     exit();
+        // } else{
+        //     header('Location: '.MAIN_URL.'order-result?res=fail');
+        //     exit();
+        // }
+        $response = json_encode([
+            'status' => $result,
+            'msg' => $msg,
+            'redirectUrl' => $redirectUrl,
+        ]);
+
+        print_r($response);
+        return $this->response;
+    }
+
+    public function orderResultAction(){
+        self::checkCustomerLoggedIn();
+        // $textArray = [
+        //     'Hi There,',
+        //     '',
+        //     'Thank you for your order!',
+        //     'We have received your order',
+        // ];
+        // $emailBody = MailController::getEmailHtmlTemplate('Order Complete', $textArray);
+        // $emailBody = MailController::getOrderCompleteEmail();
+        // echo $emailBody;die();
+        return new ViewModel();
+    }
+
+    public function loginRequiredAction(){
+        return new ViewModel();
+    }
+
+    public static function checkCustomerLoggedIn(){
+        $redirectUrl = urlencode(HelperController::getCurrentUrl());
+        $url = MAIN_URL.'login-required?redirectUrl='.$redirectUrl;
+        if(!isset($_SESSION['user']) || $_SESSION['user']->userType != UserController::$CUSTOMER){
+            header('Location: '.$url);
+            exit();
+        }
+    }
+    public static function checkVendorLoggedIn(){
+        $redirectUrl = urlencode(HelperController::getCurrentUrl());
+        $url = MAIN_URL.'login-required?redirectUrl='.$redirectUrl;
+        if(!isset($_SESSION['user']) || $_SESSION['user']->userType != UserController::$SUPPLIER){
+            header('Location: '.$url);
+            exit();
+        }
     }
 }

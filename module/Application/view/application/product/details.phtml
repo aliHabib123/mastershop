@@ -1,5 +1,12 @@
 <?php
+
 use Application\Controller\DesignController;
+use Application\Controller\HelperController;
+use Application\Controller\ProductController;
+
+$item = $this->item;
+$specs = preg_split("/\\r\\n|\\r|\\n/", $item->specification);
+$image = ($item->image != "" && $item->image != null) ? HelperController::getImageUrl($item->image) : PRODUCT_PLACEHOLDER_IMAGE_URL;
 ?>
 <div class="main-wrapper">
     <div class="small-banner-container with-breadcrumb">
@@ -15,8 +22,10 @@ use Application\Controller\DesignController;
         <div class="banner-breadcrumb">
             <div class="container">
                 <ul>
-                    <li><a href="#"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
-                    <li><a>Large Appliances</a></li>
+                    <li><a href="<?php echo MAIN_URL; ?>"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
+                    <li><a href="<?php echo MAIN_URL . 'products/' . $this->mainCategory->slug; ?>"><?php echo $this->mainCategory->name; ?></a></li>
+                    <li><a href="<?php echo MAIN_URL . 'products/' . $this->mainCategory->slug . "/" . $this->parentCategory->slug; ?>"><?php echo $this->parentCategory->name; ?></a></li>
+                    <li><a><?php echo $this->itemCategory->categoryName; ?></a></li>
                 </ul>
             </div>
         </div>
@@ -25,8 +34,10 @@ use Application\Controller\DesignController;
         <div class="breadcrumb-c-inner">
             <div class="container">
                 <ul>
-                    <li><a href="#"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
-                    <li><a>Large Appliances</a></li>
+                    <li><a href="<?php echo MAIN_URL; ?>"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
+                    <li><a href="<?php echo MAIN_URL . 'products/' . $this->mainCategory->slug; ?>"><?php echo $this->mainCategory->name; ?></a></li>
+                    <li><a href="<?php echo MAIN_URL . 'products/' . $this->mainCategory->slug . "/" . $this->parentCategory->slug; ?>"><?php echo $this->parentCategory->name; ?></a></li>
+                    <li><a><?php echo $this->itemCategory->categoryName; ?></a></li>
                 </ul>
             </div>
         </div>
@@ -36,82 +47,61 @@ use Application\Controller\DesignController;
             <div class="row">
                 <div class="col-md-5">
                     <div class="main-image">
-                        <a id="popup-image" href="img/product.png">
-                            <img src="img/product.png" />
+                        <a id="popup-image" href="<?php echo $image ?>">
+                            <img src="<?php echo $image ?>" />
                         </a>
-
                     </div>
                     <div class="product-images-slider-c clearfix">
                         <div class="product-images-slider">
-                            <div><img class="change-main-image" src="img/product.png" /></div>
-                            <div><img class="change-main-image" src="img/apple.png" /></div>
-                            <div><img class="change-main-image" src="img/lg.png" /></div>
-                            <div><img class="change-main-image" src="img/product.png" /></div>
-                            <div><img class="change-main-image" src="img/apple.png" /></div>
-                            <div><img class="change-main-image" src="img/lg.png" /></div>
+                            <div><img class="change-main-image" src="<?php echo $image; ?>" /></div>
+                            <?php foreach ($this->images as $row) { ?>
+                                <div><img class="change-main-image" src="<?php echo HelperController::getImageUrl($row->imageName); ?>" /></div>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-7">
                     <div class="product-details-side">
-                        <div class="price1">1,290,000</div>
-                        <div class="price2">1,000,000<span>LBP</span></div>
-                        <div class="title">Samoa, Sophia Bundle</div>
-                        <div class="sku">SKU: 468.6</div>
-                        <div class="brand"><img src="img/lg.png" /></div>
-                        <div class="desc">The Look of the SEASON!<br>
-                            Recreate the look or customize your own with this Bundle!
-                        </div>
-                        <div class="color">Color: Not Specified</div>
+                        <?php if ($item->salePrice != "" && $item->salePrice != null) { ?>
+                            <div class="price1"><?php echo number_format($item->regularPrice); ?></div>
+                        <?php } ?>
+                        <div class="price2"><?php echo ProductController::getFinalPrice($item->regularPrice, $item->salePrice); ?><span>LBP</span></div>
+                        <div class="title"><?php echo $item->title; ?></div>
+                        <div class="sku">SKU: <?php echo $item->sku; ?></div>
+                        <div class="brand"><img src="<?php echo HelperController::getImageUrl($this->itemBrand->image); ?>" /></div>
+                        <div class="desc"><?php echo $item->description; ?></div>
+                        <!-- <div class="color">Color: Not Specified</div> -->
                         <div class="qty noSelect">QTY:&nbsp;
                             <span class="input-wrapper">
                                 <i class="fas fa-plus"></i><input type="number" value="1" min="1" pattern="[1-9]" id="qty" /><i class="fas fa-minus"></i>
                             </span>
                         </div>
                         <div class="buttons">
-                            <a class="add-to-cart" href="#"><img src="img/cart.png" />Add to Cart</a>
-                            <a class="buy-now" href="#">Buy Now</a>
+                            <a class="add-to-cart cart-add" href="javascript:void(0);" data-item-id="<?php echo $item->id; ?>"><img src="img/cart.png" />Add to Cart</a>
+                            <a class="buy-now" href="javascript:void(0);">Buy Now</a>
                         </div>
                     </div>
                 </div>
+               <?php if($specs){?>
                 <div class="col-md-8 specifications">
-                    <?php echo DesignController::secondaryTitle('Specifications')?> 
+                    <?php echo DesignController::secondaryTitle('Specifications') ?>
                     <div class="specs-wrapper">
-                        <div class="specs-item">Size: xx Number</div>
-                        <div class="specs-item">Weight: 3 Kilos</div>
-                        <div class="specs-item">Dimensions: L:3 cm, W:5cm, H:10 cm</div>
+                        <?php foreach($specs as $row){?>
+                            <div class="specs-item"><?php echo $row;?></div>
+                            <?php }?>
                     </div>
                 </div>
+                <?php }?>
                 <div class="col-md-12">
-                    <?php echo DesignController::mainTitle('YOU MIGHT ALSO LIKE')?>
+                    <?php echo DesignController::mainTitle('YOU MIGHT ALSO LIKE') ?>
                     <div class="related">
-                    <div class="related-slider">
-                        <?php $obj = new stdClass();?>
-                        <div>
-                            <?php echo DesignController::item($obj); ?>
+                        <div class="related-slider">
+                            <?php foreach($this->relatedProducts as $row){
+                                echo '<div>';
+                                echo DesignController::item($row);
+                                echo '</div>';
+                            }?>
                         </div>
-                        <div>
-                            <?php echo DesignController::item($obj); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item($obj); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item($obj); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item($obj); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item($obj); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item($obj); ?>
-                        </div>
-                        <div>
-                            <?php echo DesignController::item($obj); ?>
-                        </div>
-                    </div>
                     </div>
                 </div>
             </div>
