@@ -312,6 +312,7 @@ class UserController extends AbstractActionController
             'msg' => $msg,
             'added' => $added,
             'deleted' => $deleted,
+            'count' => count($_SESSION['user']->wishlist),
         ]);
         print_r($response);
         return $this->response;
@@ -460,6 +461,16 @@ class UserController extends AbstractActionController
         $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
         return new ViewModel([
             'items' => $cartItems,
+        ]);
+    }
+
+    public function myOrdersAction()
+    {
+        self::checkCustomerLoggedIn();
+        $saleOrderMySqlExtDAO = new SaleOrderMySqlExtDAO();
+        $saleOrders = $saleOrderMySqlExtDAO->getOrders($_SESSION['user']->id);
+        return new ViewModel([
+            'saleOrders' => $saleOrders,
         ]);
     }
 
@@ -641,12 +652,17 @@ class UserController extends AbstractActionController
                 $saleOrderObj->status = 'pending';
                 $saleOrderObj->customerId = $_SESSION['user']->id;
                 $saleOrderObj->deliveryAddress = $deliveryAddress;
+                $saleOrderObj->createdAt = date('Y-m-d H:i:s');
+                $saleOrderObj->updatedAt = date('Y-m-d H:i:s');
+                $saleOrderObj->createdAtGmt = gmdate('Y-m-d H:i:s');
 
                 $insertSaleOrder = $saleOrderMySqlExtDAO->insert($saleOrderObj);
 
                 if ($insertSaleOrder) {
                     $c = 0;
+                    $total = 0;
                     foreach ($cartItems as $row) {
+                        $total += $row->cartQty * ProductController::getFinalPrice($row->regularPrice, $row->salePrice, true);
                         $saleOrderItemObj = new SaleOrderItem();
                         $saleOrderItemObj->saleOrderId = $insertSaleOrder;
                         $saleOrderItemObj->itemId = $row->id;
@@ -657,8 +673,11 @@ class UserController extends AbstractActionController
                             $c++;
                         }
                         if (count($cartItems) == $c) {
+                            $saleOrder = $saleOrderMySqlExtDAO->load($insertSaleOrder);
+                            $saleOrder->netTotal = $total;
+                            $saleOrderMySqlExtDAO->update($saleOrder);
                             $cartMySqlExtDAO = new CartMySqlExtDAO();
-                            $delete = $cartMySqlExtDAO->deleteByUserId($_SESSION['user']->id);
+                            $cartMySqlExtDAO->deleteByUserId($_SESSION['user']->id);
                             $_SESSION['user']->cart = [];
                             $msg = "Order Success";
                             $redirectUrl = MAIN_URL . 'order-result?res=success';

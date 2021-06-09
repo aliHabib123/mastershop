@@ -11,6 +11,12 @@ if ($_SESSION['user']) {
     $itemMySqlExtDAO = new ItemMySqlExtDAO();
     $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
 }
+
+$wishlistCount = 0;
+if ($_SESSION['user']) {
+    $wishlistCount = count($_SESSION['user']->wishlist);
+}
+
 global $categories;
 $level1Categories = CategoryController::getCategories('parent_id = 0 ORDER BY display_order ASC, name ASC, id DESC');
 $categories = $level1Categories;
@@ -80,14 +86,19 @@ foreach ($level1Categories as $row) {
                     <div class="col-md-3 col-6">
                         <ul class="custom-menu custom-menu-right">
                             <li class="wishlist">
-                                <a href="<?php echo MAIN_URL . 'my-wishlist'; ?>" class="d-none d-sm-inline-block">my wishlist</a>
+                                <a href="<?php echo MAIN_URL . 'my-wishlist'; ?>" class="d-none d-sm-inline-block">my wishlist
+                                    <span class="badge" <?php if (!$wishlistCount) {echo 'style="display:none;"';}?>><?php echo $wishlistCount; ?></span>
+                                </a>
                                 <a href="<?php echo MAIN_URL . 'my-wishlist'; ?>" class="d-inline-block d-sm-none"><i class="far fa-heart"></i></a>
                             </li>
                             <!-- <li class="bell-icon"><a href=""><i class="far fa-bell"></i></a></li> -->
                             <!-- <li class="cart-icon"><a href="#"><i class="fas fa-shopping-cart"></i><span class="badge">5</span></a></li> -->
                             <li class="dropdown pointer cart-icon">
                                 <a class="dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fas fa-shopping-cart"></i><span class="badge"><?php echo $cartCount; ?></span>
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <?php if ($cartCount) { ?>
+                                        <span class="badge"><?php echo $cartCount; ?></span>
+                                    <?php } ?>
                                 </a>
                                 <?php if (isset($_SESSION['user'])) {
                                     if ($_SESSION['user']->userType == UserController::$CUSTOMER) { ?>

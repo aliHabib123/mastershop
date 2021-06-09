@@ -1,5 +1,7 @@
 <?php
-    use Application\Controller\ProductController;
+
+use Application\Controller\DesignController;
+use Application\Controller\ProductController;
 ?>
 <div class="main-wrapper pt30">
     <div class="container mb-4">
@@ -20,7 +22,7 @@
                 </div>
                 <div class="wizard">
                     <nav class="list-group list-group-flush">
-                        <a class="list-group-item" href="<?php echo MAIN_URL.'my-orders';?>">
+                        <a class="list-group-item active" href="#">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div><i class="fa fa-shopping-bag mr-1 text-muted"></i>
                                     <div class="d-inline-block font-weight-medium text-uppercase">Orders List</div>
@@ -29,7 +31,7 @@
                         </a>
                         <a class="list-group-item" href="<?php echo MAIN_URL.'my-profile';?>"><i class="fa fa-user text-muted"></i>My Profile</a>
                         <!-- <a class="list-group-item" href="#"><i class="fa fa-map-marker text-muted"></i>Addresses</a> -->
-                        <a class="list-group-item active" href="#">
+                        <a class="list-group-item" href="#">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div><i class="fa fa-heart mr-1"></i>
                                     <div class="d-inline-block font-weight-medium text-uppercase">My Wishlist</div>
@@ -48,32 +50,47 @@
             </div>
             <!-- Wishlist-->
             <div class="col-lg-8 pb-5">
-                <!-- Item-->
-                <?php foreach ($this->wishlist as $row) {
-                    $class = "text-warning";
-                    $text = "Out of Stock";
-                    $image = ($row->image != "") ? BASE_URL . upload_image_dir . $row->image : PRODUCT_PLACEHOLDER_THUMBNAIL_URL;
-                    if ($row->qty > 0) {
-                        $class = "text-success";
-                        $text = "In Stock";
-                    }
-                ?>
-                    <div class="cart-item d-md-flex justify-content-between"><span class="remove-item wishlist-add" data-item-id="<?php echo $row->id;?>"><i class="fa fa-times"></i></span>
-                        <div class="px-3 my-3">
-                            <a class="cart-item-product" href="<?php echo MAIN_URL.'product/'.$row->slug;?>">
-                                <div class="cart-item-product-thumb"><img src="<?php echo $image; ?>" alt="Product"></div>
-                                <div class="cart-item-product-info">
-                                    <h4 class="cart-item-product-title"><?php echo $row->title; ?></h4>
-                                    <div class="text-lg text-body font-weight-medium pb-1">LBP <?php echo ProductController::getFinalPrice($row->regularPrice, $row->salePrice); ?></div><span>Availability: <span class="<?php echo $class; ?> font-weight-medium"><?php echo $text; ?></span></span>
-                                </div>
-                            </a>
+            <div class="vendor-page-wrapper">
+                    <div class="filters-wrap">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form class="form-inline" action="">
+                                    <label for="" class="main">FILTER BY:</label>
+                                    <div>
+                                        <label for="pwd">Date:</label>
+                                        <input type="text" class="form-control date" name="date" value="<?php echo $date; ?>">
+                                    </div>
+                                    <div>
+                                        <label for="pwd">Status:</label>
+                                        <select name="status" class="custom-select form-control">
+                                            <option value="" selected>Select Status</option>
+                                            <option value="pending" <?php if ($status == 'pending') {
+                                                                        echo 'selected';
+                                                                    } ?>>PENDING</option>
+                                            <option value="complete" <?php if ($status == 'complete') {
+                                                                            echo 'selected';
+                                                                        } ?>>COMPLETE</option>
+                                            <option value="in-progress" <?php if ($status == 'in-progress') {
+                                                                            echo 'selected';
+                                                                        } ?>>IN PROGRESS</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn apply-btn">SEARCH</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                <?php } ?>
-                <!-- <div class="custom-control custom-checkbox">
-                    <input class="custom-control-input" type="checkbox" checked="" id="inform-me">
-                    <label class="custom-control-label" for="inform-me">Inform me when item from my wishlist is available</label>
-                </div> -->
+                    <div class="orders-wrap">
+                        <?php foreach($this->saleOrders as $saleOrder){
+                            $saleOrderItemsMySqlExtDAO = new SaleOrderItemMySqlExtDAO();
+                            $saleOrderItems = $saleOrderItemsMySqlExtDAO->getSaleOrderItems($saleOrder->id);
+                            echo DesignController::customerOrderItem($saleOrder, $saleOrderItems);
+                        }?>
+                    </div>
+                    <div class="pagination-wrap">
+                        <div id="product-pagination" class="text-center"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

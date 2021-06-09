@@ -186,6 +186,7 @@ class SaleOrderItemMySqlDAO implements SaleOrderItemDAO{
 		$saleOrderItem->qty = $row['qty'];
 		$saleOrderItem->price = $row['price'];
 		$saleOrderItem->meta = $row['meta'];
+		$saleOrderItem->name = $row['title'];
 
 		return $saleOrderItem;
 	}

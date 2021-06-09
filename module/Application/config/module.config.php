@@ -181,7 +181,7 @@ return [
                     ],
                 ],
             ],
-            'myOrders' => [
+            'vendorMyOrders' => [
                 'type' => Segment::class,
                 'options' => [
                     'route'    => '/vendor/my-orders[/]',
@@ -371,6 +371,16 @@ return [
                     'defaults' => [
                         'controller' => Controller\UserController::class,
                         'action'     => 'myProfile',
+                    ],
+                ],
+            ],
+            'myOrders' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/my-orders',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'myOrders',
                     ],
                 ],
             ],

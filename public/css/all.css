@@ -47,7 +47,7 @@ body {
       line-height: 1; }
 
 .main-title {
-  font-size: 34px;
+  font-size: 27px;
   font-family: "Montserrat", sans-serif;
   font-weight: bold;
   line-height: 1;
@@ -588,7 +588,9 @@ a.disabled {
   .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li > a {
     padding-top: 1rem;
     padding-bottom: 1rem;
-    color: #fff; }
+    color: #fff;
+    padding-right: 8px;
+    padding-left: 8px; }
     .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li > a:hover, .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li > a:focus, .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li > a:active {
       -webkit-transition: all 0.3s ease;
       -moz-transition: all 0.3s ease;
@@ -729,7 +731,8 @@ a.disabled {
     color: #5a5a5a;
     font-family: "Montserrat Alternates", sans-serif;
     line-height: 1;
-    padding-top: 5px; }
+    padding-top: 5px;
+    font-size: 14px; }
     .upper-menu-container .upper-menu .signin-register .signin {
       color: #2576ba; }
     .upper-menu-container .upper-menu .signin-register .register {
@@ -755,11 +758,16 @@ a.disabled {
         display: inline-block; }
         .upper-menu-container .upper-menu .custom-menu li.wishlist a span.badge {
           background-color: #ef0101;
-          width: 18px;
-          height: 18px;
+          width: 16px;
+          height: 16px;
           border-radius: 50%;
           color: #fff;
-          display: inline-block; }
+          display: inline-block;
+          margin-left: 4px;
+          top: -1px;
+          position: relative;
+          line-height: 9px;
+          text-align: center; }
         .upper-menu-container .upper-menu .custom-menu li.wishlist a:last-child {
           padding: 0; }
     .upper-menu-container .upper-menu .custom-menu li.cart-icon {
@@ -854,7 +862,8 @@ a.disabled {
     color: #5a5a5a;
     font-family: "Montserrat", sans-serif;
     font-weight: normal;
-    vertical-align: initial; }
+    vertical-align: initial;
+    font-size: 14px; }
   .dropdown.user-dropdown button:not(::after) {
     color: #2576ba; }
 
@@ -866,6 +875,22 @@ a.disabled {
   transition: all 0.3s ease;
   background-color: #fff;
   color: #2576ba !important; }
+
+.search-container ::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  font-size: 14px; }
+
+.search-container ::-moz-placeholder {
+  /* Firefox 19+ */
+  font-size: 14px; }
+
+.search-container :-ms-input-placeholder {
+  /* IE 10+ */
+  font-size: 14px; }
+
+.search-container :-moz-placeholder {
+  /* Firefox 18- */
+  font-size: 14px; }
 
 .main-banner-container .bx-wrapper {
   margin-bottom: 0;

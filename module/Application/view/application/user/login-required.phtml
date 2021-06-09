@@ -17,7 +17,7 @@ use Application\Controller\UserController;
 
                     <div class="modal-form">
                         <form action="<?php echo MAIN_URL . 'submit-login'; ?>" id="login-form">
-                            <input type="hidden" name="redirectUrl" value="<?php echo HelperController::getCurrentUrl(); ?>" />
+                            <input type="hidden" name="redirectUrl" value="<?php echo $_GET['redirectUrl']; ?>" />
                             <div class="notice-area"></div>
                             <div class="form-group">
                                 <input type="email" class="form-control" placeholder="Email address*" id="login-email" name="email" autocomplete="username">

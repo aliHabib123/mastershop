@@ -8,11 +8,17 @@
 	class SaleOrderItem{
 		
 		var $id;
-		var $saleOrderId;
-		var $itemId;
-		var $qty;
-		var $price;
-		var $meta;
-		
+
+		var $saleOrderId;
+
+		var $itemId;
+
+		var $qty;
+
+		var $price;
+
+		var $meta;
+
+		var $name;
 	}
 ?>
