@@ -1,0 +1,35 @@
+<?php
+
+use Application\Controller\DesignController;
+use Application\Controller\HelperController;
+use Application\Controller\UserController;
+
+?>
+<div class="main-wrapper shopping-cart t30">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <?php echo DesignController::mainTitle('VENDOR AREA') ?>
+            </div>
+            <div class="col-md-6 offset-md-3">
+                <div class="form-wrap vendor-login-wrap modal-form">
+                    <form action="<?php echo MAIN_URL . 'submit-vendor-login'; ?>" id="vendor-login-form" autocomplete="off">
+                        <input type="hidden" name="redirectUrl" value="<?php echo MAIN_URL . 'vendor/my-dashboard' ?>" />
+                        <div class="form-group">
+                            <input type="email" class="form-control" placeholder="Email address*" id="email" name="email" autocomplete="false">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="Password" id="pwd" name="password" autocomplete="new-password">
+                            <span class="forgot"><a href="<?php echo MAIN_URL . 'forgot-password/' . UserController::$SUPPLIER; ?>">Forgot password?</a></span>
+                        </div>
+                        <div class="notice-area"></div>
+                        <div class="centered-button">
+                            <button type="submit" class="btn btn-primary">SIGN IN</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

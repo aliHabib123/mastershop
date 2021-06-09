@@ -41,7 +41,7 @@ body {
     margin-top: 10px; }
     .categories-slider-wrapper #categories-slider .cat-title a {
       font-family: "Montserrat", sans-serif;
-      font-size: 24px;
+      font-size: 20px;
       font-weight: 300;
       color: #000;
       line-height: 1; }
@@ -105,7 +105,7 @@ body {
     .special-tags ul li {
       display: inline-block; }
       .special-tags ul li a {
-        font-size: 20px;
+        font-size: 17px;
         font-family: "Montserrat", sans-serif;
         color: #000;
         border-right: 2px solid #000;
@@ -580,6 +580,9 @@ a.disabled {
 .form-control {
   border-radius: 0; }
 
+.ajs-message {
+  color: #fff !important; }
+
 .mega-menu nav.navbar {
   padding: 0; }
   .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li > a {
@@ -737,14 +740,15 @@ a.disabled {
     margin-bottom: 0; }
     .upper-menu-container .upper-menu .custom-menu.custom-menu-centered li.show a {
       color: #fff;
-      background-color: #ef0101; }
+      background-color: #2576ba; }
     .upper-menu-container .upper-menu .custom-menu.custom-menu-centered li a:hover, .upper-menu-container .upper-menu .custom-menu.custom-menu-centered li a:active, .upper-menu-container .upper-menu .custom-menu.custom-menu-centered li a:focus {
       color: #fff;
-      background-color: #ef0101; }
+      background-color: #2576ba; }
     .upper-menu-container .upper-menu .custom-menu li a {
       color: #000;
-      padding: 5px;
-      line-height: 1; }
+      padding: 5px 10px;
+      line-height: 1;
+      font-size: 14px; }
     .upper-menu-container .upper-menu .custom-menu li.wishlist {
       position: relative; }
       .upper-menu-container .upper-menu .custom-menu li.wishlist a {
@@ -1712,6 +1716,12 @@ footer {
     .orders-wrap .order-item .order-status.in-progress {
       background-color: #ff681d; }
 
+.vendor-login-wrap {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  border: 1px solid #ebebeb;
+  padding: 64px; }
+
 .widget-author {
   margin-bottom: 58px; }
 
@@ -2249,6 +2259,9 @@ a.list-group-item,
 
 .card-wrapper {
   margin: 30px -15px; }
+
+.forgot-password input {
+  border: 1px solid !important; }
 
 @media (max-width: 576px) {
   .card-wrapper .jp-card-container {

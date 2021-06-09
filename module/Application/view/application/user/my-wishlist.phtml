@@ -58,7 +58,7 @@
                         $text = "In Stock";
                     }
                 ?>
-                    <div class="cart-item d-md-flex justify-content-between"><span class="remove-item"><i class="fa fa-times"></i></span>
+                    <div class="cart-item d-md-flex justify-content-between"><span class="remove-item wishlist-add" data-item-id="<?php echo $row->id;?>"><i class="fa fa-times"></i></span>
                         <div class="px-3 my-3">
                             <a class="cart-item-product" href="<?php echo MAIN_URL.'product/'.$row->slug;?>">
                                 <div class="cart-item-product-thumb"><img src="<?php echo $image; ?>" alt="Product"></div>

@@ -33,8 +33,6 @@ class UserController extends AbstractActionController
         $user = $this->getUserInfoByEmail($userInfo->email);
         if (!$user) {
             $user = $this->registerUser($userInfo);
-        } else {
-            $user = $user[0];
         }
 
         $this->setUserSession($user);
@@ -47,6 +45,11 @@ class UserController extends AbstractActionController
         return $userMySqlExtDAO->getUserByEmailAndType($email, UserController::$CUSTOMER);
     }
 
+    public function getVendorInfoByEmail(string $email)
+    {
+        $userMySqlExtDAO = new UserMySqlExtDAO();
+        return $userMySqlExtDAO->getUserByEmailAndType($email, UserController::$SUPPLIER);
+    }
     public function setUserSession($user)
     {
         //Wishlist Items
@@ -81,10 +84,10 @@ class UserController extends AbstractActionController
         $_SESSION['user'] = $obj;
     }
 
-    public function logoutAction(string $redirectUrl = MAIN_URL)
+    public function logoutAction()
     {
         session_destroy();
-        header('Location: ' . $redirectUrl);
+        header('Location: ' . MAIN_URL);
         exit();
     }
 
@@ -101,7 +104,6 @@ class UserController extends AbstractActionController
         $confirmPassword = HelperController::filterInput($this->getRequest()->getPost('confirm-password'));
         $agree = HelperController::filterInput($this->getRequest()->getPost('agree'));
         $redirectUrl = HelperController::filterInput($this->getRequest()->getPost('redirectUrl'));
-        //print_r($agree);
 
         if ($fullname == "" || $birthday == "" || $email == "" || $password == "" || $confirmPassword == "") {
             $msg = "Please fill all inputs";
@@ -139,12 +141,11 @@ class UserController extends AbstractActionController
             'msg' => $msg,
             'redirectUrl' => $redirectUrl,
         ]);
-        //$response = HelperController::createJsonResponse($result, $msg);
         print_r($response);
         return $this->response;
     }
 
-    public function submitloginAction()
+    public function submitLoginAction()
     {
         $result = false;
         $msg = "Wrong email or password!";
@@ -153,14 +154,13 @@ class UserController extends AbstractActionController
         $email = HelperController::filterInput($this->getRequest()->getPost('email'));
         $password = HelperController::filterInput($this->getRequest()->getPost('password'));
         $redirectUrl = HelperController::filterInput($this->getRequest()->getPost('redirectUrl'));
-        //print_r($agree);
 
         if ($email == "" || $password == "") {
             $msg = "Please fill all inputs";
         } else {
             $userExists = $this->getUserInfoByEmail($email);
             if ($userExists) {
-                $user = $userExists[0];
+                $user = $userExists;
                 if ($user && password_verify($password, $user->password)) {
                     $this->setUserSession($user);
                     $result = true;
@@ -173,7 +173,45 @@ class UserController extends AbstractActionController
             'msg' => $msg,
             'redirectUrl' => $redirectUrl,
         ]);
-        //$response = HelperController::createJsonResponse($result, $msg);
+        print_r($response);
+        return $this->response;
+    }
+
+    public function submitVendorLoginAction()
+    {
+        $result = false;
+        $msg = "Wrong email or password!";
+        $redirectUrl = MAIN_URL;
+
+        $email = HelperController::filterInput($this->getRequest()->getPost('email'));
+        $password = HelperController::filterInput($this->getRequest()->getPost('password'));
+        $redirectUrl = HelperController::filterInput($this->getRequest()->getPost('redirectUrl'));
+
+        if (isset($_SESSION['user'])) {
+            if ($_SESSION['user']->userType == UserController::$CUSTOMER) {
+                $msg = "You are logged in as a customer, please sign out first";
+            } elseif ($_SESSION['user']->userType == UserController::$SUPPLIER) {
+                header('Location: ' . MAIN_URL . 'vendor/my-dashboard');
+                exit();
+            }
+        } elseif ($email == "" || $password == "") {
+            $msg = "Please fill all inputs";
+        } else {
+            $userExists = $this->getVendorInfoByEmail($email);
+            if ($userExists) {
+                $user = $userExists;
+                if ($user && password_verify($password, $user->password)) {
+                    $this->setUserSession($user);
+                    $result = true;
+                    $msg = "successfully logged in!";
+                }
+            }
+        }
+        $response = json_encode([
+            'status' => $result,
+            'msg' => $msg,
+            'redirectUrl' => $redirectUrl,
+        ]);
         print_r($response);
         return $this->response;
     }
@@ -322,7 +360,6 @@ class UserController extends AbstractActionController
         $itemId = HelperController::filterInput($this->getRequest()->getPost('itemId'));
         $cartMySqlExtDAO = new CartMySqlExtDAO();
         $delete = $cartMySqlExtDAO->deleteCartQty($itemId, $_SESSION['user']->id);
-        //$delete = $cartMySqlExtDAO->delete($cartId);
         if ($delete) {
             $flipped = array_flip($_SESSION['user']->cart);
             unset($flipped[$itemId]);
@@ -431,8 +468,8 @@ class UserController extends AbstractActionController
         self::checkCustomerLoggedIn();
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
         $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
-        if(count($cartItems)<=0){
-            header('Location: '.MAIN_URL.'my-cart');
+        if (count($cartItems) <= 0) {
+            header('Location: ' . MAIN_URL . 'my-cart');
             exit();
         }
 
@@ -456,7 +493,6 @@ class UserController extends AbstractActionController
 
         $firstName = HelperController::filterInput($this->getRequest()->getPost('first-name'));
         $lastName = HelperController::filterInput($this->getRequest()->getPost('last-name'));
-        //$email = HelperController::filterInput($this->getRequest()->getPost('email'));
         $mobile = HelperController::filterInput($this->getRequest()->getPost('mobile'));
         $tel1 = HelperController::filterInput($this->getRequest()->getPost('tel1'));
         $tel2 = HelperController::filterInput($this->getRequest()->getPost('tel2'));
@@ -467,7 +503,7 @@ class UserController extends AbstractActionController
         $confirmPassword = HelperController::filterInput($this->getRequest()->getPost('confirm-password'));
 
         $checkPassword = false;
-        if($password != ""){
+        if ($password != "") {
             $checkPassword = true;
         }
         $passwordStrength = HelperController::passwordStrength($password);
@@ -477,10 +513,8 @@ class UserController extends AbstractActionController
         } elseif ($password != "" && $password != $confirmPassword) {
             $msg = "Passwords do not match";
         } elseif ($checkPassword && $passwordStrength->status == false) {
-            //echo 'here';
             $msg = $passwordStrength->msg;
         } else {
-            //echo 'here1';
             $userMySqlExtDAO = new UserMySqlExtDAO();
             $userInfo = $userMySqlExtDAO->load($_SESSION['user']->id);
 
@@ -514,11 +548,76 @@ class UserController extends AbstractActionController
         return $this->response;
     }
 
-    public function orderCompleteAction(){
+    public function vendorContactUpdateAction()
+    {
+        $result = false;
+        $msg = "Nothing changed";
+
+        $firstName = HelperController::filterInput($this->getRequest()->getPost('first-name'));
+        $lastName = HelperController::filterInput($this->getRequest()->getPost('last-name'));
+        $mobile = HelperController::filterInput($this->getRequest()->getPost('mobile'));
+        $tel1 = HelperController::filterInput($this->getRequest()->getPost('tel1'));
+        $country = HelperController::filterInput($this->getRequest()->getPost('country'));
+        $city = HelperController::filterInput($this->getRequest()->getPost('city'));
+        $address1 = HelperController::filterInput($this->getRequest()->getPost('address-1'));
+        $address2 = HelperController::filterInput($this->getRequest()->getPost('address-2'));
+        $password = HelperController::filterInput($this->getRequest()->getPost('password'));
+        $confirmPassword = HelperController::filterInput($this->getRequest()->getPost('confirm-password'));
+        $companyName = HelperController::filterInput($this->getRequest()->getPost('company-name'));
+
+        $checkPassword = false;
+        if ($password != "") {
+            $checkPassword = true;
+        }
+        $passwordStrength = HelperController::passwordStrength($password);
+
+        if ($firstName == "" || $lastName == "" || $mobile == "" || $country == "" || $city == "" || $address1 == "" || $companyName == "") {
+            $msg = "Please fill all inputs";
+        } elseif ($password != "" && $password != $confirmPassword) {
+            $msg = "Passwords do not match";
+        } elseif ($checkPassword && $passwordStrength->status == false) {
+            $msg = $passwordStrength->msg;
+        } else {
+            $userMySqlExtDAO = new UserMySqlExtDAO();
+            $userInfo = $userMySqlExtDAO->load($_SESSION['user']->id);
+
+            $userInfo->companyName = $companyName;
+            $userInfo->firstName = $firstName;
+            $userInfo->lastName = $lastName;
+            $userInfo->fullName = $firstName . " " . $lastName;
+            $userInfo->mobile = $mobile;
+            $userInfo->tel1 = $tel1;
+            $userInfo->country = $country;
+            $userInfo->city = $city;
+            $userInfo->address1 = $address1;
+            $userInfo->address2 = $address2;
+            $userInfo->updatedAt = date('Y-m-d H:i:s');
+
+            if ($passwordStrength->status) {
+                $userInfo->password = password_hash($password, PASSWORD_DEFAULT);
+            }
+            $updateUser = $userMySqlExtDAO->update($userInfo);
+
+            if ($updateUser) {
+                $result = true;
+                $msg = "successfully Updated User Info";
+            }
+        }
+        $response = json_encode([
+            'status' => $result,
+            'msg' => $msg,
+        ]);
+
+        print_r($response);
+        return $this->response;
+    }
+
+    public function orderCompleteAction()
+    {
         self::checkCustomerLoggedIn();
         $result = false;
         $msg = "Error";
-        $redirectUrl = MAIN_URL.'order-result?res=fail';
+        $redirectUrl = MAIN_URL . 'order-result?res=fail';
         $fullName = HelperController::filterInput($this->getRequest()->getPost('full-name'));
         $email = HelperController::filterInput($this->getRequest()->getPost('email'));
         $mobile = HelperController::filterInput($this->getRequest()->getPost('mobile'));
@@ -527,12 +626,12 @@ class UserController extends AbstractActionController
         $deliveryAddress = HelperController::filterInput($this->getRequest()->getPost('delivery-address'));
         $notes = HelperController::filterInput($this->getRequest()->getPost('notes'));
 
-        if($fullName == "" || $email == "" || $mobile == "" || $country == "" || $city == "" || $deliveryAddress == ""){
+        if ($fullName == "" || $email == "" || $mobile == "" || $country == "" || $city == "" || $deliveryAddress == "") {
             $msg = "Please fill all inputs!";
         } else {
             $itemMySqlExtDAO = new ItemMySqlExtDAO();
             $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
-            if(!$cartItems){
+            if (!$cartItems) {
                 $msg = "Nothing in cart!";
             } else {
                 $saleOrderMySqlExtDAO = new SaleOrderMySqlExtDAO();
@@ -545,47 +644,30 @@ class UserController extends AbstractActionController
 
                 $insertSaleOrder = $saleOrderMySqlExtDAO->insert($saleOrderObj);
 
-                if($insertSaleOrder){
-                    $c=0;
-                    foreach($cartItems as $row){
+                if ($insertSaleOrder) {
+                    $c = 0;
+                    foreach ($cartItems as $row) {
                         $saleOrderItemObj = new SaleOrderItem();
                         $saleOrderItemObj->saleOrderId = $insertSaleOrder;
                         $saleOrderItemObj->itemId = $row->id;
                         $saleOrderItemObj->qty = $row->cartQty;
                         $saleOrderItemObj->price = ProductController::getFinalPrice($row->regularPrice, $row->salePrice, true);
                         $insertSaleOrderItem = $saleOrderItemMySqlExtDAO->insert($saleOrderItemObj);
-                        if($insertSaleOrderItem){
+                        if ($insertSaleOrderItem) {
                             $c++;
                         }
-                        if(count($cartItems) == $c){
+                        if (count($cartItems) == $c) {
                             $cartMySqlExtDAO = new CartMySqlExtDAO();
                             $delete = $cartMySqlExtDAO->deleteByUserId($_SESSION['user']->id);
                             $_SESSION['user']->cart = [];
                             $msg = "Order Success";
-                            $redirectUrl = MAIN_URL.'order-result?res=success';
+                            $redirectUrl = MAIN_URL . 'order-result?res=success';
                             $result = true;
                         }
                     }
                 }
             }
-        }        
-        // if($cartItems){
-        //     $userMySqlExtDAO = new UserMySqlExtDAO();
-        //     $userInfo = $userMySqlExtDAO->load($_SESSION['user']->id);
-        // }
-
-        //$emailBody = MailController::getEmailHtmlTemplate("test");
-        // $to = "";
-        // $subject = "";
-        // $send = MailController::sendMail($to, $subject, $emailBody);
-        // $success = true;
-        // if($result){
-        //     header('Location: '.MAIN_URL.'order-result?res=success');
-        //     exit();
-        // } else{
-        //     header('Location: '.MAIN_URL.'order-result?res=fail');
-        //     exit();
-        // }
+        }
         $response = json_encode([
             'status' => $result,
             'msg' => $msg,
@@ -596,38 +678,140 @@ class UserController extends AbstractActionController
         return $this->response;
     }
 
-    public function orderResultAction(){
+    public function orderResultAction()
+    {
         self::checkCustomerLoggedIn();
-        // $textArray = [
-        //     'Hi There,',
-        //     '',
-        //     'Thank you for your order!',
-        //     'We have received your order',
-        // ];
-        // $emailBody = MailController::getEmailHtmlTemplate('Order Complete', $textArray);
-        // $emailBody = MailController::getOrderCompleteEmail();
-        // echo $emailBody;die();
         return new ViewModel();
     }
 
-    public function loginRequiredAction(){
+    public function loginRequiredAction()
+    {
         return new ViewModel();
     }
 
-    public static function checkCustomerLoggedIn(){
+    public static function checkCustomerLoggedIn()
+    {
         $redirectUrl = urlencode(HelperController::getCurrentUrl());
-        $url = MAIN_URL.'login-required?redirectUrl='.$redirectUrl;
-        if(!isset($_SESSION['user']) || $_SESSION['user']->userType != UserController::$CUSTOMER){
-            header('Location: '.$url);
+        $url = MAIN_URL . 'login-required?redirectUrl=' . $redirectUrl;
+        if (!isset($_SESSION['user']) || $_SESSION['user']->userType != UserController::$CUSTOMER) {
+            header('Location: ' . $url);
             exit();
         }
     }
-    public static function checkVendorLoggedIn(){
+    public static function checkVendorLoggedIn()
+    {
         $redirectUrl = urlencode(HelperController::getCurrentUrl());
-        $url = MAIN_URL.'login-required?redirectUrl='.$redirectUrl;
-        if(!isset($_SESSION['user']) || $_SESSION['user']->userType != UserController::$SUPPLIER){
-            header('Location: '.$url);
+        $url = MAIN_URL . 'login-required?redirectUrl=' . $redirectUrl;
+        if (!isset($_SESSION['user']) || $_SESSION['user']->userType != UserController::$SUPPLIER) {
+            header('Location: ' . $url);
             exit();
+        }
+    }
+
+    public function vendorLoginAction()
+    {
+        return new ViewModel();
+    }
+    public function forgotPasswordAction()
+    {
+        $userType = HelperController::filterInput($this->params('userType'));
+        return new ViewModel([
+            'userType' => $userType,
+        ]);
+    }
+
+    public function forgotPasswordSubmitAction()
+    {
+        $result = false;
+        $msg = "Error";
+
+        $userType = HelperController::filterInput($this->params('userType'));
+        $email = HelperController::filterInput($this->getRequest()->getPost('email'));
+
+        $userMySqlExtDAO = new UserMySqlExtDAO();
+        $userInfo = $userMySqlExtDAO->getUserByEmailAndType($email, $userType);
+
+        if ($userInfo) {
+            $rand = HelperController::random(150);
+            $userInfo->activationCode = $rand;
+
+            $update = $userMySqlExtDAO->update($userInfo);
+            if ($update) {
+                $to = $userInfo->email;
+                $subject = "Mastershop: Reset Password";
+
+                $resetLink = MAIN_URL . 'reset-password/' . $userType . '?activationCode=' . $rand;
+                $emailBody = MailController::getPasswordResetEmailBody($userInfo->fullName, $resetLink);
+                $sendEmail = MailController::sendMail($to, $subject, $emailBody);
+
+                if ($sendEmail) {
+                    $result = true;
+                    $msg = "Please check your email for reset link";
+                }
+            }
+        } else {
+            $result = false;
+            $msg = "This user does not exist";
+        }
+
+        $response = json_encode([
+            'status' => $result,
+            'msg' => $msg,
+        ]);
+
+        print_r($response);
+        return $this->response;
+    }
+    public function resetPasswordAction()
+    {
+        $userType = HelperController::filterInput($this->params('userType'));
+        if (isset($_POST) && !empty($_POST)) {
+
+            $result = false;
+            $msg = "Error";
+
+            $activationCode = HelperController::filterInput($this->getRequest()->getPost('activationCode'));
+            $pass = HelperController::filterInput($this->getRequest()->getPost('password'));
+            $confirmPass = HelperController::filterInput($this->getRequest()->getPost('confirm-password'));
+
+            $userMySqlExtDAO = new UserMySqlExtDAO();
+            $userInfo = $userMySqlExtDAO->getUserByActivationCodeAndType($activationCode, $userType);
+
+            $checkPassword = false;
+            if ($pass != "") {
+                $checkPassword = true;
+            }
+            $passwordStrength = HelperController::passwordStrength($pass);
+
+            if ($pass == "" || $confirmPass == "") {
+                $msg = "Please fill all inputs";
+            } elseif ($pass != "" && $pass != $confirmPass) {
+                $msg = "Passwords do not match";
+            } elseif ($checkPassword && $passwordStrength->status == false) {
+                $msg = $passwordStrength->msg;
+            } else {
+                $userInfo->password = password_hash($pass, PASSWORD_DEFAULT);
+                $userInfo->activationCode = "";
+                $userInfo->updatedAt = date('Y-m-d H:i:s');
+                $update = $userMySqlExtDAO->update($userInfo);
+                if ($update) {
+                    $this->setUserSession($userInfo);
+                    $result = true;
+                    $msg = "Password updated";
+                }
+            }
+
+            $response = json_encode([
+                'status' => $result,
+                'msg' => $msg,
+            ]);
+
+            print_r($response);
+            return $this->response;
+        } else {
+            return new ViewModel([
+                'userType' => $userType,
+            ]);
         }
     }
 }

@@ -2,6 +2,7 @@
 
 use Application\Controller\FacebookController;
 use Application\Controller\HelperController;
+use Application\Controller\UserController;
 
 ?>
 <!-- The Modal -->
@@ -25,11 +26,11 @@ use Application\Controller\HelperController;
                     <form action="<?php echo MAIN_URL . 'submit-login'; ?>" id="login-form">
                         <input type="hidden" name="redirectUrl" value="<?php echo HelperController::getCurrentUrl(); ?>" />
                         <div class="form-group">
-                            <input type="email" class="form-control" placeholder="Email address*" id="email" name="email">
+                            <input type="email" class="form-control" placeholder="Email address*" id="login-email" name="email" autocomplete="username">
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" placeholder="Enter password" id="pwd" name="password">
-                            <span class="forgot"><a href="javascript:void(0);">Forgot password?</a></span>
+                            <input type="password" class="form-control" placeholder="Enter password" id="login-pwd" name="password" autocomplete="current-password">
+                            <span class="forgot"><a href="<?php echo MAIN_URL . 'forgot-password/' . UserController::$CUSTOMER; ?>">Forgot password?</a></span>
                         </div>
                         <div class="form-group form-check">
                             <label class="form-check-label">
@@ -52,7 +53,7 @@ use Application\Controller\HelperController;
                         </div> -->
                         <div class="notice-area"></div>
                         <div class="centered-button">
-                            <button type="submit" class="btn btn-primary">SIGN IN</button>
+                            <button type="submit" class="btn">SIGN IN</button>
                         </div>
                         <div class="have-account">
                             <p>Don't have an account yet</p>
@@ -84,16 +85,16 @@ use Application\Controller\HelperController;
             cache: false,
             processData: false,
             beforeSend: function() {
-                showMsg('.notice-area', true, 'Logging you in, please wait...');
+                showMsg('#login-form .notice-area', true, 'Logging you in, please wait...');
             },
             success: function(response) {
-                showMsg('.notice-area', response.status, response.msg);
+                showMsg('#login-form .notice-area', response.status, response.msg);
                 if (response.status == true) {
                     location.href = response.redirectUrl;
                 }
             },
             error: function() {
-                showMsg('.notice-area', false, 'An error occured, please try again!');
+                showMsg('#login-form .notice-area', false, 'An error occured, please try again!');
             }
         });
         e.preventDefault();

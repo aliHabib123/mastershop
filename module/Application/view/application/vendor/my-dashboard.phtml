@@ -13,7 +13,7 @@ $orderId = isset($_GET['orderId']) ? $_GET['orderId'] : '';
             <?php echo DesignController::getVendorSidebar('dashboard');?>
             </div>
             <div class="col-md-9 vendor-pl0">
-                <div class="page-date"><i class="far fa-calendar-alt"></i>&nbsp;<?php echo date('l, F j, Y');?><span><a href="#">VIEW ALL ORDERS</a></span></div>
+                <div class="page-date"><i class="far fa-calendar-alt"></i>&nbsp;<?php echo date('l, F j, Y');?><span><a href="<?php echo MAIN_URL.'vendor/my-orders';?>">VIEW ALL ORDERS</a></span></div>
                 <div class="vendor-page-wrapper">
                     <div class="dash-wrap">
                         <div class="row">

@@ -40,7 +40,7 @@ class MailController extends AbstractActionController
                 <td style=\"font-family: sans-serif; font-size: 14px; vertical-align: top;\">&nbsp;</td>
                 <td class=\"container\" style=\"font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 800px; padding: 10px; width: 800px;\">
                   <div class=\"content\" style=\"box-sizing: border-box; display: block; Margin: 0 auto; max-width: 800px;\">
-                  <div class=\"content-header\">Order Complete</div>
+                  <div class=\"content-header\" style=\"font-size: 20px;font-family: sans-serif;color:#fff;text-transform:uppercase;\">$title</div>
                     <!-- START CENTERED WHITE CONTAINER -->
                     <table class=\"main\" style=\"border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;\">
                       <!-- START MAIN CONTENT AREA -->
@@ -49,15 +49,18 @@ class MailController extends AbstractActionController
                           <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;\">
                             <tr>
                               <td style=\"font-family: sans-serif; font-size: 14px; vertical-align: top;\">";
-                              if($textArray){
-                                foreach($textArray as $row){
-                                  $html .= self::getEmailLine($row);
-                                }
-                              }
-    $html .= $action;
-    $html .= "</td>
-                            </tr>
-                          </table>
+    if ($textArray) {
+      foreach ($textArray as $row) {
+        $html .= self::getEmailLine($row);
+      }
+    }
+    if ($action) {
+      $html .= $action;
+    }
+    $html .= "</td>";
+    $html .= "</tr>";
+    $html .= MailController::getEmailFooter();
+    $html .= "</table>
                         </td>
                       </tr>
         
@@ -65,7 +68,7 @@ class MailController extends AbstractActionController
                     </table>";
 
 
-    //$html .= MailController::getEmailFooter();
+   
     $html .= "<!-- END CENTERED WHITE CONTAINER -->
                   </div>
                 </td>
@@ -79,23 +82,14 @@ class MailController extends AbstractActionController
 
   public static function getEmailFooter()
   {
-    return "<!-- START FOOTER -->
-                <div class=\"footer\" style=\"clear: both; Margin-top: 10px; text-align: center; width: 100%;\">
-                    <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;\">
-                        <tr>
-                        <td class=\"content-block\" style=\"font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;\">
-                            <span class=\"apple-link\" style=\"color: #999999; font-size: 12px; text-align: center;\">Company Inc, 3 Abbey Road, San Francisco CA 94102</span>
-                            <br> Don't like these emails? <a href=\"http://i.imgur.com/CScmqnj.gif\" style=\"text-decoration: underline; color: #999999; font-size: 12px; text-align: center;\">Unsubscribe</a>.
-                        </td>
-                        </tr>
-                        <tr>
-                        <td class=\"content-block powered-by\" style=\"font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;\">
-                            Powered by <a href=\"http://htmlemail.io\" style=\"color: #999999; font-size: 12px; text-align: center; text-decoration: none;\">HTMLemail</a>.
-                        </td>
-                        </tr>
-                    </table>
-                </div>
-                <!-- END FOOTER -->";
+    $logoLink = BASE_URL. "img/logo.png";
+    return "<tr>
+          <td style=\"font-family: sans-serif; font-size: 14px; vertical-align: top;\">
+          <p style=\"font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-top: 15px;\">Regards,</p>
+          <p style=\"font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;\">Mastershop</p>
+          <p><img style=\"max-height: 50px;\" src=\"$logoLink\"/></p>
+          </td>
+          </tr>";
   }
   public static function getCallToAction($link, $text)
   {
@@ -120,7 +114,7 @@ class MailController extends AbstractActionController
 
   public static function getEmailLine($text = "")
   {
-    if($text==""){
+    if ($text == "") {
       return '<br>';
     }
     return "<p style=\"font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;\">$text</p>";
@@ -207,14 +201,6 @@ class MailController extends AbstractActionController
             font-weight: inherit;
             line-height: inherit;
           }
-          .btn-primary table td:hover {
-            background-color: #2576ba !important;
-            border: 1px solid #2576ba;
-          }
-          .btn-primary a:hover {
-            background-color: #fff !important;
-            color: #2576ba;
-          }
           .content-header{
             background-color: #2576ba;
             padding: 30px 15px;
@@ -224,7 +210,8 @@ class MailController extends AbstractActionController
         </style>";
   }
 
-  public static function getOrderCompleteEmail($showAds=false){
+  public static function getOrderCompleteEmail($showAds = false)
+  {
     $html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
 <html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" style=\"width:100%;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0\">
 <head>
@@ -520,8 +507,8 @@ padding:15px 30px 15px 30px!important;
 </table></td>
 </tr>
 </table>";
-if($showAds){
-  $html .= "<table class=\"es-content\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\" style=\"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%\">
+    if ($showAds) {
+      $html .= "<table class=\"es-content\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\" style=\"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%\">
   <tr style=\"border-collapse:collapse\">
   <td align=\"center\" style=\"padding:0;Margin:0\">
   <table class=\"es-content-body\" style=\"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#1B9BA3;width:600px\" cellspacing=\"0\" cellpadding=\"0\" bgcolor=\"#1b9ba3\" align=\"center\">
@@ -544,8 +531,8 @@ if($showAds){
   </table></td>
   </tr>
   </table>";
-}
-$html .= "<table cellpadding=\"0\" cellspacing=\"0\" class=\"es-footer\" align=\"center\" style=\"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;background-color:transparent;background-repeat:repeat;background-position:center top\">
+    }
+    $html .= "<table cellpadding=\"0\" cellspacing=\"0\" class=\"es-footer\" align=\"center\" style=\"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;background-color:transparent;background-repeat:repeat;background-position:center top\">
 <tr style=\"border-collapse:collapse\">
 <td align=\"center\" style=\"padding:0;Margin:0\">
 <table class=\"es-footer-body\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\" style=\"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#FFFFFF;width:600px\">
@@ -572,6 +559,20 @@ $html .= "<table cellpadding=\"0\" cellspacing=\"0\" class=\"es-footer\" align=\
 </div>
 </body>
 </html>";
-return $html;
+    return $html;
+  }
+
+  public static function getPasswordResetEmailBody($name, $resetLink)
+  {
+    $textArray = [
+      "Hi $name,",
+      "Please click on the Reset button to reset your password",
+      "or copy the below link to your browser",
+      "$resetLink"
+    ];
+    $callToAction = MailController::getCallToAction($resetLink, 'Reset');
+    $html = self::getEmailHtmlTemplate('Reset Password', $textArray, $callToAction);
+
+    return $html;
   }
 }

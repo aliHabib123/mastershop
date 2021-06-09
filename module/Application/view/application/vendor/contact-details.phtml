@@ -1,17 +1,20 @@
 <?php
 
 use Application\Controller\DesignController;
+
 ?>
+<?php $userInfo = $this->userInfo; ?>
 <div class="main-wrapper">
     <div class="container">
         <div class="row">
             <div class="col-md-3 sidebar">
-            <?php echo DesignController::getVendorSidebar('contact');?>
+                <?php echo DesignController::getVendorSidebar('contact'); ?>
             </div>
             <div class="col-md-9 vendor-pl0">
-                <div class="page-date"><i class="far fa-calendar-alt"></i>&nbsp;<?php echo date('l, F j, Y');?></div>
+                <div class="page-date"><i class="far fa-calendar-alt"></i>&nbsp;<?php echo date('l, F j, Y'); ?></div>
                 <div class="vendor-page-wrapper">
-                    <form action="/action_page.php">
+                    <form action="<?php echo MAIN_URL . "vendor/contact-update" ?>" id="vendor-contact-update">
+                        <div class="notice-area"></div>
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-6 input-wrap">
@@ -20,27 +23,38 @@ use Application\Controller\DesignController;
                                             <label for="email">*Company Name</label>
                                         </div>
                                         <div class="col-md-8">
-                                            <input type="text" class="form-control" placeholder="">
+                                            <input type="text" class="form-control" placeholder="Company Name" value="<?php echo $userInfo->companyName; ?>" name="company-name">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6 input-wrap">
                                     <div class="row">
                                         <div class="col-md-4 pr0">
-                                            <label for="email">*Contact Person</label>
+                                            <label for="email">*First Name</label>
                                         </div>
                                         <div class="col-md-8">
-                                            <input type="text" class="form-control" placeholder="">
+                                            <input type="text" class="form-control" placeholder="" value="<?php echo $userInfo->firstName; ?>" name="first-name">
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-md-6 input-wrap">
+                                    <div class="row">
+                                        <div class="col-md-4 pr0">
+                                            <label for="email">*Last Name</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" placeholder="" value="<?php echo $userInfo->lastName; ?>" name="last-name">
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-6 input-wrap">
                                     <div class="row">
                                         <div class="col-md-4 pr0">
                                             <label for="email">*Email Address</label>
                                         </div>
                                         <div class="col-md-8">
-                                            <input type="email" class="form-control" placeholder="">
+                                            <input type="email" class="form-control" placeholder="" value="<?php echo $userInfo->email; ?>" name="email" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -50,17 +64,17 @@ use Application\Controller\DesignController;
                                             <label for="email">*Mobile Number</label>
                                         </div>
                                         <div class="col-md-8">
-                                            <input type="text" class="form-control" placeholder="" id="mobile-number" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                            <input type="text" class="form-control" placeholder="" id="mobile-number" value="<?php echo $userInfo->mobile; ?>" name="mobile" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6 input-wrap">
                                     <div class="row">
                                         <div class="col-md-4 pr0">
-                                            <label for="email">*Work Number</label>
+                                            <label for="email">Work Number</label>
                                         </div>
                                         <div class="col-md-8">
-                                            <input type="text" class="form-control" placeholder="" id="work-number" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                            <input type="text" class="form-control" placeholder="" id="work-number" value="<?php echo $userInfo->tel1; ?>" name="tel1" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                                         </div>
                                     </div>
                                 </div>
@@ -70,7 +84,9 @@ use Application\Controller\DesignController;
                                             <label for="email">*Country</label>
                                         </div>
                                         <div class="col-md-8">
-                                            <input type="text" class="form-control" placeholder="">
+                                            <select class="form-control" id="country" name="country">
+                                                <option value="LB">Lebanon</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -80,20 +96,63 @@ use Application\Controller\DesignController;
                                             <label for="email">*City</label>
                                         </div>
                                         <div class="col-md-8">
-                                            <input type="text" class="form-control" placeholder="">
+                                            <select class="form-control" id="city" name="city">
+                                                <option>Select City</option>
+                                                <?php foreach ($this->cities as $city) {
+                                                    $selected = "";
+                                                    if ($city->city == $userInfo->city) {
+                                                        $selected = "selected";
+                                                    } ?>
+                                                    <option value="<?php echo $city->city ?>" <?php echo $selected; ?>><?php echo $city->city ?></option>
+                                                <?php } ?>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6 input-wrap">
                                     <div class="row">
                                         <div class="col-md-4 pr0">
-                                            <label for="email">*Address</label>
+                                            <label for="email">*Address Line1</label>
                                         </div>
                                         <div class="col-md-8">
-                                            <input type="text" class="form-control" placeholder="">
+                                            <input type="text" class="form-control" placeholder="" value="<?php echo $userInfo->address1; ?>" name="address-1">
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-md-6 input-wrap">
+                                    <div class="row">
+                                        <div class="col-md-4 pr0">
+                                            <label for="email">Address Line2</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" placeholder="" value="<?php echo $userInfo->address2; ?>" name="address-2">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 input-wrap">
+                                    <div class="row">
+                                        <div class="col-md-4 pr0">
+                                            <label for="email">Password</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="password" class="form-control" placeholder="" name="password" autocomplete="new-password">
+                                            <span>Leave empty for no update</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 input-wrap">
+                                    <div class="row">
+                                        <div class="col-md-4 pr0">
+                                            <label for="email">Confirm Password</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="password" class="form-control" placeholder="" name="confirm-password" autocomplete="off">
+                                            <span>Leave empty for no update</span>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                         <button type="submit" class="btn submit-btn">SAVE</button>

@@ -46,7 +46,7 @@ body {
       margin-top: 10px;
       a {
         font-family: $fontsecondary;
-        font-size: 24px;
+        font-size: 20px;
         font-weight: 300;
         color: #000;
         line-height: 1;
@@ -122,7 +122,7 @@ body {
     li {
       display: inline-block;
       a {
-        font-size: 20px;
+        font-size: 17px;
         font-family: $fontsecondary;
         color: #000;
         border-right: 2px solid #000;
@@ -681,4 +681,7 @@ a.disabled {
 }
 .form-control{
   border-radius: 0;
+}
+.ajs-message {
+  color: #fff !important;
 }
