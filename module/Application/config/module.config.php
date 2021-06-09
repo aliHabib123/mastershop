@@ -115,6 +115,16 @@ return [
                     ],
                 ],
             ],
+            'vendorContactUpdate' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/vendor/contact-update',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'vendorContactUpdate',
+                    ],
+                ],
+            ],
             'accountDetails' => [
                 'type' => Segment::class,
                 'options' => [
@@ -239,6 +249,26 @@ return [
                     ],
                 ],
             ],
+            'vendorLogin' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/vendor-login',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'vendorLogin',
+                    ],
+                ],
+            ],
+            'submitVendorLogin' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/submit-vendor-login',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'submitVendorLogin',
+                    ],
+                ],
+            ],
             // End supplier routes
 
             //Facebook
@@ -255,6 +285,45 @@ return [
             //End Facebook
 
             // User Routes
+            'forgotPassword' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/forgot-password/:userType',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'forgotPassword',
+                    ],
+                    'constraints' => [
+                        'userType' => '(2|3)',
+                    ],
+                ],
+            ],
+            'forgotPasswordSubmit' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/forgot-password-submit/:userType',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'forgotPasswordSubmit',
+                    ],
+                    'constraints' => [
+                        'userType' => '(2|3)',
+                    ],
+                ],
+            ],
+            'resetPassword' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/reset-password/:userType',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'resetPassword',
+                    ],
+                    'constraints' => [
+                        'userType' => '(2|3)',
+                    ],
+                ],
+            ],
             'loginRequired' => [
                 'type'    => Literal::class,
                 'options' => [

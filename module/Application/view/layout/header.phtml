@@ -3,9 +3,10 @@
 use Application\Controller\CategoryController;
 use Application\Controller\HelperController;
 use Application\Controller\ProductController;
+use Application\Controller\UserController;
 
 $cartCount = 0;
-if($_SESSION['user']){
+if ($_SESSION['user']) {
     $cartCount = count($_SESSION['user']->cart);
     $itemMySqlExtDAO = new ItemMySqlExtDAO();
     $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
@@ -14,11 +15,11 @@ global $categories;
 $level1Categories = CategoryController::getCategories('parent_id = 0 ORDER BY display_order ASC, name ASC, id DESC');
 $categories = $level1Categories;
 //print_r($categories);echo '<br>';
-$c =0;
-foreach($level1Categories as $row){
+$c = 0;
+foreach ($level1Categories as $row) {
     $categories[$c]->subcategories = CategoryController::getCategories("parent_id = $row->id and active = 1 ORDER BY mega_menu_display_order ASC, name ASC, id DESC");
-    $c1=0;
-    foreach($categories[$c]->subcategories as $row1){
+    $c1 = 0;
+    foreach ($categories[$c]->subcategories as $row1) {
         $categories[$c]->subcategories[$c1]->subsubcategories = CategoryController::getCategories("parent_id = $row1->id and active = 1 ORDER BY display_order ASC, name ASC, id DESC");
         $c1++;
     }
@@ -34,14 +35,19 @@ foreach($level1Categories as $row){
                     <div class="col-md-3 col-6">
                         <div class="signin-register">
                             <?php if (isset($_SESSION['user'])) { ?>
-                                HI 
+                                HI
                                 <div class="dropdown user-dropdown">
                                     <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <?php echo $_SESSION['user']->firstName; ?>
+                                        <?php echo $_SESSION['user']->firstName; ?>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="<?php echo MAIN_URL.'my-profile';?>">Edit Profile</a>
-                                        <a class="dropdown-item" href="<?php echo MAIN_URL . 'logout';?>">Logout</a>
+                                        <?php if ($_SESSION['user']->userType == UserController::$CUSTOMER) { ?>
+                                            <a class="dropdown-item" href="<?php echo MAIN_URL . 'my-profile'; ?>">Edit Profile</a>
+                                        <?php } else { ?>
+                                            <a class="dropdown-item" href="<?php echo MAIN_URL . 'vendor/my-dashboard'; ?>">My Dashboard</a>
+                                        <?php } ?>
+
+                                        <a class="dropdown-item" href="<?php echo MAIN_URL . 'logout'; ?>">Logout</a>
                                     </div>
                                 </div>
                             <?php } else { ?>
@@ -51,9 +57,9 @@ foreach($level1Categories as $row){
                     </div>
                     <div class="col-md-6 col-6 d-none d-sm-block">
                         <ul class="custom-menu custom-menu-centered">
-                            <li><a href="<?php echo MAIN_URL.'todays-deals';?>">Todays Deals</a></li>
-                            <li><a href="<?php echo MAIN_URL.'latest-arrivals';?>">Latest Arrivals</a></li>
-                            <li><a href="<?php echo MAIN_URL.'page/about-us';?>">About us</a></li>
+                            <li><a href="<?php echo MAIN_URL . 'todays-deals'; ?>">Todays Deals</a></li>
+                            <li><a href="<?php echo MAIN_URL . 'latest-arrivals'; ?>">Latest Arrivals</a></li>
+                            <li><a href="<?php echo MAIN_URL . 'page/about-us'; ?>">About us</a></li>
                             <li class="dropdown pointer">
                                 <a class="dropdown-toggle" data-toggle="dropdown">Help & Contact
                                     <span class="caret"></span></a>
@@ -74,44 +80,52 @@ foreach($level1Categories as $row){
                     <div class="col-md-3 col-6">
                         <ul class="custom-menu custom-menu-right">
                             <li class="wishlist">
-                                <a href="<?php echo MAIN_URL.'my-wishlist';?>" class="d-none d-sm-inline-block">my wishlist</a>
-                                <a href="<?php echo MAIN_URL.'my-wishlist';?>" class="d-inline-block d-sm-none"><i class="far fa-heart"></i></a>
+                                <a href="<?php echo MAIN_URL . 'my-wishlist'; ?>" class="d-none d-sm-inline-block">my wishlist</a>
+                                <a href="<?php echo MAIN_URL . 'my-wishlist'; ?>" class="d-inline-block d-sm-none"><i class="far fa-heart"></i></a>
                             </li>
                             <!-- <li class="bell-icon"><a href=""><i class="far fa-bell"></i></a></li> -->
                             <!-- <li class="cart-icon"><a href="#"><i class="fas fa-shopping-cart"></i><span class="badge">5</span></a></li> -->
                             <li class="dropdown pointer cart-icon">
                                 <a class="dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fas fa-shopping-cart"></i><span class="badge"><?php echo $cartCount;?></span>
+                                    <i class="fas fa-shopping-cart"></i><span class="badge"><?php echo $cartCount; ?></span>
                                 </a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <form>
-                                        <div class="compact-cart-wrapper">
-                                            <?php foreach($cartItems as $row){?>
-                                                <div class="compact-cart-item">
-                                                    <div class="row">
-                                                        <div class="col-md-3 compact-cart-img">
-                                                            <img src="img/product.png" />
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <div class="compact-cart-title">
-                                                                <?php echo substr($row->title, 0, 500);?>
+                                <?php if (isset($_SESSION['user'])) {
+                                    if ($_SESSION['user']->userType == UserController::$CUSTOMER) { ?>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <form>
+                                                <div class="compact-cart-wrapper">
+                                                    <?php if ($cartItems) {
+                                                        foreach ($cartItems as $row) { ?>
+                                                            <div class="compact-cart-item">
+                                                                <div class="row">
+                                                                    <div class="col-md-3 compact-cart-img">
+                                                                        <img src="img/product.png" />
+                                                                    </div>
+                                                                    <div class="col-md-9">
+                                                                        <div class="compact-cart-title">
+                                                                            <?php echo substr($row->title, 0, 500); ?>
+                                                                        </div>
+                                                                        <div class="compact-cart-price">
+                                                                            <?php $price = ProductController::getFinalPrice($row->regularPrice, $row->salePrice);
+                                                                            echo $price;
+                                                                            ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <div class="compact-cart-price">
-                                                                <?php $price = ProductController::getFinalPrice($row->regularPrice, $row->salePrice);
-                                                                echo $price;
-                                                                ?>
-                                                            </div>
-                                                        </div>
+                                                        <?php }
+                                                    } else { ?>
+                                                        <h4 style="text-align: center;width: 100%;">No items in cart!</h4>
+                                                    <?php } ?>
+                                                    <div class="compact-cart-buttons">
+                                                        <a href="<?php echo MAIN_URL . 'my-cart' ?>" class="to-cart">Continue to cart</a>
+                                                        <a href="<?php echo MAIN_URL . 'checkout'; ?>" class="to-checkout">Continue to checkout</a>
                                                     </div>
                                                 </div>
-                                            <?php }?>
-                                            <div class="compact-cart-buttons">
-                                                <a href="<?php echo MAIN_URL.'my-cart'?>" class="to-cart">Continue to cart</a>
-                                                <a href="<?php echo MAIN_URL.'checkout';?>" class="to-checkout">Continue to checkout</a>
-                                            </div>
+                                            </form>
                                         </div>
-                                    </form>
-                                </div>
+                                <?php }
+                                } ?>
                             </li>
                             <li class="dropdown pointer">
                                 <a class="dropdown-toggle" data-toggle="dropdown">
@@ -132,30 +146,30 @@ foreach($level1Categories as $row){
 
         <div class="middle-menu clearfix">
             <div class="logo-container">
-                <a href="<?php echo MAIN_URL?>"><img src="img/logo.png" /></a>
+                <a href="<?php echo MAIN_URL ?>"><img src="img/logo.png" /></a>
             </div>
             <div class="search-container">
-                <form action="<?php echo MAIN_URL.'products/'?>" method="GET">
-                <div class="input-group">
-                    <div class="input-group-prepend all-cat-btn">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All <span class="d-none d-sm-inline-block">Categories</span></button>
-                        <div class="dropdown-menu" id="search-categories">
-                            <a class="dropdown-item" href="#" data-id="0">All <span class="d-none d-sm-inline-block">Categories</span></a>
-                            <?php foreach ($level1Categories as $cat) { ?>
-                                <a class="dropdown-item" href="javascript:void();" data-slug="<?php echo $cat->slug;?>" data-id="<?php echo $cat->id;?>"><?php echo $cat->name; ?></a>
-                            <?php } ?>
-                            <!-- <div role="separator" class="dropdown-divider"></div> -->
+                <form action="<?php echo MAIN_URL . 'products/' ?>" method="GET">
+                    <div class="input-group">
+                        <div class="input-group-prepend all-cat-btn">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All <span class="d-none d-sm-inline-block">Categories</span></button>
+                            <div class="dropdown-menu" id="search-categories">
+                                <a class="dropdown-item" href="#" data-id="0">All <span class="d-none d-sm-inline-block">Categories</span></a>
+                                <?php foreach ($level1Categories as $cat) { ?>
+                                    <a class="dropdown-item" href="javascript:void();" data-slug="<?php echo $cat->slug; ?>" data-id="<?php echo $cat->id; ?>"><?php echo $cat->name; ?></a>
+                                <?php } ?>
+                                <!-- <div role="separator" class="dropdown-divider"></div> -->
+                            </div>
+                        </div>
+                        <input type="hidden" id="selected-category" value="0">
+                        <input type="text" class="form-control" aria-label="All Categories" placeholder="Search for anything" name="search" required autocomplete="off">
+                        <div class="input-group-append search-button">
+                            <button class="btn btn-outline-secondary" type="submit">
+                                <span class="d-none d-sm-inline-block">SEARCH</span>
+                                <i class="fas fa-search d-block d-sm-none"></i>
+                            </button>
                         </div>
                     </div>
-                    <input type="hidden" id="selected-category" value="0">
-                    <input type="text" class="form-control" aria-label="All Categories" placeholder="Search for anything" name="search" required autocomplete="off">
-                    <div class="input-group-append search-button">
-                        <button class="btn btn-outline-secondary" type="submit">
-                            <span class="d-none d-sm-inline-block">SEARCH</span>
-                            <i class="fas fa-search d-block d-sm-none"></i>
-                        </button>
-                    </div>
-                </div>
                 </form>
             </div>
         </div>

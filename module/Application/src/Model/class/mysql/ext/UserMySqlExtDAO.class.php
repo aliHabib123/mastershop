@@ -65,6 +65,15 @@ class UserMySqlExtDAO extends UserMySqlDAO
 		$sqlQuery = new SqlQuery($sql);
 		$sqlQuery->set($value);
 		$sqlQuery->set($type);
-		return $this->getList($sqlQuery);
+		return $this->getRow($sqlQuery);
+	}
+
+	public function getUserByActivationCodeAndType($code, $type = 3)
+	{
+		$sql = 'SELECT * FROM user WHERE activation_code = ? AND user_type = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($code);
+		$sqlQuery->set($type);
+		return $this->getRow($sqlQuery);
 	}
 }

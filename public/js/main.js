@@ -37,7 +37,6 @@ $(function () {
     str = $(this).attr("class");
     let el = $("#qty");
     if (str.includes("plus")) {
-      //alert("plus");
       el.val(Number(el.val()) + 1);
     } else if (str.includes("minus")) {
       if (Number(el.val()) > 1) {
@@ -171,19 +170,6 @@ $(function () {
       reloadcategoriesSlider();
     }, 250);
   });
-
-  // //Pagination
-  // $("#product-pagination").twbsPagination({
-  //   totalPages: 35,
-  //   visiblePages: 5,
-  //   first: "",
-  //   last: "",
-  //   next: '<i class="fas fa-chevron-right"></i>',
-  //   prev: '<i class="fas fa-chevron-left"></i>',
-  //   onPageClick: function (event, page) {
-  //     //alert(page);
-  //   },
-  // });
 
   // jQuery
   $("#mobile-number, #work-number").intlTelInput({
@@ -339,28 +325,30 @@ $("html").on("click", ".edit-warehouse", function (e) {
 
 $("html").on("click", ".wishlist-add", function (e) {
   alertify.set("notifier", "position", "top-right");
-  if (isLoggedIn == "") {
+  if (isLoggedIn == "" || userType != 3) {
     alertify.error("Please Login.");
     return false;
   }
   let itemId = $(this).data("itemId");
   let customerId = $(this).data("customerId");
-  // let data = { warehouseId: "warehouseId", contactId: "contactId" };
   $.ajax({
     url: mainUrl + "add-to-wishlist",
     type: "POST",
     dataType: "json",
     data: { itemId: itemId, customerId: customerId },
-    beforeSend: function () {
-      //showMsg(".notice-area", true, "Logging you in, please wait...");
-    },
+    beforeSend: function () {},
     success: function (response) {
       if (response.added == true) {
         alertify.success("Added to wishlist.");
         $(e.currentTarget).find("img").attr("src", "img/heart-on.png");
       } else if (response.deleted) {
         alertify.success("Deleted from wishlist.");
-        $(e.currentTarget).find("img").attr("src", "img/heart-off.png");
+        if($(e.currentTarget).hasClass('remove-item')){
+          $(e.currentTarget).parent().remove().fadeOut(500);
+        } else {
+          $(e.currentTarget).find("img").attr("src", "img/heart-off.png");
+        }
+        
       }
     },
     error: function () {
@@ -372,22 +360,18 @@ $("html").on("click", ".wishlist-add", function (e) {
 
 $("html").on("click", ".cart-add", function (e) {
   alertify.set("notifier", "position", "top-right");
-  if (isLoggedIn == "") {
+  if (isLoggedIn == "" || userType != 3) {
     alertify.error("Please Login.");
     return false;
   }
   let itemId = $(this).data("itemId");
-  // let data = { warehouseId: "warehouseId", contactId: "contactId" };
   $.ajax({
     url: mainUrl + "add-to-cart",
     type: "POST",
     dataType: "json",
     data: { itemId: itemId },
-    beforeSend: function () {
-      //showMsg(".notice-area", true, "Logging you in, please wait...");
-    },
+    beforeSend: function () {},
     success: function (response) {
-      //showMsg(".notice-area", response.status, response.msg);
       if (response.status == true) {
         alertify.success("Added to cart.");
       }
@@ -400,14 +384,12 @@ $("html").on("click", ".cart-add", function (e) {
 });
 $("html").on("click", ".cart-delete", function (e) {
   let itemId = $(this).data("itemId");
-  // let data = { warehouseId: "warehouseId", contactId: "contactId" };
   $.ajax({
     url: mainUrl + "delete-from-cart",
     type: "POST",
     dataType: "json",
     data: { itemId: itemId },
     beforeSend: function () {
-      //showMsg(".notice-area", true, "Logging you in, please wait...");
       $("#checkout-btn").addClass("disabled");
     },
     success: function (response) {
@@ -438,7 +420,6 @@ $("html").on("click", ".cart-update", function (e) {
       $("#checkout-btn").addClass("disabled");
     },
     success: function (response) {
-      //showMsg(".notice-area", response.status, response.msg);
       if (response.status == true) {
         //item-subtotal
         $("#cart-item-" + itemId)
@@ -475,10 +456,6 @@ $("#search-categories.dropdown-menu a").click(function (e) {
   $(this).closest("form").attr("action", href);
 });
 
-$("a.disabled").click(function (e) {
-  e.preventDefault();
-});
-
 $("#update-user").submit(function (e) {
   var formData = new FormData(this);
   var formUrl = $(this).attr("action");
@@ -506,6 +483,53 @@ $("#update-user").submit(function (e) {
     },
     error: function () {
       showMsg(".notice-area", false, "An error occured, please try again!");
+    },
+  });
+  e.preventDefault();
+});
+
+//vendor-contact-update
+$("#vendor-contact-update").submit(function (e) {
+  var formData = new FormData(this);
+  var formUrl = $(this).attr("action");
+  $.ajax({
+    url: formUrl,
+    type: "POST",
+    dataType: "json",
+    data: formData,
+    mimeType: "multipart/form-data",
+    contentType: false,
+    cache: false,
+    processData: false,
+    beforeSend: function () {
+      showMsg(
+        ".vendor-page-wrapper .notice-area",
+        true,
+        "Updating contact info..."
+      );
+    },
+    success: function (response) {
+      showMsg(
+        ".vendor-page-wrapper .notice-area",
+        response.status,
+        response.msg
+      );
+      $("html, body").animate(
+        {
+          scrollTop: $(".vendor-page-wrapper .notice-area").offset().top - 100,
+        },
+        1000
+      );
+      if (response.status == true) {
+        //location.href = response.redirectUrl;
+      }
+    },
+    error: function () {
+      showMsg(
+        ".vendor-page-wrapper .notice-area",
+        false,
+        "An error occured, please try again!"
+      );
     },
   });
   e.preventDefault();
@@ -573,10 +597,117 @@ $("#contact-submit").submit(function (e) {
       if (response.status == true) {
         $("#contact-submit")[0].reset();
       }
-      //location.href = response.redirectUrl;
     },
     error: function () {
       showMsg(".notice-area", false, "An error occured, please try again!");
+    },
+  });
+  e.preventDefault();
+});
+
+$("#vendor-login-form").submit(function (e) {
+  var formData = new FormData(this);
+  var formUrl = $(this).attr("action");
+  $.ajax({
+    url: formUrl,
+    type: "POST",
+    dataType: "json",
+    data: formData,
+    mimeType: "multipart/form-data",
+    contentType: false,
+    cache: false,
+    processData: false,
+    beforeSend: function () {
+      showMsg(
+        ".vendor-login-wrap .notice-area",
+        true,
+        "Logging you in, please wait..."
+      );
+    },
+    success: function (response) {
+      showMsg(".vendor-login-wrap .notice-area", response.status, response.msg);
+      if (response.status == true) {
+        location.href = response.redirectUrl;
+      }
+    },
+    error: function () {
+      showMsg(
+        ".vendor-login-wrap .notice-area",
+        false,
+        "An error occured, please try again!"
+      );
+    },
+  });
+  e.preventDefault();
+});
+
+//forgot-form
+$("#forgot-form").submit(function (e) {
+  var formData = new FormData(this);
+  var formUrl = $(this).attr("action");
+  $.ajax({
+    url: formUrl,
+    type: "POST",
+    dataType: "json",
+    data: formData,
+    mimeType: "multipart/form-data",
+    contentType: false,
+    cache: false,
+    processData: false,
+    beforeSend: function () {
+      showMsg(
+        ".forgot-password .notice-area",
+        true,
+        "Sending email, please wait..."
+      );
+    },
+    success: function (response) {
+      showMsg(".forgot-password .notice-area", response.status, response.msg);
+    },
+    error: function () {
+      showMsg(
+        ".forgot-password .notice-area",
+        false,
+        "An error occured, please try again!"
+      );
+    },
+  });
+  e.preventDefault();
+});
+
+//reset-form
+$("#reset-form").submit(function (e) {
+  var formData = new FormData(this);
+  var formUrl = $(this).attr("action");
+  $.ajax({
+    url: formUrl,
+    type: "POST",
+    dataType: "json",
+    data: formData,
+    mimeType: "multipart/form-data",
+    contentType: false,
+    cache: false,
+    processData: false,
+    beforeSend: function () {
+      showMsg(".reset-password .notice-area", true, "Updating, please wait...");
+    },
+    success: function (response) {
+      showMsg(".reset-password .notice-area", response.status, response.msg);
+      if (response.status) {
+        let redirectUrl =
+          userType == 3
+            ? mainUrl + "my-profile"
+            : mainUrl + "vendor/my-dashboard";
+        $("#reset-form")[0].reset();
+        location.href = redirectUrl;
+      }
+    },
+    error: function () {
+      showMsg(
+        ".reset-password .notice-area",
+        false,
+        "An error occured, please try again!"
+      );
     },
   });
   e.preventDefault();

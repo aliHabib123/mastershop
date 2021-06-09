@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Application\Controller;
 
+use CityMySqlExtDAO;
 use ItemMySqlExtDAO;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
@@ -22,8 +23,15 @@ class VendorController extends AbstractActionController
     }
     public function contactDetailsAction()
     {
+        $cityMySqlExtDAO = new CityMySqlExtDAO();
+        $cities = $cityMySqlExtDAO->queryAllOrderBy('city ASC');
+        $userMysqlExtDAO = new UserMySqlExtDAO();
+        $userInfo = $userMysqlExtDAO->load($_SESSION['user']->id);
         $this->layout()->htmlClass = 'mb0';
-        return new ViewModel();
+        return new ViewModel([
+            'cities' => $cities,
+            'userInfo' => $userInfo,
+        ]);
     }
     public function accountDetailsAction()
     {
