@@ -511,7 +511,8 @@ img.centervh {
   margin-bottom: 26px; }
 
 .notice-area {
-  text-align: center; }
+  text-align: center;
+  min-height: 20px; }
   .notice-area .error {
     color: red; }
   .notice-area .success {

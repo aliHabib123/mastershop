@@ -602,6 +602,7 @@ img.centervh {
 }
 .notice-area {
   text-align: center;
+  min-height: 20px;
   .error {
     color: red;
   }
@@ -679,7 +680,7 @@ a.disabled {
 .form-control:focus {
   box-shadow: none;
 }
-.form-control{
+.form-control {
   border-radius: 0;
 }
 .ajs-message {

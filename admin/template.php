@@ -185,45 +185,51 @@ if (isset($_REQUEST['act'])) {
 				</li>
 				<li class="start active">
 					<a href="main.php">
-						<i class="fa fa-home"></i>
+						<!-- <i class="fa fa-home"></i> -->
 						<span class="title">Home</span>
 					</a>
 				</li>
 
 				<li class="">
 					<a href="display_banner.php">
-						<i class="fa fa-gift"></i>
+						<!-- <i class="fa fa-gift"></i> -->
 						<span class="title">Banners</span>
 					</a>
 				</li>
 				<li class="">
 					<a href="display_item_category.php">
-						<i class="fa fa-tasks"></i>
+						<!-- <i class="fa fa-tasks"></i> -->
 						<span class="title">Categories</span>
 					</a>
 				</li>
 				<li class="">
 					<a href="display_item_brand.php">
-						<i class="fa fa-tasks"></i>
+						<!-- <i class="fa fa-tasks"></i> -->
 						<span class="title">Brands</span>
 					</a>
 				</li>
 				<li class="">
 					<a href="display_page.php">
-						<i class="fa fa-tasks"></i>
+						<!-- <i class="fa fa-tasks"></i> -->
 						<span class="title">Pages</span>
 					</a>
 				</li>
 				<li class="">
 					<a href="display_ad.php">
-						<i class="fa fa-bell"></i>
+						<!-- <i class="fa fa-bell"></i> -->
 						<span class="title">Ads</span>
 					</a>
 				</li>
 				<li class="">
 					<a href="display_product.php">
-						<i class="fa fa-bell"></i>
+						<!-- <i class="fa fa-bell"></i> -->
 						<span class="title">Products</span>
+					</a>
+				</li>
+				<li class="">
+					<a href="display_social_media.php">
+						<!-- <i class="fa fa-bell"></i> -->
+						<span class="title">Social Media</span>
 					</a>
 				</li>
 				<!-- <li>
