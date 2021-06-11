@@ -350,6 +350,13 @@ $("html").on("click", ".wishlist-add", function (e) {
         }
         
       }
+      let wishlistBadge = $('li.wishlist').find('span.badge');
+      wishlistBadge.html(response.count);
+      if(response.count == 0){
+        wishlistBadge.hide();
+      } else {
+        wishlistBadge.show();
+      }
     },
     error: function () {
       showMsg(".notice-area", false, "An error occured, please try again!");

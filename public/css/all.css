@@ -47,7 +47,7 @@ body {
       line-height: 1; }
 
 .main-title {
-  font-size: 34px;
+  font-size: 27px;
   font-family: "Montserrat", sans-serif;
   font-weight: bold;
   line-height: 1;
@@ -200,6 +200,9 @@ body {
 
 .pt30 {
   padding-top: 30px; }
+
+.mt30 {
+  margin-top: 30px; }
 
 .item-col {
   margin-bottom: 25px; }
@@ -422,7 +425,7 @@ body {
   text-align: -webkit-center;
   text-align: -moz-center; }
   .modal-form .centered-button button[type="submit"] {
-    margin-top: 30px;
+    margin-bottom: 30px;
     width: 240px;
     background-color: #2576ba;
     font-family: "Montserrat", sans-serif;
@@ -511,7 +514,8 @@ img.centervh {
   margin-bottom: 26px; }
 
 .notice-area {
-  text-align: center; }
+  text-align: center;
+  min-height: 20px; }
   .notice-area .error {
     color: red; }
   .notice-area .success {
@@ -583,12 +587,20 @@ a.disabled {
 .ajs-message {
   color: #fff !important; }
 
+.breadcrumb-wrap .breadcrumb {
+  background-color: #f6f6f6; }
+  .breadcrumb-wrap .breadcrumb .breadcrumb-item a {
+    color: #2576ba;
+    font-family: "Montserrat", sans-serif; }
+
 .mega-menu nav.navbar {
   padding: 0; }
   .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li > a {
     padding-top: 1rem;
     padding-bottom: 1rem;
-    color: #fff; }
+    color: #fff;
+    padding-right: 8px;
+    padding-left: 8px; }
     .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li > a:hover, .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li > a:focus, .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li > a:active {
       -webkit-transition: all 0.3s ease;
       -moz-transition: all 0.3s ease;
@@ -729,7 +741,8 @@ a.disabled {
     color: #5a5a5a;
     font-family: "Montserrat Alternates", sans-serif;
     line-height: 1;
-    padding-top: 5px; }
+    padding-top: 5px;
+    font-size: 14px; }
     .upper-menu-container .upper-menu .signin-register .signin {
       color: #2576ba; }
     .upper-menu-container .upper-menu .signin-register .register {
@@ -755,11 +768,17 @@ a.disabled {
         display: inline-block; }
         .upper-menu-container .upper-menu .custom-menu li.wishlist a span.badge {
           background-color: #ef0101;
-          width: 18px;
-          height: 18px;
+          width: 16px;
+          height: 16px;
           border-radius: 50%;
           color: #fff;
-          display: inline-block; }
+          display: inline-block;
+          margin-left: 4px;
+          top: 2px;
+          position: absolute;
+          line-height: 9px;
+          text-align: center;
+          right: 4px; }
         .upper-menu-container .upper-menu .custom-menu li.wishlist a:last-child {
           padding: 0; }
     .upper-menu-container .upper-menu .custom-menu li.cart-icon {
@@ -854,7 +873,8 @@ a.disabled {
     color: #5a5a5a;
     font-family: "Montserrat", sans-serif;
     font-weight: normal;
-    vertical-align: initial; }
+    vertical-align: initial;
+    font-size: 14px; }
   .dropdown.user-dropdown button:not(::after) {
     color: #2576ba; }
 
@@ -866,6 +886,22 @@ a.disabled {
   transition: all 0.3s ease;
   background-color: #fff;
   color: #2576ba !important; }
+
+.search-container ::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  font-size: 14px; }
+
+.search-container ::-moz-placeholder {
+  /* Firefox 19+ */
+  font-size: 14px; }
+
+.search-container :-ms-input-placeholder {
+  /* IE 10+ */
+  font-size: 14px; }
+
+.search-container :-moz-placeholder {
+  /* Firefox 18- */
+  font-size: 14px; }
 
 .main-banner-container .bx-wrapper {
   margin-bottom: 0;
@@ -2262,6 +2298,22 @@ a.list-group-item,
 
 .forgot-password input {
   border: 1px solid !important; }
+
+.delivery-address {
+  margin-top: 30px;
+  font-family: "Montserrat", sans-serif;
+  text-align: left;
+  font-size: 16px;
+  margin-bottom: 30px; }
+
+.order-details {
+  margin-top: 30px;
+  font-family: "Montserrat", sans-serif;
+  text-align: left;
+  font-size: 16px;
+  margin-bottom: 30px; }
+  .order-details_item {
+    margin-bottom: 15px; }
 
 @media (max-width: 576px) {
   .card-wrapper .jp-card-container {

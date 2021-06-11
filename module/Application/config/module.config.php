@@ -181,7 +181,7 @@ return [
                     ],
                 ],
             ],
-            'myOrders' => [
+            'vendorMyOrders' => [
                 'type' => Segment::class,
                 'options' => [
                     'route'    => '/vendor/my-orders[/]',
@@ -372,6 +372,29 @@ return [
                         'controller' => Controller\UserController::class,
                         'action'     => 'myProfile',
                     ],
+                ],
+            ],
+            'myOrders' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/my-orders',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'myOrders',
+                    ],
+                ],
+            ],
+            'orderDetails' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/order/:id',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'orderDetails',
+                    ],
+                    'constraints' => array(
+                        'id' => '[0-9]+'
+                ),
                 ],
             ],
             'myWishlist' => [

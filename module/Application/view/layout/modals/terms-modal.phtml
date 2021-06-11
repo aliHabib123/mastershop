@@ -1,0 +1,65 @@
+<?php
+
+use Application\Controller\FacebookController;
+use Application\Controller\HelperController;
+use Application\Controller\UserController;
+$contentMySqlExtDAO = new ContentMySqlExtDAO();
+$page = $contentMySqlExtDAO->queryBySlug('terms-conditions');
+$page = $page[0];
+?>
+<!-- The Modal -->
+<div class="modal" id="terms-modal">
+
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="modal-title">Terms & Conditions</div>
+                <div class="modal-subtitle">Please read our terms and conditions.</div>
+                <p><?php echo $page->details;?></p>
+                <div class="have-account">
+                    <a class="modal-register" data-toggle="modal" data-target="#signup-modal" data-dismiss="modal">
+                        Back to register
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#login-form").submit(function(e) {
+        var formData = new FormData(this);
+        var formUrl = $(this).attr('action');
+        $.ajax({
+            url: formUrl,
+            type: 'POST',
+            dataType: 'json',
+            data: formData,
+            mimeType: "multipart/form-data",
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function() {
+                showMsg('#login-form .notice-area', true, 'Logging you in, please wait...');
+            },
+            success: function(response) {
+                showMsg('#login-form .notice-area', response.status, response.msg);
+                if (response.status == true) {
+                    location.href = response.redirectUrl;
+                }
+            },
+            error: function() {
+                showMsg('#login-form .notice-area', false, 'An error occured, please try again!');
+            }
+        });
+        e.preventDefault();
+    });
+</script>

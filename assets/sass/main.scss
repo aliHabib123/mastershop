@@ -55,7 +55,7 @@ body {
   }
 }
 .main-title {
-  font-size: 34px;
+  font-size: 27px;
   font-family: $fontsecondary;
   font-weight: bold;
   line-height: 1;
@@ -248,6 +248,9 @@ body {
 }
 .pt30 {
   padding-top: 30px;
+}
+.mt30{
+  margin-top: 30px;
 }
 .item-col {
   margin-bottom: 25px;
@@ -503,7 +506,7 @@ body {
     text-align: -webkit-center;
     text-align: -moz-center;
     button[type="submit"] {
-      margin-top: 30px;
+      margin-bottom: 30px;
       width: 240px;
       background-color: $base-color;
       font-family: $fontsecondary;
@@ -602,6 +605,7 @@ img.centervh {
 }
 .notice-area {
   text-align: center;
+  min-height: 20px;
   .error {
     color: red;
   }
@@ -679,9 +683,24 @@ a.disabled {
 .form-control:focus {
   box-shadow: none;
 }
-.form-control{
+.form-control {
   border-radius: 0;
 }
 .ajs-message {
   color: #fff !important;
+}
+
+
+//Breadcrumb
+.breadcrumb-wrap{
+  .breadcrumb{
+    background-color: #f6f6f6;
+    .breadcrumb-item{
+      a{
+        color: $base-color;
+        font-family: $fontsecondary;
+      }
+    }
+  }
+  
 }

@@ -24,6 +24,7 @@ if (isset($_REQUEST['act'])) {
 <html lang="en" class="no-js">
 <!--<![endif]-->
 <!-- BEGIN HEAD -->
+
 <head>
 	<meta charset="utf-8" />
 	<title>CMS | By Thirteencube</title>
@@ -82,6 +83,7 @@ if (isset($_REQUEST['act'])) {
 	</script>
 </head>
 <!-- END HEAD -->
+
 <body class="page-header-fixed">
 	<!-- BEGIN HEADER -->
 	<div class="header navbar navbar-inverse navbar-fixed-top">
@@ -185,45 +187,51 @@ if (isset($_REQUEST['act'])) {
 				</li>
 				<li class="start active">
 					<a href="main.php">
-						<i class="fa fa-home"></i>
+						<!-- <i class="fa fa-home"></i> -->
 						<span class="title">Home</span>
 					</a>
 				</li>
 
 				<li class="">
 					<a href="display_banner.php">
-						<i class="fa fa-gift"></i>
+						<!-- <i class="fa fa-gift"></i> -->
 						<span class="title">Banners</span>
 					</a>
 				</li>
 				<li class="">
 					<a href="display_item_category.php">
-						<i class="fa fa-tasks"></i>
+						<!-- <i class="fa fa-tasks"></i> -->
 						<span class="title">Categories</span>
 					</a>
 				</li>
 				<li class="">
 					<a href="display_item_brand.php">
-						<i class="fa fa-tasks"></i>
+						<!-- <i class="fa fa-tasks"></i> -->
 						<span class="title">Brands</span>
 					</a>
 				</li>
 				<li class="">
 					<a href="display_page.php">
-						<i class="fa fa-tasks"></i>
+						<!-- <i class="fa fa-tasks"></i> -->
 						<span class="title">Pages</span>
 					</a>
 				</li>
 				<li class="">
 					<a href="display_ad.php">
-						<i class="fa fa-bell"></i>
+						<!-- <i class="fa fa-bell"></i> -->
 						<span class="title">Ads</span>
 					</a>
 				</li>
 				<li class="">
 					<a href="display_product.php">
-						<i class="fa fa-bell"></i>
+						<!-- <i class="fa fa-bell"></i> -->
 						<span class="title">Products</span>
+					</a>
+				</li>
+				<li class="">
+					<a href="display_social_media.php">
+						<!-- <i class="fa fa-bell"></i> -->
+						<span class="title">Social Media</span>
 					</a>
 				</li>
 				<!-- <li>
@@ -256,110 +264,38 @@ if (isset($_REQUEST['act'])) {
 		<!-- BEGIN PAGE -->
 
 		<div class="page-content">
-
-			<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-
-			<div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-
-				<div class="modal-dialog">
-
-					<div class="modal-content">
-
-						<div class="modal-header">
-
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-
-							<h4 class="modal-title">Modal title</h4>
-
-						</div>
-
-						<div class="modal-body">
-
-							Widget settings form goes here
-
-						</div>
-
-						<div class="modal-footer">
-
-							<button type="button" class="btn blue">Save changes</button>
-
-							<button type="button" class="btn default" data-dismiss="modal">Close</button>
-
-						</div>
-
-					</div>
-
-					<!-- /.modal-content -->
-
-				</div>
-
-				<!-- /.modal-dialog -->
-
-			</div>
-
-			<!-- /.modal -->
-
-			<!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-
 			<!-- BEGIN PAGE HEADER-->
-
 			<div class="row">
-
 				<div class="col-md-12">
-
 					<!-- BEGIN PAGE TITLE & BREADCRUMB-->
-
 					<h3 class="page-title note note-info">YOUR WEBSITE CMS</h3>
-
 					<?php if (isset($text) && $text != "") { ?>
-
 						<div class="note note-success">
-
 							<h4 class="block"><?php echo $text ?></h4>
-
 						</div>
-
 					<?php } ?>
-
-
-
 					<?php
 					if (function_exists('breadCrumbs')) {
 						echo breadCrumbs();
 					}
 					?>
 					<!-- END PAGE TITLE & BREADCRUMB-->
-
 				</div>
-
 			</div>
-
 			<!-- END PAGE HEADER-->
 
 			<!-- BEGIN PAGE CONTENT-->
-
 			<div class="row">
-
 				<div class="col-md-12">
-
 					<!-- BEGIN EXAMPLE TABLE PORTLET-->
-
 					<?php echo main() ?>
-
 					<!-- END EXAMPLE TABLE PORTLET-->
-
 				</div>
-
 			</div>
-
 			<!-- END PAGE CONTENT-->
-
 		</div>
-
 		<!-- END PAGE -->
-
 	</div>
-
 	<!-- END CONTAINER -->
 
 	<!-- BEGIN FOOTER -->
@@ -427,42 +363,21 @@ if (isset($_REQUEST['act'])) {
 
 	<script>
 		jQuery(document).ready(function() {
-
 			// initiate layout and plugins
-
 			App.init();
-
 			FormComponents.init();
-
 			TableAdvanced.init();
-
-
-
 			/*
 		   $('#sample_2').dataTable( {
-
 		        "paging":   true,
-
 		        "ordering": true,
-
 		        "info":     true,
-
 		        //"order": [[ 0, "desc" ]],
-
 		        "scrollY":        "100px",
-
 		        "scrollCollapse": true,
-
 		  		stateSave: true,
-
-	  		
-
-		        
-
 		    } );
-
 			   */
-
 		});
 	</script>
 
@@ -472,19 +387,11 @@ if (isset($_REQUEST['act'])) {
 
 	<script type="text/javascript">
 		var RecaptchaOptions = {
-
 			theme: 'custom',
-
 			custom_theme_widget: 'recaptcha_widget'
-
 		};
 	</script>
-
-
-
-
 </body>
-
 <!-- END BODY -->
 
 </html>

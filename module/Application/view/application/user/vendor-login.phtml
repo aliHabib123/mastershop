@@ -22,8 +22,10 @@ use Application\Controller\UserController;
                             <input type="password" class="form-control" placeholder="Password" id="pwd" name="password" autocomplete="new-password">
                             <span class="forgot"><a href="<?php echo MAIN_URL . 'forgot-password/' . UserController::$SUPPLIER; ?>">Forgot password?</a></span>
                         </div>
-                        <div class="notice-area"></div>
-                        <div class="centered-button">
+                        <div class="form-group">
+                            <div class="notice-area"></div>
+                        </div>
+                        <div class="centered-button text-center">
                             <button type="submit" class="btn btn-primary">SIGN IN</button>
                         </div>
 

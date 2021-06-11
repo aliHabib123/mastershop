@@ -1,7 +1,6 @@
 <?php
 
 use Application\Controller\DesignController;
-use Application\Controller\HelperController;
 ?>
 <div class="main-wrapper contact-page">
     <div class="container">
@@ -23,24 +22,24 @@ use Application\Controller\HelperController;
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <label for="name">Full Name *</label>
+                                    <label for="name">Full Name*</label>
                                     <input type="text" class="form-control" placeholder="Enter Name" id="name" value="" name="full-name">
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="mobile">Mobile *</label>
+                                    <label for="mobile">Mobile*</label>
                                     <input type="text" class="form-control" placeholder="Enter Mobile" id="mobile" value="" name="mobile">
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="email">Email Address: *</label>
-                                    <input type="email" class="form-control" placeholder="Enter email" id="email" value="" name="email">
-                                </div>
+                                    <label for="email">Email Address*</label>
+                                    <input type="email" class="form-control" placeholder="Enter Email" id="email" value="" name="email">
+                            </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="email">Message: *</label>
+                            <label for="email">Message*</label>
                             <textarea class="form-control" style="min-height: 150px;" name="message"></textarea>
                         </div>
-                        <div class="text-right order-complete-btn-wrap">
+                        <div class="text-left order-complete-btn-wrap">
                             <button type="submit" class="btn submit-btn">SEND</button>
                         </div>
                     </form>

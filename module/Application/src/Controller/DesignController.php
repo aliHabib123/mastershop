@@ -88,6 +88,38 @@ class DesignController extends AbstractActionController
         return $html;
     }
 
+    public static function customerOrderItem($saleOrder, $saleOrderItems)
+    {
+        $status = $saleOrder->status;
+        $label = strtoupper(str_replace('-', ' ', $status));
+        $orderId = $saleOrder->id;
+        $date = date('M j, Y | H:i:g A', strtotime($saleOrder->createdAt));
+        $url = MAIN_URL."order/".$saleOrder->id;
+        $html =  "<div class='order-item'>
+                    <div class='row'>
+                        <div class='col-md-9'>
+                            <div class='order-id'>ORDER #$orderId<span><a href='$url'>VIEW ORDER</a></span></div>
+                            <div class='items-wrap'>";
+        foreach ($saleOrderItems as $row) {
+            $html .= "<div class='item'>
+                            $row->name X $row->qty
+                        </div>";
+        }
+        $html .= "</div>
+                            <div class='item-order-details line1'>
+                                Date: $date
+                            </div>
+                        </div>
+                        <div class='col-md-3'>
+                            <div class='final-amount-label'>Final Amount</div>
+                            <div class='final-amount'>LBP $saleOrder->netTotal</div>
+                            <div class='order-status $status'>$label</div>
+                        </div>
+                    </div>
+                </div>";
+        return $html;
+    }
+
     public static function getVendorSidebar($activePage = 'dashboard')
     {
         $dashboardActive = ($activePage == "dashboard") ? "active" : "";
@@ -125,7 +157,7 @@ class DesignController extends AbstractActionController
                     </li>
                     
                 </ul>";
-                /**<li class='nav-item'>
+        /**<li class='nav-item'>
                         <a class='nav-link $accountDetailsActive' href='$accountUrl'>Account Details</a>
                     </li> */
     }
@@ -167,10 +199,10 @@ class DesignController extends AbstractActionController
                     </td>
                 </tr>";
 
-                $obj = new stdClass();
-                $obj->html = $html;
-                $obj->subtotal = $subtotalRaw;
-                return $obj;
+        $obj = new stdClass();
+        $obj->html = $html;
+        $obj->subtotal = $subtotalRaw;
+        return $obj;
     }
 
     public static function checkOutItem($item)
@@ -195,9 +227,9 @@ class DesignController extends AbstractActionController
                     </td>
                 </tr>";
 
-                $obj = new stdClass();
-                $obj->html = $html;
-                $obj->subtotal = $subtotalRaw;
-                return $obj;
+        $obj = new stdClass();
+        $obj->html = $html;
+        $obj->subtotal = $subtotalRaw;
+        return $obj;
     }
 }

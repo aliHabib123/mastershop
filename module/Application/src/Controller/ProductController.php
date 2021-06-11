@@ -157,7 +157,10 @@ class ProductController extends AbstractActionController
             return $e->itemId;
         }, $related);
         $relatedIds = implode(',', $relatedIds);
-        $relatedProducts = $itemMySqlExtDAO->select("id IN($relatedIds)");
+        $relatedProducts = [];
+        if($relatedIds){
+            $relatedProducts = $itemMySqlExtDAO->select("id IN($relatedIds)");
+        }
 
         return new ViewModel([
             'item' => $item,

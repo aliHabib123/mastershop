@@ -12,13 +12,15 @@ extract($_POST);
 $page = $contentMysqlExtDAO->load($id);
 
 $newSlug = slugify($title);
-if ($slug != $newSlug) {
-    $c = 1;
-    while ($contentMysqlExtDAO->queryBySlug($newSlug)) {
-        $newSlug = slugify($title);
-        $newSlug = $newSlug . '-' . $c;
-        $c++;
-    }
+if($page->canDelete){
+    if ($slug != $newSlug) {
+        $c = 1;
+        while ($contentMysqlExtDAO->queryBySlug($newSlug)) {
+            $newSlug = slugify($title);
+            $newSlug = $newSlug . '-' . $c;
+            $c++;
+        }
+    } 
 }
 
 
