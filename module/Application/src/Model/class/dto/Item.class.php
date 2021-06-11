@@ -60,6 +60,10 @@
 		var $cartId;
 
 		var $cartQty;
+
+		var $companyName;
+
+		var $supplierstatus;
 		
 	}
 ?>

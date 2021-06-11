@@ -18,7 +18,8 @@
         "laminas/laminas-filter": "^2.11",
         "facebook/graph-sdk": "^5.7",
         "google/apiclient": "^2.0",
-        "laminas/laminas-session": "^2.10"
+        "laminas/laminas-session": "^2.10",
+        "phpmailer/phpmailer": "^6.4"
     },
     "autoload": {
         "psr-4": {
