@@ -343,16 +343,15 @@ $("html").on("click", ".wishlist-add", function (e) {
         $(e.currentTarget).find("img").attr("src", "img/heart-on.png");
       } else if (response.deleted) {
         alertify.success("Deleted from wishlist.");
-        if($(e.currentTarget).hasClass('remove-item')){
+        if ($(e.currentTarget).hasClass("remove-item")) {
           $(e.currentTarget).parent().remove().fadeOut(500);
         } else {
           $(e.currentTarget).find("img").attr("src", "img/heart-off.png");
         }
-        
       }
-      let wishlistBadge = $('li.wishlist').find('span.badge');
+      let wishlistBadge = $("li.wishlist").find("span.badge");
       wishlistBadge.html(response.count);
-      if(response.count == 0){
+      if (response.count == 0) {
         wishlistBadge.hide();
       } else {
         wishlistBadge.show();

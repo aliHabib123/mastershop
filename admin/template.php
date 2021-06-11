@@ -81,6 +81,10 @@ if (isset($_REQUEST['act'])) {
 
 		}
 	</script>
+	<script type="text/javascript">
+		const mainUrl = '<?php echo SITE_LINK; ?>';
+		const adminUrl = '<?php echo ADMIN_LINK; ?>';
+	</script>
 </head>
 <!-- END HEAD -->
 
@@ -191,7 +195,12 @@ if (isset($_REQUEST['act'])) {
 						<span class="title">Home</span>
 					</a>
 				</li>
-
+				<li class="">
+					<a href="display_supplier.php">
+						<!-- <i class="fa fa-bell"></i> -->
+						<span class="title">Suppliers</span>
+					</a>
+				</li>
 				<li class="">
 					<a href="display_banner.php">
 						<!-- <i class="fa fa-gift"></i> -->
@@ -378,7 +387,48 @@ if (isset($_REQUEST['act'])) {
 		  		stateSave: true,
 		    } );
 			   */
+			//supplier-form
+			$("#supplier-form").submit(function(e) {
+				var formData = new FormData(this);
+				var formUrl = $(this).attr("action");
+				$.ajax({
+					url: formUrl,
+					type: "POST",
+					dataType: "json",
+					data: formData,
+					mimeType: "multipart/form-data",
+					contentType: false,
+					cache: false,
+					processData: false,
+					beforeSend: function() {
+						showMsg(".notice-area", true, "Updating user info...");
+					},
+					success: function(response) {
+						console.log(response);
+						showMsg(".notice-area", response.status, response.msg);
+						$("html, body").animate({
+								scrollTop: $(".notice-area").offset().top - 100
+							},
+							1000
+						);
+						if (response.status == true) {
+							location.href = adminUrl + "display_supplier.php?act=3";
+						} else {
+
+						}
+					},
+					error: function() {
+						showMsg(".notice-area", false, "An error occured, please try again!");
+					},
+				});
+				e.preventDefault();
+			});
 		});
+
+		function showMsg(selector, status, msg) {
+			let html = `<div class="${status ? "success" : "error"}">${msg}</div>`;
+			$(selector).html(html);
+		}
 	</script>
 
 	<!-- http://datatables.net/examples/styling/compact.html -->

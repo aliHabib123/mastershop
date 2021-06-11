@@ -39,8 +39,8 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
         }
 
         $sql .= " WHERE 1";
-       
-        if(is_array($categoryId)){
+
+        if (is_array($categoryId)) {
             if ($categoryId && count($categoryId) > 0) {
                 $categoryId = implode(',', $categoryId);
                 $sql .= " AND b.`category_id` IN ($categoryId)";
@@ -58,8 +58,8 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
         }
         $sql .= " ORDER BY";
 
-        if($orderBy != ""){
-            $sql .= " ".$orderBy;
+        if ($orderBy != "") {
+            $sql .= " " . $orderBy;
         }
         $sql .= "  a.`display_order` ASC, a.`id` DESC";
 
@@ -71,10 +71,22 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
         return $this->getList($sqlQuery);
     }
 
-    public function getCartItemsByUserId($userId){
+    public function getCartItemsByUserId($userId)
+    {
         $sql = "SELECT a.*, b.id AS cart_id, b.qty AS cart_qty FROM item a LEFT OUTER JOIN cart b ON a.`id` = b.`item_id` WHERE b.`user_id` = ?";
         $sqlQuery = new SqlQuery($sql);
         $sqlQuery->set($userId);
+        return $this->getList($sqlQuery);
+    }
+    public function adminGetItems($condition = '1', $limit = 0, $offset = 0)
+    {
+        $sql = "SELECT a.*, b.company_name, b.status FROM item a LEFT OUTER JOIN user b ON a.`supplier_id` = b.`id` WHERE $condition";
+
+        if ($limit != 0) {
+            $sql .= " LIMIT $limit OFFSET $offset";
+        }
+
+        $sqlQuery = new SqlQuery($sql);
         return $this->getList($sqlQuery);
     }
 }

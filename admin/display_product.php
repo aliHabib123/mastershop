@@ -1,32 +1,31 @@
 <?php
 function main()
 {
+	$limit = 10000;
+	$offset = 0;
+	$orderBy = "desc";
+	$fieldName = "a.`id`";
+
 	$itemMySqlExtDAO = new ItemMySqlExtDAO();
 	$supplierMySqlExtDAO = new UserMySqlExtDAO();
-	$supplierArray = $supplierMySqlExtDAO->select('user_type = 2');
-	$suppliers = [];
-	foreach($supplierArray as $row){
-		$suppliers[$row->id] = $row->companyName;
+
+	$supplierId = isset($_GET['supplier_id']) && !empty($_GET['supplier_id']) ? filter_var($_GET['supplier_id'], FILTER_SANITIZE_NUMBER_INT) : false;
+	$suppliers = $supplierMySqlExtDAO->select("user_type = 2 and status IN  ('active', 'inactive')");
+
+
+	$condition = " b.`status` IN ('active', 'inactive') AND";
+	if (isset($_GET["orderBy"])) {
+		$orderBy = $_GET["orderBy"];
+		$fieldName = $_GET["fieldName"];
 	}
-	//print_r($suppliers);
-	$orderBy = "desc";
-	$fieldName = "id";
-	$condition = "";
-	if (isset($_REQUEST["orderBy"])) {
-		$orderBy = $_REQUEST["orderBy"];
-		$fieldName = $_REQUEST["fieldName"];
-	}
-	//$condition = " type = '$contentType' and lang = 1 and ";
-	if (isset($_REQUEST["keywords"]) && !empty($_REQUEST["keywords"])) {
-		$keywords = trim($_REQUEST["keywords"]);
-		//$condition .= " title like '%$keywords%' and ";
+
+	if ($supplierId) {
+		$condition = " a.`supplier_id`= '$supplierId' AND";
 	}
 
 	$condition .= " 1 order by $fieldName $orderBy ";
 
-	// paging
-	$limit = 10000;
-	$offset = 0;
+
 
 	if (isset($_REQUEST["page"]) && !empty($_REQUEST["page"])) {
 		$page = $_REQUEST["page"];
@@ -35,17 +34,20 @@ function main()
 
 
 	$condition .= " limit $limit offset $offset ";
-	$records = $itemMySqlExtDAO->select($condition);
-	?>
+	$records = $itemMySqlExtDAO->adminGetItems($condition);
+	//print_r($records);
+?>
 	<div class="portlet box blue">
 		<div class="portlet-title">
 			<div class="caption">
-				<i class="fa fa-globe"></i>PRODUCTS MANAGEMENT
+				PRODUCTS MANAGEMENT
 				<!--
-				<form name="myform223" action="<?php //echo $_SERVER['PHP_SELF'] ?>" method="post">
+				<form name="myform223" action="<?php //echo $_SERVER['PHP_SELF'] 
+												?>" method="post">
 					<div>
 						Search by banner caption: 
-						<input type="text" value="<?php //echo $keywords ?>" name="keywords" id="keywords" style="width:300px; height:20px;"> &nbsp; 
+						<input type="text" value="<?php //echo $keywords 
+													?>" name="keywords" id="keywords" style="width:300px; height:20px;"> &nbsp; 
 						<input type="submit" style="" value="   Search   " />
 					</div>
 				</form>
@@ -72,6 +74,34 @@ function main()
 			</div>
 		</div>
 		<div class="portlet-body">
+			<div class="search-form">
+				<form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF'] ?>">
+					<div class="form-group">
+						<?php
+						?>
+
+						<div class="col-md-4">
+							<label class="control-label">Supplier</label>
+							<select class="form-control select2me" data-placeholder="Select Supplier..." name="supplier_id" id="supplier_id">
+								<option selected="selected" value="">--- Select Supplier ---</option>
+								<?php
+								foreach ($suppliers as $row) {
+									//echo $row->id."<br>";
+									$sel = "";
+									if ($row->id == $supplierId) {
+										$sel = "selected";
+									} ?>
+									<option value="<?php echo $row->id; ?>" <?php echo $sel; ?>><?php echo $row->companyName; ?></option>
+								<?php
+								} ?>
+							</select>
+						</div>
+					</div>
+					<button type="submit" class="btn btn-primary">Filter</button>
+				</form>
+			</div>
+		</div>
+		<div class="portlet-body">
 			<table class="table table-striped table-bordered table-hover table-full-width" id="sample_2">
 				<thead>
 					<tr>
@@ -91,11 +121,11 @@ function main()
 						<tr id="<?php echo $row->id; ?>">
 							<!-- primary key -->
 							<td><?php echo $row->id; ?></td>
-							<td><?php echo $row->title?></td>
-							<td><img style="max-height: 100px;" src="<?php echo IMAGES_LINK.$row->image?>"/></td>
-							<td><?php echo $suppliers[$row->supplierId]; ?></td>
+							<td><?php echo $row->title ?></td>
+							<td><img style="max-height: 100px;" src="<?php echo IMAGES_LINK . $row->image ?>" /></td>
+							<td><?php echo $row->companyName; ?></td>
 							<td>
-								<a class="btn btn-xs yellow" href="edit_product.php?id=<?php echo $row->id;?>">
+								<a class="btn btn-xs yellow" href="edit_product.php?id=<?php echo $row->id; ?>">
 									Edit
 									<i class="fa fa-edit"></i>
 								</a>

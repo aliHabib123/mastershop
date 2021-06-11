@@ -21,6 +21,7 @@ $filesPath = "../public/uploads/files/";
 $audioPath = "../public/uploads/audio/";
 
 define("SITE_LINK", $siteLink);
+define("ADMIN_LINK", $siteLink . "admin/");
 define("IMAGES_LINK", $imagesLink);
 define('IMAGES_PATH', $imagesPath);
 define('FILES_PATH', $filesPath);

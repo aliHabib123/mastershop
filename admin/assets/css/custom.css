@@ -1,1 +1,26 @@
 /* here you can put your own css to customize and override the theme */
+.user-active {
+  background-color: green !important;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+}
+.user-inactive {
+  background-color: red !important;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+}
+.search-form label.control-label {
+  margin-bottom: 5px;
+}
+.notice-area {
+  text-align: center;
+  min-height: 20px;
+}
+.notice-area .error {
+  color: red;
+}
+.notice-area .success {
+  color: green;
+}
