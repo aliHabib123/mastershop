@@ -245,10 +245,11 @@
               color: #fff;
               display: inline-block;
               margin-left: 4px;
-              top: -1px;
-              position: relative;
+              top: 2px;
+              position: absolute;
               line-height: 9px;
               text-align: center;
+              right: 4px;
             }
             &:last-child {
               padding: 0;

@@ -249,6 +249,9 @@ body {
 .pt30 {
   padding-top: 30px;
 }
+.mt30{
+  margin-top: 30px;
+}
 .item-col {
   margin-bottom: 25px;
 }
@@ -503,7 +506,7 @@ body {
     text-align: -webkit-center;
     text-align: -moz-center;
     button[type="submit"] {
-      margin-top: 30px;
+      margin-bottom: 30px;
       width: 240px;
       background-color: $base-color;
       font-family: $fontsecondary;
@@ -685,4 +688,19 @@ a.disabled {
 }
 .ajs-message {
   color: #fff !important;
+}
+
+
+//Breadcrumb
+.breadcrumb-wrap{
+  .breadcrumb{
+    background-color: #f6f6f6;
+    .breadcrumb-item{
+      a{
+        color: $base-color;
+        font-family: $fontsecondary;
+      }
+    }
+  }
+  
 }

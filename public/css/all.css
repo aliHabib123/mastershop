@@ -201,6 +201,9 @@ body {
 .pt30 {
   padding-top: 30px; }
 
+.mt30 {
+  margin-top: 30px; }
+
 .item-col {
   margin-bottom: 25px; }
 
@@ -422,7 +425,7 @@ body {
   text-align: -webkit-center;
   text-align: -moz-center; }
   .modal-form .centered-button button[type="submit"] {
-    margin-top: 30px;
+    margin-bottom: 30px;
     width: 240px;
     background-color: #2576ba;
     font-family: "Montserrat", sans-serif;
@@ -583,6 +586,12 @@ a.disabled {
 
 .ajs-message {
   color: #fff !important; }
+
+.breadcrumb-wrap .breadcrumb {
+  background-color: #f6f6f6; }
+  .breadcrumb-wrap .breadcrumb .breadcrumb-item a {
+    color: #2576ba;
+    font-family: "Montserrat", sans-serif; }
 
 .mega-menu nav.navbar {
   padding: 0; }
@@ -765,10 +774,11 @@ a.disabled {
           color: #fff;
           display: inline-block;
           margin-left: 4px;
-          top: -1px;
-          position: relative;
+          top: 2px;
+          position: absolute;
           line-height: 9px;
-          text-align: center; }
+          text-align: center;
+          right: 4px; }
         .upper-menu-container .upper-menu .custom-menu li.wishlist a:last-child {
           padding: 0; }
     .upper-menu-container .upper-menu .custom-menu li.cart-icon {
@@ -2288,6 +2298,22 @@ a.list-group-item,
 
 .forgot-password input {
   border: 1px solid !important; }
+
+.delivery-address {
+  margin-top: 30px;
+  font-family: "Montserrat", sans-serif;
+  text-align: left;
+  font-size: 16px;
+  margin-bottom: 30px; }
+
+.order-details {
+  margin-top: 30px;
+  font-family: "Montserrat", sans-serif;
+  text-align: left;
+  font-size: 16px;
+  margin-bottom: 30px; }
+  .order-details_item {
+    margin-bottom: 15px; }
 
 @media (max-width: 576px) {
   .card-wrapper .jp-card-container {

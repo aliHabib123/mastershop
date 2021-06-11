@@ -7,6 +7,7 @@ namespace Application\Controller;
 use Cart;
 use CartMySqlExtDAO;
 use CityMySqlExtDAO;
+use DateTime;
 use ItemMySqlExtDAO;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
@@ -250,6 +251,7 @@ class UserController extends AbstractActionController
     public function myProfileAction()
     {
         self::checkCustomerLoggedIn();
+        $saleOrders = self::getOrders();
         $cityMySqlExtDAO = new CityMySqlExtDAO();
         $cities = $cityMySqlExtDAO->queryAllOrderBy('city ASC');
         $userMysqlExtDAO = new UserMySqlExtDAO();
@@ -257,11 +259,13 @@ class UserController extends AbstractActionController
         return new ViewModel([
             'cities' => $cities,
             'userInfo' => $userInfo,
+            'saleOrdersCount' => count($saleOrders),
         ]);
     }
     public function myWishlistAction()
     {
         self::checkCustomerLoggedIn();
+        $saleOrders = self::getOrders();
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
         $wishlist = [];
         if (count($_SESSION['user']->wishlist)) {
@@ -271,6 +275,7 @@ class UserController extends AbstractActionController
         }
         return new ViewModel([
             'wishlist' => $wishlist,
+            'saleOrdersCount' => count($saleOrders),
         ]);
     }
 
@@ -467,8 +472,20 @@ class UserController extends AbstractActionController
     public function myOrdersAction()
     {
         self::checkCustomerLoggedIn();
-        $saleOrderMySqlExtDAO = new SaleOrderMySqlExtDAO();
-        $saleOrders = $saleOrderMySqlExtDAO->getOrders($_SESSION['user']->id);
+        $fromDate = $toDate = false;
+        $status = (isset($_GET['status']) && !empty($_GET['status'])) ? HelperController::filterInput($_GET['status']) : false;
+        $date = (isset($_GET['date']) && !empty($_GET['date'])) ? HelperController::filterInput($_GET['date']) : false;
+        
+        //print_r($dateArr);
+        if ($date) {
+            $dateArr = explode(' - ', $date);
+            $fromDate = DateTime::createFromFormat('d-m-Y', $dateArr[0]);
+            $fromDate = $fromDate->format('Y-m-d 00:00:01');
+            $toDate = DateTime::createFromFormat('d-m-Y', $dateArr[1]);
+            $toDate = $toDate->format('Y-m-d 23:59:59');
+        }
+        //echo $fromDate. " ".$toDate;
+        $saleOrders = self::getOrders($fromDate, $toDate, $status);
         return new ViewModel([
             'saleOrders' => $saleOrders,
         ]);
@@ -651,6 +668,7 @@ class UserController extends AbstractActionController
                 $saleOrderObj->numItemsSold = count($cartItems);
                 $saleOrderObj->status = 'pending';
                 $saleOrderObj->customerId = $_SESSION['user']->id;
+                $saleOrderObj->note = $notes;
                 $saleOrderObj->deliveryAddress = $deliveryAddress;
                 $saleOrderObj->createdAt = date('Y-m-d H:i:s');
                 $saleOrderObj->updatedAt = date('Y-m-d H:i:s');
@@ -762,10 +780,11 @@ class UserController extends AbstractActionController
                 $resetLink = MAIN_URL . 'reset-password/' . $userType . '?activationCode=' . $rand;
                 $emailBody = MailController::getPasswordResetEmailBody($userInfo->fullName, $resetLink);
                 $sendEmail = MailController::sendMail($to, $subject, $emailBody);
-
+                $sendEmail = true;
                 if ($sendEmail) {
                     $result = true;
                     $msg = "Please check your email for reset link";
+                    $msg = $resetLink;
                 }
             }
         } else {
@@ -785,7 +804,6 @@ class UserController extends AbstractActionController
     {
         $userType = HelperController::filterInput($this->params('userType'));
         if (isset($_POST) && !empty($_POST)) {
-
             $result = false;
             $msg = "Error";
 
@@ -832,5 +850,24 @@ class UserController extends AbstractActionController
                 'userType' => $userType,
             ]);
         }
+    }
+    public function orderDetailsAction()
+    {
+        $id = HelperController::filterInput($this->params('id'));
+        $saleOrderMySqlExtDAO = new SaleOrderMySqlExtDAO();
+        $saleOrderItemMySqlExtDAO = new SaleOrderItemMySqlExtDAO();
+        $saleOrder = $saleOrderMySqlExtDAO->load($id);
+        $saleOrderItems  = $saleOrderItemMySqlExtDAO->getSaleOrderItems($id);
+        $data = [
+            'saleOrder' => $saleOrder,
+            'items' => $saleOrderItems,
+        ];
+        return new ViewModel($data);
+    }
+
+    public static function getOrders($fromDate = false, $toDate = false, $status = false)
+    {
+        $saleOrderMySqlExtDAO = new SaleOrderMySqlExtDAO();
+        return $saleOrderMySqlExtDAO->getOrders($_SESSION['user']->id, $fromDate, $toDate, $status);
     }
 }

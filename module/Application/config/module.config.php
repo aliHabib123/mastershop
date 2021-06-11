@@ -384,6 +384,19 @@ return [
                     ],
                 ],
             ],
+            'orderDetails' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/order/:id',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'orderDetails',
+                    ],
+                    'constraints' => array(
+                        'id' => '[0-9]+'
+                ),
+                ],
+            ],
             'myWishlist' => [
                 'type'    => Literal::class,
                 'options' => [

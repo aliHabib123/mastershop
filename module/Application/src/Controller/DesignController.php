@@ -94,10 +94,11 @@ class DesignController extends AbstractActionController
         $label = strtoupper(str_replace('-', ' ', $status));
         $orderId = $saleOrder->id;
         $date = date('M j, Y | H:i:g A', strtotime($saleOrder->createdAt));
+        $url = MAIN_URL."order/".$saleOrder->id;
         $html =  "<div class='order-item'>
                     <div class='row'>
                         <div class='col-md-9'>
-                            <div class='order-id'>ORDER #$orderId<span><a href='#'>VIEW ORDER</a></span></div>
+                            <div class='order-id'>ORDER #$orderId<span><a href='$url'>VIEW ORDER</a></span></div>
                             <div class='items-wrap'>";
         foreach ($saleOrderItems as $row) {
             $html .= "<div class='item'>
