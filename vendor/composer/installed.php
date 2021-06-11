@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '2aed33833876a319c7d439c8a4595f0e7f7ab560',
+    'reference' => 'd0f8447cab9a059e896ff74cdf13b051172e1b5b',
     'name' => 'laminas/laminas-mvc-skeleton',
   ),
   'versions' => 
@@ -214,7 +214,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '2aed33833876a319c7d439c8a4595f0e7f7ab560',
+      'reference' => 'd0f8447cab9a059e896ff74cdf13b051172e1b5b',
     ),
     'laminas/laminas-router' => 
     array (
@@ -332,6 +332,15 @@
       array (
       ),
       'reference' => '996434e5492cb4c3edcb9168db6fbb1359ef965a',
+    ),
+    'phpmailer/phpmailer' => 
+    array (
+      'pretty_version' => 'v6.4.1',
+      'version' => '6.4.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '9256f12d8fb0cd0500f93b19e18c356906cbed3d',
     ),
     'phpseclib/phpseclib' => 
     array (
