@@ -89,4 +89,11 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
         $sqlQuery = new SqlQuery($sql);
         return $this->getList($sqlQuery);
     }
+    public function queryBySkuAndSupplierId($sku, $supplierId){
+		$sql = 'SELECT * FROM item WHERE sku = ? AND supplier_id = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($sku);
+        $sqlQuery->set($supplierId);
+		return $this->getList($sqlQuery);
+	}
 }

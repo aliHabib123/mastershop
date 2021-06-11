@@ -20,7 +20,7 @@ function change_format($date)
 function change_format2($date)
 {
     list($year, $mon, $day) = explode("-", $date);
-    $new_date = $mon . "/". $day . "/"  . $year; //06/24/2015
+    $new_date = $mon . "/" . $day . "/"  . $year; //06/24/2015
     return $new_date;
 }
 
@@ -34,11 +34,11 @@ function change_timeformat($datetime)
     $datetime = str_replace("-", " ", $datetime);
     $datetime = DateTime::createFromFormat("j M Y H:i A", $datetime); //12 June 2015 - 03:12 PM
     if (is_object($datetime) == false) {
-        return ;
+        return;
     }
     $date = $datetime->format("Y-m-d");
     $time = $datetime->format("H:i:s");
-    $datetime = $date." ".$time;
+    $datetime = $date . " " . $time;
     return $datetime;
 }
 
@@ -58,7 +58,7 @@ function reverse_change_timeformat($mysql_datetime)
     }
     $date = $datetime->format("j F Y");
     $time = $datetime->format("h:i A");
-    $datetime = $date." - ".$time;
+    $datetime = $date . " - " . $time;
     return $datetime;
 }
 
@@ -76,27 +76,38 @@ function radio_button($switchValue)
 
 function slugify($text, string $divider = '-')
 {
-  // replace non letter or digits by divider
-  $text = preg_replace('~[^\pL\d]+~u', $divider, $text);
+    // replace non letter or digits by divider
+    $text = preg_replace('~[^\pL\d]+~u', $divider, $text);
 
-  // transliterate
-  $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+    // transliterate
+    $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
 
-  // remove unwanted characters
-  $text = preg_replace('~[^-\w]+~', '', $text);
+    // remove unwanted characters
+    $text = preg_replace('~[^-\w]+~', '', $text);
 
-  // trim
-  $text = trim($text, $divider);
+    // trim
+    $text = trim($text, $divider);
 
-  // remove duplicate divider
-  $text = preg_replace('~-+~', $divider, $text);
+    // remove duplicate divider
+    $text = preg_replace('~-+~', $divider, $text);
 
-  // lowercase
-  $text = strtolower($text);
+    // lowercase
+    $text = strtolower($text);
 
-  if (empty($text)) {
-    return 'n-a';
-  }
+    if (empty($text)) {
+        return 'n-a';
+    }
 
-  return $text;
+    return $text;
+}
+
+function random($length = 10)
+{
+    $chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    $size = strlen($chars);
+    $str = "";
+    for ($i = 0; $i < $length; $i++) {
+        $str .= $chars[rand(0, $size - 1)];
+    }
+    return $str;
 }

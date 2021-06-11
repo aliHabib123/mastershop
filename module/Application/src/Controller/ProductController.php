@@ -251,8 +251,9 @@ class ProductController extends AbstractActionController
         return new ViewModel($data);
     }
 
-    public static function insertItems($items, $supplierId, $fileName)
+    public static function insertItems($items, $fileName)
     {
+        $supplierId = $_SESSION['user']->id;
         // Initialize
         $categoriesIdsNames = [];
         $brandIdsNames = [];
@@ -290,6 +291,7 @@ class ProductController extends AbstractActionController
             $albumId = 0;
             $prefix = $supplierId . '-' . HelperController::slugify($row['SKU']);
             $image = HelperController::downloadFile($row['Image 1'], $prefix);
+            echo $image.'<br>';
             $imagesArray = [];
             if ($row['Image 2'] != "") {
                 $image1 = HelperController::downloadFile($row['Image 2'], $prefix);
@@ -332,7 +334,7 @@ class ProductController extends AbstractActionController
                 $itemObj->image = $image;
             }
 
-            $itemExists = $itemMySqlExtDAO->queryBySku($row['SKU']);
+            $itemExists = $itemMySqlExtDAO->queryBySkuAndSupplierId($row['SKU'], $_SESSION['user']->id);
             $date = date('Y-m-d H:i:s');
             if ($itemExists) {
                 // delete image

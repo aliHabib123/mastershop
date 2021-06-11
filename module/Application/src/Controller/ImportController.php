@@ -126,7 +126,7 @@ class ImportController extends AbstractActionController
         //print_r(${'List'});
         // insert rows into database
         if ($result) {
-            $insert = ProductController::insertItems(${'List'}, '9', $newName);
+            $insert = ProductController::insertItems(${'List'}, $newName);
             $result = true;
             $msg = "Your file has been imported successfully";
         }
