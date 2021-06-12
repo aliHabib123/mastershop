@@ -24,3 +24,10 @@
 .notice-area .success {
   color: green;
 }
+.footer .footer-inner {
+  color: #ffffff;
+  float: none;
+}
+.footer .footer-inner a {
+  color: red;
+}

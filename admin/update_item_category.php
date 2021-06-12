@@ -43,10 +43,23 @@ if ($_FILES['image']['size'] > 0) {
     $image = $current_image;
 }
 
+if ($_FILES['banner_image']['size'] > 0) {
+    $newBannerImage = upload_image("banner_image", $imagesPath);
+    if (is_file($imagesPath . $newBannerImage)) {
+        if (is_file($imagesPath . $current_banner_image)) {
+            unlink($imagesPath . $current_banner_image);
+        }
+    }
+    $bannerImage = $newBannerImage;
+} else {
+    $bannerImage = $current_banner_image;
+}
+
 $obj =  new ItemCategory();
 $obj->id = $id;
 $obj->name = $name;
 $obj->image = $image;
+$obj->bannerImage = $bannerImage;
 $obj->active = $active;
 $obj->parentId = $parent_id;
 $obj->displayOrder = $display_order;

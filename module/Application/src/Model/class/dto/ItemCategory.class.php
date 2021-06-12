@@ -7,6 +7,7 @@
 		var $id;
 		var $name;
 		var $image;
+		var $bannerImage;
 		var $parentId;
 		var $slug;
 		var $displayOrder;

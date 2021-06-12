@@ -16,7 +16,8 @@ function main()
 		<div class="portlet-body form">
 			<form action="update_item_category.php" method="post" enctype="multipart/form-data" name="frm" id="frm" class="form-horizontal form-bordered">
 				<div class="form-body">
-					<input name="id" type="hidden" value="<?php echo $category->id ?>" />
+					<input name="id" type="hidden" value="<?php echo $category->id;?>" />
+					<input name="slug" type="hidden" value="<?php echo $category->slug; ?>" />
 
 					<div class="form-group">
 						<label class="col-md-3 control-label">Name</label>
@@ -42,6 +43,30 @@ function main()
 										<span class="fileupload-new"><i class="fa fa-paper-clip"></i> Select image</span>
 										<span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
 										<input type="file" class="default" name="image" id="image" />
+									</span>
+									<a href="#" class="btn red fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash-o"></i> Remove</a>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-3 control-label">Banner Image</label>
+						<div class="col-md-9">
+							<div class="fileupload fileupload-new" data-provides="fileupload">
+								<div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
+									<?php
+									if (is_file(IMAGES_PATH . $category->bannerImage)) { ?>
+										<img src="<?php echo IMAGES_PATH . $category->bannerImage ?>" alt="<?php echo $category->bannerImage ?>" />
+									<?php } ?>
+									<input type="hidden" value="<?php echo $category->bannerImage; ?>" name="current_banner_image" />
+								</div>
+								<div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
+								<div>
+									<span class="btn default btn-file">
+										<span class="fileupload-new"><i class="fa fa-paper-clip"></i> Select image</span>
+										<span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
+										<input type="file" class="default" name="banner_image" id="banner_image" />
 									</span>
 									<a href="#" class="btn red fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash-o"></i> Remove</a>
 								</div>

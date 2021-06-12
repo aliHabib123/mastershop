@@ -24,6 +24,7 @@ define('FILE_URL', BASE_URL . 'uploads/files/');
 // Placeholder Images
 define('PRODUCT_PLACEHOLDER_IMAGE_URL', BASE_URL.'img/placeholder.jpg');
 define('PRODUCT_PLACEHOLDER_THUMBNAIL_URL', BASE_URL.'img/placeholder_thumbnail.jpg');
+define('PRODUCT_BANNER_PLACEHOLDER_URL', BASE_URL.'img/small-banner.jpg');
 define('USER_AVATAR_URL', BASE_URL.'img/empty_avatar.jpg');
 define('USER_AVATAR_BG_URL', BASE_URL.'img/avatar_bg_small.jpg');
 #Google Recaptcha V2

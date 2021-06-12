@@ -1,29 +1,23 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-mvc-skeleton for the canonical source repository
- * @copyright https://github.com/laminas/laminas-mvc-skeleton/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-mvc-skeleton/blob/master/LICENSE.md New BSD License
- */
-
 declare(strict_types=1);
 
 namespace Application\Controller;
 
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
+use stdClass;
 use Album;
 use AlbumMySqlExtDAO;
 use Image;
-use ImageMySqlDAO;
 use ImageMySqlExtDAO;
 use Item;
 use ItemBrandMappingMySqlExtDAO;
+use ItemBrandMySqlExtDAO;
 use ItemCategoryMappingMySqlExtDAO;
 use ItemCategoryMySqlExtDAO;
 use ItemMySqlExtDAO;
 use ItemTagMySqlExtDAO;
-use Laminas\Mvc\Controller\AbstractActionController;
-use Laminas\View\Model\ViewModel;
-use stdClass;
 use User;
 use UserMySqlExtDAO;
 
@@ -36,8 +30,10 @@ class ProductController extends AbstractActionController
     public static $BEST_OFFERS = 5;
     public static $SPOTLIGHT = 6;
     public static $PROMOTIONS = 7;
+
     public function indexAction()
     {
+        $itemCategoryMySqlExtDAO = new ItemCategoryMySqlExtDAO();
         $page = 1;
         $limit = 12;
         $offset = 0;
@@ -46,15 +42,26 @@ class ProductController extends AbstractActionController
             $offset = ($page - 1) * $limit;
         }
         $search = (isset($_GET['search']) && $_GET['search'] != "") ? $_GET['search'] : false;
-        $itemCategoryMySqlExtDAO = new ItemCategoryMySqlExtDAO();
-        $itemMySqlExtDAO = new ItemMySqlExtDAO();
+        $brandId = (isset($_GET['brand']) && $_GET['brand'] != "") ? $_GET['brand'] : "";
+        $minPrice = (isset($_GET['min-price']) && $_GET['min-price'] != "") ? $_GET['min-price'] : "";
+        $maxPrice = (isset($_GET['max-price']) && $_GET['max-price'] != "") ? $_GET['max-price'] : "";
+
         $cat1 = $this->params('cat1') ? HelperController::filterInput($this->params('cat1')) : false;
         $cat2 = $this->params('cat2') ? HelperController::filterInput($this->params('cat2')) : false;
         $cat3 = $this->params('cat3') ? HelperController::filterInput($this->params('cat3')) : false;
 
+        // var_dump($cat1);
+        // var_dump($cat2);
+        // var_dump($cat3);
+        // var_dump($brandId);
+        // var_dump($minPrice);
+        // var_dump($maxPrice);
+
+        // Get Category Slug
         $categorySlug = "";
         $categoryId = false;
         $completeSlug = "";
+
         if ($cat3) {
             $categorySlug = $cat3;
         } elseif ($cat2) {
@@ -63,22 +70,26 @@ class ProductController extends AbstractActionController
             $categorySlug = $cat1;
         }
         if ($cat1) {
-            $completeSlug .= "/".$cat1;
+            $completeSlug .= "/" . $cat1;
         }
         if ($cat2) {
-            $completeSlug .= "/".$cat2;
+            $completeSlug .= "/" . $cat2;
         }
         if ($cat3) {
-            $completeSlug .= "/".$cat3;
+            $completeSlug .= "/" . $cat3;
         }
+
         if ($categorySlug != "") {
             $categoryInfo = $itemCategoryMySqlExtDAO->queryBySlug($categorySlug);
             if ($categoryInfo) {
                 $categoryId = $categoryInfo[0]->id;
             }
         }
+        // End of get Category Slug
+
         $categoryArray = [];
         if ($categoryId) {
+            array_push($categoryArray, $categoryId);
             if ($cat3) {
                 $cat3Info = $itemCategoryMySqlExtDAO->queryBySlug($cat3);
                 array_push($categoryArray, $cat3Info[0]->id);
@@ -89,7 +100,8 @@ class ProductController extends AbstractActionController
                 foreach ($categoriesLevel2 as $row) {
                     array_push($categoryArray, $row->id);
                 }
-                //array_push($categoryArray, $cat2Info[0]->id);
+                $categoryList = $itemCategoryMySqlExtDAO->select("parent_id = $cat2Id ORDER BY name ASC");
+                $prefixUrl = MAIN_URL . 'products/' . $cat1 . "/" . $cat2 . "/";
             } elseif ($cat1 && !$cat2 && !$cat3) {
                 $cat1Info = $itemCategoryMySqlExtDAO->queryBySlug($cat1);
                 $cat1Id = $cat1Info[0]->id;
@@ -103,15 +115,27 @@ class ProductController extends AbstractActionController
                         array_push($categoryArray, $row->id);
                     }
                 }
+                $categoryList = $itemCategoryMySqlExtDAO->select("parent_id = $cat1Id ORDER BY name ASC");
+                $prefixUrl = MAIN_URL . 'products/' . $cat1 . "/";
             }
+        } else {
+            $categoryList = $itemCategoryMySqlExtDAO->select('parent_id = 0 ORDER BY name ASC');
+            $prefixUrl = MAIN_URL . 'products/';
         }
-        //echo $completeSlug.'<br>';
-        $items = self::getItems($categoryArray, $search, false, "", $limit, $offset);
-        $itemsCount = count(self::getItems($categoryArray, $search, false));
+
+        $itemBrandMySqlExtDAO = new ItemBrandMySqlExtDAO();
+
+        if ($cat1) {
+            $cat1Info = $itemCategoryMySqlExtDAO->queryBySlug($cat1)[0];
+            $brandsList = $itemBrandMySqlExtDAO->getBrandsByCategoryId($cat1Info->id);
+        } else {
+            $brandsList = $itemBrandMySqlExtDAO->queryAll();
+        }
+
+        $items = self::getItems($categoryArray, $search, $brandId, $minPrice, $maxPrice, false, "", $limit, $offset);
+        $itemsCount = count(self::getItems($categoryArray, $search, $brandId, $minPrice, $maxPrice, false));
         $totalPages = ceil($itemsCount / $limit);
-        // var_dump($cat1);
-        // var_dump($cat2);
-        // var_dump($cat3);
+
         $isSearchPage = false;
         if ($search != false) {
             $isSearchPage = true;
@@ -125,8 +149,13 @@ class ProductController extends AbstractActionController
             'cat1' => $cat1,
             'cat2' => $cat2,
             'cat3' => $cat3,
+            'categoryList' => $categoryList,
+            'prefixUrl' => $prefixUrl,
+            'brandsList' => $brandsList,
+            'brandId' => $brandId,
+            'minPrice' => $minPrice,
+            'maxPrice' => $maxPrice,
         ];
-        //print_r($items);
         return new ViewModel($data);
     }
     public function detailsAction()
@@ -158,7 +187,7 @@ class ProductController extends AbstractActionController
         }, $related);
         $relatedIds = implode(',', $relatedIds);
         $relatedProducts = [];
-        if($relatedIds){
+        if ($relatedIds) {
             $relatedProducts = $itemMySqlExtDAO->select("id IN($relatedIds)");
         }
 
@@ -189,14 +218,12 @@ class ProductController extends AbstractActionController
         $spotLight = self::getItems(false, false, self::$SPOTLIGHT, "RAND(),", 1, $offset);
         $itemsCount = count(self::getItems(false, false, $tagId));
         $totalPages = ceil($itemsCount / $limit);
-        //print_r($spotLight);
         $data = [
             'items' => $items,
             'totalPages' => $totalPages,
             'currentPage' => $page,
             'spotlight' => $spotLight[0],
         ];
-        //print_r($items);
         return new ViewModel($data);
     }
     public function latestArrivalsAction()
@@ -215,13 +242,11 @@ class ProductController extends AbstractActionController
         $items = self::getItems(false, false, $tagId, "", $limit, $offset);
         $itemsCount = count(self::getItems(false, false, $tagId));
         $totalPages = ceil($itemsCount / $limit);
-        //print_r($spotLight);
         $data = [
             'items' => $items,
             'totalPages' => $totalPages,
             'currentPage' => $page,
         ];
-        //print_r($items);
         return new ViewModel($data);
     }
 
@@ -241,13 +266,11 @@ class ProductController extends AbstractActionController
         $items = self::getItems(false, false, $tagId, "", $limit, $offset);
         $itemsCount = count(self::getItems(false, false, $tagId));
         $totalPages = ceil($itemsCount / $limit);
-        //print_r($spotLight);
         $data = [
             'items' => $items,
             'totalPages' => $totalPages,
             'currentPage' => $page,
         ];
-        //print_r($items);
         return new ViewModel($data);
     }
 
@@ -291,7 +314,6 @@ class ProductController extends AbstractActionController
             $albumId = 0;
             $prefix = $supplierId . '-' . HelperController::slugify($row['SKU']);
             $image = HelperController::downloadFile($row['Image 1'], $prefix);
-            echo $image.'<br>';
             $imagesArray = [];
             if ($row['Image 2'] != "") {
                 $image1 = HelperController::downloadFile($row['Image 2'], $prefix);
@@ -348,7 +370,7 @@ class ProductController extends AbstractActionController
                     }
                     $albumMySqlExtDAO->delete($itemExists[0]->albumId);
                 }
-                
+
                 $itemObj->id = $itemExists[0]->id;
                 $itemObj->createdAt = $itemExists[0]->createdAt;
                 $itemObj->updatedAt = $date;
@@ -434,15 +456,15 @@ class ProductController extends AbstractActionController
         return $delete;
     }
 
-    public static function getFinalPrice($regularPrice, $salePrice, $raw=false)
+    public static function getFinalPrice($regularPrice, $salePrice, $raw = false)
     {
         if ($salePrice != "" && $salePrice != null && $salePrice != 0) {
-            if(!$raw){
+            if (!$raw) {
                 return number_format(floatval($salePrice));
             }
             return floatval($salePrice);
         } elseif ($regularPrice != "" && $regularPrice != null && $regularPrice != 0) {
-            if(!$raw){
+            if (!$raw) {
                 return number_format(floatval($regularPrice));
             }
             return $regularPrice;
@@ -465,16 +487,44 @@ class ProductController extends AbstractActionController
     {
     }
 
-    public static function getItems($categoryId = false, $search = false, $tagId = false, $orderBy = "", $limit = 0, $offset = 0)
+    public static function getItems($categoryId = false, $search = false, $brandId = "", $minPrice = "", $maxPrice = "", $tagId = false, $orderBy = "", $limit = 0, $offset = 0)
     {
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
-        $items = $itemMySqlExtDAO->getItems($categoryId, $search, $tagId, $orderBy, $limit, $offset);
+        $items = $itemMySqlExtDAO->getItems($categoryId, $search, $brandId, $minPrice, $maxPrice, $tagId, $orderBy, $limit, $offset);
         return $items;
     }
 
-    public static function getRelatedProducts($categoryId, $excludeId){
+    public static function getRelatedProducts($categoryId, $excludeId)
+    {
         $itemCategoryMappingMySqlExtDAO = new ItemCategoryMappingMySqlExtDAO();
         $list = $itemCategoryMappingMySqlExtDAO->getListOfItemsInCategory($categoryId, $excludeId);
         return $list;
+    }
+
+    public static function getCategoryBanner($cat1 = false, $cat2 = false, $cat3, $cat1Info, $cat2info, $cat3Info)
+    {
+        $bannerImage = PRODUCT_BANNER_PLACEHOLDER_URL;
+        if ($cat1) {
+            if (getimagesize(BASE_PATH . upload_image_dir . $cat1Info[0]->bannerImage)) {
+                $bannerImage = HelperController::getImageUrl($cat1Info[0]->bannerImage);
+            }
+        }
+        if ($cat2) {
+            if (getimagesize(BASE_PATH . upload_image_dir . $cat2info[0]->bannerImage)) {
+                $bannerImage = HelperController::getImageUrl($cat2info[0]->bannerImage);
+            } elseif (getimagesize(BASE_PATH . upload_image_dir . $cat1Info[0]->bannerImage)) {
+                $bannerImage = HelperController::getImageUrl($cat1Info[0]->bannerImage);
+            }
+        }
+        if ($cat3) {
+            if (getimagesize(BASE_PATH . upload_image_dir . $cat3Info[0]->bannerImage)) {
+                $bannerImage = HelperController::getImageUrl($cat3Info[0]->bannerImage);
+            } elseif (getimagesize(BASE_PATH . upload_image_dir . $cat2info[0]->bannerImage)) {
+                $bannerImage = HelperController::getImageUrl($cat2info[0]->bannerImage);
+            } elseif (getimagesize(BASE_PATH . upload_image_dir . $cat1Info[0]->bannerImage)) {
+                $bannerImage = HelperController::getImageUrl($cat1Info[0]->bannerImage);
+            }
+        }
+        return $bannerImage;
     }
 }

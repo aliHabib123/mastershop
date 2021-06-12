@@ -323,6 +323,25 @@ $("html").on("click", ".edit-warehouse", function (e) {
   $("#edit-warehouse-modal #last-name").val(lastName);
 });
 
+//sidebar-brand-menu
+$(".sidebar-brand-menu").on("click", "span", function (e) {
+  e.preventDefault();
+  $(e.currentTarget).siblings().css("border-color", "#b7b7b7");
+  $(e.currentTarget).css("border-color", "red");
+  $("#brand_id").val($(e.currentTarget).attr("id"));
+});
+
+if ($(".sidebar-brand-menu").length > 0) {
+  if ($("#brand_id").val() != "") {
+    $(".sidebar-brand-menu")
+      .find("span#" + $("#brand_id").val())
+      .css("border-color", "red");
+  }
+}
+$("#sidebar-filter").on("reset", function (e) {
+  e.preventDefault();
+  location.href = currentPageUrl;
+});
 $("html").on("click", ".wishlist-add", function (e) {
   alertify.set("notifier", "position", "top-right");
   if (isLoggedIn == "" || userType != 3) {

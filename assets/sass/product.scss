@@ -399,6 +399,51 @@
   border-radius: 5px;
   margin-bottom: 40px;
 }
-.order-complete-btn-wrap{
+.order-complete-btn-wrap {
   margin-top: 30px;
+}
+.min-max-price {
+  font-family: $fontsecondary;
+  input[type="range"] {
+    margin-bottom: 10px;
+  }
+  span {
+    min-width: 70px;
+  }
+}
+.sidebar-category-menu {
+  ul {
+    padding-left: 0;
+    list-style: none;
+    li {
+      a {
+        font-family: $fontsecondary;
+        font-size: 16px;
+        color: #000;
+        &:hover {
+          color: $base-color;
+        }
+      }
+    }
+  }
+}
+.sidebar-brand-menu {
+  > div {
+    span {
+      display: inline-block;
+      margin-bottom: 10px;
+      border: 1px solid #b7b7b7;
+      cursor: pointer;
+      img {
+        max-height: 50px;
+      }
+    }
+  }
+}
+.sidebar-filter-btn {
+  margin-top: 15px;
+  button {
+    padding: 10px 15px;
+    font-size: 18px;
+  }
 }

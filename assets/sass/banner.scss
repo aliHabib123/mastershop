@@ -87,24 +87,24 @@
     top: 50%;
     line-height: 1;
     transform: translateY(-50%);
-    &.centered{
+    &.centered {
       text-align: center;
       text-align: -webkit-center;
       text-align: -moz-center;
-      .banner-title1{
+      .banner-title1 {
         font-family: $fontsecondary;
         font-size: 40px;
         color: #fff;
         margin-bottom: 10px;
       }
-      .banner-title2{
+      .banner-title2 {
         font-size: 35px;
         font-weight: 300;
         font-family: $fontsecondary;
         color: #fff;
         margin-bottom: 10px;
       }
-      .banner-title3{
+      .banner-title3 {
         font-family: $fontPrimary;
         font-size: 20px;
         color: #fff;
@@ -116,6 +116,7 @@
       color: $base-color;
       font-weight: 500;
       font-size: 34px;
+      margin-bottom: 10px;
     }
     .banner-brief {
       font-family: $fontPrimary;
@@ -149,7 +150,7 @@
           a {
             padding-right: 0;
             color: $base-color;
-            &.light{
+            &.light {
               color: #fff;
             }
           }
