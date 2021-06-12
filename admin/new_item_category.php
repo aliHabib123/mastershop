@@ -14,7 +14,7 @@
 	<?php 
 	$subParentID = (isset($_REQUEST['id']) && !empty($_REQUEST['id']) && isset($_REQUEST['subId']) && !empty($_REQUEST['subId'])) ? $_REQUEST['id']: 0;
 	?>
-	<input type="hiden" name="main_parent_id" value="<?php echo $subParentID;?>"/>
+	<input type="hidden" name="main_parent_id" value="<?php echo $subParentID;?>"/>
 
 	<div class="form-body">
 				
@@ -38,6 +38,26 @@
 					<span class="fileupload-new"><i class="fa fa-paper-clip"></i> Select image</span>
 					<span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
 					<input type="file" class="default" name="image"   id="image"/>
+					</span>
+					<a href="#" class="btn red fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash-o"></i> Remove</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-md-3 control-label">Banner Image</label>
+		<div class="col-md-9">
+			<div class="fileupload fileupload-new" data-provides="fileupload">
+				<div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
+					<!-- <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt="" /> -->
+				</div>
+				<div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
+				<div>
+					<span class="btn default btn-file">
+					<span class="fileupload-new"><i class="fa fa-paper-clip"></i> Select image</span>
+					<span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
+					<input type="file" class="default" name="banner_image"   id="banner_image"/>
 					</span>
 					<a href="#" class="btn red fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash-o"></i> Remove</a>
 				</div>

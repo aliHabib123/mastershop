@@ -997,7 +997,8 @@ a.disabled {
       font-family: "Montserrat", sans-serif;
       color: #2576ba;
       font-weight: 500;
-      font-size: 34px; }
+      font-size: 34px;
+      margin-bottom: 10px; }
     .small-banner-container .small-banner-caption-container .banner-brief {
       font-family: "Montserrat Alternates", sans-serif;
       color: #000;
@@ -1369,6 +1370,37 @@ a.disabled {
 
 .order-complete-btn-wrap {
   margin-top: 30px; }
+
+.min-max-price {
+  font-family: "Montserrat", sans-serif; }
+  .min-max-price input[type="range"] {
+    margin-bottom: 10px; }
+  .min-max-price span {
+    min-width: 70px; }
+
+.sidebar-category-menu ul {
+  padding-left: 0;
+  list-style: none; }
+  .sidebar-category-menu ul li a {
+    font-family: "Montserrat", sans-serif;
+    font-size: 16px;
+    color: #000; }
+    .sidebar-category-menu ul li a:hover {
+      color: #2576ba; }
+
+.sidebar-brand-menu > div span {
+  display: inline-block;
+  margin-bottom: 10px;
+  border: 1px solid #b7b7b7;
+  cursor: pointer; }
+  .sidebar-brand-menu > div span img {
+    max-height: 50px; }
+
+.sidebar-filter-btn {
+  margin-top: 15px; }
+  .sidebar-filter-btn button {
+    padding: 10px 15px;
+    font-size: 18px; }
 
 footer {
   background-color: #f6f6f6;

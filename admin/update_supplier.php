@@ -51,7 +51,7 @@ if ($company_name == "" || $first_name == "" || $last_name == "" || $email == ""
         $subject = "Mastershop: Set Password";
         $resetLink = SITE_LINK . 'reset-password/2?activationCode=' . $rand;
         $emailBody = MailController::getPasswordResetEmailBody($user->fullName, $resetLink);
-        //$sendEmail = MailController::sendMail($to, $subject, $emailBody);
+        $sendEmail = MailController::sendMail($to, $subject, $emailBody);
         ///
         $user->activationCode = $rand;
         $user->userType = 2;

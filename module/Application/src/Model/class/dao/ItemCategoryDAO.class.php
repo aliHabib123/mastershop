@@ -52,6 +52,8 @@ interface ItemCategoryDAO{
 
 	public function queryByImage($value);
 
+	public function queryByBannerImage($value);
+
 	public function queryByParentId($value);
 
 	public function queryBySlug($value);
@@ -78,6 +80,8 @@ interface ItemCategoryDAO{
 	public function deleteByName($value);
 
 	public function deleteByImage($value);
+
+	public function deleteByBannerImage($value);
 
 	public function deleteByParentId($value);
 

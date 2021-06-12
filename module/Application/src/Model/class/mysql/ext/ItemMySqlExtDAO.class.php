@@ -20,13 +20,16 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
         return $this->getList($sqlQuery);
     }
 
-    public function getItems($categoryId = false, $search = false, $tagId = false, $orderBy = "", $limit = 0, $offset = 0)
+    public function getItems($categoryId = false, $search = false, $brandId = "", $minPrice = "", $maxPrice = "", $tagId = false, $orderBy = "", $limit = 0, $offset = 0)
     {
         $sql = "SELECT
                     a.*,
                     b.category_id";
         if ($tagId) {
             $sql .= ",c.`tag_id`";
+        }
+        if ($brandId != "") {
+            $sql .= ",d.`brand_id`";
         }
         $sql .= " FROM
                     `item` a
@@ -38,7 +41,20 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
                         ON a.`id` = c.`item_id`";
         }
 
+        if ($brandId != "") {
+            $sql .= " LEFT OUTER JOIN `item_brand_mapping` d
+                        ON a.`id` = d.`item_id`";
+        }
+
         $sql .= " WHERE 1";
+
+        if ($minPrice != "") {
+            $sql .= " AND a.`regular_price` >= $minPrice";
+        }
+
+        if ($maxPrice != "") {
+            $sql .= " AND a.`regular_price` <= $maxPrice";
+        }
 
         if (is_array($categoryId)) {
             if ($categoryId && count($categoryId) > 0) {
@@ -52,6 +68,9 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
         }
         if ($tagId) {
             $sql .= " AND c.`tag_id` = $tagId";
+        }
+        if ($brandId != "") {
+            $sql .= " AND d.`brand_id` = $brandId";
         }
         if ($search) {
             $sql .= " AND (a.`title` LIKE '%$search%' OR a.`description` LIKE '%$search%' OR a.`specification` LIKE '%$search%')";
@@ -89,11 +108,12 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
         $sqlQuery = new SqlQuery($sql);
         return $this->getList($sqlQuery);
     }
-    public function queryBySkuAndSupplierId($sku, $supplierId){
-		$sql = 'SELECT * FROM item WHERE sku = ? AND supplier_id = ?';
-		$sqlQuery = new SqlQuery($sql);
-		$sqlQuery->set($sku);
+    public function queryBySkuAndSupplierId($sku, $supplierId)
+    {
+        $sql = 'SELECT * FROM item WHERE sku = ? AND supplier_id = ?';
+        $sqlQuery = new SqlQuery($sql);
+        $sqlQuery->set($sku);
         $sqlQuery->set($supplierId);
-		return $this->getList($sqlQuery);
-	}
+        return $this->getList($sqlQuery);
+    }
 }

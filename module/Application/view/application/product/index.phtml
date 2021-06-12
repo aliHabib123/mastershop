@@ -1,47 +1,51 @@
 <?php
 
 use Application\Controller\DesignController;
+use Application\Controller\HelperController;
+use Application\Controller\ProductController;
 
 $title = $categoryName = "All Products";
 $itemCategoryMySqlExtDAO = new ItemCategoryMySqlExtDAO();
-if($this->isSearch){
+
+if ($this->isSearch) {
     $title = "Search Result";
-    $description = "Looking for items with keyword: <b>". $_GET['search'] .'</b>'; 
-} else{
-    if($this->cat1){
+    $description = "Looking for items with keyword: <b>" . $_GET['search'] . '</b>';
+} else {
+    if ($this->cat1) {
         $categoryInfo = $itemCategoryMySqlExtDAO->queryBySlug($this->cat1);
         $title = $categoryInfo[0]->name;
-        $description = "Shop the latest ".strtolower($title)." products in the market";
         $categoryName = $title;
     }
+    if ($this->cat2) {
+        $categoryInfo2 = $itemCategoryMySqlExtDAO->queryBySlug($this->cat2);
+        $title2 = $categoryInfo2[0]->name;
+        $categoryName = $title2;
+    }
+    if ($this->cat3) {
+        $categoryInfo3 = $itemCategoryMySqlExtDAO->queryBySlug($this->cat3);
+        $title3 = $categoryInfo3[0]->name;
+        $categoryName = $title3;
+    }
+    $description = "Shop the latest " . strtolower($categoryName) . " products in the market";
 }
-if($this->cat2){
-    $categoryInfo2 = $itemCategoryMySqlExtDAO->queryBySlug($this->cat2);
-    $title2 = $categoryInfo2[0]->name;
-    $categoryName = $title2;
-}
-if($this->cat3){
-    $categoryInfo3 = $itemCategoryMySqlExtDAO->queryBySlug($this->cat3);
-    $title3 = $categoryInfo3[0]->name;
-    $categoryName = $title3;
-}
+
 ?>
 <div class="main-wrapper pb30">
     <div class="small-banner-container with-breadcrumb">
         <div class="small-banner_img">
-            <img src="img/small-banner.jpg" />
+            <img src="<?php echo ProductController::getCategoryBanner($this->cat1, $this->cat2, $this->cat3, $categoryInfo, $categoryInfo2, $categoryInfo3); ?>" />
         </div>
         <div class="small-banner-caption-container">
             <div class="container">
-                <div class="banner-title"><?php echo $title;?></div>
-                <div class="banner-brief"><?php echo $description;?></div>
+                <div class="banner-title"><?php echo $categoryName; ?></div>
+                <div class="banner-brief"><?php echo $description; ?></div>
             </div>
         </div>
         <div class="banner-breadcrumb">
             <div class="container">
                 <ul>
-                    <li><a href="<?php echo MAIN_URL;?>"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
-                    <li><a><?php echo $categoryName;?></a></li>
+                    <li><a href="<?php echo MAIN_URL; ?>"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
+                    <li><a><?php echo $categoryName; ?></a></li>
                 </ul>
             </div>
         </div>
@@ -50,8 +54,8 @@ if($this->cat3){
         <div class="breadcrumb-c-inner">
             <div class="container">
                 <ul>
-                    <li><a href="<?php echo MAIN_URL;?>"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
-                    <li><a><?php echo $categoryName;?></a></li>
+                    <li><a href="<?php echo MAIN_URL; ?>"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
+                    <li><a><?php echo $categoryName; ?></a></li>
                 </ul>
             </div>
         </div>
@@ -62,46 +66,74 @@ if($this->cat3){
                 <div class="accordion-c">
                     <div class="accordion_title">Filter by</div>
                     <div id="accordion">
+                        <form action="<?php echo MAIN_URL . 'products' . $this->completeSlug; ?>" method="get" id="sidebar-filter">
+                            <?php if (!$this->cat3) { ?>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <a class="card-link" data-toggle="collapse" href="#collapseOne">
+                                            Category<i class="fas fa-plus"></i>
+                                        </a>
+                                    </div>
+                                    <div id="collapseOne" class="collapse" data-parent="#accordion">
+                                        <div class="card-body">
+                                            <div class="sidebar-category-menu">
+                                                <ul>
+                                                    <?php foreach ($this->categoryList as $row) { ?>
+                                                        <li><a href="<?php echo $this->prefixUrl . $row->slug; ?>"><?php echo $row->name; ?></a></li>
+                                                    <?php } ?>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php } ?>
 
-                        <div class="card">
-                            <div class="card-header">
-                                <a class="card-link" data-toggle="collapse" href="#collapseOne">
-                                    Category<i class="fas fa-plus"></i>
-                                </a>
-                            </div>
-                            <div id="collapseOne" class="collapse" data-parent="#accordion">
-                                <div class="card-body">
-                                    Lorem ipsum..
+                            <div class="card">
+                                <div class="card-header">
+                                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                                        Price<i class="fas fa-plus"></i>
+                                    </a>
+                                </div>
+                                <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="min-max-price">
+                                            <div class=""><label>From: </label><input class="form-control" type="number" name="min-price" value="<?php echo $this->minPrice; ?>"></div>
+                                            <div class=""><label>To: </label><input class="form-control" type="number" name="max-price" value="<?php echo $this->maxPrice; ?>"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="card">
-                            <div class="card-header">
-                                <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
-                                    Price<i class="fas fa-plus"></i>
-                                </a>
-                            </div>
-                            <div id="collapseTwo" class="collapse" data-parent="#accordion">
-                                <div class="card-body">
-                                    Lorem ipsum..
+                            <div class="card">
+                                <div class="card-header">
+                                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+                                        Brand<i class="fas fa-plus"></i>
+                                    </a>
+                                </div>
+                                <div id="collapseThree" class="collapse" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="sidebar-brand-menu">
+                                            <div class="d-flex-inline">
+                                                <?php foreach ($this->brandsList as $row) { ?>
+                                                    <span id="<?php echo $row->id; ?>">
+                                                        <img src="<?php echo HelperController::getImageUrl($row->image); ?>" />
+                                                    </span>
+                                                <?php } ?>
+                                            </div>
+                                            <input type="hidden" name="brand" value="<?php echo $this->brandId; ?>" id="brand_id">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-header">
-                                <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
-                                    Brand<i class="fas fa-plus"></i>
-                                </a>
+                            <div class="text-left sidebar-filter-btn">
+                                <button class="btn submit-btn" type="submit">
+                                    Filter
+                                </button>
+                                <button class="btn submit-btn" type="reset">
+                                    Clear
+                                </button>
                             </div>
-                            <div id="collapseThree" class="collapse" data-parent="#accordion">
-                                <div class="card-body">
-                                    Lorem ipsum..
-                                </div>
-                            </div>
-                        </div>
-
+                        </form>
                     </div>
                 </div>
 
@@ -118,18 +150,32 @@ if($this->cat3){
                             <div id="product-pagination" class="product-pagination text-center"></div>
                         </div>
                     <?php } else { ?>
-                        <div class="col-md-12"><h3 style="text-align: center;display: block;margin-top: 30px;">No Items Found</h3></div>
+                        <div class="col-md-12">
+                            <h3 style="text-align: center;display: block;margin-top: 30px;">No Items Found</h3>
+                        </div>
                     <?php } ?>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+<?php
+$append = [
+    'brand' => $this->brandId,
+    'min-price' => $this->minPrice,
+    'max-price' => $this->maxPrice,
+];
+$append = http_build_query(array_filter($append));
+if ($append != "") {
+    $append = '&' . $append;
+} else {
+    $append = "";
+}
+?>
 <script type="text/javascript">
+    const append = '<?php echo $append; ?>';
+    const currentPageUrl = '<?php echo MAIN_URL . 'products' . $this->completeSlug; ?>';
     $(function() {
-        //alert('s');
-        //Pagination
         $("#product-pagination").twbsPagination({
             totalPages: <?php echo $this->totalPages; ?>,
             visiblePages: 5,
@@ -140,7 +186,7 @@ if($this->cat3){
             startPage: <?php echo $this->currentPage; ?>,
             initiateStartPageClick: false,
             onPageClick: function(event, page) {
-                location.href = '<?php echo MAIN_URL . 'products' . $this->completeSlug . "/?page="; ?>' + page;
+                location.href = currentPageUrl + "/?page=" + page + append;
             },
         });
     });
