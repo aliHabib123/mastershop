@@ -834,6 +834,8 @@ a.disabled {
   .middle-menu .logo-container {
     float: left;
     width: 170px; }
+    .middle-menu .logo-container img {
+      max-width: 153px; }
   .middle-menu .search-container {
     float: left;
     width: calc(100% - 170px);
