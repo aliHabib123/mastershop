@@ -1,0 +1,36 @@
+<script src="https://test-bobsal.gateway.mastercard.com/checkout/version/49/checkout.js" data-error="errorCallback" data-cancel="cancelCallback"></script>
+<div class="main-wrapper pt30">
+    <h3 style="width: 100%;text-align: center;">Redirecting to Payment Gateway <i class="fas fa-spinner"></i></h3>
+    
+    <script type="text/javascript">
+        function errorCallback(error) {
+            console.log(JSON.stringify(error));
+        }
+
+        function cancelCallback() {
+            console.log('Payment cancelled');
+        }
+        Checkout.configure({
+            merchant: '<?php echo $this->merchant;?>',
+            order: {
+                id: '<?php echo $this->orderId; ?>',
+                amount: function() {
+                    return '<?php echo $this->amount; ?>'
+                },
+                currency: '<?php echo MPGS_CONFIG['currency']; ?>',
+                description: 'Order Goods'
+            },
+            interaction: {
+                merchant: {
+                    name: '<?php echo $this->merchant;?>',
+                }
+            },
+            session: {
+                id: '<?php echo $this->sessionId;?>'
+            },
+        });
+        //Checkout.showPaymentPage();
+    </script>
+    <input type="button" value="Pay with Lightbox" onclick="Checkout.showLightbox();" />
+    <input type="button" value="Pay with Payment Page" onclick="Checkout.showPaymentPage();" />
+</div>

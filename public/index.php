@@ -22,11 +22,11 @@ define('IMAGE_URL', BASE_URL . 'uploads/images/');
 define('FILE_URL', BASE_URL . 'uploads/files/');
 
 // Placeholder Images
-define('PRODUCT_PLACEHOLDER_IMAGE_URL', BASE_URL.'img/placeholder.jpg');
-define('PRODUCT_PLACEHOLDER_THUMBNAIL_URL', BASE_URL.'img/placeholder_thumbnail.jpg');
-define('PRODUCT_BANNER_PLACEHOLDER_URL', BASE_URL.'img/small-banner.jpg');
-define('USER_AVATAR_URL', BASE_URL.'img/empty_avatar.jpg');
-define('USER_AVATAR_BG_URL', BASE_URL.'img/avatar_bg_small.jpg');
+define('PRODUCT_PLACEHOLDER_IMAGE_URL', BASE_URL . 'img/placeholder.jpg');
+define('PRODUCT_PLACEHOLDER_THUMBNAIL_URL', BASE_URL . 'img/placeholder_thumbnail.jpg');
+define('PRODUCT_BANNER_PLACEHOLDER_URL', BASE_URL . 'img/small-banner.jpg');
+define('USER_AVATAR_URL', BASE_URL . 'img/empty_avatar.jpg');
+define('USER_AVATAR_BG_URL', BASE_URL . 'img/avatar_bg_small.jpg');
 #Google Recaptcha V2
 define('V2_SITE_KEY', '');
 define('V2_SECRET_KEY', '');
@@ -37,6 +37,16 @@ define('FB_DEFAULT_GRAPH_VERSION', 'v2.10');
 //Google API
 define('OAUTH_PUBLIC_KEY', '553406392339-3rfcfvflmghl341mrl362n19mkmq3oh4.apps.googleusercontent.com');
 define('OAUTH_SECRET_KEY', '2vkD3ukNRdjeDmU5CJ7ojfyO');
+
+// BOB MPGS
+define('MPGS_CONFIG', [
+    'gatewayUrl' =>  'https://test-bobsal.gateway.mastercard.com/api/nvp/version/',
+    'version' => '49',
+    'merchantId' => 'HEALDCO',
+    'apiUsername' => 'HEALDCO',
+    'password' => 'fbe2349e5c737f1de3351e4db4d71187',
+    'currency' => 'LBP',
+]);
 
 use Laminas\Mvc\Application;
 use Laminas\Stdlib\ArrayUtils;

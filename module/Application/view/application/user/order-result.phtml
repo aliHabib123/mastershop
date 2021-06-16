@@ -1,22 +1,17 @@
-<?php
-
-use Application\Controller\DesignController;
-
-?>
 <div class="main-wrapper shopping-cart pt30">
     <div class="container">
-        <?php if ($_GET['res'] == 'success') {?>
+        <?php if ($this->success) { ?>
             <h3 style="display: block; text-align: center;margin-top: 3rem;color: green;">Your Order has been sent to us, we will keep you posted.</h3>
             <div class="go-shopping">
-                <a href="<?php echo MAIN_URL.'products'?>">Back to Shop</a>
+                <a href="<?php echo MAIN_URL . 'products' ?>">Back to Shop</a>
             </div>
 
-        <?php } else {?>
+        <?php } else { ?>
             <h3 style="display: block; text-align: center;margin-top: 3rem;color: red;">Your Order has failed, please try again later.</h3>
             <div class="go-shopping">
-                <a href="<?php echo MAIN_URL.'my-cart'?>">Back to Cart</a>
+                <a href="<?php echo MAIN_URL . 'my-cart' ?>">Back to Cart</a>
             </div>
-            <?php }?>
+        <?php } ?>
 
     </div>
     <!--container end.//-->
