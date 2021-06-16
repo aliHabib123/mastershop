@@ -62,10 +62,10 @@ $image = ($item->image != "" && $item->image != null) ? HelperController::getIma
                 </div>
                 <div class="col-md-7">
                     <div class="product-details-side">
-                        <?php if ($item->salePrice != "" && $item->salePrice != null) { ?>
-                            <div class="price1"><?php echo number_format($item->regularPrice); ?></div>
+                        <?php if ($item->salePrice) { ?>
+                            <div class="price1"><?php echo number_format($item->regularPrice * $item->usdExchangeRate); ?> LBP</div>
                         <?php } ?>
-                        <div class="price2"><?php echo ProductController::getFinalPrice($item->regularPrice, $item->salePrice); ?><span>LBP</span></div>
+                        <div class="price2"><?php echo ProductController::getFinalPrice($item->regularPrice * $item->usdExchangeRate, $item->salePrice * $item->usdExchangeRate); ?><span>LBP</span></div>
                         <div class="title"><?php echo $item->title; ?></div>
                         <div class="sku">SKU: <?php echo $item->sku; ?></div>
                         <div class="brand"><img src="<?php echo HelperController::getImageUrl($this->itemBrand->image); ?>" /></div>

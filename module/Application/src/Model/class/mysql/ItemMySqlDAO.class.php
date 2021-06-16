@@ -529,6 +529,7 @@ class ItemMySqlDAO implements ItemDAO{
 		$item->cartQty = isset($row['cart_qty']) ? $row['cart_qty'] : "";
 		$item->companyName = isset($row['company_name']) ? $row['company_name'] : "";
 		$item->supplierstatus = isset($row['status']) ? $row['status'] : "";
+		$item->usdExchangeRate = isset($row['usd_exchange_rate']) ? $row['usd_exchange_rate'] :"";
 
 		return $item;
 	}

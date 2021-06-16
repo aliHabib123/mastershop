@@ -1,9 +1,6 @@
 <?php
 /**
  * Intreface DAO
- *
- * @author: http://phpdao.com
- * @date: 2021-05-14 19:34
  */
 interface UserDAO{
 
@@ -99,6 +96,8 @@ interface UserDAO{
 
 	public function queryByUploadedFile($value);
 
+	public function queryByUsdExchangeRate($value);
+
 	public function queryByDeleted($value);
 
 	public function queryByCreatedAt($value);
@@ -153,6 +152,8 @@ interface UserDAO{
 	public function deleteByAddress3($value);
 
 	public function deleteByUploadedFile($value);
+
+	public function deleteByUsdExchangeRate($value);
 
 	public function deleteByDeleted($value);
 

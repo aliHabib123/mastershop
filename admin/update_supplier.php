@@ -14,7 +14,7 @@ $userMysqlExtDAO = new UserMySqlExtDAO();
 $result = false;
 $msg = "Error";
 extract($_POST);
-$active = isset($active) ? $active : 0;
+$active = isset($active) ? $active : "";
 $status = (radio_button($active) == 1) ? 'active' : 'inactive';
 
 $user = ($action == 'edit') ? $userMysqlExtDAO->load($id) : new User();

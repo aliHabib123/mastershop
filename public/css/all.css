@@ -653,9 +653,8 @@ a.disabled {
 .mega-menu .brands-slider-container {
   width: 90%;
   margin-left: 5%;
-  margin-right: 5%; }
-  .mega-menu .brands-slider-container .brands-slider {
-    display: none; }
+  margin-right: 5%;
+  padding-top: 25px; }
   .mega-menu .brands-slider-container .bx-wrapper {
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
@@ -1053,7 +1052,12 @@ a.disabled {
     .item-wrapper_title a {
       color: #000; }
   .item-wrapper_price {
-    color: #2576ba; }
+    color: #2576ba;
+    min-height: 37px; }
+    .item-wrapper_price .main-price {
+      color: red;
+      text-decoration: line-through;
+      margin-bottom: 5px; }
   .item-wrapper_img {
     height: 195px;
     overflow: hidden;
@@ -1724,6 +1728,8 @@ footer {
     font-weight: 300;
     font-size: 16px;
     color: #fff; }
+    .filters-wrap .apply-btn.reset-btn {
+      margin-left: 10px; }
 
 .orders-wrap .order-item {
   margin-bottom: 20px;

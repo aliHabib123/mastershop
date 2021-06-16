@@ -31,6 +31,16 @@ return [
                     ],
                 ],
             ],
+            'test' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/test',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'test',
+                    ],
+                ],
+            ],
             'products' => [
                 'type' => Segment::class,
                 'options' => [

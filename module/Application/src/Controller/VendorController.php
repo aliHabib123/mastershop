@@ -56,7 +56,7 @@ class VendorController extends AbstractActionController
         $this->layout()->htmlClass = 'mb0';
 
         $userMySqlExtDAO = new UserMySqlExtDAO();
-        $userInfo = $userMySqlExtDAO->load(9);
+        $userInfo = $userMySqlExtDAO->load($_SESSION['user']->id);
         $data = [
             'user' => $userInfo
         ];
@@ -65,12 +65,28 @@ class VendorController extends AbstractActionController
     public function myProductsAction()
     {
         UserController::checkVendorLoggedIn();
+        $cond = "";
         $limit = 10;
         $offset = 0;
         $page = (isset($_GET['page']) && !empty($_GET['page'])) ? $_GET['page'] : 1;
         $offset = ($page - 1) * $limit;
 
-        $cond  = 'supplier_id = ' . $_SESSION['user']->id;
+        if (isset($_GET['with-image'])) {
+            if ($_GET['with-image'] == 'yes') {
+                $cond  .= "(image != '' AND image IS NOT NULL) AND";
+            } elseif ($_GET['with-image'] == 'no') {
+                $cond  .= "(image = '' OR image IS NULL) AND";
+            }
+        }
+        if (isset($_GET['with-price'])) {
+            if ($_GET['with-price'] == 'yes') {
+                $cond  .= "(regular_price != '' AND regular_price != 0 AND regular_price IS NOT NULL) AND";
+            } elseif ($_GET['with-price'] == 'no') {
+                $cond  .= "(regular_price = '' OR regular_price = 0 OR regular_price IS NULL) AND";
+            }
+        }
+        $cond  .= ' supplier_id = ' . $_SESSION['user']->id;
+        //echo $cond;
         $itemsMySqlExtDAO = new ItemMySqlExtDAO();
         $items = $itemsMySqlExtDAO->select($cond, $limit, $offset);
         $itemsCount = count($itemsMySqlExtDAO->select($cond));
@@ -95,8 +111,12 @@ class VendorController extends AbstractActionController
     public function myDashboardAction()
     {
         UserController::checkVendorLoggedIn();
+        $itemMySqlExtDAO = new ItemMySqlExtDAO();
+        $itemsCount = count($itemMySqlExtDAO->queryBySupplierId($_SESSION['user']->id));
         $this->layout()->htmlClass = 'mb0';
-        return new ViewModel();
+        return new ViewModel([
+            'itemsCount' => $itemsCount,
+        ]);
     }
 
     public function addWarehouseAction()
@@ -169,11 +189,11 @@ class VendorController extends AbstractActionController
         $deleteContact = $userMySqlExtDAO->delete($contactId);
 
         if ($deleteContact) {
-           $warehouseMySqlExtDAO = new WarehouseMySqlExtDAO();
-           $deleteWarehouse = $warehouseMySqlExtDAO->delete($warehouseId);
-           if ($deleteWarehouse) {
-            $result = true;
-            $msg = "successfully Deleted Warehouse";
+            $warehouseMySqlExtDAO = new WarehouseMySqlExtDAO();
+            $deleteWarehouse = $warehouseMySqlExtDAO->delete($warehouseId);
+            if ($deleteWarehouse) {
+                $result = true;
+                $msg = "successfully Deleted Warehouse";
             }
         }
         $response = json_encode([
@@ -219,7 +239,6 @@ class VendorController extends AbstractActionController
 
             // update Warehouse
             if ($updateUser) {
-               // echo 'ok 1';
                 $date = date('Y-m-d H:i:s');
                 $warehouseMySqlExtDAO = new WarehouseMySqlExtDAO();
                 $warehouseObj = new Warehouse();

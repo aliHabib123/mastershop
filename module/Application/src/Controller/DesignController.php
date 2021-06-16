@@ -21,8 +21,12 @@ class DesignController extends AbstractActionController
     }
     public static function item(object $item)
     {
-        $customerId = $_SESSION['user']->id;
-        $price = ProductController::getFinalPrice($item->regularPrice, $item->salePrice);
+        //print_r();
+        $customerId = 0;
+        if(isset($_SESSION['user'])){
+            $customerId = $_SESSION['user']->id;
+        }
+        $price = ProductController::getFinalPrice($item->regularPrice * $item->usdExchangeRate, $item->salePrice * $item->usdExchangeRate);
         if ($price != "n/a") {
             $price .= " LBP";
         }
@@ -34,7 +38,7 @@ class DesignController extends AbstractActionController
             $imageSrc = (in_array($item->id, $_SESSION['user']->wishlist)) ? "img/heart-on.png" : "img/heart-off.png";
         }
 
-        $html = "<div class='item-wrapper'>
+        $html = "<div class='item-wrapper' data-rate='$item->usdExchangeRate'>
                     <div class='item-wrapper_img'>
                         <a href='$url'>
                             <img class='' src='$image' />
@@ -45,8 +49,14 @@ class DesignController extends AbstractActionController
                         $item->title
                         </a>
                     </div>
-                    <div class='item-wrapper_price'>
+                    <div class='item-wrapper_price'>";
+        if ($item->salePrice) {
+            $html .= "<div class='main-price'>" . number_format(floatval($item->regularPrice)* $item->usdExchangeRate) . " LBP</div>";
+        }
+
+        $html .= "<div class='final-price'>
                         $price
+                        </div>
                     </div>
                     <div class='item-wrapper_cart_heart'>
                         <a class='heart wishlist-add off' href='#' data-item-id='$item->id' data-customer-id='$customerId'>
@@ -94,7 +104,7 @@ class DesignController extends AbstractActionController
         $label = strtoupper(str_replace('-', ' ', $status));
         $orderId = $saleOrder->id;
         $date = date('M j, Y | H:i:g A', strtotime($saleOrder->createdAt));
-        $url = MAIN_URL."order/".$saleOrder->id;
+        $url = MAIN_URL . "order/" . $saleOrder->id;
         $html =  "<div class='order-item'>
                     <div class='row'>
                         <div class='col-md-9'>

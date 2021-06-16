@@ -6,7 +6,7 @@ use Application\Controller\ProductController;
 
 $title = $categoryName = "All Products";
 $itemCategoryMySqlExtDAO = new ItemCategoryMySqlExtDAO();
-
+$categoryInfo = $categoryInfo2 = $categoryInfo3 = false;
 if ($this->isSearch) {
     $title = "Search Result";
     $description = "Looking for items with keyword: <b>" . $_GET['search'] . '</b>';

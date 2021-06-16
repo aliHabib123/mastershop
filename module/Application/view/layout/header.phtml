@@ -6,14 +6,14 @@ use Application\Controller\ProductController;
 use Application\Controller\UserController;
 
 $cartCount = 0;
-if ($_SESSION['user']) {
+if (isset($_SESSION['user'])) {
     $cartCount = count($_SESSION['user']->cart);
     $itemMySqlExtDAO = new ItemMySqlExtDAO();
     $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
 }
 
 $wishlistCount = 0;
-if ($_SESSION['user']) {
+if (isset($_SESSION['user'])) {
     $wishlistCount = count($_SESSION['user']->wishlist);
 }
 

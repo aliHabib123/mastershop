@@ -10,7 +10,7 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
 {
     public function select($condition = '1', $limit = 0, $offset = 0)
     {
-        $sql = "SELECT * FROM item WHERE $condition";
+        $sql = "SELECT a.*, b.usd_exchange_rate FROM item a LEFT OUTER JOIN user b ON a.`supplier_id` = b.`id` WHERE $condition";
 
         if ($limit != 0) {
             $sql .= " LIMIT $limit OFFSET $offset";
@@ -24,7 +24,8 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
     {
         $sql = "SELECT
                     a.*,
-                    b.category_id";
+                    b.category_id,
+                    e.usd_exchange_rate";
         if ($tagId) {
             $sql .= ",c.`tag_id`";
         }
@@ -35,6 +36,9 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
                     `item` a
                     LEFT OUTER JOIN `item_category_mapping` b
                     ON a.`id` = b.`item_id`";
+
+        $sql .= "LEFT OUTER JOIN `user` e
+                    ON a.`supplier_id` = e.`id`";
 
         if ($tagId) {
             $sql .= " LEFT OUTER JOIN `item_tag_mapping` c
@@ -49,11 +53,11 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
         $sql .= " WHERE 1";
 
         if ($minPrice != "") {
-            $sql .= " AND a.`regular_price` >= $minPrice";
+            $sql .= " AND a.`regular_price` * e.`usd_exchange_rate` >= $minPrice";
         }
 
         if ($maxPrice != "") {
-            $sql .= " AND a.`regular_price` <= $maxPrice";
+            $sql .= " AND a.`regular_price` * e.`usd_exchange_rate` <= $maxPrice";
         }
 
         if (is_array($categoryId)) {
@@ -114,6 +118,23 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
         $sqlQuery = new SqlQuery($sql);
         $sqlQuery->set($sku);
         $sqlQuery->set($supplierId);
+        return $this->getList($sqlQuery);
+    }
+
+    public function queryBySlugAndSupplierId($slug, $supplierId)
+    {
+        $sql = 'SELECT * FROM item WHERE slug = ? AND supplier_id = ?';
+        $sqlQuery = new SqlQuery($sql);
+        $sqlQuery->set($slug);
+        $sqlQuery->set($supplierId);
+        return $this->getList($sqlQuery);
+    }
+
+    public function queryBySlug($value)
+    {
+        $sql = 'SELECT a.*, b.usd_exchange_rate FROM item a LEFT OUTER JOIN user b on a.`supplier_id` = b.`id` WHERE slug = ?';
+        $sqlQuery = new SqlQuery($sql);
+        $sqlQuery->set($value);
         return $this->getList($sqlQuery);
     }
 }

@@ -191,9 +191,6 @@ class UserController extends AbstractActionController
         if (isset($_SESSION['user'])) {
             if ($_SESSION['user']->userType == UserController::$CUSTOMER) {
                 $msg = "You are logged in as a customer, please sign out first";
-            } elseif ($_SESSION['user']->userType == UserController::$SUPPLIER) {
-                header('Location: ' . MAIN_URL . 'vendor/my-dashboard');
-                exit();
             }
         } elseif ($email == "" || $password == "") {
             $msg = "Please fill all inputs";
@@ -204,7 +201,8 @@ class UserController extends AbstractActionController
                 if ($user && password_verify($password, $user->password)) {
                     $this->setUserSession($user);
                     $result = true;
-                    $msg = "successfully logged in!";
+                    $msg = "successfully logged in...";
+                    $redirectUrl = MAIN_URL . 'vendor/my-dashboard';
                 }
             }
         }
@@ -591,6 +589,7 @@ class UserController extends AbstractActionController
         $password = HelperController::filterInput($this->getRequest()->getPost('password'));
         $confirmPassword = HelperController::filterInput($this->getRequest()->getPost('confirm-password'));
         $companyName = HelperController::filterInput($this->getRequest()->getPost('company-name'));
+        $usdExchangeRate = HelperController::filterInput($this->getRequest()->getPost('usd-exchange-rate'));
 
         $checkPassword = false;
         if ($password != "") {
@@ -598,7 +597,17 @@ class UserController extends AbstractActionController
         }
         $passwordStrength = HelperController::passwordStrength($password);
 
-        if ($firstName == "" || $lastName == "" || $mobile == "" || $country == "" || $city == "" || $address1 == "" || $companyName == "") {
+        if (
+            $firstName == "" ||
+            $lastName == "" ||
+            $mobile == "" ||
+            $country == "" ||
+            $city == "" ||
+            $address1 == "" ||
+            $companyName == ""||
+            $usdExchangeRate == 0 ||
+            $usdExchangeRate == ""
+        ) {
             $msg = "Please fill all inputs";
         } elseif ($password != "" && $password != $confirmPassword) {
             $msg = "Passwords do not match";
@@ -618,6 +627,7 @@ class UserController extends AbstractActionController
             $userInfo->city = $city;
             $userInfo->address1 = $address1;
             $userInfo->address2 = $address2;
+            $userInfo->usdExchangeRate = $usdExchangeRate;
             $userInfo->updatedAt = date('Y-m-d H:i:s');
 
             if ($passwordStrength->status) {
@@ -765,6 +775,12 @@ class UserController extends AbstractActionController
 
     public function vendorLoginAction()
     {
+        if (isset($_SESSION['user'])) {
+            if ($_SESSION['user']->userType == UserController::$SUPPLIER) {
+                header('Location: ' . MAIN_URL . 'vendor/my-dashboard');
+                exit();
+            }
+        }
         return new ViewModel();
     }
     public function forgotPasswordAction()
@@ -935,7 +951,6 @@ class UserController extends AbstractActionController
     }
     public static function addOrderSuccessIndicator($id, $successIndicator)
     {
-
         $saleOrderMySqlExtDAO = new SaleOrderMySqlExtDAO();
         $order = $saleOrderMySqlExtDAO->load($id);
         // if (!$order->successIndicator) {

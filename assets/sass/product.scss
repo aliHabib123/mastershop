@@ -5,6 +5,9 @@
   text-align: -moz-center;
   text-align: center;
   line-height: 1;
+  &:hover{
+   // box-shadow: 0px 0px 6px 4px #ebebee;
+  }
   &_title {
     margin-bottom: 10px;
     margin-top: 10px;
@@ -16,6 +19,12 @@
   }
   &_price {
     color: $base-color;
+    min-height: 37px;
+    .main-price {
+      color: red;
+      text-decoration: line-through;
+      margin-bottom: 5px;
+    }
   }
   &_img {
     height: 195px;

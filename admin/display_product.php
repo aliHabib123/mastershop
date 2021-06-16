@@ -1,10 +1,16 @@
 <?php
 function main()
 {
-	$limit = 10000;
+	global $currentPage;
+	global $totalPages;
+	global $currentPageUrl;
+	$currentPageUrl = ADMIN_LINK . 'display_product.php';
+
+	$limit = 5;
 	$offset = 0;
 	$orderBy = "desc";
 	$fieldName = "a.`id`";
+	$page = 1;
 
 	$itemMySqlExtDAO = new ItemMySqlExtDAO();
 	$supplierMySqlExtDAO = new UserMySqlExtDAO();
@@ -32,7 +38,9 @@ function main()
 		$offset = ($page - 1) * $limit;
 	}
 
-
+	$currentPage = $page;
+	$recordsCount = count($itemMySqlExtDAO->adminGetItems($condition));
+	$totalPages = ceil($recordsCount / $limit);
 	$condition .= " limit $limit offset $offset ";
 	$records = $itemMySqlExtDAO->adminGetItems($condition);
 	//print_r($records);
@@ -136,7 +144,20 @@ function main()
 					?>
 				</tbody>
 			</table>
+			<div class="row">
+				<div class="col-md-12">
+					<div id="order-pagination" class="text-center"></div>
+				</div>
+			</div>
 		</div>
 	</div>
+	<style>
+		.dataTables_info,
+		.dataTables_paginate,
+		.dataTables_length,
+		.dataTables_filter {
+			display: none;
+		}
+	</style>
 <?php  }
 include "template.php"; ?>

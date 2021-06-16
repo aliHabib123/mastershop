@@ -361,6 +361,7 @@ if (isset($_REQUEST['act'])) {
 	<script src="assets/plugins/bootstrap-touchspin/bootstrap.touchspin.js" type="text/javascript"></script>
 	<!-- END PAGE LEVEL PLUGINS -->
 
+	<script src="../public/js/twbs-pagination-master/jquery.twbsPagination.min.js"></script>
 	<!-- BEGIN PAGE LEVEL SCRIPTS -->
 	<script src="assets/scripts/app.js"></script>
 	<script src="assets/scripts/form-components.js"></script>
@@ -441,6 +442,42 @@ if (isset($_REQUEST['act'])) {
 			custom_theme_widget: 'recaptcha_widget'
 		};
 	</script>
+	<script type="text/javascript">
+		if (document.getElementById("order-pagination")) {
+			<?php
+			global $currentPage;
+			global $totalPages;
+			global $currentPageUrl;
+			$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+			$t = parse_url($url, PHP_URL_QUERY); # output "myqueryhash"
+			parse_str($t, $output);
+			unset($output['page']);
+			$append = "";
+			if ($output) {
+				$append = '&' . http_build_query($output);
+			}
+			?>
+			const append = '<?php echo $append; ?>';
+			//alert(append);
+			const currentPageUrl = '<?php echo $currentPageUrl ?>';
+			jQuery(function() {
+				jQuery("#order-pagination").twbsPagination({
+					totalPages: <?php echo $totalPages; ?>,
+					visiblePages: 7,
+					first: "First",
+					last: "Last",
+					next: '>',
+					prev: '<',
+					startPage: <?php echo $currentPage; ?>,
+					initiateStartPageClick: false,
+					onPageClick: function(event, page) {
+						location.href = currentPageUrl + "?page=" + page + append;
+					},
+				});
+			});
+		}
+	</script>
+
 </body>
 <!-- END BODY -->
 

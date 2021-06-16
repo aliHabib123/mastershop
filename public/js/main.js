@@ -72,26 +72,26 @@ $(function () {
 
   let slider;
   $("#brands-li").on("shown.bs.dropdown", function () {
-    let defaultId = $("#brands-li").find("ul li").first().attr("id");
-    reloadBxSlider(defaultId);
+    //let defaultId = $("#brands-li").find("ul li").first().attr("id");
+    reloadBxSlider();
   });
-  $("body .brands-categories").on("click", "li", function (e) {
-    e.preventDefault();
-    let id = $(this).attr("id");
-    if (id && id != "") {
-      $(this).addClass("active").siblings().removeClass("active");
-      reloadBxSlider(id);
-    }
-  });
+  // $("body .brands-categories").on("click", "li", function (e) {
+  //   e.preventDefault();
+  //   let id = $(this).attr("id");
+  //   if (id && id != "") {
+  //     $(this).addClass("active").siblings().removeClass("active");
+  //     reloadBxSlider(id);
+  //   }
+  // });
 
-  function reloadBxSlider(id) {
-    if (slider) {
-      slider.destroySlider();
-    }
-    $(".brands-slider").css("display", "none");
-    var selector = ".brands-slider#brands-slider-" + id;
-    $(selector).css("display", "block");
-    slider = $(selector).bxSlider({
+  function reloadBxSlider() {
+    // if (slider) {
+    //   slider.destroySlider();
+    // }
+    //$(".brands-slider").css("display", "none");
+    //var selector = ".brands-slider#brands-slider-" + id;
+    //$(selector).css("display", "block");
+    slider = $("#brands-slider").bxSlider({
       minSlides: 1,
       maxSlides: 6,
       adaptiveHeight: true,
@@ -255,6 +255,7 @@ $(function () {
         );
       },
       success: function (response) {
+        console.log(response);
         showMsg(".notice-area", response.status, response.msg);
         if (response.status == true) {
           //location.href = response.redirectUrl;
@@ -341,6 +342,10 @@ if ($(".sidebar-brand-menu").length > 0) {
 $("#sidebar-filter").on("reset", function (e) {
   e.preventDefault();
   location.href = currentPageUrl;
+});
+$("#my-products-form-filter").on("reset", function (e) {
+  e.preventDefault();
+  location.href = mainUrl + "vendor/my-products";
 });
 $("html").on("click", ".wishlist-add", function (e) {
   alertify.set("notifier", "position", "top-right");
