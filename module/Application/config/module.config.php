@@ -479,6 +479,26 @@ return [
                     ],
                 ],
             ],
+            'pay' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/pay',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'pay',
+                    ],
+                ],
+            ],
+            'payError' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/payment-error',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'payError',
+                    ],
+                ],
+            ],
             'orderComplete' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -592,6 +612,8 @@ return [
             Controller\MailController::class => InvokableFactory::class,
             Controller\ContactController::class => InvokableFactory::class,
             Controller\CareerController::class => InvokableFactory::class,
+            Controller\MPGSController::class => InvokableFactory::class,
+            Controller\PaymentController::class => InvokableFactory::class,
         ],
     ],
     'view_manager' => [

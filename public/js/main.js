@@ -583,12 +583,10 @@ $("#order-complete").submit(function (e) {
         { scrollTop: $(".notice-area").offset().top - 100 },
         500
       );
-      // if (response.status == true) {
-      //   location.href = response.redirectUrl;
-      // } else{
-      // }
       $(".complete-btn").removeClass("disabled");
-      location.href = response.redirectUrl;
+      if (response.status) {
+        location.href = response.redirectUrl;
+      }
     },
     error: function () {
       $(".complete-btn").removeClass("disabled");

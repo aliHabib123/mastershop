@@ -12,6 +12,7 @@
 		var $shippingTotal;
 		var $netTotal;
 		var $status;
+		var $successIndicator;
 		var $customerId;
 		var $note;
 		var $addressId;
