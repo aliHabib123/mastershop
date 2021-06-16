@@ -333,6 +333,9 @@
   .logo-container {
     float: left;
     width: 170px;
+    img{
+      max-width: 153px;
+    }
   }
   .search-container {
     float: left;
