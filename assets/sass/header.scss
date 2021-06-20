@@ -279,8 +279,9 @@
           .dropdown-menu {
             min-width: 300px;
             img {
-              width: 100%;
+              width: auto;
               max-width: initial;
+              max-height: 50px;
             }
           }
         }
@@ -334,7 +335,7 @@
   .logo-container {
     float: left;
     width: 170px;
-    img{
+    img {
       max-width: 153px;
     }
   }

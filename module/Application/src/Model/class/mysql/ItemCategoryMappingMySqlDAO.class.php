@@ -135,8 +135,8 @@ class ItemCategoryMappingMySqlDAO implements ItemCategoryMappingDAO{
 		$itemCategoryMapping->id = $row['id'];
 		$itemCategoryMapping->itemId = $row['item_id'];
 		$itemCategoryMapping->categoryId = $row['category_id'];
-		$itemCategoryMapping->categoryName = $row['name'];
-		$itemCategoryMapping->parentId = $row['parent_id'];
+		$itemCategoryMapping->categoryName = isset($row['name']) ? $row['name'] : "";
+		$itemCategoryMapping->parentId = isset($row['parent_id']) ? $row['parent_id'] : "";
 
 		return $itemCategoryMapping;
 	}

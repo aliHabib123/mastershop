@@ -127,6 +127,7 @@ class MPGSController extends AbstractActionController
 
     public function createCheckoutSession()
     {
+        $return = false;
         $curlUrl = $this->getGatewayUrl() . $this->getVersion();
         $curlPostFields = http_build_query([
             'apiOperation' => "CREATE_CHECKOUT_SESSION",
@@ -153,11 +154,12 @@ class MPGSController extends AbstractActionController
 
         if (curl_errno($ch)) {
             echo "ERROR: " . curl_error($ch);
+        } else {
+            parse_str($result, $output);
+            $return = $output;
         }
         curl_close($ch);
 
-        parse_str($result, $output);
-
-        return $output;
+        return $return;
     }
 }

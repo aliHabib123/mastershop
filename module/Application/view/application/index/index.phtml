@@ -47,14 +47,14 @@ use Application\Controller\HelperController;
                         } ?>
                     </div>
                     <div class="special-tags-slider" id="special-tags-slider-best-offers">
-                        <?php foreach ($this->pickedForYou as $row) {
+                        <?php foreach ($this->bestOffers as $row) {
                             echo '<div>';
                             echo DesignController::item($row);
                             echo '</div>';
                         } ?>
                     </div>
                     <div class="special-tags-slider" id="special-tags-slider-picked-for-you">
-                    <?php foreach ($this->bestOffers as $row) {
+                    <?php foreach ($this->pickedForYou as $row) {
                             echo '<div>';
                             echo DesignController::item($row);
                             echo '</div>';

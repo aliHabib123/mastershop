@@ -23,7 +23,7 @@ class DesignController extends AbstractActionController
     {
         //print_r();
         $customerId = 0;
-        if(isset($_SESSION['user'])){
+        if (isset($_SESSION['user'])) {
             $customerId = $_SESSION['user']->id;
         }
         $price = ProductController::getFinalPrice($item->regularPrice * $item->usdExchangeRate, $item->salePrice * $item->usdExchangeRate);
@@ -51,7 +51,7 @@ class DesignController extends AbstractActionController
                     </div>
                     <div class='item-wrapper_price'>";
         if ($item->salePrice) {
-            $html .= "<div class='main-price'>" . number_format(floatval($item->regularPrice)* $item->usdExchangeRate) . " LBP</div>";
+            $html .= "<div class='main-price'>" . number_format(floatval($item->regularPrice) * $item->usdExchangeRate) . " LBP</div>";
         }
 
         $html .= "<div class='final-price'>
@@ -175,8 +175,8 @@ class DesignController extends AbstractActionController
     public static function cartItem($item)
     {
         $customerId = $_SESSION['user']->id;
-        $price = ProductController::getFinalPrice($item->regularPrice, $item->salePrice);
-        $rawPrice = ProductController::getFinalPrice($item->regularPrice, $item->salePrice, true);
+        $price = ProductController::getFinalPrice(floatval($item->regularPrice) * $item->usdExchangeRate, floatval($item->salePrice) * $item->usdExchangeRate);
+        $rawPrice = ProductController::getFinalPrice(floatval($item->regularPrice) * $item->usdExchangeRate, floatval($item->salePrice) * $item->usdExchangeRate, true);
         $subtotalRaw = $rawPrice * $item->cartQty;
         $subtotal = number_format($subtotalRaw) . " LBP";
         if ($price != "n/a") {
@@ -218,8 +218,8 @@ class DesignController extends AbstractActionController
     public static function checkOutItem($item)
     {
         $customerId = $_SESSION['user']->id;
-        $price = ProductController::getFinalPrice($item->regularPrice, $item->salePrice);
-        $rawPrice = ProductController::getFinalPrice($item->regularPrice, $item->salePrice, true);
+        $price = ProductController::getFinalPrice($item->regularPrice * $item->usdExchangeRate, $item->salePrice * $item->usdExchangeRate);
+        $rawPrice = ProductController::getFinalPrice($item->regularPrice * $item->usdExchangeRate, $item->salePrice * $item->usdExchangeRate, true);
         $subtotalRaw = $rawPrice * $item->cartQty;
         $subtotal = number_format($subtotalRaw) . " LBP";
         if ($price != "n/a") {
@@ -241,5 +241,44 @@ class DesignController extends AbstractActionController
         $obj->html = $html;
         $obj->subtotal = $subtotalRaw;
         return $obj;
+    }
+
+    public static function compactCartItems($cartItems)
+    {
+        $html = "";
+        if(count($cartItems) > 0){
+            $cartUrl =  MAIN_URL . 'my-cart';
+            $checkoutUrl = MAIN_URL . 'checkout';
+            foreach ($cartItems as $row) {
+                $cartItemImage = PRODUCT_PLACEHOLDER_THUMBNAIL_URL;
+                if ($row->image != "" && @getimagesize(BASE_PATH . upload_image_dir . $row->image)) {
+                    $cartItemImage = HelperController::getImageUrl($row->image);
+                }
+                $title = substr($row->title, 0, 500);
+                $price = ProductController::getFinalPrice($row->regularPrice * $row->usdExchangeRate, $row->salePrice * $row->usdExchangeRate);
+                $html .= "<div class=\"compact-cart-item\">
+                            <div class=\"row\">
+                                <div class=\"col-md-3 compact-cart-img\">
+                                    <img src=\"$cartItemImage\" />
+                                </div>
+                                <div class=\"col-md-9\">
+                                    <div class=\"compact-cart-title\">
+                                        $title
+                                    </div>
+                                    <div class=\"compact-cart-price\">
+                                        $price LBP
+                                    </div>
+                                </div>
+                            </div>
+                        </div>";
+            }
+            $html .= "<div class=\"compact-cart-buttons\">
+            <a href=\"$cartUrl\" class=\"to-cart\">Continue to cart</a>
+            <a href=\"$checkoutUrl\" class=\"to-checkout\">Continue to checkout</a>
+        </div>";
+        } else {
+            $html = "<h4 style=\"text-align: center;width: 100%;\">No items in cart!</h4>";
+        }
+        return $html;
     }
 }

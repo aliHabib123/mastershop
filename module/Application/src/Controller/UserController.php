@@ -81,6 +81,7 @@ class UserController extends AbstractActionController
         $obj->joinDate = $user->createdAt;
         $obj->wishlist = $itemIdsArray;
         $obj->cart = $cartItemIdsArray;
+        $obj->country = $user->country;
 
         $_SESSION['user'] = $obj;
     }
@@ -343,6 +344,9 @@ class UserController extends AbstractActionController
         }
 
         if ($add) {
+            $cartCount = count($_SESSION['user']->cart);
+            $itemMySqlExtDAO = new ItemMySqlExtDAO();
+            $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
             $result = true;
             $msg = "Added to cart";
         }
@@ -350,6 +354,8 @@ class UserController extends AbstractActionController
         $response = json_encode([
             'status' => $result,
             'msg' => $msg,
+            'count' => $cartCount,
+            'items' => DesignController::compactCartItems($cartItems),
         ]);
         print_r($response);
         return $this->response;
@@ -410,7 +416,7 @@ class UserController extends AbstractActionController
             $itemMySqlExtDAO = new ItemMySqlExtDAO();
             $items = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
             foreach ($items as $item) {
-                $rawPrice = ProductController::getFinalPrice($item->regularPrice, $item->salePrice, true);
+                $rawPrice = ProductController::getFinalPrice($item->regularPrice * $item->usdExchangeRate, $item->salePrice* $item->usdExchangeRate, true);
                 $subtotalRaw = $rawPrice * $item->cartQty;
                 $total += $subtotalRaw;
                 if ($item->id == $itemId) {
@@ -462,6 +468,7 @@ class UserController extends AbstractActionController
         self::checkCustomerLoggedIn();
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
         $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
+        //print_r($cartItems);
         return new ViewModel([
             'items' => $cartItems,
         ]);
@@ -604,7 +611,7 @@ class UserController extends AbstractActionController
             $country == "" ||
             $city == "" ||
             $address1 == "" ||
-            $companyName == ""||
+            $companyName == "" ||
             $usdExchangeRate == 0 ||
             $usdExchangeRate == ""
         ) {
@@ -689,12 +696,12 @@ class UserController extends AbstractActionController
                     $c = 0;
                     $total = 0;
                     foreach ($cartItems as $row) {
-                        $total += $row->cartQty * ProductController::getFinalPrice($row->regularPrice, $row->salePrice, true);
+                        $total += $row->cartQty * ProductController::getFinalPrice($row->regularPrice * $row->usdExchangeRate, $row->salePrice * $row->usdExchangeRate, true);
                         $saleOrderItemObj = new SaleOrderItem();
                         $saleOrderItemObj->saleOrderId = $insertSaleOrder;
                         $saleOrderItemObj->itemId = $row->id;
                         $saleOrderItemObj->qty = $row->cartQty;
-                        $saleOrderItemObj->price = ProductController::getFinalPrice($row->regularPrice, $row->salePrice, true);
+                        $saleOrderItemObj->price = ProductController::getFinalPrice($row->regularPrice * $row->usdExchangeRate, $row->salePrice * $row->usdExchangeRate, true);
                         $insertSaleOrderItem = $saleOrderItemMySqlExtDAO->insert($saleOrderItemObj);
                         if ($insertSaleOrderItem) {
                             $c++;

@@ -66,7 +66,7 @@ return true;
 <body class="login">
 	<!-- BEGIN LOGO -->
 	<div class="logo">
-		<img src="../public/img/logo.png" alt=""/> 
+		<img src="../public/img/logo.png" style="max-width: 200px;" alt="Logo"/> 
 	</div>
 	<!-- END LOGO -->
 	<!-- BEGIN LOGIN -->

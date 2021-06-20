@@ -96,15 +96,39 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
 
     public function getCartItemsByUserId($userId)
     {
-        $sql = "SELECT a.*, b.id AS cart_id, b.qty AS cart_qty FROM item a LEFT OUTER JOIN cart b ON a.`id` = b.`item_id` WHERE b.`user_id` = ?";
+        //$sql = "SELECT a.*, b.id AS cart_id, b.qty AS cart_qty FROM item a LEFT OUTER JOIN cart b ON a.`id` = b.`item_id` WHERE b.`user_id` = ?";
+        //echo $sql;
+        $sql = "SELECT
+                a.*,
+                b.id AS cart_id,
+                b.qty AS cart_qty,
+                c.usd_exchange_rate
+            FROM
+                item a
+                LEFT OUTER JOIN cart b
+                ON a.`id` = b.`item_id`
+                LEFT OUTER JOIN `user` c
+                ON a.`supplier_id` = c.`id`
+            WHERE b.`user_id` = ?";
         $sqlQuery = new SqlQuery($sql);
         $sqlQuery->set($userId);
         return $this->getList($sqlQuery);
     }
     public function adminGetItems($condition = '1', $limit = 0, $offset = 0)
     {
-        $sql = "SELECT a.*, b.company_name, b.status FROM item a LEFT OUTER JOIN user b ON a.`supplier_id` = b.`id` WHERE $condition";
-
+        //$sql = "SELECT a.*, b.company_name, b.status FROM item a LEFT OUTER JOIN user b ON a.`supplier_id` = b.`id` WHERE $condition";
+        $sql = "SELECT
+                a.*,
+                b.company_name,
+                b.status,
+                c.tag_id
+            FROM
+                item a
+                LEFT OUTER JOIN `user` b
+                ON a.`supplier_id` = b.`id`
+                LEFT OUTER JOIN item_tag_mapping c
+                ON a.`id` = c.`item_id`
+                WHERE $condition";
         if ($limit != 0) {
             $sql .= " LIMIT $limit OFFSET $offset";
         }

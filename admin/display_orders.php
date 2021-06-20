@@ -7,20 +7,31 @@ function main()
 	global $currentPageUrl;
 	$currentPageUrl = ADMIN_LINK . 'display_orders.php';
 
+	$statuses = [
+		'paid',
+		'canceled',
+		'pending',
+	];
+
 	// paging
-	$limit = 4;
+	$limit = 20;
 	$offset = 0;
 	$page = 1;
+	$condition = "";
 
 	if (isset($_REQUEST["page"]) && !empty($_REQUEST["page"])) {
 		$page = $_REQUEST["page"];
 		$offset = ($page - 1) * $limit;
 	}
-
+	$status = isset($_GET['status']) && !empty($_GET['status']) ? filter_var($_GET['status'], FILTER_SANITIZE_STRING) : false;
+	if($status){
+		$condition .= " a.`status` = '$status' AND";
+	}
+	
 	$saleOrderMySqlExtDAO = new SaleOrderMySqlExtDAO();
 	$orderBy = "desc";
 	$fieldName = "a.`id`";
-	$condition = "";
+	
 	$condition .= " 1 order by $fieldName $orderBy ";
 	$currentPage = $page;
 	$recordsCount = count($saleOrderMySqlExtDAO->selectOrders($condition));
@@ -47,6 +58,31 @@ function main()
 						<label><input type="checkbox" checked data-column="<?php echo "4"; ?>"><?php echo "Status"; ?></label>
 					</div>
 				</div>
+			</div>
+		</div>
+		<div class="portlet-body">
+			<div class="search-form">
+				<form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF'] ?>">
+					<div class="form-group">
+						<div class="col-md-4">
+							<label class="control-label">Order Status</label>
+							<select class="form-control select2me" data-placeholder="Select Tag..." name="status" id="status">
+								<option selected="selected" value="">--- Select Status ---</option>
+								<?php
+								foreach ($statuses as $row) {
+									//echo $row->id."<br>";
+									$sel = "";
+									if ($row == $status) {
+										$sel = "selected";
+									} ?>
+									<option value="<?php echo $row; ?>" <?php echo $sel; ?>><?php echo ucfirst($row); ?></option>
+								<?php
+								} ?>
+							</select>
+						</div>
+					</div>
+					<button type="submit" class="btn btn-primary">Filter</button>
+				</form>
 			</div>
 		</div>
 		<div class="portlet-body">
