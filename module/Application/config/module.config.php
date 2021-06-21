@@ -205,6 +205,19 @@ return [
                     ],
                 ],
             ],
+            'vendorOrderDetails' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/vendor/order/:id',
+                    'defaults' => [
+                        'controller' => Controller\VendorController::class,
+                        'action'     => 'vendorOrderDetails',
+                    ],
+                    'constraints' => array(
+                        'id' => '[0-9]+'
+                ),
+                ],
+            ],
             'myDashboard' => [
                 'type' => Segment::class,
                 'options' => [

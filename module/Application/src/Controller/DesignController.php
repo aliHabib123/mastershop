@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Application\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
+use SaleOrderItemMySqlExtDAO;
 use stdClass;
+use UserMySqlExtDAO;
 
 class DesignController extends AbstractActionController
 {
@@ -70,27 +72,48 @@ class DesignController extends AbstractActionController
         return $html;
     }
 
-    public static function orderItem($status, $label, $orderId)
+    public static function orderItem($saleOrder)
     {
+        $orderId = $saleOrder->id;
+        $status = $saleOrder->status;
+        $label = strtoupper(str_replace('-', ' ', $status));
+        $date = date('M j, Y | H:i:g A', strtotime($saleOrder->createdAt));
+        $url = MAIN_URL . "vendor/order/" . $orderId;
+        
+        $userMySqlExtDAO = new UserMySqlExtDAO();
+        $customer = $userMySqlExtDAO->load($saleOrder->customerId);
+        $customerFullName = $customer->fullName;
+        $saleOrderItemsMySqlExtAO = new SaleOrderItemMySqlExtDAO();
+        $items = $saleOrderItemsMySqlExtAO->itemsBySupplierIdAndSaleOrderId($orderId, $_SESSION['user']->id);
         $html =  "<div class='order-item'>
                     <div class='row'>
                         <div class='col-md-9'>
-                            <div class='order-id'>ORDER #$orderId<span><a href='#'>VIEW ORDER</a></span></div>
-                            <div class='items-wrap'>
-                                <div class='item'>
-                                    Taurus professional hair clipper, titanium blades,6W X 1
-                                </div>
-                            </div>
+                            <div class='order-id'>ORDER #$orderId<span><a href='$url'>VIEW ORDER</a></span></div>
+                            <div class='items-wrap'>";
+        $total = 0;
+        foreach ($items as $item) {
+            $total += $item->qty * floatval($item->price);
+            $title = $item->name;
+            $qty = $item->qty;
+            $html .= " <div class='item'>$title<b> X $qty</b></div>";
+        }
+
+        $totalLabel = "LBP " . number_format($total);
+        $comission = $total * 0.1;
+        $comissionLabel = "LBP " . number_format($comission);
+        $finalAmount = "LBP " . number_format($total - $comission);
+
+        $html .= "</div>
                             <div class='item-order-details line1'>
-                                Customer: Samer Merhby | Date: Apr 6, 2021 | 7:05:27 PM
+                                Customer: $customerFullName | Date: $date
                             </div>
                             <div class='item-order-details line2'>
-                                Product Price: LBP 280,008 | Total Amount: LBP 280,008 | Commission: LBP 70,002
+                                Product Price: $totalLabel | Total Amount: $totalLabel | Commission: $comissionLabel
                             </div>
                         </div>
                         <div class='col-md-3'>
                             <div class='final-amount-label'>Final Amount</div>
-                            <div class='final-amount'>LBP 210,000</div>
+                            <div class='final-amount'>$finalAmount</div>
                             <div class='order-status $status'>$label</div>
                         </div>
                     </div>
@@ -246,7 +269,7 @@ class DesignController extends AbstractActionController
     public static function compactCartItems($cartItems)
     {
         $html = "";
-        if(count($cartItems) > 0){
+        if (count($cartItems) > 0) {
             $cartUrl =  MAIN_URL . 'my-cart';
             $checkoutUrl = MAIN_URL . 'checkout';
             foreach ($cartItems as $row) {

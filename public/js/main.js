@@ -178,9 +178,6 @@ $(function () {
     separateDialCode: true,
   });
 
-  // check if element is available to bind ITS ONLY ON HOMEPAGE
-  var currentDate = moment().format("DD-MM-YYYY");
-
   var datePicker = $(".date").daterangepicker(
     {
       locale: {
@@ -201,7 +198,9 @@ $(function () {
         ],
       },
     },
-    function (start, end, label) {}
+    function (start, end, label) {
+      console.log(start, end, label);
+    }
   );
 });
 
@@ -404,8 +403,11 @@ $("html").on("click", ".cart-add", function (e) {
     success: function (response) {
       if (response.status == true) {
         alertify.success("Added to cart.");
-        $('.compact-cart-wrapper').html(response.items);
-        $('.cart-icon').find('span.badge').css('display', 'inline-block').html(response.count);
+        $(".compact-cart-wrapper").html(response.items);
+        $(".cart-icon")
+          .find("span.badge")
+          .css("display", "inline-block")
+          .html(response.count);
       }
     },
     error: function () {
@@ -743,12 +745,12 @@ $("#reset-form").submit(function (e) {
   e.preventDefault();
 });
 $(function () {
-  $('.floating-wpp').floatingWhatsApp({
-    phone: '009613764754',
-    popupMessage: 'Hi there\nHow can i help you?',
+  $(".floating-wpp").floatingWhatsApp({
+    phone: "0096181676564",
+    popupMessage: "Hi there\nHow can i help you?",
     showPopup: true,
-    message: '',
-    headerTitle: 'Typically replies within 1 hour',
-    position: "right"
+    message: "",
+    headerTitle: "Typically replies within 1 hour",
+    position: "right",
   });
 });

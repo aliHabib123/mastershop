@@ -10,10 +10,10 @@ $orderId = isset($_GET['orderId']) ? $_GET['orderId'] : '';
     <div class="container">
         <div class="row">
             <div class="col-md-3 sidebar">
-            <?php echo DesignController::getVendorSidebar('dashboard');?>
+                <?php echo DesignController::getVendorSidebar('dashboard'); ?>
             </div>
             <div class="col-md-9 vendor-pl0">
-                <div class="page-date"><i class="far fa-calendar-alt"></i>&nbsp;<?php echo date('l, F j, Y');?><span><a href="<?php echo MAIN_URL.'vendor/my-orders';?>">VIEW ALL ORDERS</a></span></div>
+                <div class="page-date"><i class="far fa-calendar-alt"></i>&nbsp;<?php echo date('l, F j, Y'); ?><span><a href="<?php echo MAIN_URL . 'vendor/my-orders'; ?>">VIEW ALL ORDERS</a></span></div>
                 <div class="vendor-page-wrapper">
                     <div class="dash-wrap">
                         <div class="row">
@@ -22,7 +22,7 @@ $orderId = isset($_GET['orderId']) ? $_GET['orderId'] : '';
                                     <div class="dash-title">DAILY INCOME</div>
                                     <div class="dash-subtitle">LBP 210,000</div>
                                     <div class="dash-icon">
-                                        <img src="img/dash-icon-cash.png"/>
+                                        <img src="img/dash-icon-cash.png" />
                                     </div>
                                 </div>
                             </div>
@@ -31,7 +31,7 @@ $orderId = isset($_GET['orderId']) ? $_GET['orderId'] : '';
                                     <div class="dash-title">WEEKLY INCOME</div>
                                     <div class="dash-subtitle">LBP 210,000</div>
                                     <div class="dash-icon">
-                                        <img src="img/dash-icon-cash.png"/>
+                                        <img src="img/dash-icon-cash.png" />
                                     </div>
                                 </div>
                             </div>
@@ -40,7 +40,7 @@ $orderId = isset($_GET['orderId']) ? $_GET['orderId'] : '';
                                     <div class="dash-title dark">MONTHLY INCOME</div>
                                     <div class="dash-subtitle dark">LBP 210,000</div>
                                     <div class="dash-icon">
-                                        <img src="img/dash-icon-cash.png"/>
+                                        <img src="img/dash-icon-cash.png" />
                                     </div>
                                 </div>
                             </div>
@@ -49,38 +49,39 @@ $orderId = isset($_GET['orderId']) ? $_GET['orderId'] : '';
                                     <div class="dash-title secondary">30</div>
                                     <div class="dash-subtitle secondary">DAILY ORDERS</div>
                                     <div class="dash-icon">
-                                        <img src="img/dash-icon-orders.png"/>
+                                        <img src="img/dash-icon-orders.png" />
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="dash-item">
-                                    <div class="dash-title dark secondary"><?php echo $this->itemsCount;?></div>
+                                    <div class="dash-title dark secondary"><?php echo $this->itemsCount; ?></div>
                                     <div class="dash-subtitle dark secondary">PRODUCTS</div>
                                     <div class="dash-icon">
-                                        <img src="img/dash-icon-products.png"/>
+                                        <img src="img/dash-icon-products.png" />
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="dash-item">
-                                <div class="dash-title secondary">120</div>
+                                    <div class="dash-title secondary">120</div>
                                     <div class="dash-subtitle secondary">PRODUCTS SOLD</div>
                                     <div class="dash-icon">
-                                        <img src="img/dash-icon-products-sold.png"/>
+                                        <img src="img/dash-icon-products-sold.png" />
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="orders-wrap">
-                        <?php for($i=0;$i<3;$i++){
-                            $k = ['complete', 'in-progress', 'pending'];
-                            $status = $k[mt_rand(0, count($k) - 1)];
-                            $label = strtoupper(str_replace('-', ' ', $status));
-                            $orderId = mt_rand(1000000000,9999999999);
-                            echo DesignController::orderItem($status, $label, $orderId);
-                        }?>
+                        <?php
+                        $saleOrderMySqlExtDAO = new SaleOrderMySqlExtDAO();
+                        if ($this->saleOrders) {
+                            foreach ($this->saleOrders as $row) {
+                                $saleOrder = $saleOrderMySqlExtDAO->load($row->saleOrderId);
+                                echo DesignController::orderItem($saleOrder);
+                            }
+                        } ?>
                     </div>
                 </div>
             </div>

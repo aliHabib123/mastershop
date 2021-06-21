@@ -1,0 +1,70 @@
+<?php
+
+use Application\Controller\DesignController;
+use Application\Controller\ProductController;
+?>
+<div class="main-wrapper shopping-cart pt30">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="breadcrumb-wrap">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="<?php echo MAIN_URL;?>">Home</a></li>
+                            <li class="breadcrumb-item"><a href="<?php echo MAIN_URL . "vendor/my-orders";?>">My Orders</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Order #<?php echo $this->saleOrder->id;?></li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div><?php echo DesignController::secondaryTitle('Items Bought'); ?></div>
+                <table class="table shopping-cart-wrap checkout-wrap">
+                    <thead class="text-muted">
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col" class="text-right">Sub Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $total = 0;
+                        foreach ($this->items as $item) {
+                            $subtotal = number_format($item->qty * $item->price) . " LBP";
+                            $title = $item->name;
+                            //$itemMySqlExtDAO = 
+                            // $item = DesignController::checkOutItem($this->saleOrder, $item);
+                            // $total += $item->subtotal;
+                            echo "<tr id='cart-item-$item->id'>
+                                        <td> <h6 class=\"title text-truncate\">$title <b>X $item->qty</b></h6></td>
+                                        <td class='text-right'>
+                                            <b class='item-subtotal'>$subtotal</b>
+                                        </td>
+                                    </tr>";
+                        } ?>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="text-right cart-total">Total</td>
+                            <td class="text-right" id="cart-total"><?php echo number_format($this->saleOrder->netTotal) . " LBP"; ?></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="col-md-6 mt30">
+                <div><?php echo DesignController::secondaryTitle('Order Details'); ?></div>
+                <div class="order-details">
+                   <div class="order-details_line"><b>Date: </b><?php echo date('M j, Y | H:i:g A', strtotime($this->saleOrder->createdAt))?></div>
+                   <div class="order-details_line"><b>Status: </b><?php echo strtoupper(str_replace('-', ' ', $this->saleOrder->status))?></div>
+                   <div class="order-details_line"><b>Notes: </b><?php echo $this->saleOrder->note;?></div>
+                </div>
+            </div>
+            <div class="col-md-6 mt30">
+                <div><?php echo DesignController::secondaryTitle('Delivery Address'); ?></div>
+                <div class="delivery-address">
+                    <?php echo $this->saleOrder->deliveryAddress; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

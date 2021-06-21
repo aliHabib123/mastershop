@@ -35,6 +35,8 @@ class ProductController extends AbstractActionController
     public function indexAction()
     {
         $itemCategoryMySqlExtDAO = new ItemCategoryMySqlExtDAO();
+        $prefixUrl = MAIN_URL . 'products/';
+        $categoryList = [];
         $page = 1;
         $limit = 12;
         $offset = 0;
@@ -50,13 +52,6 @@ class ProductController extends AbstractActionController
         $cat1 = $this->params('cat1') ? HelperController::filterInput($this->params('cat1')) : false;
         $cat2 = $this->params('cat2') ? HelperController::filterInput($this->params('cat2')) : false;
         $cat3 = $this->params('cat3') ? HelperController::filterInput($this->params('cat3')) : false;
-
-        // var_dump($cat1);
-        // var_dump($cat2);
-        // var_dump($cat3);
-        // var_dump($brandId);
-        // var_dump($minPrice);
-        // var_dump($maxPrice);
 
         // Get Category Slug
         $categorySlug = "";
@@ -121,7 +116,6 @@ class ProductController extends AbstractActionController
             }
         } else {
             $categoryList = $itemCategoryMySqlExtDAO->select('parent_id = 0 ORDER BY name ASC');
-            $prefixUrl = MAIN_URL . 'products/';
         }
 
         $itemBrandMySqlExtDAO = new ItemBrandMySqlExtDAO();

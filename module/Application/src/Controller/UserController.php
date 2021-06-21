@@ -225,16 +225,16 @@ class UserController extends AbstractActionController
         $userObj->lastName = $userInfo->lastName;
         $userObj->fullName = $userInfo->fullName;
         $userObj->email = $userInfo->email;
-        if ($userInfo->userType) {
+        if (isset($userInfo->userType)) {
             $userObj->userType = $userInfo->userType;
         }
-        if ($userInfo->dob) {
+        if (isset($userInfo->dob)) {
             $userObj->dob = $userInfo->dob;
         }
-        if ($userInfo->password) {
+        if (isset($userInfo->password)) {
             $userObj->password = $userInfo->password;
         }
-        if ($userInfo->mobile) {
+        if (isset($userInfo->mobile)) {
             $userObj->mobile = $userInfo->mobile;
         }
         $userObj->createdAt = $date;

@@ -8,6 +8,8 @@ use CityMySqlExtDAO;
 use ItemMySqlExtDAO;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use SaleOrderItemMySqlExtDAO;
+use SaleOrderMySqlExtDAO;
 use stdClass;
 use User;
 use UserMySqlExtDAO;
@@ -105,17 +107,38 @@ class VendorController extends AbstractActionController
     }
     public function myOrdersAction()
     {
+        UserController::checkVendorLoggedIn();
+        $limit = 4;
+        $offset = 0;
+        $page = (isset($_GET['page']) && !empty($_GET['page'])) ? $_GET['page'] : 1;
+        $offset = ($page - 1) * $limit;
+
+        $saleOrderItemMySqlExtDAO = new SaleOrderItemMySqlExtDAO();
+        $orderId  = isset($_GET['order_id']) ? $_GET['order_id'] : false;
+        $status  = isset($_GET['status']) ? $_GET['status'] : false;
+        $saleOrders = $saleOrderItemMySqlExtDAO->getSalOrderItemsIdsBySupplier($_SESSION['user']->id, $orderId, $status, $limit, $offset);
+        $saleOrdersCount = count($saleOrderItemMySqlExtDAO->getSalOrderItemsIdsBySupplier($_SESSION['user']->id, $orderId, $status));
+        $totalPages = ceil($saleOrdersCount / $limit);
         $this->layout()->htmlClass = 'mb0';
-        return new ViewModel();
+        return new ViewModel([
+            'saleOrders' => $saleOrders,
+            'totalPages' => $totalPages,
+            'currentPage' => $page,
+        ]);
     }
     public function myDashboardAction()
     {
         UserController::checkVendorLoggedIn();
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
         $itemsCount = count($itemMySqlExtDAO->queryBySupplierId($_SESSION['user']->id));
+
+        // Last 3 Sale Orders
+        $saleOrderItemMySqlExtDAO = new SaleOrderItemMySqlExtDAO();
+        $saleOrders = $saleOrderItemMySqlExtDAO->getSalOrderItemsIdsBySupplier($_SESSION['user']->id, false, false, 3);
         $this->layout()->htmlClass = 'mb0';
         return new ViewModel([
             'itemsCount' => $itemsCount,
+            'saleOrders' => $saleOrders,
         ]);
     }
 
@@ -268,5 +291,19 @@ class VendorController extends AbstractActionController
 
         print_r($response);
         return $this->response;
+    }
+
+    public function vendorOrderDetailsAction(){
+        UserController::checkVendorLoggedIn();
+        $id = HelperController::filterInput($this->params('id'));
+        $saleOrderMySqlExtDAO = new SaleOrderMySqlExtDAO();
+        $saleOrderItemMySqlExtDAO = new SaleOrderItemMySqlExtDAO();
+        $saleOrder = $saleOrderMySqlExtDAO->load($id);
+        $saleOrderItems  = $saleOrderItemMySqlExtDAO->itemsBySupplierIdAndSaleOrderId($id, $_SESSION['user']->id);
+        $data = [
+            'saleOrder' => $saleOrder,
+            'items' => $saleOrderItems,
+        ];
+        return new ViewModel($data);
     }
 }
