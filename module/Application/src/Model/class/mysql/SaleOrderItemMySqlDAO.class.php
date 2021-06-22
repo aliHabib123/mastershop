@@ -186,8 +186,10 @@ class SaleOrderItemMySqlDAO implements SaleOrderItemDAO{
 		$saleOrderItem->qty = $row['qty'];
 		$saleOrderItem->price = $row['price'];
 		$saleOrderItem->meta = $row['meta'];
-		$saleOrderItem->name = $row['title'];
-
+		$saleOrderItem->name = isset($row['title']) ? $row['title'] : "";
+		$saleOrderItem->status = isset($row['status']) ? $row['status'] : "";
+		$saleOrderItem->orderDate = isset($row['created_at']) ? $row['created_at'] : "";
+		
 		return $saleOrderItem;
 	}
 	

@@ -1,64 +1,36 @@
 <?php
-/**
- * @var Laminas\View\Renderer\PhpRenderer $this
- */
-?>
-<div class="jumbotron">
-    <h1 class="display-4">Welcome dddto<br>Laminas MVC Skeleton Application</h1>
-
-    <p>
-        Congratulations! You have successfully installed the
-        <a href="https://github.com/laminas/laminas-mvc-skeleton" target="_blank">Laminas MVC Skeleton</a>.
-        This skeleton can serve as a simple starting point for you to begin
-        building your application on Laminas MVC.
-    </p>
-
-    <hr class="my-4">
-
-    <a class="btn btn-primary btn-lg" href="https://github.com/laminas" target="_blank">Check Laminas on GitHub &raquo;</a>
-</div>
-
-<div class="card-deck">
-    <div class="card">
-        <h2 class="card-header">Follow Development</h2>
-        <div class="card-body">
-            <p>
-                Laminas Project is under active development. If you are
-                interested in following the development, you can check
-                <a href="https://getlaminas.org/blog/">Laminas dev blog</a>,
-                and <a href="https://github.com/issues?utf8=%E2%9C%93&amp;q=is:issue+org:laminas">Laminas issue tracker</a>
-                (link requires a GitHub account). This is a great resource
-                for staying up to date with the latest developments!
-            </p>
-
-            <a class="btn btn-primary" href="https://getlaminas.org/" target="_blank">Laminas Project Portal &raquo;</a>
-        </div>
-    </div>
-
-    <div class="card">
-        <h2 class="card-header">Discover Modules</h2>
-        <div class="card-body">
-            <p>
-                Laminas MVC is a modular application.
-                You can find multiple compatible modules on packagist.
-            </p>
-
-            <a class="btn btn-primary" href="https://packagist.org/?tags=module~zf2~zendframework~zend%20framework~zend%20framework%202~zf3~zf~zend~laminas" target="_blank">Explore Laminas Modules &raquo;</a>
-        </div>
-    </div>
-
-    <div class="card">
-        <h2 class="card-header">Help &amp; Support</h2>
-        <div class="card-body">
-            <p>
-                If you need any help or support while developing with Laminas,
-                you may reach us via <a href="https://laminas.dev/chat">chat</a> or
-                <a href="https://discourse.laminas.dev">forum</a>.
-                We'd love to hear any questions or feedback you may have
-                regarding any release.
-            </p>
-
-            <a class="btn btn-primary" href="https://laminas.dev/chat" target="_blank">Ping us on chat &raquo;</a>
-        </div>
-    </div>
-</div>
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+// Create connection
+$cat3 = "Accessoriesa";
+$cat2 = "TV";
+$cat1 = "Electronics";
+function getCategory($cat1 = "", $cat2 = "", $cat3 = "")
+{
+    $conn = ConnectionFactory::getConnection();
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    $sql = "SELECT
+        c.`id`
+        FROM
+        item_category a
+        LEFT OUTER JOIN item_category b
+        ON a.`id` = b.`parent_id`
+        LEFT OUTER JOIN item_category c
+        ON b.`id` = c.`parent_id`
+        WHERE c.`name` IS NOT NULL
+        AND c.`name` = '$cat3' AND b.`name` = '$cat2' AND a.`name` = '$cat1'
+        ORDER BY c.`name` ASC LIMIT 1 OFFSET 0";
+    $rows = $conn->query($sql);
+    $conn->close();
+    if ($rows->num_rows > 0) {
+        // output data of each row
+        $row  =  $rows->fetch_object();
+        return $row->id;
+    } else {
+        return 0;
+    }
+}
+echo getCategory($cat1, $cat2, $cat3);

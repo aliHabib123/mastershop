@@ -1,19 +1,20 @@
 <?php
 
 use Application\Controller\DesignController;
+use Application\Controller\HelperController;
 
 $date = isset($_GET['date']) ? $_GET['date'] : '';
 $status = isset($_GET['status']) ? $_GET['status'] : '';
-$orderId = isset($_GET['orderId']) ? $_GET['orderId'] : '';
+$orderId = isset($_GET['order_id']) ? $_GET['order_id'] : '';
 ?>
 <div class="main-wrapper">
     <div class="container">
         <div class="row">
             <div class="col-md-3 sidebar">
-                <?php echo DesignController::getVendorSidebar('orders');?>
+                <?php echo DesignController::getVendorSidebar('orders'); ?>
             </div>
             <div class="col-md-9 vendor-pl0">
-                <div class="page-date"><i class="far fa-calendar-alt"></i>&nbsp;<?php echo date('l, F j, Y');?></div>
+                <div class="page-date"><i class="far fa-calendar-alt"></i>&nbsp;<?php echo date('l, F j, Y'); ?></div>
                 <div class="vendor-page-wrapper">
                     <div class="filters-wrap">
                         <div class="row">
@@ -22,10 +23,10 @@ $orderId = isset($_GET['orderId']) ? $_GET['orderId'] : '';
                                     <label for="" class="main">FILTER BY:</label>
                                     <div>
                                         <label for="email">ID:</label>
-                                        <input type="text" class="form-control" placeholder="" id="orderId" name="orderId" value="<?php echo $orderId; ?>">
+                                        <input type="text" class="form-control" placeholder="" id="orderId" name="order_id" value="<?php echo $orderId; ?>">
                                     </div>
                                     <div>
-                                        <label for="pwd">Date:</label>
+                                        <label for="date">Date:</label>
                                         <input type="text" class="form-control date" name="date" value="<?php echo $date; ?>">
                                     </div>
                                     <div>
@@ -35,9 +36,9 @@ $orderId = isset($_GET['orderId']) ? $_GET['orderId'] : '';
                                             <option value="pending" <?php if ($status == 'pending') {
                                                                         echo 'selected';
                                                                     } ?>>PENDING</option>
-                                            <option value="complete" <?php if ($status == 'complete') {
-                                                                            echo 'selected';
-                                                                        } ?>>COMPLETE</option>
+                                            <option value="paid" <?php if ($status == 'paid') {
+                                                                        echo 'selected';
+                                                                    } ?>>PAID</option>
                                             <option value="in-progress" <?php if ($status == 'in-progress') {
                                                                             echo 'selected';
                                                                         } ?>>IN PROGRESS</option>
@@ -71,19 +72,47 @@ $orderId = isset($_GET['orderId']) ? $_GET['orderId'] : '';
                         </div> -->
                     </div>
                     <div class="orders-wrap">
-                        <?php for($i=0;$i<8;$i++){
-                            $k = ['complete', 'in-progress', 'pending'];
-                            $status = $k[mt_rand(0, count($k) - 1)];
-                            $label = strtoupper(str_replace('-', ' ', $status));
-                            $orderId = mt_rand(1000000000,9999999999);
-                            echo DesignController::orderItem($status, $label, $orderId);
-                        }?>
+                        <?php
+                        $saleOrderMySqlExtDAO = new SaleOrderMySqlExtDAO();
+                        foreach ($this->saleOrders as $row) {
+                            $saleOrder = $saleOrderMySqlExtDAO->load($row->saleOrderId);
+                            echo DesignController::orderItem($saleOrder);
+                        } ?>
                     </div>
                     <div class="pagination-wrap">
-                        <div id="product-pagination" class="text-center"></div>
+                        <div id="orders-pagination" class="product-pagination text-center"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    <?php
+    $url = HelperController::getCurrentUrl();
+    $parsedUrl = parse_url($url, PHP_URL_QUERY); # output "myqueryhash"
+    parse_str($parsedUrl, $output);
+    unset($output['page']);
+    $append = "";
+    if ($output) {
+        $append = '&' . http_build_query($output);
+    }
+    ?>
+    const append = '<?php echo $append; ?>';
+    $(function() {
+        //Pagination
+        $("#orders-pagination").twbsPagination({
+            totalPages: <?php echo $this->totalPages; ?>,
+            visiblePages: 5,
+            first: '<i class="fas fa-angle-double-left"></i>',
+            last: '<i class="fas fa-angle-double-right"></i>',
+            next: '<i class="fas fa-chevron-right"></i>',
+            prev: '<i class="fas fa-chevron-left"></i>',
+            startPage: <?php echo $this->currentPage; ?>,
+            initiateStartPageClick: false,
+            onPageClick: function(event, page) {
+                location.href = '<?php echo MAIN_URL . "vendor/my-orders?page="; ?>' + page + append;
+            },
+        });
+    });
+</script>

@@ -1,16 +1,27 @@
 <?php
 function main()
 {
-	$limit = 10000;
+	global $currentPage;
+	global $totalPages;
+	global $currentPageUrl;
+	$currentPageUrl = ADMIN_LINK . 'display_product.php';
+
+	$limit = 25;
 	$offset = 0;
 	$orderBy = "desc";
 	$fieldName = "a.`id`";
+	$page = 1;
 
 	$itemMySqlExtDAO = new ItemMySqlExtDAO();
 	$supplierMySqlExtDAO = new UserMySqlExtDAO();
+	$itemTagMySqlExtDAO = new ItemTagMySqlExtDAO();
 
 	$supplierId = isset($_GET['supplier_id']) && !empty($_GET['supplier_id']) ? filter_var($_GET['supplier_id'], FILTER_SANITIZE_NUMBER_INT) : false;
 	$suppliers = $supplierMySqlExtDAO->select("user_type = 2 and status IN  ('active', 'inactive')");
+
+	$tagId = isset($_GET['tag_id']) && !empty($_GET['tag_id']) ? filter_var($_GET['tag_id'], FILTER_SANITIZE_NUMBER_INT) : false;
+	$tags = $itemTagMySqlExtDAO->queryByType('static');
+	
 
 
 	$condition = " b.`status` IN ('active', 'inactive') AND";
@@ -23,7 +34,11 @@ function main()
 		$condition = " a.`supplier_id`= '$supplierId' AND";
 	}
 
-	$condition .= " 1 order by $fieldName $orderBy ";
+	if ($tagId) {
+		$condition = " c.`tag_id`= '$tagId' AND";
+	}
+
+	$condition .= " 1 GROUP BY a.`id` order by $fieldName $orderBy";
 
 
 
@@ -32,7 +47,9 @@ function main()
 		$offset = ($page - 1) * $limit;
 	}
 
-
+	$currentPage = $page;
+	$recordsCount = count($itemMySqlExtDAO->adminGetItems($condition));
+	$totalPages = ceil($recordsCount / $limit);
 	$condition .= " limit $limit offset $offset ";
 	$records = $itemMySqlExtDAO->adminGetItems($condition);
 	//print_r($records);
@@ -41,17 +58,6 @@ function main()
 		<div class="portlet-title">
 			<div class="caption">
 				PRODUCTS MANAGEMENT
-				<!--
-				<form name="myform223" action="<?php //echo $_SERVER['PHP_SELF'] 
-												?>" method="post">
-					<div>
-						Search by banner caption: 
-						<input type="text" value="<?php //echo $keywords 
-													?>" name="keywords" id="keywords" style="width:300px; height:20px;"> &nbsp; 
-						<input type="submit" style="" value="   Search   " />
-					</div>
-				</form>
-				-->
 			</div>
 			<div class="actions">
 				<div class="btn-group">
@@ -66,20 +72,12 @@ function main()
 						<label><input type="checkbox" checked data-column="<?php echo "3"; ?>"><?php echo "Supplier"; ?></label></label>
 					</div>
 				</div>
-				<!-- <div class="btn-group">
-					<a id="sample_editable_1_new" class="btn green" href="new_page.php">
-						Add New <i class="fa fa-plus"></i>
-					</a>
-				</div> -->
 			</div>
 		</div>
 		<div class="portlet-body">
 			<div class="search-form">
 				<form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF'] ?>">
 					<div class="form-group">
-						<?php
-						?>
-
 						<div class="col-md-4">
 							<label class="control-label">Supplier</label>
 							<select class="form-control select2me" data-placeholder="Select Supplier..." name="supplier_id" id="supplier_id">
@@ -92,6 +90,22 @@ function main()
 										$sel = "selected";
 									} ?>
 									<option value="<?php echo $row->id; ?>" <?php echo $sel; ?>><?php echo $row->companyName; ?></option>
+								<?php
+								} ?>
+							</select>
+						</div>
+						<div class="col-md-4">
+							<label class="control-label">Tag</label>
+							<select class="form-control select2me" data-placeholder="Select Tag..." name="tag_id" id="tag_id">
+								<option selected="selected" value="">--- Select Tag ---</option>
+								<?php
+								foreach ($tags as $row) {
+									//echo $row->id."<br>";
+									$sel = "";
+									if ($row->id == $tagId) {
+										$sel = "selected";
+									} ?>
+									<option value="<?php echo $row->id; ?>" <?php echo $sel; ?>><?php echo $row->name; ?></option>
 								<?php
 								} ?>
 							</select>
@@ -136,7 +150,20 @@ function main()
 					?>
 				</tbody>
 			</table>
+			<div class="row">
+				<div class="col-md-12">
+					<div id="order-pagination" class="text-center"></div>
+				</div>
+			</div>
 		</div>
 	</div>
+	<style>
+		.dataTables_info,
+		.dataTables_paginate,
+		.dataTables_length,
+		.dataTables_filter {
+			display: none;
+		}
+	</style>
 <?php  }
 include "template.php"; ?>

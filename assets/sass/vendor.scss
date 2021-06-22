@@ -359,6 +359,9 @@
     font-weight: 300;
     font-size: 16px;
     color: #fff;
+    &.reset-btn{
+      margin-left: 10px;
+    }
   }
 }
 .orders-wrap {

@@ -98,8 +98,9 @@
     width: 90%;
     margin-left: 5%;
     margin-right: 5%;
+    padding-top: 25px;
     .brands-slider {
-      display: none;
+      //display: none;
     }
     .bx-wrapper {
       -moz-box-shadow: none;
@@ -278,8 +279,9 @@
           .dropdown-menu {
             min-width: 300px;
             img {
-              width: 100%;
+              width: auto;
               max-width: initial;
+              max-height: 50px;
             }
           }
         }
@@ -333,7 +335,7 @@
   .logo-container {
     float: left;
     width: 170px;
-    img{
+    img {
       max-width: 153px;
     }
   }

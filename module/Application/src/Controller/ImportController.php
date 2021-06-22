@@ -25,6 +25,8 @@ class ImportController extends AbstractActionController
     {
         $result = true;
         $msg = "Initial";
+        $missingSkusCount = 0;
+        $missingTitlesCount = 0;
         if ($_FILES['excel']['tmp_name']) {
             $file = $_FILES['excel']['tmp_name'];
             $userfile_extn = explode(".", strtolower($_FILES['excel']['name']));
@@ -87,6 +89,8 @@ class ImportController extends AbstractActionController
                 // Get the total number of rows in the spreadsheet
                 $rows = $objWorksheet->getHighestRow();
 
+
+
                 if ($result) {
                     // Loop through all the rows (line items)
                     $row = 1;
@@ -94,6 +98,16 @@ class ImportController extends AbstractActionController
                     // skip the first row if it has our column names
                     for (((($objPHPExcel->getActiveSheet()->getCellByColumnAndRow(0, $row)->getValue()) == 'Image 1') ? $row = 2 :  $row = 1); $row <= $rows; ++$row) {
                         // Sanitize all our & add them to the accounts array
+                        if ($objPHPExcel->getActiveSheet()->getCellByColumnAndRow(8, $row)->getValue() == "") {
+                            $missingSkusCount++;
+                           $missingSkusCount++; 
+                            $missingSkusCount++;
+                        }
+                        if ($objPHPExcel->getActiveSheet()->getCellByColumnAndRow(4, $row)->getValue() == "") {
+                            $missingTitlesCount++;
+                           $missingTitlesCount++; 
+                            $missingTitlesCount++;
+                        }
                         ${'List'}[${'Iterator'}] = [
                             'Image 1' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(0, $row)->getValue(),
                             'Image 2' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(1, $row)->getValue(),
@@ -116,6 +130,14 @@ class ImportController extends AbstractActionController
                             'Special Price'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(18, $row)->getValue(),
                         ];
                         ${'Iterator'}++;
+                        if ($missingSkusCount > 0) {
+                            $result = false;
+                            $msg = "Some products do not have SKUs";
+                        }
+                        if ($missingTitlesCount > 0) {
+                            $result = false;
+                            $msg = "Some products do not have Titles";
+                        }
                     } //end for
                 } //end if
             }
@@ -129,10 +151,9 @@ class ImportController extends AbstractActionController
             $insert = ProductController::insertItems(${'List'}, $newName);
             $result = true;
             $msg = "Your file has been imported successfully";
-        }
-
-        if ($insert->inserted == 0 && $insert->updated == 0 && $insert->deleted == 0) {
-            $msg = "Nothing updated/deleted";
+            if ($insert->inserted == 0 && $insert->updated == 0 && $insert->deleted == 0) {
+                $msg = "Nothing updated/deleted";
+            }
         }
 
         $response = json_encode([

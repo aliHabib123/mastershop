@@ -31,6 +31,16 @@ return [
                     ],
                 ],
             ],
+            'test' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/test',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'test',
+                    ],
+                ],
+            ],
             'products' => [
                 'type' => Segment::class,
                 'options' => [
@@ -193,6 +203,19 @@ return [
                     'constraints' => [
                         'year' => '\d{4}',
                     ],
+                ],
+            ],
+            'vendorOrderDetails' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/vendor/order/:id',
+                    'defaults' => [
+                        'controller' => Controller\VendorController::class,
+                        'action'     => 'vendorOrderDetails',
+                    ],
+                    'constraints' => array(
+                        'id' => '[0-9]+'
+                ),
                 ],
             ],
             'myDashboard' => [

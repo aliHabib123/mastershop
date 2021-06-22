@@ -1,3 +1,8 @@
+<?php 
+$contentMySqlExtDAO = new ContentMySqlExtDAO();
+$facebook = $contentMySqlExtDAO->queryBySlug('facebook')[0];
+$instagram = $contentMySqlExtDAO->queryBySlug('instagram')[0];
+?>
 <footer>
     <div class="container">
         <div class="row">
@@ -6,11 +11,11 @@
                     <div class="col-md-3">
                         <div class="logo-social">
                             <div class="footer-logo">
-                                <img src="img/logo.svg" />
+                                <img src="img/logo.png?v=1.0.0" />
                             </div>
                             <div class="social-media">
-                                <a href="https://facebook.com" target="_blank"><img src="img/fb.png" /></a>
-                                <a href="https://instagram.com" target="_blank"><img src="img/insta.png" /></a>
+                                <a href="<?php echo $facebook->customUrl;?>" target="_blank"><img src="img/fb.png" /></a>
+                                <a href="<?php echo $instagram->customUrl;?>" target="_blank"><img src="img/insta.png" /></a>
                                 <!-- <a href="https://twitter.com" target="_blank"><img src="img/twitter.png" /></a> -->
                             </div>
                         </div>
@@ -51,9 +56,8 @@
             </div>
         </div>
     </div>
+    <div class="floating-wpp"></div>
 </footer>
-<?php 
-/*<pre>
+<?php /*<pre>
     <?php print_r($_SESSION['user']);?>
-</pre> */
-?>
+</pre>*/?>

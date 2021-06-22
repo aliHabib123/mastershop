@@ -9,6 +9,7 @@ use Laminas\View\Model\ViewModel;
 use stdClass;
 use Album;
 use AlbumMySqlExtDAO;
+use ConnectionFactory;
 use Image;
 use ImageMySqlExtDAO;
 use Item;
@@ -34,6 +35,8 @@ class ProductController extends AbstractActionController
     public function indexAction()
     {
         $itemCategoryMySqlExtDAO = new ItemCategoryMySqlExtDAO();
+        $prefixUrl = MAIN_URL . 'products/';
+        $categoryList = [];
         $page = 1;
         $limit = 12;
         $offset = 0;
@@ -49,13 +52,6 @@ class ProductController extends AbstractActionController
         $cat1 = $this->params('cat1') ? HelperController::filterInput($this->params('cat1')) : false;
         $cat2 = $this->params('cat2') ? HelperController::filterInput($this->params('cat2')) : false;
         $cat3 = $this->params('cat3') ? HelperController::filterInput($this->params('cat3')) : false;
-
-        // var_dump($cat1);
-        // var_dump($cat2);
-        // var_dump($cat3);
-        // var_dump($brandId);
-        // var_dump($minPrice);
-        // var_dump($maxPrice);
 
         // Get Category Slug
         $categorySlug = "";
@@ -120,19 +116,14 @@ class ProductController extends AbstractActionController
             }
         } else {
             $categoryList = $itemCategoryMySqlExtDAO->select('parent_id = 0 ORDER BY name ASC');
-            $prefixUrl = MAIN_URL . 'products/';
         }
 
         $itemBrandMySqlExtDAO = new ItemBrandMySqlExtDAO();
 
-        if ($cat1) {
-            $cat1Info = $itemCategoryMySqlExtDAO->queryBySlug($cat1)[0];
-            $brandsList = $itemBrandMySqlExtDAO->getBrandsByCategoryId($cat1Info->id);
-        } else {
-            $brandsList = $itemBrandMySqlExtDAO->queryAll();
-        }
+        $brandsList = $itemBrandMySqlExtDAO->queryAll();
 
         $items = self::getItems($categoryArray, $search, $brandId, $minPrice, $maxPrice, false, "", $limit, $offset);
+        //print_r($items);
         $itemsCount = count(self::getItems($categoryArray, $search, $brandId, $minPrice, $maxPrice, false));
         $totalPages = ceil($itemsCount / $limit);
 
@@ -188,7 +179,7 @@ class ProductController extends AbstractActionController
         $relatedIds = implode(',', $relatedIds);
         $relatedProducts = [];
         if ($relatedIds) {
-            $relatedProducts = $itemMySqlExtDAO->select("id IN($relatedIds)");
+            $relatedProducts = $itemMySqlExtDAO->select("a.id IN($relatedIds)");
         }
 
         return new ViewModel([
@@ -214,16 +205,19 @@ class ProductController extends AbstractActionController
         $itemTagMySqlExtDAO = new ItemTagMySqlExtDAO();
         $tagInfo = $itemTagMySqlExtDAO->queryBySlug('todays-deals');
         $tagId = $tagInfo[0]->id;
-        $items = self::getItems(false, false, $tagId, "", $limit, $offset);
-        $spotLight = self::getItems(false, false, self::$SPOTLIGHT, "RAND(),", 1, $offset);
-        $itemsCount = count(self::getItems(false, false, $tagId));
+        $items = self::getItems(false, false, "", "", "", $tagId, "", $limit, $offset);
+        $spotLight = self::getItems(false, false, "", "", "", self::$SPOTLIGHT, "RAND(),", 1, $offset);
+        $itemsCount = count(self::getItems(false, false, "", "", "", $tagId));
         $totalPages = ceil($itemsCount / $limit);
         $data = [
             'items' => $items,
             'totalPages' => $totalPages,
             'currentPage' => $page,
-            'spotlight' => $spotLight[0],
+            'spotlight' => false,
         ];
+        if ($spotLight) {
+            $data['spotlight'] = $spotLight[0];
+        }
         return new ViewModel($data);
     }
     public function latestArrivalsAction()
@@ -278,7 +272,6 @@ class ProductController extends AbstractActionController
     {
         $supplierId = $_SESSION['user']->id;
         // Initialize
-        $categoriesIdsNames = [];
         $brandIdsNames = [];
         $insertedItems = 0;
         $updatedItems = 0;
@@ -286,12 +279,6 @@ class ProductController extends AbstractActionController
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
         $itemCategoryMappingMySqlExtDAO = new ItemCategoryMappingMySqlExtDAO();
         $itemBrandMappingMySqlExtDAO = new ItemBrandMappingMySqlExtDAO();
-
-        // Get Categories
-        $categories = CategoryController::getCategories('1 ORDER BY display_order ASC, name ASC, id DESC');
-        foreach ($categories as $cat) {
-            $categoriesIdsNames[$cat->name] = $cat->id;
-        }
 
         // Get Brands
         $brands = BrandController::getBrands();
@@ -356,9 +343,13 @@ class ProductController extends AbstractActionController
                 $itemObj->image = $image;
             }
 
-            $itemExists = $itemMySqlExtDAO->queryBySkuAndSupplierId($row['SKU'], $_SESSION['user']->id);
+            $itemExists = $itemMySqlExtDAO->queryBySkuAndSupplierId($row['SKU'], $supplierId);
+            //echo 'SKU: ' . $row['SKU'] . ' title: ' . $row['Title'].'<br>';
             $date = date('Y-m-d H:i:s');
+            $categoryId = ProductController::getCategory($row['Category'], $row['sub category'], $row['product category']);
             if ($itemExists) {
+                // print_r($itemExists[0]);
+                // echo '<br>';
                 // delete image
                 HelperController::deleteImage($itemExists[0]->image);
                 // delete album and images
@@ -374,10 +365,12 @@ class ProductController extends AbstractActionController
                 $itemObj->id = $itemExists[0]->id;
                 $itemObj->createdAt = $itemExists[0]->createdAt;
                 $itemObj->updatedAt = $date;
+                //print_r($itemObj);echo '<br>';
                 $update = $itemMySqlExtDAO->update($itemObj);
                 if ($update) {
-                    if (array_key_exists($row['Category'], $categoriesIdsNames)) {
-                        CategoryController::updateOrInsertItemCategory($itemObj->id, $categoriesIdsNames[$row['Category']]);
+                    //echo $itemObj->id.'<br>';
+                    if ($categoryId) {
+                        CategoryController::updateOrInsertItemCategory($itemObj->id, $categoryId);
                     }
                     if (array_key_exists($row['Brand Name'], $brandIdsNames)) {
                         BrandController::updateOrInsertItemBrand($itemObj->id, $brandIdsNames[$row['Brand Name']]);
@@ -385,12 +378,13 @@ class ProductController extends AbstractActionController
                     $updatedItems++;
                 }
             } else {
+                //echo 'does not exists<br>';
                 $itemObj->updatedAt = $date;
                 $itemObj->createdAt = $date;
                 $insert = $itemMySqlExtDAO->insert($itemObj);
                 if ($insert) {
-                    if (array_key_exists($row['Category'], $categoriesIdsNames)) {
-                        $itemCategoryMappingMySqlExtDAO->insertItemCategory($insert, $categoriesIdsNames[$row['Category']]);
+                    if ($categoryId) {
+                        $itemCategoryMappingMySqlExtDAO->insertItemCategory($insert, $categoryId);
                     }
                     if (array_key_exists($row['Brand Name'], $brandIdsNames)) {
                         $itemBrandMappingMySqlExtDAO->insertItemBrand($insert, $brandIdsNames[$row['Brand Name']]);
@@ -428,8 +422,8 @@ class ProductController extends AbstractActionController
     {
         $itemObj->title = $row['Title'];
         $itemObj->description = (isset($row['Description']) && !empty($row['Description'])) ? $row['Description'] : "";
-        $itemObj->regularPrice = $row['Price'];
-        $itemObj->salePrice = (isset($row['Special Price']) && !empty($row['Special Price'])) ? $row['Special Price'] : "";
+        $itemObj->regularPrice = (isset($row['Price']) && !empty($row['Price'])) ? $row['Price'] : 0;
+        $itemObj->salePrice = (isset($row['Special Price']) && !empty($row['Special Price'])) ? $row['Special Price'] : 0;
         $itemObj->weight = (isset($row['Weight']) && !empty($row['Weight'])) ? $row['Weight'] : "";
         $itemObj->sku = $row['SKU'];
         $itemObj->qty = (isset($row['Stock']) && !empty($row['Stock'])) ? $row['Stock'] : 0;
@@ -440,7 +434,7 @@ class ProductController extends AbstractActionController
         $itemObj->size = (isset($row['Size']) && !empty($row['Size'])) ? $row['Size'] : "";
         $itemObj->dimensions = (isset($row['Dimensions']) && !empty($row['Dimensions'])) ? $row['Dimensions'] : "";
         $itemObj->albumId = $albumId;
-        $itemObj->slug = HelperController::slugify($row['Title']);
+        $itemObj->slug = self::slugify($row['Title'], $row['SKU']);
     }
 
     public static function deleteItemBySku($sku)
@@ -458,16 +452,16 @@ class ProductController extends AbstractActionController
 
     public static function getFinalPrice($regularPrice, $salePrice, $raw = false)
     {
-        if ($salePrice != "" && $salePrice != null && $salePrice != 0) {
+        if ($salePrice != 0) {
             if (!$raw) {
                 return number_format(floatval($salePrice));
             }
             return floatval($salePrice);
-        } elseif ($regularPrice != "" && $regularPrice != null && $regularPrice != 0) {
+        } elseif ($regularPrice != 0) {
             if (!$raw) {
                 return number_format(floatval($regularPrice));
             }
-            return $regularPrice;
+            return floatval($regularPrice);
         } else {
             return 'n/a';
         }
@@ -481,10 +475,6 @@ class ProductController extends AbstractActionController
             }
         }
         return PRODUCT_PLACEHOLDER_IMAGE_URL;
-    }
-
-    public static function productImages(string $itemId, array $images)
-    {
     }
 
     public static function getItems($categoryId = false, $search = false, $brandId = "", $minPrice = "", $maxPrice = "", $tagId = false, $orderBy = "", $limit = 0, $offset = 0)
@@ -501,30 +491,78 @@ class ProductController extends AbstractActionController
         return $list;
     }
 
-    public static function getCategoryBanner($cat1 = false, $cat2 = false, $cat3, $cat1Info, $cat2info, $cat3Info)
+    public static function getCategoryBanner($cat1 = false, $cat2 = false, $cat3, $cat1Info = false, $cat2info = false, $cat3Info = false)
     {
         $bannerImage = PRODUCT_BANNER_PLACEHOLDER_URL;
         if ($cat1) {
-            if (getimagesize(BASE_PATH . upload_image_dir . $cat1Info[0]->bannerImage)) {
+            if (@getimagesize(BASE_PATH . upload_image_dir . $cat1Info[0]->bannerImage)) {
                 $bannerImage = HelperController::getImageUrl($cat1Info[0]->bannerImage);
             }
         }
         if ($cat2) {
-            if (getimagesize(BASE_PATH . upload_image_dir . $cat2info[0]->bannerImage)) {
+            if (@getimagesize(BASE_PATH . upload_image_dir . $cat2info[0]->bannerImage)) {
                 $bannerImage = HelperController::getImageUrl($cat2info[0]->bannerImage);
-            } elseif (getimagesize(BASE_PATH . upload_image_dir . $cat1Info[0]->bannerImage)) {
+            } elseif (@getimagesize(BASE_PATH . upload_image_dir . $cat1Info[0]->bannerImage)) {
                 $bannerImage = HelperController::getImageUrl($cat1Info[0]->bannerImage);
             }
         }
         if ($cat3) {
-            if (getimagesize(BASE_PATH . upload_image_dir . $cat3Info[0]->bannerImage)) {
+            if (@getimagesize(BASE_PATH . upload_image_dir . $cat3Info[0]->bannerImage)) {
                 $bannerImage = HelperController::getImageUrl($cat3Info[0]->bannerImage);
-            } elseif (getimagesize(BASE_PATH . upload_image_dir . $cat2info[0]->bannerImage)) {
+            } elseif (@getimagesize(BASE_PATH . upload_image_dir . $cat2info[0]->bannerImage)) {
                 $bannerImage = HelperController::getImageUrl($cat2info[0]->bannerImage);
-            } elseif (getimagesize(BASE_PATH . upload_image_dir . $cat1Info[0]->bannerImage)) {
+            } elseif (@getimagesize(BASE_PATH . upload_image_dir . $cat1Info[0]->bannerImage)) {
                 $bannerImage = HelperController::getImageUrl($cat1Info[0]->bannerImage);
             }
         }
+        //echo 'banner-image1-<br>'.$bannerImage .'<br>-banner';
         return $bannerImage;
+    }
+
+    public static function getCategory($cat1 = "", $cat2 = "", $cat3 = "")
+    {
+        $conn = ConnectionFactory::getConnection();
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+        $sql = "SELECT
+            c.`id`
+            FROM
+            item_category a
+            LEFT OUTER JOIN item_category b
+            ON a.`id` = b.`parent_id`
+            LEFT OUTER JOIN item_category c
+            ON b.`id` = c.`parent_id`
+            WHERE c.`name` IS NOT NULL
+            AND c.`name` = '$cat3' AND b.`name` = '$cat2' AND a.`name` = '$cat1'
+            ORDER BY c.`name` ASC LIMIT 1 OFFSET 0";
+        $rows = $conn->query($sql);
+        $conn->close();
+        if ($rows->num_rows > 0) {
+            // output data of each row
+            $row  =  $rows->fetch_object();
+            return $row->id;
+        } else {
+            return 0;
+        }
+    }
+
+    public static function slugify($title, $sku = "")
+    {
+        $itemMySqlExtDAO = new ItemMySqlExtDAO();
+        $slug = HelperController::slugify($title);
+        $item = $itemMySqlExtDAO->queryBySlugAndSupplierId($slug, $_SESSION['user']->id)[0];
+        if ($item->sku == $sku && $item->slug == $slug) {
+            return $item->slug;
+        } else {
+            $c = 1;
+            while ($itemMySqlExtDAO->queryBySlugAndSupplierId($slug, $_SESSION['user']->id)) {
+                $slug =  HelperController::slugify($title);
+                $slug = $slug . '-' . $c;
+                $c++;
+            }
+            return $slug;
+        }
     }
 }

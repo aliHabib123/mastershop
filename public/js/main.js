@@ -72,26 +72,26 @@ $(function () {
 
   let slider;
   $("#brands-li").on("shown.bs.dropdown", function () {
-    let defaultId = $("#brands-li").find("ul li").first().attr("id");
-    reloadBxSlider(defaultId);
+    //let defaultId = $("#brands-li").find("ul li").first().attr("id");
+    reloadBxSlider();
   });
-  $("body .brands-categories").on("click", "li", function (e) {
-    e.preventDefault();
-    let id = $(this).attr("id");
-    if (id && id != "") {
-      $(this).addClass("active").siblings().removeClass("active");
-      reloadBxSlider(id);
-    }
-  });
+  // $("body .brands-categories").on("click", "li", function (e) {
+  //   e.preventDefault();
+  //   let id = $(this).attr("id");
+  //   if (id && id != "") {
+  //     $(this).addClass("active").siblings().removeClass("active");
+  //     reloadBxSlider(id);
+  //   }
+  // });
 
-  function reloadBxSlider(id) {
-    if (slider) {
-      slider.destroySlider();
-    }
-    $(".brands-slider").css("display", "none");
-    var selector = ".brands-slider#brands-slider-" + id;
-    $(selector).css("display", "block");
-    slider = $(selector).bxSlider({
+  function reloadBxSlider() {
+    // if (slider) {
+    //   slider.destroySlider();
+    // }
+    //$(".brands-slider").css("display", "none");
+    //var selector = ".brands-slider#brands-slider-" + id;
+    //$(selector).css("display", "block");
+    slider = $("#brands-slider").bxSlider({
       minSlides: 1,
       maxSlides: 6,
       adaptiveHeight: true,
@@ -178,9 +178,6 @@ $(function () {
     separateDialCode: true,
   });
 
-  // check if element is available to bind ITS ONLY ON HOMEPAGE
-  var currentDate = moment().format("DD-MM-YYYY");
-
   var datePicker = $(".date").daterangepicker(
     {
       locale: {
@@ -201,7 +198,9 @@ $(function () {
         ],
       },
     },
-    function (start, end, label) {}
+    function (start, end, label) {
+      console.log(start, end, label);
+    }
   );
 });
 
@@ -255,6 +254,7 @@ $(function () {
         );
       },
       success: function (response) {
+        console.log(response);
         showMsg(".notice-area", response.status, response.msg);
         if (response.status == true) {
           //location.href = response.redirectUrl;
@@ -342,6 +342,10 @@ $("#sidebar-filter").on("reset", function (e) {
   e.preventDefault();
   location.href = currentPageUrl;
 });
+$("#my-products-form-filter").on("reset", function (e) {
+  e.preventDefault();
+  location.href = mainUrl + "vendor/my-products";
+});
 $("html").on("click", ".wishlist-add", function (e) {
   alertify.set("notifier", "position", "top-right");
   if (isLoggedIn == "" || userType != 3) {
@@ -399,6 +403,11 @@ $("html").on("click", ".cart-add", function (e) {
     success: function (response) {
       if (response.status == true) {
         alertify.success("Added to cart.");
+        $(".compact-cart-wrapper").html(response.items);
+        $(".cart-icon")
+          .find("span.badge")
+          .css("display", "inline-block")
+          .html(response.count);
       }
     },
     error: function () {
@@ -734,4 +743,14 @@ $("#reset-form").submit(function (e) {
     },
   });
   e.preventDefault();
+});
+$(function () {
+  $(".floating-wpp").floatingWhatsApp({
+    phone: "0096181676564",
+    popupMessage: "Hi there\nHow can i help you?",
+    showPopup: true,
+    message: "",
+    headerTitle: "Typically replies within 1 hour",
+    position: "right",
+  });
 });

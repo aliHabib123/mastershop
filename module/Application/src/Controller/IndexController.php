@@ -20,9 +20,9 @@ class IndexController extends AbstractActionController
         $featuredCategories = CategoryController::getCategories("is_featured = 1");
 
         //Daily DEALS, PICKED FOR YOU and BEST OFFERS
-        $dailyDeals = ProductController::getItems(false, false, ProductController::$DAILY_DEALS, "", 10, 0);
-        $pickedForYou = ProductController::getItems(false, false, ProductController::$PICKED_FOR_YOU, "", 10, 0);
-        $bestOffers = ProductController::getItems(false, false, ProductController::$BEST_OFFERS, "", 10, 0);
+        $dailyDeals = ProductController::getItems(false, false, "", "", "", ProductController::$DAILY_DEALS, "", 10, 0);
+        $pickedForYou = ProductController::getItems(false, false,  "", "", "", ProductController::$PICKED_FOR_YOU, "", 10, 0);
+        $bestOffers = ProductController::getItems(false, false,  "", "", "", ProductController::$BEST_OFFERS, "", 10, 0);
 
         $this->layout()->withBanner = true;
         $this->layout()->banners = $banners;
@@ -48,6 +48,8 @@ class IndexController extends AbstractActionController
     }
     public function testAction()
     {
-        return new ViewModel();
+        $view = new ViewModel();
+        $view->setTerminal(true);
+        return $view;
     }
 }

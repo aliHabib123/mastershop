@@ -81,6 +81,7 @@ class UserController extends AbstractActionController
         $obj->joinDate = $user->createdAt;
         $obj->wishlist = $itemIdsArray;
         $obj->cart = $cartItemIdsArray;
+        $obj->country = $user->country;
 
         $_SESSION['user'] = $obj;
     }
@@ -191,9 +192,6 @@ class UserController extends AbstractActionController
         if (isset($_SESSION['user'])) {
             if ($_SESSION['user']->userType == UserController::$CUSTOMER) {
                 $msg = "You are logged in as a customer, please sign out first";
-            } elseif ($_SESSION['user']->userType == UserController::$SUPPLIER) {
-                header('Location: ' . MAIN_URL . 'vendor/my-dashboard');
-                exit();
             }
         } elseif ($email == "" || $password == "") {
             $msg = "Please fill all inputs";
@@ -204,7 +202,8 @@ class UserController extends AbstractActionController
                 if ($user && password_verify($password, $user->password)) {
                     $this->setUserSession($user);
                     $result = true;
-                    $msg = "successfully logged in!";
+                    $msg = "successfully logged in...";
+                    $redirectUrl = MAIN_URL . 'vendor/my-dashboard';
                 }
             }
         }
@@ -226,16 +225,16 @@ class UserController extends AbstractActionController
         $userObj->lastName = $userInfo->lastName;
         $userObj->fullName = $userInfo->fullName;
         $userObj->email = $userInfo->email;
-        if ($userInfo->userType) {
+        if (isset($userInfo->userType)) {
             $userObj->userType = $userInfo->userType;
         }
-        if ($userInfo->dob) {
+        if (isset($userInfo->dob)) {
             $userObj->dob = $userInfo->dob;
         }
-        if ($userInfo->password) {
+        if (isset($userInfo->password)) {
             $userObj->password = $userInfo->password;
         }
-        if ($userInfo->mobile) {
+        if (isset($userInfo->mobile)) {
             $userObj->mobile = $userInfo->mobile;
         }
         $userObj->createdAt = $date;
@@ -345,6 +344,9 @@ class UserController extends AbstractActionController
         }
 
         if ($add) {
+            $cartCount = count($_SESSION['user']->cart);
+            $itemMySqlExtDAO = new ItemMySqlExtDAO();
+            $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
             $result = true;
             $msg = "Added to cart";
         }
@@ -352,6 +354,8 @@ class UserController extends AbstractActionController
         $response = json_encode([
             'status' => $result,
             'msg' => $msg,
+            'count' => $cartCount,
+            'items' => DesignController::compactCartItems($cartItems),
         ]);
         print_r($response);
         return $this->response;
@@ -412,7 +416,7 @@ class UserController extends AbstractActionController
             $itemMySqlExtDAO = new ItemMySqlExtDAO();
             $items = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
             foreach ($items as $item) {
-                $rawPrice = ProductController::getFinalPrice($item->regularPrice, $item->salePrice, true);
+                $rawPrice = ProductController::getFinalPrice($item->regularPrice * $item->usdExchangeRate, $item->salePrice* $item->usdExchangeRate, true);
                 $subtotalRaw = $rawPrice * $item->cartQty;
                 $total += $subtotalRaw;
                 if ($item->id == $itemId) {
@@ -464,6 +468,7 @@ class UserController extends AbstractActionController
         self::checkCustomerLoggedIn();
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
         $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
+        //print_r($cartItems);
         return new ViewModel([
             'items' => $cartItems,
         ]);
@@ -591,6 +596,7 @@ class UserController extends AbstractActionController
         $password = HelperController::filterInput($this->getRequest()->getPost('password'));
         $confirmPassword = HelperController::filterInput($this->getRequest()->getPost('confirm-password'));
         $companyName = HelperController::filterInput($this->getRequest()->getPost('company-name'));
+        $usdExchangeRate = HelperController::filterInput($this->getRequest()->getPost('usd-exchange-rate'));
 
         $checkPassword = false;
         if ($password != "") {
@@ -598,7 +604,17 @@ class UserController extends AbstractActionController
         }
         $passwordStrength = HelperController::passwordStrength($password);
 
-        if ($firstName == "" || $lastName == "" || $mobile == "" || $country == "" || $city == "" || $address1 == "" || $companyName == "") {
+        if (
+            $firstName == "" ||
+            $lastName == "" ||
+            $mobile == "" ||
+            $country == "" ||
+            $city == "" ||
+            $address1 == "" ||
+            $companyName == "" ||
+            $usdExchangeRate == 0 ||
+            $usdExchangeRate == ""
+        ) {
             $msg = "Please fill all inputs";
         } elseif ($password != "" && $password != $confirmPassword) {
             $msg = "Passwords do not match";
@@ -618,6 +634,7 @@ class UserController extends AbstractActionController
             $userInfo->city = $city;
             $userInfo->address1 = $address1;
             $userInfo->address2 = $address2;
+            $userInfo->usdExchangeRate = $usdExchangeRate;
             $userInfo->updatedAt = date('Y-m-d H:i:s');
 
             if ($passwordStrength->status) {
@@ -679,12 +696,12 @@ class UserController extends AbstractActionController
                     $c = 0;
                     $total = 0;
                     foreach ($cartItems as $row) {
-                        $total += $row->cartQty * ProductController::getFinalPrice($row->regularPrice, $row->salePrice, true);
+                        $total += $row->cartQty * ProductController::getFinalPrice($row->regularPrice * $row->usdExchangeRate, $row->salePrice * $row->usdExchangeRate, true);
                         $saleOrderItemObj = new SaleOrderItem();
                         $saleOrderItemObj->saleOrderId = $insertSaleOrder;
                         $saleOrderItemObj->itemId = $row->id;
                         $saleOrderItemObj->qty = $row->cartQty;
-                        $saleOrderItemObj->price = ProductController::getFinalPrice($row->regularPrice, $row->salePrice, true);
+                        $saleOrderItemObj->price = ProductController::getFinalPrice($row->regularPrice * $row->usdExchangeRate, $row->salePrice * $row->usdExchangeRate, true);
                         $insertSaleOrderItem = $saleOrderItemMySqlExtDAO->insert($saleOrderItemObj);
                         if ($insertSaleOrderItem) {
                             $c++;
@@ -765,6 +782,12 @@ class UserController extends AbstractActionController
 
     public function vendorLoginAction()
     {
+        if (isset($_SESSION['user'])) {
+            if ($_SESSION['user']->userType == UserController::$SUPPLIER) {
+                header('Location: ' . MAIN_URL . 'vendor/my-dashboard');
+                exit();
+            }
+        }
         return new ViewModel();
     }
     public function forgotPasswordAction()
@@ -935,7 +958,6 @@ class UserController extends AbstractActionController
     }
     public static function addOrderSuccessIndicator($id, $successIndicator)
     {
-
         $saleOrderMySqlExtDAO = new SaleOrderMySqlExtDAO();
         $order = $saleOrderMySqlExtDAO->load($id);
         // if (!$order->successIndicator) {

@@ -64,6 +64,8 @@
 		var $companyName;
 
 		var $supplierstatus;
+
+		var $usdExchangeRate;
 		
 	}
 ?>

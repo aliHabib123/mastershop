@@ -83,6 +83,7 @@ $userInfo = $this->userInfo;
                             <?php
                             $total = 0;
                             foreach ($this->items as $item) {
+                                $usdExchangeRate = $item->usdExchangeRate;
                                 $item = DesignController::checkOutItem($item);
                                 $total += $item->subtotal;
                                 echo $item->html;

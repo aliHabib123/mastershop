@@ -20,7 +20,7 @@ $distinctBrandCategories = $brandCategoryMappingMySqlExtDAO->getDistinctCategori
                         <!-- Grid 12 Menu -->
 
                         <?php foreach ($categories as $row) { ?>
-                            <li class="nav-item dropdown yamm-fw category-dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle"><?php echo $row->name ?><b class="caret"></b></a>
+                            <li class="nav-item dropdown yamm-fw category-dropdown"><a href="<?php echo MAIN_URL . 'products/' . $row->slug;?>" class="nav-link"><?php echo $row->name ?><b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li class="grid-list">
                                         <div class="grid-container card-columns">
@@ -46,31 +46,16 @@ $distinctBrandCategories = $brandCategoryMappingMySqlExtDAO->getDistinctCategori
                             <div class="dropdown-menu">
                                 <form>
                                     <div>
-                                        <div class="brands-categories">
-                                            <ul>
-                                                <?php
-                                                $c = 0;
-                                                foreach ($distinctBrandCategories as $row) {
-                                                    $active = "";
-                                                    if ($c == 0) {
-                                                        $active = "active";
-                                                    } ?>
-                                                    <li id="category-<?php echo $row->categoryId; ?>" class="<?php echo $active; ?>"><a href="#"><?php echo $row->categoryName; ?></a></li>
-                                                <?php $c++;
-                                                } ?>
-                                            </ul>
-                                        </div>
                                         <div class="brands-slider-container">
-                                            <?php foreach ($distinctBrandCategories as $row) {
-                                                $brands = $itemBrandMySqlExtDAO->getBrandsByCategoryId($row->categoryId); ?>
-                                                <div class="brands-slider" id="brands-slider-category-<?php echo $row->categoryId; ?>">
+                                            <?php
+                                                $brands = $itemBrandMySqlExtDAO->queryAll(); ?>
+                                                <div class="brands-slider" id="brands-slider">
                                                     <?php foreach ($brands as $brand) { ?>
                                                         <div>
-                                                            <a href="<?php echo MAIN_URL . 'products/' . $row->categorySlug . "?brand=" . $brand->id; ?>"><img src="<?php echo HelperController::getImageUrl($brand->image); ?>" /></a>
+                                                            <a href="<?php echo MAIN_URL . 'products' . "?brand=" . $brand->id; ?>"><img src="<?php echo HelperController::getImageUrl($brand->image); ?>" /></a>
                                                         </div>
                                                     <?php } ?>
                                                 </div>
-                                            <?php } ?>
                                         </div>
                                     </div>
                                 </form>

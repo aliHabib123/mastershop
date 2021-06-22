@@ -20,5 +20,9 @@
 		var $meta;
 
 		var $name;
+
+		var $status;
+
+		var $orderDate;
 	}
 ?>

@@ -1,19 +1,20 @@
 <?php
 
 use Application\Controller\CategoryController;
+use Application\Controller\DesignController;
 use Application\Controller\HelperController;
 use Application\Controller\ProductController;
 use Application\Controller\UserController;
 
 $cartCount = 0;
-if ($_SESSION['user']) {
+if (isset($_SESSION['user'])) {
     $cartCount = count($_SESSION['user']->cart);
     $itemMySqlExtDAO = new ItemMySqlExtDAO();
     $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
 }
 
 $wishlistCount = 0;
-if ($_SESSION['user']) {
+if (isset($_SESSION['user'])) {
     $wishlistCount = count($_SESSION['user']->wishlist);
 }
 
@@ -87,7 +88,9 @@ foreach ($level1Categories as $row) {
                         <ul class="custom-menu custom-menu-right">
                             <li class="wishlist">
                                 <a href="<?php echo MAIN_URL . 'my-wishlist'; ?>" class="d-none d-sm-inline-block">my wishlist
-                                    <span class="badge" <?php if (!$wishlistCount) {echo 'style="display:none;"';}?>><?php echo $wishlistCount; ?></span>
+                                    <span class="badge" <?php if (!$wishlistCount) {
+                                                            echo 'style="display:none;"';
+                                                        } ?>><?php echo $wishlistCount; ?></span>
                                 </a>
                                 <a href="<?php echo MAIN_URL . 'my-wishlist'; ?>" class="d-inline-block d-sm-none"><i class="far fa-heart"></i></a>
                             </li>
@@ -96,42 +99,19 @@ foreach ($level1Categories as $row) {
                             <li class="dropdown pointer cart-icon">
                                 <a class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="fas fa-shopping-cart"></i>
-                                    <?php if ($cartCount) { ?>
-                                        <span class="badge"><?php echo $cartCount; ?></span>
-                                    <?php } ?>
+                                    <?php if ($cartCount) {
+                                        $cartBadgeStyle = "display:inline-block;";
+                                    } else{
+                                        $cartBadgeStyle = "display:none;";
+                                    } ?>
+                                    <span class="badge" style="<?php echo $cartBadgeStyle; ?>"><?php echo $cartCount; ?></span>
                                 </a>
                                 <?php if (isset($_SESSION['user'])) {
                                     if ($_SESSION['user']->userType == UserController::$CUSTOMER) { ?>
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <form>
                                                 <div class="compact-cart-wrapper">
-                                                    <?php if ($cartItems) {
-                                                        foreach ($cartItems as $row) { ?>
-                                                            <div class="compact-cart-item">
-                                                                <div class="row">
-                                                                    <div class="col-md-3 compact-cart-img">
-                                                                        <img src="img/product.png" />
-                                                                    </div>
-                                                                    <div class="col-md-9">
-                                                                        <div class="compact-cart-title">
-                                                                            <?php echo substr($row->title, 0, 500); ?>
-                                                                        </div>
-                                                                        <div class="compact-cart-price">
-                                                                            <?php $price = ProductController::getFinalPrice($row->regularPrice, $row->salePrice);
-                                                                            echo $price;
-                                                                            ?>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        <?php }
-                                                    } else { ?>
-                                                        <h4 style="text-align: center;width: 100%;">No items in cart!</h4>
-                                                    <?php } ?>
-                                                    <div class="compact-cart-buttons">
-                                                        <a href="<?php echo MAIN_URL . 'my-cart' ?>" class="to-cart">Continue to cart</a>
-                                                        <a href="<?php echo MAIN_URL . 'checkout'; ?>" class="to-checkout">Continue to checkout</a>
-                                                    </div>
+                                                    <?php echo DesignController::compactCartItems($cartItems); ?>
                                                 </div>
                                             </form>
                                         </div>
@@ -157,7 +137,7 @@ foreach ($level1Categories as $row) {
 
         <div class="middle-menu clearfix">
             <div class="logo-container">
-                <a href="<?php echo MAIN_URL ?>"><img src="img/logo.svg" /></a>
+                <a href="<?php echo MAIN_URL ?>"><img src="img/logo.png?v=1.0.0" /></a>
             </div>
             <div class="search-container">
                 <form action="<?php echo MAIN_URL . 'products/' ?>" method="GET">

@@ -5,7 +5,8 @@ declare(strict_types=1);
 ini_set("display_errors", "On");
 ini_set('log_errors', '1');
 ini_set('error_log', 'C:\xampp\htdocs\mastershop\error_log.log');
-error_reporting(E_ERROR | E_COMPILE_ERROR | E_CORE_ERROR | E_RECOVERABLE_ERROR | E_USER_ERROR | E_PARSE);
+//error_reporting(E_ERROR | E_COMPILE_ERROR | E_CORE_ERROR | E_RECOVERABLE_ERROR | E_USER_ERROR | E_PARSE);
+error_reporting(E_ALL ^ E_DEPRECATED ^ E_USER_DEPRECATED);
 
 define('MODE', 'dev'); //dev or prod
 //Getting the absolute path of the project

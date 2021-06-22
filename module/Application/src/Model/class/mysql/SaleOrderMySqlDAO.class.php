@@ -354,6 +354,9 @@ class SaleOrderMySqlDAO implements SaleOrderDAO{
 		$saleOrder->createdAtGmt = $row['created_at_gmt'];
 		$saleOrder->updatedAt = $row['updated_at'];
 
+		// ++
+		$saleOrder->customerEmail = (isset($row['email'])) ? $row['email'] : "";
+
 		return $saleOrder;
 	}
 	
