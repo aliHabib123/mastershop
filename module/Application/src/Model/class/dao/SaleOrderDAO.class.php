@@ -64,6 +64,8 @@ interface SaleOrderDAO{
 
 	public function queryBySuccessIndicator($value);
 
+	public function queryByReference($value);
+
 	public function queryByCustomerId($value);
 
 	public function queryByNote($value);
@@ -94,6 +96,8 @@ interface SaleOrderDAO{
 	public function deleteByStatus($value);
 
 	public function deleteBySuccessIndicator($value);
+
+	public function deleteByReference($value);
 
 	public function deleteByCustomerId($value);
 

@@ -22,6 +22,8 @@
 
 		var $successIndicator;
 
+		var $reference;
+
 		var $customerId;
 
 		var $note;
@@ -36,6 +38,7 @@
 
 		var $updatedAt;
 
+		//++
 		var $customerEmail;
 	}
 ?>
