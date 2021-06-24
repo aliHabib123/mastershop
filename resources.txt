@@ -13,9 +13,12 @@ https://www.bootdey.com/snippets/view/bs4-wishlist-profile-page#css
 My Cart
 https://bootsnipp.com/snippets/O5mM8
 
-//Cites and Countries
+Cites and Countries
 https://gist.github.com/adhipg/1600028
 https://simplemaps.com/data/lb-cities
 
 Order Complete email
 https://my.stripo.email/cabinet/#/template-editor/?projectId=22199&templateId=890185&type=MY_TEMPLATE
+
+Whatsapp floating button
+https://www.jqueryscript.net/social-media/Floating-WhatsApp-Message-Button-jQuery.html
