@@ -1,9 +1,6 @@
 <?php
 /**
  * Intreface DAO
- *
- * @author: http://phpdao.com
- * @date: 2021-05-14 19:34
  */
 interface SaleOrderItemDAO{
 
@@ -59,6 +56,8 @@ interface SaleOrderItemDAO{
 
 	public function queryByPrice($value);
 
+	public function queryByCommission($value);
+
 	public function queryByMeta($value);
 
 
@@ -69,6 +68,8 @@ interface SaleOrderItemDAO{
 	public function deleteByQty($value);
 
 	public function deleteByPrice($value);
+
+	public function deleteByCommission($value);
 
 	public function deleteByMeta($value);
 

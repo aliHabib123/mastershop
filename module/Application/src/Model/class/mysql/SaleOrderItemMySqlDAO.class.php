@@ -1,9 +1,6 @@
 <?php
 /**
  * Class that operate on table 'sale_order_item'. Database Mysql.
- *
- * @author: http://phpdao.com
- * @date: 2021-05-14 19:34
  */
 class SaleOrderItemMySqlDAO implements SaleOrderItemDAO{
 
@@ -57,13 +54,14 @@ class SaleOrderItemMySqlDAO implements SaleOrderItemDAO{
  	 * @param SaleOrderItemMySql saleOrderItem
  	 */
 	public function insert($saleOrderItem){
-		$sql = 'INSERT INTO sale_order_item (sale_order_id, item_id, qty, price, meta) VALUES (?, ?, ?, ?, ?)';
+		$sql = 'INSERT INTO sale_order_item (sale_order_id, item_id, qty, price, commission, meta) VALUES (?, ?, ?, ?, ?, ?)';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($saleOrderItem->saleOrderId);
 		$sqlQuery->set($saleOrderItem->itemId);
 		$sqlQuery->setNumber($saleOrderItem->qty);
 		$sqlQuery->set($saleOrderItem->price);
+		$sqlQuery->set($saleOrderItem->commission);
 		$sqlQuery->set($saleOrderItem->meta);
 
 		$id = $this->executeInsert($sqlQuery);	
@@ -77,13 +75,14 @@ class SaleOrderItemMySqlDAO implements SaleOrderItemDAO{
  	 * @param SaleOrderItemMySql saleOrderItem
  	 */
 	public function update($saleOrderItem){
-		$sql = 'UPDATE sale_order_item SET sale_order_id = ?, item_id = ?, qty = ?, price = ?, meta = ? WHERE id = ?';
+		$sql = 'UPDATE sale_order_item SET sale_order_id = ?, item_id = ?, qty = ?, price = ?, commission = ?, meta = ? WHERE id = ?';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($saleOrderItem->saleOrderId);
 		$sqlQuery->set($saleOrderItem->itemId);
 		$sqlQuery->setNumber($saleOrderItem->qty);
 		$sqlQuery->set($saleOrderItem->price);
+		$sqlQuery->set($saleOrderItem->commission);
 		$sqlQuery->set($saleOrderItem->meta);
 
 		$sqlQuery->set($saleOrderItem->id);
@@ -127,6 +126,13 @@ class SaleOrderItemMySqlDAO implements SaleOrderItemDAO{
 		return $this->getList($sqlQuery);
 	}
 
+	public function queryByCommission($value){
+		$sql = 'SELECT * FROM sale_order_item WHERE commission = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->getList($sqlQuery);
+	}
+
 	public function queryByMeta($value){
 		$sql = 'SELECT * FROM sale_order_item WHERE meta = ?';
 		$sqlQuery = new SqlQuery($sql);
@@ -163,6 +169,13 @@ class SaleOrderItemMySqlDAO implements SaleOrderItemDAO{
 		return $this->executeUpdate($sqlQuery);
 	}
 
+	public function deleteByCommission($value){
+		$sql = 'DELETE FROM sale_order_item WHERE commission = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->executeUpdate($sqlQuery);
+	}
+
 	public function deleteByMeta($value){
 		$sql = 'DELETE FROM sale_order_item WHERE meta = ?';
 		$sqlQuery = new SqlQuery($sql);
@@ -185,6 +198,7 @@ class SaleOrderItemMySqlDAO implements SaleOrderItemDAO{
 		$saleOrderItem->itemId = $row['item_id'];
 		$saleOrderItem->qty = $row['qty'];
 		$saleOrderItem->price = $row['price'];
+		$saleOrderItem->commission = $row['commission'];
 		$saleOrderItem->meta = $row['meta'];
 		$saleOrderItem->name = isset($row['title']) ? $row['title'] : "";
 		$saleOrderItem->status = isset($row['status']) ? $row['status'] : "";
