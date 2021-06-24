@@ -115,10 +115,19 @@ class HelperController extends AbstractActionController
         $str = "";
         for ($i = 0; $i < $length; $i++) {
             $str .= $chars[rand(0, $size - 1)];
-            //echo $str;
         }
         return $str;
-        //return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length);
+    }
+
+    public static function randomNumber($length = 10)
+    {
+        $chars = "0123456789";
+        $size = strlen($chars);
+        $str = "";
+        for ($i = 0; $i < $length; $i++) {
+            $str .= $chars[rand(0, $size - 1)];
+        }
+        return $str;
     }
 
     public static function downloadFile($url = "", $prefix = "")
