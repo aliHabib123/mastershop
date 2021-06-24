@@ -17,6 +17,7 @@
 		var $tel1;
 		var $tel2;
 		var $companyName;
+		var $companyCommission;
 		var $contactPerson;
 		var $activationCode;
 		var $status;

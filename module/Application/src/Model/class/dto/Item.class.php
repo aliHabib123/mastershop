@@ -63,6 +63,8 @@
 
 		var $companyName;
 
+		var $companyCommission;
+
 		var $supplierstatus;
 
 		var $usdExchangeRate;

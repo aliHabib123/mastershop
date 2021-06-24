@@ -243,6 +243,12 @@ if (isset($_REQUEST['act'])) {
 						<span class="title">Social Media</span>
 					</a>
 				</li>
+				<li class="">
+					<a href="display_orders.php">
+						<!-- <i class="fa fa-bell"></i> -->
+						<span class="title">Sale Orders</span>
+					</a>
+				</li>
 				<!-- <li>
 					<a class="active" href="javascript:;">
 						<i class="fa fa-bell"></i>

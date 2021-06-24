@@ -542,6 +542,26 @@ return [
                     ],
                 ],
             ],
+            'orderCancel' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/order-cancel',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'orderCancel',
+                    ],
+                ],
+            ],
+            'orderError' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/order-error',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'orderError',
+                    ],
+                ],
+            ],
             'updateUser' => [
                 'type'    => Literal::class,
                 'options' => [

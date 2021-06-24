@@ -161,4 +161,18 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
         $sqlQuery->set($value);
         return $this->getList($sqlQuery);
     }
+
+    public function loadItem($id){
+		$sql = 'SELECT 
+                    a.*,
+                    b.company_name,
+                    b.company_commission 
+                FROM item a 
+                LEFT OUTER JOIN user b 
+                ON a.`supplier_id` = b.`id` 
+                WHERE a.`id` = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($id);
+		return $this->getRow($sqlQuery);
+	}
 }

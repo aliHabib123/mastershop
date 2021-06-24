@@ -416,7 +416,7 @@ class UserController extends AbstractActionController
             $itemMySqlExtDAO = new ItemMySqlExtDAO();
             $items = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
             foreach ($items as $item) {
-                $rawPrice = ProductController::getFinalPrice($item->regularPrice * $item->usdExchangeRate, $item->salePrice* $item->usdExchangeRate, true);
+                $rawPrice = ProductController::getFinalPrice($item->regularPrice * $item->usdExchangeRate, $item->salePrice * $item->usdExchangeRate, true);
                 $subtotalRaw = $rawPrice * $item->cartQty;
                 $total += $subtotalRaw;
                 if ($item->id == $itemId) {
@@ -693,15 +693,20 @@ class UserController extends AbstractActionController
                 $insertSaleOrder = $saleOrderMySqlExtDAO->insert($saleOrderObj);
 
                 if ($insertSaleOrder) {
+                    $saleOrder = $saleOrderMySqlExtDAO->load($insertSaleOrder);
+                    $saleOrder->reference = $insertSaleOrder . "-" . HelperController::randomNumber(15);
+                    $saleOrderMySqlExtDAO->update($saleOrder);
                     $c = 0;
                     $total = 0;
                     foreach ($cartItems as $row) {
+                        $itemInfo = $itemMySqlExtDAO->loadItem($row->id);
                         $total += $row->cartQty * ProductController::getFinalPrice($row->regularPrice * $row->usdExchangeRate, $row->salePrice * $row->usdExchangeRate, true);
                         $saleOrderItemObj = new SaleOrderItem();
                         $saleOrderItemObj->saleOrderId = $insertSaleOrder;
                         $saleOrderItemObj->itemId = $row->id;
                         $saleOrderItemObj->qty = $row->cartQty;
                         $saleOrderItemObj->price = ProductController::getFinalPrice($row->regularPrice * $row->usdExchangeRate, $row->salePrice * $row->usdExchangeRate, true);
+                        $saleOrderItemObj->commission = $row->cartQty * $saleOrderItemObj->price * ($itemInfo->companyCommission / 100);
                         $insertSaleOrderItem = $saleOrderItemMySqlExtDAO->insert($saleOrderItemObj);
                         if ($insertSaleOrderItem) {
                             $c++;
@@ -710,12 +715,8 @@ class UserController extends AbstractActionController
                             $saleOrder = $saleOrderMySqlExtDAO->load($insertSaleOrder);
                             $saleOrder->netTotal = $total;
                             $saleOrderMySqlExtDAO->update($saleOrder);
-                            // $cartMySqlExtDAO = new CartMySqlExtDAO();
-                            // $cartMySqlExtDAO->deleteByUserId($_SESSION['user']->id);
-                            // $_SESSION['user']->cart = [];
                             $msg = "Order Success";
                             $redirectUrl = MAIN_URL . 'pay?orderId=' . $insertSaleOrder . "&amount=" . $total;
-                            //$redirectUrl = MAIN_URL . 'order-result?res=success';
                             $result = true;
                         }
                     }
@@ -966,5 +967,34 @@ class UserController extends AbstractActionController
         $order->successIndicator = $successIndicator;
         $order->updatedAt = date('Y-m-d H:i:s');
         return $saleOrderMySqlExtDAO->update($order);
+    }
+
+    public function orderCancelAction()
+    {
+        self::checkCustomerLoggedIn();
+        $orderId = (isset($_GET['order_id']) && !empty($_GET['order_id'])) ? HelperController::filterInput($_GET['order_id']) : false;
+        $saleOrderMySqlExtDAO = new SaleOrderMySqlExtDAO();
+        $saleOrder = $saleOrderMySqlExtDAO->load($orderId);
+        $saleOrder->status = PaymentController::$CANCELED;
+        $update = $saleOrderMySqlExtDAO->update($saleOrder);
+        if ($update) {
+            header('Location: ' . MAIN_URL);
+            exit();
+        }
+        return new ViewModel();
+    }
+    public function orderErrorAction()
+    {
+        self::checkCustomerLoggedIn();
+        $orderId = (isset($_GET['order_id']) && !empty($_GET['order_id'])) ? HelperController::filterInput($_GET['order_id']) : false;
+        $saleOrderMySqlExtDAO = new SaleOrderMySqlExtDAO();
+        $saleOrder = $saleOrderMySqlExtDAO->load($orderId);
+        $saleOrder->status = PaymentController::$FAILED;
+        $update = $saleOrderMySqlExtDAO->update($saleOrder);
+        if ($update) {
+            header('Location: ' . MAIN_URL);
+            exit();
+        }
+        return new ViewModel();
     }
 }

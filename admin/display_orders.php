@@ -10,6 +10,7 @@ function main()
 	$statuses = [
 		'paid',
 		'canceled',
+		'failed',
 		'pending',
 	];
 
@@ -24,14 +25,14 @@ function main()
 		$offset = ($page - 1) * $limit;
 	}
 	$status = isset($_GET['status']) && !empty($_GET['status']) ? filter_var($_GET['status'], FILTER_SANITIZE_STRING) : false;
-	if($status){
+	if ($status) {
 		$condition .= " a.`status` = '$status' AND";
 	}
-	
+
 	$saleOrderMySqlExtDAO = new SaleOrderMySqlExtDAO();
 	$orderBy = "desc";
 	$fieldName = "a.`id`";
-	
+
 	$condition .= " 1 order by $fieldName $orderBy ";
 	$currentPage = $page;
 	$recordsCount = count($saleOrderMySqlExtDAO->selectOrders($condition));
@@ -56,6 +57,7 @@ function main()
 						<label><input type="checkbox" checked data-column="<?php echo "2"; ?>"><?php echo "Num of Items"; ?></label>
 						<label><input type="checkbox" checked data-column="<?php echo "3"; ?>"><?php echo "Total"; ?></label>
 						<label><input type="checkbox" checked data-column="<?php echo "4"; ?>"><?php echo "Status"; ?></label>
+						<label><input type="checkbox" checked data-column="<?php echo "5"; ?>"><?php echo "Reference"; ?></label>
 					</div>
 				</div>
 			</div>
@@ -94,6 +96,7 @@ function main()
 						<th><?php echo "Num of Items"; ?></th>
 						<th><?php echo "Total"; ?></th>
 						<th><?php echo "Status"; ?></th>
+						<th><?php echo "Reference"; ?></th>
 						<th></th>
 					</tr>
 				</thead>
@@ -109,10 +112,10 @@ function main()
 							<td><?php echo $row->numItemsSold; ?></td>
 							<td><?php echo number_format($row->netTotal) . " LBP"; ?></td>
 							<td><?php echo ucfirst($row->status); ?></td>
-
+							<td><?php echo $row->reference; ?></td>
 							<td>
 								<?php /*view_order.php?id=<?php echo $row->id; ?>*/ ?>
-								<a class="btn btn-xs yellow" href="javsscript:void(0);">
+								<a class="btn btn-xs yellow" href="view_order.php?id=<?php echo $row->id;?>">
 									View Order
 								</a>
 							</td>
