@@ -252,20 +252,21 @@ if (isset($_REQUEST['act'])) {
 				<!-- <li>
 					<a class="active" href="javascript:;">
 						<i class="fa fa-bell"></i>
-						<span class="title">Jobs</span>
+						<span class="title">Accounting</span>
 						<span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
 						<li>
-							<a href="display_vacancy.php">
-								Vacancies
+							<a href="accounting_dashboard.php">
+								Dashboard
 							</a>
 						</li>
 						<li>
-							<a href="display_applicant.php">
-								Applicants
+							<a href="display_reports.php">
+								Reports
 							</a>
 						</li>
+
 					</ul>
 				</li> -->
 			</ul>

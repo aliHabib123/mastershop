@@ -28,9 +28,10 @@ $user->email = $email;
 $user->mobile = $mobile;
 $user->tel1 = $tel1;
 $user->tel2 = $tel2;
+$user->companyCommission = $commission;
 $user->status = $status;
 
-if ($company_name == "" || $first_name == "" || $last_name == "" || $email == "") {
+if ($company_name == "" || $commission == "" || $first_name == "" || $last_name == "" || $email == "") {
     $msg = "Please fill all required fields marked with *";
 } elseif (
     ($action == 'new' && $userMysqlExtDAO->queryByEmail($email)) ||
@@ -67,5 +68,3 @@ echo json_encode([
     'status' => $result,
     'msg' => $msg,
 ]);
-// header("Location: display_supplier.php?act=".$act);
-// exit();

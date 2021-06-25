@@ -44,7 +44,7 @@ class ProductController extends AbstractActionController
             $page = $_GET['page'];
             $offset = ($page - 1) * $limit;
         }
-        $search = (isset($_GET['search']) && $_GET['search'] != "") ? $_GET['search'] : false;
+        $search = (isset($_GET['search']) && $_GET['search'] != "") ? $_GET['search'] : "";
         $brandId = (isset($_GET['brand']) && $_GET['brand'] != "") ? $_GET['brand'] : "";
         $minPrice = (isset($_GET['min-price']) && $_GET['min-price'] != "") ? $_GET['min-price'] : "";
         $maxPrice = (isset($_GET['max-price']) && $_GET['max-price'] != "") ? $_GET['max-price'] : "";
@@ -127,16 +127,15 @@ class ProductController extends AbstractActionController
         $itemsCount = count(self::getItems($categoryArray, $search, $brandId, $minPrice, $maxPrice, false));
         $totalPages = ceil($itemsCount / $limit);
 
-        $isSearchPage = false;
-        if ($search != false) {
-            $isSearchPage = true;
-        }
+        $isSearchPage = $search != "" ? true : false;
+
         $data = [
             'items' => $items,
             'totalPages' => $totalPages,
             'currentPage' => $page,
             'completeSlug' => $completeSlug,
             'isSearch' => $isSearchPage,
+            'search' => $search,
             'cat1' => $cat1,
             'cat2' => $cat2,
             'cat3' => $cat3,
@@ -477,7 +476,7 @@ class ProductController extends AbstractActionController
         return PRODUCT_PLACEHOLDER_IMAGE_URL;
     }
 
-    public static function getItems($categoryId = false, $search = false, $brandId = "", $minPrice = "", $maxPrice = "", $tagId = false, $orderBy = "", $limit = 0, $offset = 0)
+    public static function getItems($categoryId = false, $search = "", $brandId = "", $minPrice = "", $maxPrice = "", $tagId = false, $orderBy = "", $limit = 0, $offset = 0)
     {
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
         $items = $itemMySqlExtDAO->getItems($categoryId, $search, $brandId, $minPrice, $maxPrice, $tagId, $orderBy, $limit, $offset);
