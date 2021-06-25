@@ -167,6 +167,13 @@ class DAOFactory{
 	}
 
 	/**
+	 * @return OptionsDAO
+	 */
+	public static function getOptionsDAO(){
+		return new OptionsMySqlExtDAO();
+	}
+
+	/**
 	 * @return PermissionDAO
 	 */
 	public static function getPermissionDAO(){
