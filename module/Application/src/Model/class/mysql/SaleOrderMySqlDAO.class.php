@@ -54,7 +54,7 @@ class SaleOrderMySqlDAO implements SaleOrderDAO{
  	 * @param SaleOrderMySql saleOrder
  	 */
 	public function insert($saleOrder){
-		$sql = 'INSERT INTO sale_order (parent_id, num_items_sold, total_sales, tax_total, shipping_total, net_total, status, success_indicator, reference, customer_id, note, address_id, delivery_address, created_at, created_at_gmt, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+		$sql = 'INSERT INTO sale_order (parent_id, num_items_sold, total_sales, tax_total, shipping_total, net_total, status, success_indicator, payment_type, delivery_status, reference, customer_id, note, address_id, delivery_address, created_at, created_at_gmt, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($saleOrder->parentId);
@@ -65,6 +65,8 @@ class SaleOrderMySqlDAO implements SaleOrderDAO{
 		$sqlQuery->set($saleOrder->netTotal);
 		$sqlQuery->set($saleOrder->status);
 		$sqlQuery->set($saleOrder->successIndicator);
+		$sqlQuery->set($saleOrder->paymentType);
+		$sqlQuery->set($saleOrder->deliveryStatus);
 		$sqlQuery->set($saleOrder->reference);
 		$sqlQuery->set($saleOrder->customerId);
 		$sqlQuery->set($saleOrder->note);
@@ -85,7 +87,7 @@ class SaleOrderMySqlDAO implements SaleOrderDAO{
  	 * @param SaleOrderMySql saleOrder
  	 */
 	public function update($saleOrder){
-		$sql = 'UPDATE sale_order SET parent_id = ?, num_items_sold = ?, total_sales = ?, tax_total = ?, shipping_total = ?, net_total = ?, status = ?, success_indicator = ?, reference = ?, customer_id = ?, note = ?, address_id = ?, delivery_address = ?, created_at = ?, created_at_gmt = ?, updated_at = ? WHERE id = ?';
+		$sql = 'UPDATE sale_order SET parent_id = ?, num_items_sold = ?, total_sales = ?, tax_total = ?, shipping_total = ?, net_total = ?, status = ?, success_indicator = ?, payment_type = ?, delivery_status = ?, reference = ?, customer_id = ?, note = ?, address_id = ?, delivery_address = ?, created_at = ?, created_at_gmt = ?, updated_at = ? WHERE id = ?';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($saleOrder->parentId);
@@ -96,6 +98,8 @@ class SaleOrderMySqlDAO implements SaleOrderDAO{
 		$sqlQuery->set($saleOrder->netTotal);
 		$sqlQuery->set($saleOrder->status);
 		$sqlQuery->set($saleOrder->successIndicator);
+		$sqlQuery->set($saleOrder->paymentType);
+		$sqlQuery->set($saleOrder->deliveryStatus);
 		$sqlQuery->set($saleOrder->reference);
 		$sqlQuery->set($saleOrder->customerId);
 		$sqlQuery->set($saleOrder->note);
@@ -169,6 +173,20 @@ class SaleOrderMySqlDAO implements SaleOrderDAO{
 
 	public function queryBySuccessIndicator($value){
 		$sql = 'SELECT * FROM sale_order WHERE success_indicator = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->getList($sqlQuery);
+	}
+
+	public function queryByPaymentType($value){
+		$sql = 'SELECT * FROM sale_order WHERE payment_type = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->getList($sqlQuery);
+	}
+
+	public function queryByDeliveryStatus($value){
+		$sql = 'SELECT * FROM sale_order WHERE delivery_status = ?';
 		$sqlQuery = new SqlQuery($sql);
 		$sqlQuery->set($value);
 		return $this->getList($sqlQuery);
@@ -287,6 +305,20 @@ class SaleOrderMySqlDAO implements SaleOrderDAO{
 		return $this->executeUpdate($sqlQuery);
 	}
 
+	public function deleteByPaymentType($value){
+		$sql = 'DELETE FROM sale_order WHERE payment_type = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->executeUpdate($sqlQuery);
+	}
+
+	public function deleteByDeliveryStatus($value){
+		$sql = 'DELETE FROM sale_order WHERE delivery_status = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->executeUpdate($sqlQuery);
+	}
+
 	public function deleteByReference($value){
 		$sql = 'DELETE FROM sale_order WHERE reference = ?';
 		$sqlQuery = new SqlQuery($sql);
@@ -362,6 +394,8 @@ class SaleOrderMySqlDAO implements SaleOrderDAO{
 		$saleOrder->netTotal = $row['net_total'];
 		$saleOrder->status = $row['status'];
 		$saleOrder->successIndicator = $row['success_indicator'];
+		$saleOrder->paymentType = $row['payment_type'];
+		$saleOrder->deliveryStatus = $row['delivery_status'];
 		$saleOrder->reference = $row['reference'];
 		$saleOrder->customerId = $row['customer_id'];
 		$saleOrder->note = $row['note'];

@@ -720,6 +720,11 @@ class UserController extends AbstractActionController
         $result = false;
         $msg = "Error";
         $redirectUrl = MAIN_URL . 'order-result?res=fail';
+        $availablePayments = [
+            PaymentController::$PAYMENT_CASH_ON_DELIVERY,
+            PaymentController::$PAYMENT_ONLINE,
+        ];
+
         $fullName = HelperController::filterInput($this->getRequest()->getPost('full-name'));
         $email = HelperController::filterInput($this->getRequest()->getPost('email'));
         $mobile = HelperController::filterInput($this->getRequest()->getPost('mobile'));
@@ -727,9 +732,12 @@ class UserController extends AbstractActionController
         $city = HelperController::filterInput($this->getRequest()->getPost('city'));
         $deliveryAddress = HelperController::filterInput($this->getRequest()->getPost('delivery-address'));
         $notes = HelperController::filterInput($this->getRequest()->getPost('notes'));
+        $paymentMethod = HelperController::filterInput($this->getRequest()->getPost('payment-method'));
 
         if ($fullName == "" || $email == "" || $mobile == "" || $country == "" || $city == "" || $deliveryAddress == "") {
             $msg = "Please fill all inputs!";
+        } elseif (!in_array($paymentMethod, $availablePayments)) {
+            $msg = "Invalid payment method!";
         } else {
             $itemMySqlExtDAO = new ItemMySqlExtDAO();
             $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
@@ -744,6 +752,7 @@ class UserController extends AbstractActionController
                 $saleOrderObj->customerId = $_SESSION['user']->id;
                 $saleOrderObj->note = $notes;
                 $saleOrderObj->deliveryAddress = $deliveryAddress;
+                $saleOrderObj->paymentType = $paymentMethod;
                 $saleOrderObj->createdAt = date('Y-m-d H:i:s');
                 $saleOrderObj->updatedAt = date('Y-m-d H:i:s');
                 $saleOrderObj->createdAtGmt = gmdate('Y-m-d H:i:s');
@@ -783,7 +792,12 @@ class UserController extends AbstractActionController
                         $saleOrder->netTotal = $netTotal;
                         $saleOrderMySqlExtDAO->update($saleOrder);
                         $msg = "Order Success";
-                        $redirectUrl = MAIN_URL . 'pay?orderId=' . $insertSaleOrder . "&amount=" . $netTotal;
+                        if ($paymentMethod == PaymentController::$PAYMENT_CASH_ON_DELIVERY) {
+                            $redirectUrl = MAIN_URL . 'order-result?orderId=' . $insertSaleOrder . "&payment=" . PaymentController::$PAYMENT_CASH_ON_DELIVERY;
+                        } elseif ($paymentMethod == PaymentController::$PAYMENT_ONLINE) {
+                            $redirectUrl = MAIN_URL . 'pay?orderId=' . $insertSaleOrder . "&amount=" . $netTotal;
+                        }
+
                         $result = true;
                     }
                 }
@@ -801,23 +815,29 @@ class UserController extends AbstractActionController
 
     public function orderResultAction()
     {
+        self::checkCustomerLoggedIn();
         $success = false;
-        $orderId = $_GET['orderId'];
-        $successIndicator = $_GET['resultIndicator'];
-
+        $isCashOnDelivery = false;
+        $orderId = isset($_GET['orderId']) ? $_GET['orderId'] : "";
+        $successIndicator = isset($_GET['resultIndicator']) ? $_GET['resultIndicator'] : "";
+        if (isset($_GET['payment'])) {
+            if ($_GET['payment'] == PaymentController::$PAYMENT_CASH_ON_DELIVERY) {
+                $isCashOnDelivery = true;
+            }
+        }
         $saleOrdermySqlExtDAO = new SaleOrderMySqlExtDAO();
         $orderInfo = $saleOrdermySqlExtDAO->load($orderId);
+        $success = true;
+        $cartMySqlExtDAO = new CartMySqlExtDAO();
+        $cartMySqlExtDAO->deleteByUserId($_SESSION['user']->id);
+        $_SESSION['user']->cart = [];
 
-        if ($orderInfo->successIndicator == $successIndicator) {
-            UserController::UpdateOrderStatus($orderId, PaymentController::$PAID);
-            $success = true;
-            $cartMySqlExtDAO = new CartMySqlExtDAO();
-            $cartMySqlExtDAO->deleteByUserId($_SESSION['user']->id);
-            $_SESSION['user']->cart = [];
+        if ($isCashOnDelivery) {
         } else {
-            UserController::UpdateOrderStatus($orderId, PaymentController::$FAILED);
+            $paymentStatus = $orderInfo->successIndicator == $successIndicator ? PaymentController::$PAID : PaymentController::$FAILED;
+            UserController::UpdateOrderStatus($orderId, $paymentStatus);
         }
-        self::checkCustomerLoggedIn();
+
         return new ViewModel([
             'success' => $success,
         ]);
