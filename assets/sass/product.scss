@@ -421,6 +421,9 @@
   }
 }
 .sidebar-category-menu {
+  input[type="checkbox"] {
+    float: right;
+  }
   ul {
     padding-left: 0;
     list-style: none;

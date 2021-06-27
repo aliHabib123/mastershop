@@ -40,7 +40,7 @@ function main()
 	$toDate = $toDate->format('Y-m-d 23:59:59');
 	$displayToDate = date('d/m/Y', strtotime($toDate));
 
-	echo $fromDate." ".$toDate;
+	//echo $fromDate." ".$toDate;
 
 	$saleOrderItemMySqlExtA =  new SaleOrderItemMySqlExtDAO(); ?>
 	<div class="portlet box blue">

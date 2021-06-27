@@ -1391,6 +1391,9 @@ a.disabled {
   .min-max-price span {
     min-width: 70px; }
 
+.sidebar-category-menu input[type="checkbox"] {
+  float: right; }
+
 .sidebar-category-menu ul {
   padding-left: 0;
   list-style: none; }

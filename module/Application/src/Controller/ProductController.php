@@ -48,6 +48,7 @@ class ProductController extends AbstractActionController
         $brandId = (isset($_GET['brand']) && $_GET['brand'] != "") ? $_GET['brand'] : "";
         $minPrice = (isset($_GET['min-price']) && $_GET['min-price'] != "") ? $_GET['min-price'] : "";
         $maxPrice = (isset($_GET['max-price']) && $_GET['max-price'] != "") ? $_GET['max-price'] : "";
+        $categoriesFiltered = (isset($_GET['categories']) && $_GET['categories'] != "") ? $_GET['categories'] : [];
 
         $cat1 = $this->params('cat1') ? HelperController::filterInput($this->params('cat1')) : false;
         $cat2 = $this->params('cat2') ? HelperController::filterInput($this->params('cat2')) : false;
@@ -84,6 +85,9 @@ class ProductController extends AbstractActionController
         // End of get Category Slug
 
         $categoryArray = [];
+        foreach ($categoriesFiltered as $filteredCategory) {
+            array_push($categoryArray, $filteredCategory);
+        }
         if ($categoryId) {
             array_push($categoryArray, $categoryId);
             if ($cat3) {
@@ -150,6 +154,7 @@ class ProductController extends AbstractActionController
             'brandId' => $brandId,
             'minPrice' => $minPrice,
             'maxPrice' => $maxPrice,
+            'categoriesFiltered' => $categoriesFiltered,
         ];
         return new ViewModel($data);
     }
@@ -577,7 +582,7 @@ class ProductController extends AbstractActionController
         $slug = HelperController::slugify($title);
         $item = $itemMySqlExtDAO->queryBySlugAndSupplierId($slug, $_SESSION['user']->id)[0];
         if ($item) {
-            if($item->sku == $sku && $item->slug == $slug){
+            if ($item->sku == $sku && $item->slug == $slug) {
                 return $item->slug;
             }
         } else {

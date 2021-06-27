@@ -79,7 +79,14 @@ function main()
 							<input name="display_order" type="number" class="form-control" id="display_order" value="<?php echo $res->displayOrder ?>" placeholder="Ex: 1">
 						</div>
 					</div>
-
+					<div class="form-group">
+						<label class="col-md-3 control-label">Show In Menu</label>
+						<div class="col-md-9">
+							<div class="make-switch" data-on="warning" data-off="danger">
+								<input type="checkbox" class="toggle" name="show_in_menu" <?php if ($res->showInMenu == "1") { echo "checked"; } ?> />
+							</div>
+						</div>
+					</div>
 
 					<br />
 					<div class="row">

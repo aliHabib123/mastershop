@@ -135,7 +135,7 @@ class BrandCategoryMappingMySqlDAO implements BrandCategoryMappingDAO{
 		$brandCategoryMapping->id = $row['id'];
 		$brandCategoryMapping->brandId = $row['brand_id'];
 		$brandCategoryMapping->categoryId = $row['category_id'];
-		$brandCategoryMapping->categoryName = $row['name'];
+		$brandCategoryMapping->categoryName = isset($row['name']) ? $row['name'] : "";
 
 		return $brandCategoryMapping;
 	}
@@ -191,4 +191,3 @@ class BrandCategoryMappingMySqlDAO implements BrandCategoryMappingDAO{
 		return QueryExecutor::executeInsert($sqlQuery);
 	}
 }
-?>

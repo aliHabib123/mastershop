@@ -8,6 +8,7 @@ include '../module/Application/src/Model/include_dao.php';
 
 $itemBrandMysqlExtDAO = new ItemBrandMySqlExtDAO();
 extract($_POST);
+$show_in_menu = radio_button($show_in_menu);
 
 $image = upload_image("image", "$imagesPath");
 if (is_file($imagesPath . $image)) {
@@ -25,13 +26,14 @@ $obj->name = $name;
 $obj->image = $image;
 $obj->displayOrder = $display_order;
 $obj->brandTypeId = 0;
+$obj->showInMenu = $show_in_menu;
 
 $insert = $itemBrandMysqlExtDAO->insert($obj);
 
 if ($insert) {
-    if(isset($categories) && !empty($categories)){
+    if (isset($categories) && !empty($categories)) {
         $brandCategoryMappingMySqlExtDAO = DAOFactory::getBrandCategoryMappingDAO();
-        foreach($categories as $row){
+        foreach ($categories as $row) {
             $brandCategoryMappingObj = new BrandCategoryMapping();
             $brandCategoryMappingObj->brandId = $insert;
             $brandCategoryMappingObj->categoryId = $row;

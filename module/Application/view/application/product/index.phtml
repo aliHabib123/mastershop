@@ -77,11 +77,18 @@ if ($this->isSearch) {
                                     <div id="collapseOne" class="collapse" data-parent="#accordion">
                                         <div class="card-body">
                                             <div class="sidebar-category-menu">
-                                                <ul>
-                                                    <?php foreach ($this->categoryList as $row) { ?>
-                                                        <li><a href="<?php echo $this->prefixUrl . $row->slug; ?>"><?php echo $row->name; ?></a></li>
-                                                    <?php } ?>
-                                                </ul>
+                                                <?php foreach ($this->categoryList as $row) { 
+                                                    $checked = "";
+                                                    if(in_array($row->id, $this->categoriesFiltered)){
+                                                        $checked = "checked";
+                                                    }?>
+                                                    <div class="forms-check">
+                                                        <label class="form-scheck-label" for="<?php echo $row->id; ?>">
+                                                            <?php echo $row->name; ?>
+                                                        </label>
+                                                        <input <?php echo $checked;?> name="categories[]" class="forms-check-input" type="checkbox" value="<?php echo $row->id;?>" id="<?php echo $row->id; ?>">
+                                                    </div>
+                                                <?php } ?>
                                             </div>
                                         </div>
                                     </div>
