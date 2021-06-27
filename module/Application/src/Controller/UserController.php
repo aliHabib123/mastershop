@@ -790,6 +790,8 @@ class UserController extends AbstractActionController
                         }
                         $netTotal = floatval($total) + floatval($shipping);
                         $saleOrder->netTotal = $netTotal;
+                        $saleOrder->shippingTotal = floatval($shipping);
+                        $saleOrder->totalSales = floatval($total);
                         $saleOrderMySqlExtDAO->update($saleOrder);
                         $msg = "Order Success";
                         if ($paymentMethod == PaymentController::$PAYMENT_CASH_ON_DELIVERY) {

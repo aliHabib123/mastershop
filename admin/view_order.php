@@ -86,6 +86,10 @@ function main()
 						<td><?php echo ucfirst($saleOrder->status); ?></td>
 					</tr>
 					<tr>
+						<td width="20%"><b>Payment Method</b></td>
+						<td><?php echo ucfirst(str_replace('-', ' ', $saleOrder->paymentType)); ?></td>
+					</tr>
+					<tr>
 						<td width="20%"><b>Customer Name</b></td>
 						<td><?php echo $customerInfo->fullName; ?></td>
 					</tr>
