@@ -759,6 +759,9 @@ a.disabled {
     .upper-menu-container .upper-menu .custom-menu.custom-menu-centered li a:hover, .upper-menu-container .upper-menu .custom-menu.custom-menu-centered li a:active, .upper-menu-container .upper-menu .custom-menu.custom-menu-centered li a:focus {
       color: #fff;
       background-color: #2576ba; }
+    .upper-menu-container .upper-menu .custom-menu.custom-menu-centered li.promotions-link a {
+      background-color: #ef0101;
+      color: #fff; }
     .upper-menu-container .upper-menu .custom-menu li a {
       color: #000;
       padding: 5px 10px;
@@ -1411,6 +1414,23 @@ a.disabled {
   .sidebar-filter-btn button {
     padding: 10px 15px;
     font-size: 18px; }
+
+.promotions-categories {
+  margin-bottom: 25px; }
+  .promotions-categories ul li a {
+    color: #2576ba; }
+    .promotions-categories ul li a:hover, .promotions-categories ul li a:active, .promotions-categories ul li a:focus {
+      color: #818181; }
+    .promotions-categories ul li a.active {
+      background-color: #2576ba;
+      color: #fff; }
+
+h3.no-results {
+  text-align: center;
+  display: block;
+  width: 100%;
+  margin-top: 25px;
+  margin-bottom: 25px; }
 
 footer {
   background-color: #f6f6f6;

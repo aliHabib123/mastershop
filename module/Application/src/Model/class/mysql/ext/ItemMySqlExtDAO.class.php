@@ -89,7 +89,7 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
         if ($limit != 0) {
             $sql .= " LIMIT $limit OFFSET $offset";
         }
-        //echo $sql;
+        //echo $sql;echo '<br><br>';
         $sqlQuery = new SqlQuery($sql);
         return $this->getList($sqlQuery);
     }

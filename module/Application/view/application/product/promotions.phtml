@@ -1,6 +1,8 @@
 <?php
 
 use Application\Controller\DesignController;
+use Application\Controller\HelperController;
+
 ?>
 <div class="main-wrapper">
     <div class="small-banner-container with-breadcrumb">
@@ -17,7 +19,7 @@ use Application\Controller\DesignController;
         <div class="banner-breadcrumb">
             <div class="container">
                 <ul>
-                    <li><a href="<?php echo MAIN_URL;?>"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
+                    <li><a href="<?php echo MAIN_URL; ?>"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
                     <li><a class="light">Promotions</a></li>
                 </ul>
             </div>
@@ -27,7 +29,7 @@ use Application\Controller\DesignController;
         <div class="breadcrumb-c-inner">
             <div class="container">
                 <ul>
-                    <li><a href="<?php echo MAIN_URL;?>"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
+                    <li><a href="<?php echo MAIN_URL; ?>"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
                     <li><a>Promotions</a></li>
                 </ul>
             </div>
@@ -40,13 +42,37 @@ use Application\Controller\DesignController;
             </div>
         </div>
         <div class="row">
-        <?php $obj = new stdClass();?>
-        <?php foreach ($this->items as $item) { ?>
+            <div class="col-md-12 promotions-categories">
+                <ul class="nav justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link <?php if (!$this->category) {
+                                                echo 'active';
+                                            } ?>" href="<?php echo MAIN_URL . 'promotions' ?>">All</a>
+                    </li>
+                    <?php foreach ($this->categories as $row) {
+                        $active = "";
+                        if ($this->category == $row->slug) {
+                            $active = "active";
+                        } ?>
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo $active; ?>" href="<?php echo MAIN_URL . 'promotions/?category=' . $row->slug; ?>"><?php echo $row->name; ?></a>
+                        </li>
+                    <?php } ?>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <?php if($this->items){
+                foreach ($this->items as $item) { ?>
                 <div class="col-6 col-md-2 item-col">
                     <?php echo DesignController::item($item); ?>
                 </div>
-            <?php } ?>
-
+            <?php }
+        } else { ?>
+    <div class="col-md-12 text-center">
+        <h3 class="no-results">No Items Found</h3>
+    </div>
+<?php }?>
         </div>
 
         <div class="row">
@@ -56,7 +82,19 @@ use Application\Controller\DesignController;
         </div>
     </div>
 </div>
+<?php
+$url = HelperController::getCurrentUrl();
+$t = parse_url($url, PHP_URL_QUERY); # output "myqueryhash"
+parse_str($t, $output);
+unset($output['page']);
+$append = "";
+if ($output) {
+    $append = '&' . http_build_query($output);
+}
+?>
 <script type="text/javascript">
+    const append = '<?php echo $append; ?>';
+    const currentPageUrl = '<?php echo MAIN_URL . 'promotions'; ?>';
     $(function() {
         //alert('s');
         //Pagination
@@ -70,7 +108,7 @@ use Application\Controller\DesignController;
             startPage: <?php echo $this->currentPage; ?>,
             initiateStartPageClick: false,
             onPageClick: function(event, page) {
-                location.href = '<?php echo MAIN_URL . 'promotions' . "/?page="; ?>' + page;
+                location.href = '<?php echo MAIN_URL . 'promotions' . "/?page="; ?>' + page + append;
             },
         });
     });

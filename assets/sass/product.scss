@@ -5,8 +5,8 @@
   text-align: -moz-center;
   text-align: center;
   line-height: 1;
-  &:hover{
-   // box-shadow: 0px 0px 6px 4px #ebebee;
+  &:hover {
+    // box-shadow: 0px 0px 6px 4px #ebebee;
   }
   &_title {
     margin-bottom: 10px;
@@ -455,4 +455,30 @@
     padding: 10px 15px;
     font-size: 18px;
   }
+}
+.promotions-categories {
+  margin-bottom: 25px;
+  ul {
+    li {
+      a {
+        color: $base-color;
+        &:hover,
+        &:active,
+        &:focus {
+          color: $base-grey;
+        }
+        &.active {
+          background-color: $base-color;
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+h3.no-results {
+  text-align: center;
+  display: block;
+  width: 100%;
+  margin-top: 25px;
+  margin-bottom: 25px;
 }

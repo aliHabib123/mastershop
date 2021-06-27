@@ -68,7 +68,9 @@ $image = ($item->image != "" && $item->image != null) ? HelperController::getIma
                         <div class="price2"><?php echo ProductController::getFinalPrice($item->regularPrice * $item->usdExchangeRate, $item->salePrice * $item->usdExchangeRate); ?><span>LBP</span></div>
                         <div class="title"><?php echo $item->title; ?></div>
                         <div class="sku">SKU: <?php echo $item->sku; ?></div>
-                        <div class="brand"><img src="<?php echo HelperController::getImageUrl($this->itemBrand->image); ?>" /></div>
+                        <?php if($this->itemBrand->image){?>
+                            <div class="brand"><img src="<?php echo HelperController::getImageUrl($this->itemBrand->image); ?>" /></div>
+                        <?php }?>
                         <div class="desc"><?php echo $item->description; ?></div>
                         <!-- <div class="color">Color: Not Specified</div> -->
                         <div class="qty noSelect">QTY:&nbsp;

@@ -225,6 +225,12 @@
               background-color: $base-color;
             }
           }
+          &.promotions-link {
+            a {
+              background-color: $base-red;
+              color: #fff;
+            }
+          }
         }
       }
       li {

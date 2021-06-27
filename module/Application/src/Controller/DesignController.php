@@ -278,8 +278,9 @@ class DesignController extends AbstractActionController
                     $cartItemImage = HelperController::getImageUrl($row->image);
                 }
                 $title = substr($row->title, 0, 500);
+                $id = $row->id;
                 $price = ProductController::getFinalPrice($row->regularPrice * $row->usdExchangeRate, $row->salePrice * $row->usdExchangeRate);
-                $html .= "<div class=\"compact-cart-item\">
+                $html .= "<div class=\"compact-cart-item\" id='product_$id'>
                             <div class=\"row\">
                                 <div class=\"col-md-3 compact-cart-img\">
                                     <img src=\"$cartItemImage\" />

@@ -7,20 +7,22 @@ namespace Application\Controller;
 use ContentMySqlExtDAO;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use SaleOrderItemMySqlExtDAO;
 use WishlistMySqlExtDAO;
 
 class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
+        $saleOrderItemMySqlExtA =  new SaleOrderItemMySqlExtDAO();
         $langId = HelperController::langId(HelperController::filterInput($this->params('lang')));
         $bannerLocation = ($langId == 1) ? 1 : 2;
         $banners = ContentController::getBanners($bannerLocation);
         $ads = ContentController::getContent("type = 'ad' and lang = $langId ORDER BY display_order asc LIMIT 3");
         $featuredCategories = CategoryController::getCategories("is_featured = 1");
 
-        //Daily DEALS, PICKED FOR YOU and BEST OFFERS
-        $dailyDeals = ProductController::getItems(false, false, "", "", "", ProductController::$DAILY_DEALS, "", 10, 0);
+        //Todays DEALS, PICKED FOR YOU and BEST OFFERS
+        $todaysDeals = ProductController::getItems(false, false, "", "", "", ProductController::$TODAYS_DEALS, "", 10, 0);
         $pickedForYou = ProductController::getItems(false, false,  "", "", "", ProductController::$PICKED_FOR_YOU, "", 10, 0);
         $bestOffers = ProductController::getItems(false, false,  "", "", "", ProductController::$BEST_OFFERS, "", 10, 0);
 
@@ -29,7 +31,7 @@ class IndexController extends AbstractActionController
         $data = [
             'ads' => $ads,
             'featuredCategories' => $featuredCategories,
-            'dailyDeals' => $dailyDeals,
+            'todaysDeals' => $todaysDeals,
             'pickedForYou' => $pickedForYou,
             'bestOffers' => $bestOffers,
         ];

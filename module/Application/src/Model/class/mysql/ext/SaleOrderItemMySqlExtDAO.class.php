@@ -33,14 +33,14 @@ class SaleOrderItemMySqlExtDAO extends SaleOrderItemMySqlDAO
                     FROM
                     item
                     WHERE supplier_id = $supplierId)";
-                    if($orderId){
-                        $sql .= " AND a.`sale_order_id` = $orderId";
-                    }
-                    if($status){
-                        $sql .= " AND b.`status` = '$status'";
-                    }
+        if ($orderId) {
+            $sql .= " AND a.`sale_order_id` = $orderId";
+        }
+        if ($status) {
+            $sql .= " AND b.`status` = '$status'";
+        }
         $sql .= " GROUP BY a.`sale_order_id`";
-        if($limit){
+        if ($limit) {
             $sql .= " LIMIT $limit OFFSET $offset";
         }
         //echo $sql;
@@ -66,5 +66,64 @@ class SaleOrderItemMySqlExtDAO extends SaleOrderItemMySqlDAO
                     WHERE supplier_id = $supplierId)";
         $sqlQuery = new SqlQuery($sql);
         return $this->getList($sqlQuery);
+    }
+
+    public function getOrdersCount($supplierId, $status = 'paid', $fromDate, $toDate)
+    {
+        $sql = "SELECT COUNT(*) AS orders_count FROM (
+                    SELECT
+                    a.*,
+                    b.supplier_id,
+                    c.`status`
+                    FROM
+                    sale_order_item a
+                    LEFT OUTER JOIN item b
+                        ON a.`item_id` = b.`id`
+                    LEFT OUTER JOIN sale_order c
+                        ON a.`sale_order_id` = c.`id`
+                    WHERE b.`supplier_id` = ? AND c.`status` = ? AND c.`created_at` >= '$fromDate' AND c.`created_at` <= '$toDate' GROUP BY a.`sale_order_id`) AS q1;";
+        $sqlQuery = new SqlQuery($sql);
+        $sqlQuery->set($supplierId);
+        $sqlQuery->setString($status);
+        return $this->querySingleResult($sqlQuery);
+    }
+
+    public function getOrdersPriceTotal($supplierId, $status = 'paid', $fromDate, $toDate)
+    {
+        $sql = "SELECT SUM(q1.price) AS price_total FROM (
+                    SELECT
+                    a.*,
+                    b.supplier_id,
+                    c.`status`
+                    FROM
+                    sale_order_item a
+                    LEFT OUTER JOIN item b
+                        ON a.`item_id` = b.`id`
+                    LEFT OUTER JOIN sale_order c
+                        ON a.`sale_order_id` = c.`id`
+                    WHERE b.`supplier_id` = ? AND c.`status` = ? AND c.`created_at` >= '$fromDate' AND c.`created_at` <= '$toDate') AS q1";
+        $sqlQuery = new SqlQuery($sql);
+        $sqlQuery->set($supplierId);
+        $sqlQuery->setString($status);
+        return $this->querySingleResult($sqlQuery);
+    }
+    public function getOrdersCommissionTotal($supplierId, $status = 'paid', $fromDate, $toDate)
+    {
+        $sql = "SELECT SUM(q1.commission) AS commission_total FROM (
+                    SELECT
+                    a.*,
+                    b.supplier_id,
+                    c.`status`
+                    FROM
+                    sale_order_item a
+                    LEFT OUTER JOIN item b
+                        ON a.`item_id` = b.`id`
+                    LEFT OUTER JOIN sale_order c
+                        ON a.`sale_order_id` = c.`id`
+                    WHERE b.`supplier_id` = ? AND c.`status` = ? AND c.`created_at` >= '$fromDate' AND c.`created_at` <= '$toDate') AS q1";
+        $sqlQuery = new SqlQuery($sql);
+        $sqlQuery->set($supplierId);
+        $sqlQuery->setString($status);
+        return $this->querySingleResult($sqlQuery);
     }
 }
