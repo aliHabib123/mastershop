@@ -22,6 +22,10 @@
 
 		var $successIndicator;
 
+		var $paymentType;
+
+		var $deliveryStatus;
+
 		var $reference;
 
 		var $customerId;

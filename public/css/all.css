@@ -1435,6 +1435,16 @@ h3.no-results {
   margin-top: 25px;
   margin-bottom: 25px; }
 
+.select-payment-method {
+  margin-top: 25px; }
+  .select-payment-method h2 {
+    background-color: #2576ba;
+    padding: 5px;
+    color: #fff;
+    font-family: "Montserrat";
+    text-align: center;
+    font-size: 25px; }
+
 footer {
   background-color: #f6f6f6;
   padding-top: 15px;

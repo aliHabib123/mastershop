@@ -571,6 +571,15 @@ $("#vendor-contact-update").submit(function (e) {
 
 //order-complete
 $("#order-complete").submit(function (e) {
+  var paymentMethod = $("input[name='payment-method']:checked").val();
+  if (typeof paymentMethod === "undefined") {
+    showMsg(".notice-area", false, "please select payment method");
+    $("html, body").animate(
+      { scrollTop: $(".notice-area").offset().top - 100 },
+      500
+    );
+    return false;
+  }
   var formData = new FormData(this);
   var formUrl = $(this).attr("action");
   $.ajax({
@@ -764,7 +773,6 @@ $(function () {
   });
 
   function setShippingPrice(city, productsTotal) {
-    console.log(city, productsTotal);
     $.ajax({
       url: mainUrl + "get-shipping-price",
       type: "POST",

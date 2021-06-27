@@ -1,6 +1,7 @@
 <?php
 
 use Application\Controller\DesignController;
+use Application\Controller\PaymentController;
 
 $userInfo = $this->userInfo;
 ?>
@@ -90,7 +91,7 @@ $userInfo = $this->userInfo;
                                 echo $item->html;
                             } ?>
                         </tbody>
-                        <input type="hidden" name="products_total" id="products_total" value="<?php echo $total?>">
+                        <input type="hidden" name="products_total" id="products_total" value="<?php echo $total ?>">
                         <tfoot>
                             <tr>
                                 <td class="text-right cart-total">Delivery</td>
@@ -102,6 +103,20 @@ $userInfo = $this->userInfo;
                             </tr>
                         </tfoot>
                     </table>
+
+                    <div class="select-payment-method">
+                        <h2>Select Payment Method</h2>
+                        <div class="form-check-inline">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="payment-method" value="<?php echo PaymentController::$PAYMENT_CASH_ON_DELIVERY; ?>">Cash On Delivery
+                            </label>
+                        </div>
+                        <div class="form-check-inline">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="payment-method" value="<?php echo PaymentController::$PAYMENT_ONLINE; ?>">Pay Online
+                            </label>
+                        </div>
+                    </div>
 
                     <div class="text-right order-complete-btn-wrap">
                         <button type="submit" class="btn submit-btn complete-btn">Complete Order</button>
