@@ -195,16 +195,37 @@ if (isset($_REQUEST['act'])) {
 						<span class="title">Home</span>
 					</a>
 				</li>
-				<li class="">
-					<a href="display_supplier.php">
-						<!-- <i class="fa fa-bell"></i> -->
-						<span class="title">Suppliers</span>
-					</a>
-				</li>
+				
 				<li class="">
 					<a href="display_banner.php">
 						<!-- <i class="fa fa-gift"></i> -->
 						<span class="title">Banners</span>
+					</a>
+				</li>
+
+				<li class="">
+					<a href="display_page.php">
+						<!-- <i class="fa fa-tasks"></i> -->
+						<span class="title">Pages</span>
+					</a>
+				</li>
+				<li class="">
+					<a href="display_ad.php">
+						<!-- <i class="fa fa-bell"></i> -->
+						<span class="title">Ads</span>
+					</a>
+				</li>
+
+				<li class="">
+					<a href="display_social_media.php">
+						<!-- <i class="fa fa-bell"></i> -->
+						<span class="title">Social Media</span>
+					</a>
+				</li>
+				<li class="">
+					<a href="display_supplier.php">
+						<!-- <i class="fa fa-bell"></i> -->
+						<span class="title">Suppliers</span>
 					</a>
 				</li>
 				<li class="">
@@ -220,27 +241,9 @@ if (isset($_REQUEST['act'])) {
 					</a>
 				</li>
 				<li class="">
-					<a href="display_page.php">
-						<!-- <i class="fa fa-tasks"></i> -->
-						<span class="title">Pages</span>
-					</a>
-				</li>
-				<li class="">
-					<a href="display_ad.php">
-						<!-- <i class="fa fa-bell"></i> -->
-						<span class="title">Ads</span>
-					</a>
-				</li>
-				<li class="">
 					<a href="display_product.php">
 						<!-- <i class="fa fa-bell"></i> -->
 						<span class="title">Products</span>
-					</a>
-				</li>
-				<li class="">
-					<a href="display_social_media.php">
-						<!-- <i class="fa fa-bell"></i> -->
-						<span class="title">Social Media</span>
 					</a>
 				</li>
 				<li class="">
@@ -249,25 +252,26 @@ if (isset($_REQUEST['act'])) {
 						<span class="title">Sale Orders</span>
 					</a>
 				</li>
-				<!-- <li>
+				<li>
 					<a class="active" href="javascript:;">
 						<i class="fa fa-bell"></i>
-						<span class="title">Jobs</span>
+						<span class="title">Accounting</span>
 						<span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
+						<!-- <li>
+							<a href="accounting_dashboard.php">
+								Dashboard
+							</a>
+						</li> -->
 						<li>
-							<a href="display_vacancy.php">
-								Vacancies
+							<a href="display_reports.php">
+								Reports
 							</a>
 						</li>
-						<li>
-							<a href="display_applicant.php">
-								Applicants
-							</a>
-						</li>
+
 					</ul>
-				</li> -->
+				</li>
 			</ul>
 
 			<!-- END SIDEBAR MENU -->
@@ -420,6 +424,42 @@ if (isset($_REQUEST['act'])) {
 						);
 						if (response.status == true) {
 							location.href = adminUrl + "display_supplier.php?act=3";
+						} else {
+
+						}
+					},
+					error: function() {
+						showMsg(".notice-area", false, "An error occured, please try again!");
+					},
+				});
+				e.preventDefault();
+			});
+
+			$("#options-form").submit(function(e) {
+				var formData = new FormData(this);
+				var formUrl = $(this).attr("action");
+				$.ajax({
+					url: formUrl,
+					type: "POST",
+					dataType: "json",
+					data: formData,
+					mimeType: "multipart/form-data",
+					contentType: false,
+					cache: false,
+					processData: false,
+					beforeSend: function() {
+						showMsg(".notice-area", true, "Updating option ...");
+					},
+					success: function(response) {
+						console.log(response);
+						showMsg(".notice-area", response.status, response.msg);
+						$("html, body").animate({
+								scrollTop: $(".notice-area").offset().top - 100
+							},
+							1000
+						);
+						if (response.status == true) {
+							location.href = adminUrl + "display_options.php?act=3";
 						} else {
 
 						}

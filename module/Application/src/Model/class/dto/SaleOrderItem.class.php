@@ -23,5 +23,7 @@
 		var $status;
 
 		var $orderDate;
+
+		var $ordersCount;
 	}
 ?>

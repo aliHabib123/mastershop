@@ -9,7 +9,7 @@ include '../module/Application/src/Model/include_dao.php';
 $itemBrandMysqlExtDAO = new ItemBrandMySqlExtDAO();
 
 extract($_POST);
-
+$show_in_menu = radio_button($show_in_menu);
 if ($_FILES['image']['size'] > 0) {
     $newImage = upload_image("image", $imagesPath);
     if (is_file($imagesPath . $newImage)) {
@@ -36,6 +36,7 @@ $obj->name = $name;
 $obj->image = $image;
 $obj->displayOrder = $display_order;
 $obj->brandTypeId = 0;
+$obj->showInMenu = $show_in_menu;
 
 $num = 0;
 $update = $itemBrandMysqlExtDAO->update($obj);

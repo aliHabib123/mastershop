@@ -1,9 +1,6 @@
 <?php
 /**
  * Class that operate on table 'item_brand'. Database Mysql.
- *
- * @author: http://phpdao.com
- * @date: 2021-05-14 19:34
  */
 class ItemBrandMySqlDAO implements ItemBrandDAO{
 
@@ -57,12 +54,13 @@ class ItemBrandMySqlDAO implements ItemBrandDAO{
  	 * @param ItemBrandMySql itemBrand
  	 */
 	public function insert($itemBrand){
-		$sql = 'INSERT INTO item_brand (name, image, brand_type_id, display_order) VALUES (?, ?, ?, ?)';
+		$sql = 'INSERT INTO item_brand (name, image, brand_type_id, show_in_menu, display_order) VALUES (?, ?, ?, ?, ?)';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($itemBrand->name);
 		$sqlQuery->set($itemBrand->image);
 		$sqlQuery->setNumber($itemBrand->brandTypeId);
+		$sqlQuery->setNumber($itemBrand->showInMenu);
 		$sqlQuery->setNumber($itemBrand->displayOrder);
 
 		$id = $this->executeInsert($sqlQuery);	
@@ -76,12 +74,13 @@ class ItemBrandMySqlDAO implements ItemBrandDAO{
  	 * @param ItemBrandMySql itemBrand
  	 */
 	public function update($itemBrand){
-		$sql = 'UPDATE item_brand SET name = ?, image = ?, brand_type_id = ?, display_order = ? WHERE id = ?';
+		$sql = 'UPDATE item_brand SET name = ?, image = ?, brand_type_id = ?, show_in_menu = ?, display_order = ? WHERE id = ?';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($itemBrand->name);
 		$sqlQuery->set($itemBrand->image);
 		$sqlQuery->setNumber($itemBrand->brandTypeId);
+		$sqlQuery->setNumber($itemBrand->showInMenu);
 		$sqlQuery->setNumber($itemBrand->displayOrder);
 
 		$sqlQuery->set($itemBrand->id);
@@ -118,6 +117,13 @@ class ItemBrandMySqlDAO implements ItemBrandDAO{
 		return $this->getList($sqlQuery);
 	}
 
+	public function queryByShowInMenu($value){
+		$sql = 'SELECT * FROM item_brand WHERE show_in_menu = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->setNumber($value);
+		return $this->getList($sqlQuery);
+	}
+
 	public function queryByDisplayOrder($value){
 		$sql = 'SELECT * FROM item_brand WHERE display_order = ?';
 		$sqlQuery = new SqlQuery($sql);
@@ -147,6 +153,13 @@ class ItemBrandMySqlDAO implements ItemBrandDAO{
 		return $this->executeUpdate($sqlQuery);
 	}
 
+	public function deleteByShowInMenu($value){
+		$sql = 'DELETE FROM item_brand WHERE show_in_menu = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->setNumber($value);
+		return $this->executeUpdate($sqlQuery);
+	}
+
 	public function deleteByDisplayOrder($value){
 		$sql = 'DELETE FROM item_brand WHERE display_order = ?';
 		$sqlQuery = new SqlQuery($sql);
@@ -168,6 +181,7 @@ class ItemBrandMySqlDAO implements ItemBrandDAO{
 		$itemBrand->name = $row['name'];
 		$itemBrand->image = $row['image'];
 		$itemBrand->brandTypeId = $row['brand_type_id'];
+		$itemBrand->showInMenu = $row['show_in_menu'];
 		$itemBrand->displayOrder = $row['display_order'];
 
 		return $itemBrand;

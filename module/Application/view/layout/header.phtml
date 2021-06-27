@@ -5,7 +5,9 @@ use Application\Controller\DesignController;
 use Application\Controller\HelperController;
 use Application\Controller\ProductController;
 use Application\Controller\UserController;
+use Application\Controller\OptionsController;
 
+$searchWord = isset($_GET['search']) && $_GET['search'] ? $_GET['search'] : "";
 $cartCount = 0;
 if (isset($_SESSION['user'])) {
     $cartCount = count($_SESSION['user']->cart);
@@ -64,6 +66,7 @@ foreach ($level1Categories as $row) {
                     </div>
                     <div class="col-md-6 col-6 d-none d-sm-block">
                         <ul class="custom-menu custom-menu-centered">
+                            <li class="promotions-link"><a href="<?php echo MAIN_URL . 'promotions'; ?>">Promotions</a></li>
                             <li><a href="<?php echo MAIN_URL . 'todays-deals'; ?>">Todays Deals</a></li>
                             <li><a href="<?php echo MAIN_URL . 'latest-arrivals'; ?>">Latest Arrivals</a></li>
                             <li><a href="<?php echo MAIN_URL . 'page/about-us'; ?>">About us</a></li>
@@ -71,15 +74,11 @@ foreach ($level1Categories as $row) {
                                 <a class="dropdown-toggle" data-toggle="dropdown">Help & Contact
                                     <span class="caret"></span></a>
                                 <div class="dropdown-menu dropdown-about">
-                                    Dora Highway<br>
-                                    Facing Gargour
+                                    <?php echo OptionsController::getOption(OptionsController::$HEADER_LOCATION); ?>
                                     <span class="small-separator"></span>
-                                    +961 1 255 921<br>
-                                    +961 1 255 922<br>
-                                    +961 3 217 821
+                                    <?php echo OptionsController::getOption(OptionsController::$HEADER_PHONE_NUMBERS); ?>
                                     <span class="small-separator"></span>
-                                    Monday to Friday<br>
-                                    8:00 am till 5:00 pm
+                                    <?php echo OptionsController::getOption(OptionsController::$HEADER_OPENING_HOURS); ?>
                                 </div>
                             </li>
                         </ul>
@@ -101,7 +100,7 @@ foreach ($level1Categories as $row) {
                                     <i class="fas fa-shopping-cart"></i>
                                     <?php if ($cartCount) {
                                         $cartBadgeStyle = "display:inline-block;";
-                                    } else{
+                                    } else {
                                         $cartBadgeStyle = "display:none;";
                                     } ?>
                                     <span class="badge" style="<?php echo $cartBadgeStyle; ?>"><?php echo $cartCount; ?></span>
@@ -153,7 +152,7 @@ foreach ($level1Categories as $row) {
                             </div>
                         </div>
                         <input type="hidden" id="selected-category" value="0">
-                        <input type="text" class="form-control" aria-label="All Categories" placeholder="Search for anything" name="search" required autocomplete="off">
+                        <input type="text" class="form-control" aria-label="All Categories" placeholder="Search for anything" name="search" required autocomplete="off" value="<?php echo $searchWord; ?>">
                         <div class="input-group-append search-button">
                             <button class="btn btn-outline-secondary" type="submit">
                                 <span class="d-none d-sm-inline-block">SEARCH</span>

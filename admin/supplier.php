@@ -14,6 +14,7 @@
 	$mobile = ($action == 'edit') ? $userInfo->mobile : "";
 	$tel1 = ($action == 'edit') ? $userInfo->tel1 : "";
 	$tel2 = ($action == 'edit') ? $userInfo->tel2 : "";
+	$commission = ($action == 'edit') ? $userInfo->companyCommission : "";
 	$active = ($action == 'edit') ? $userInfo->status : 'inactive';
 ?>
 
@@ -73,6 +74,12 @@
 						<label class="col-md-3 control-label">Work Number 2</label>
 						<div class="col-md-3">
 							<input name="tel2" type="text" class="form-control" id="tel2" value="<?php echo $tel2; ?>" placeholder="Enter Work Number 2">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label">Commission in %*</label>
+						<div class="col-md-3">
+							<input name="commission" type="number" class="form-control" id="commission" value="<?php echo $commission; ?>" placeholder="Enter Commission in %">
 						</div>
 					</div>
 					<div class="form-group">

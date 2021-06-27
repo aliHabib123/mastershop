@@ -20,7 +20,7 @@ $distinctBrandCategories = $brandCategoryMappingMySqlExtDAO->getDistinctCategori
                         <!-- Grid 12 Menu -->
 
                         <?php foreach ($categories as $row) { ?>
-                            <li class="nav-item dropdown yamm-fw category-dropdown"><a href="<?php echo MAIN_URL . 'products/' . $row->slug;?>" class="nav-link"><?php echo $row->name ?><b class="caret"></b></a>
+                            <li class="nav-item dropdown yamm-fw category-dropdown"><a href="<?php echo MAIN_URL . 'products/' . $row->slug; ?>" class="nav-link"><?php echo $row->name ?><b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li class="grid-list">
                                         <div class="grid-container card-columns">
@@ -48,14 +48,14 @@ $distinctBrandCategories = $brandCategoryMappingMySqlExtDAO->getDistinctCategori
                                     <div>
                                         <div class="brands-slider-container">
                                             <?php
-                                                $brands = $itemBrandMySqlExtDAO->queryAll(); ?>
-                                                <div class="brands-slider" id="brands-slider">
-                                                    <?php foreach ($brands as $brand) { ?>
-                                                        <div>
-                                                            <a href="<?php echo MAIN_URL . 'products' . "?brand=" . $brand->id; ?>"><img src="<?php echo HelperController::getImageUrl($brand->image); ?>" /></a>
-                                                        </div>
-                                                    <?php } ?>
-                                                </div>
+                                            $brands = $itemBrandMySqlExtDAO->queryByShowInMenu(1); ?>
+                                            <div class="brands-slider" id="brands-slider">
+                                                <?php foreach ($brands as $brand) { ?>
+                                                    <div>
+                                                        <a href="<?php echo MAIN_URL . 'products' . "?brand=" . $brand->id; ?>"><img src="<?php echo HelperController::getImageUrl($brand->image); ?>" /></a>
+                                                    </div>
+                                                <?php } ?>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -64,7 +64,6 @@ $distinctBrandCategories = $brandCategoryMappingMySqlExtDAO->getDistinctCategori
                         <!--
               <Nesting>Menu </Nesting>
               -->
-                        <li class="dropdown yamm-fw"><a href="<?php echo MAIN_URL . 'promotions'; ?>" class="nav-link">Promotions</a></li>
                         <li class="dropdown yamm-fw"><a href="<?php echo MAIN_URL . 'latest-arrivals'; ?>" class="nav-link">Latest Products</a></li>
                     </ul>
                 </div>

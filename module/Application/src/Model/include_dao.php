@@ -101,6 +101,10 @@
 	require_once('class/dto/Lang.class.php');
 	require_once('class/mysql/LangMySqlDAO.class.php');
 	require_once('class/mysql/ext/LangMySqlExtDAO.class.php');
+	require_once('class/dao/OptionsDAO.class.php');
+	require_once('class/dto/Option.class.php');
+	require_once('class/mysql/OptionsMySqlDAO.class.php');
+	require_once('class/mysql/ext/OptionsMySqlExtDAO.class.php');
 	require_once('class/dao/PermissionDAO.class.php');
 	require_once('class/dto/Permission.class.php');
 	require_once('class/mysql/PermissionMySqlDAO.class.php');

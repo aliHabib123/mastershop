@@ -1,9 +1,6 @@
 <?php
 /**
  * Intreface DAO
- *
- * @author: http://phpdao.com
- * @date: 2021-05-14 19:34
  */
 interface ItemBrandDAO{
 
@@ -57,6 +54,8 @@ interface ItemBrandDAO{
 
 	public function queryByBrandTypeId($value);
 
+	public function queryByShowInMenu($value);
+
 	public function queryByDisplayOrder($value);
 
 
@@ -65,6 +64,8 @@ interface ItemBrandDAO{
 	public function deleteByImage($value);
 
 	public function deleteByBrandTypeId($value);
+
+	public function deleteByShowInMenu($value);
 
 	public function deleteByDisplayOrder($value);
 

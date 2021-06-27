@@ -754,3 +754,44 @@ $(function () {
     position: "right",
   });
 });
+
+$(function () {
+  $("#city").change(function () {
+    setShippingPrice(
+      $(this).children("option:selected").val(),
+      $("#products_total").val()
+    );
+  });
+
+  function setShippingPrice(city, productsTotal) {
+    console.log(city, productsTotal);
+    $.ajax({
+      url: mainUrl + "get-shipping-price",
+      type: "POST",
+      dataType: "json",
+      data: { city: city, productsTotal: productsTotal },
+      beforeSend: function () {
+        //show loadre
+        showMsg(
+          ".reset-password .notice-area",
+          true,
+          "Updating, please wait..."
+        );
+      },
+      success: function (response) {
+        if (response.shipping != 0) {
+          $("#shipping_price").val(response.shipping);
+          $("#shipping-total").html(response.label);
+          $("#cart-total").html(response.total);
+        }
+      },
+      error: function () {},
+    });
+  }
+  if ($("#city").length > 0) {
+    setShippingPrice(
+      $("#city").children("option:selected").val(),
+      $("#products_total").val()
+    );
+  }
+});

@@ -59,7 +59,14 @@
 			<input  name="display_order" type="number"  class="form-control" id="title" value="0" placeholder="Ex: 1">
 		</div>
 	</div>
-	
+	<div class="form-group">
+		<label class="col-md-3 control-label">Show In Menu</label>
+		<div class="col-md-9">
+			<div class="make-switch" data-on="warning" data-off="danger">
+				<input type="checkbox" checked class="toggle"  name="show_in_menu"/>
+			</div>
+		</div>
+	</div>
 		<br/>
 		<div class="row">
 			<div class="col-md-12">

@@ -6,7 +6,7 @@ $userInfo = $this->userInfo;
 ?>
 <div class="main-wrapper shopping-cart pt30">
     <div class="notice-area"></div>
-    <form action="<?php echo MAIN_URL.'order-complete'?>" id="order-complete">
+    <form action="<?php echo MAIN_URL . 'order-complete' ?>" id="order-complete">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -37,7 +37,7 @@ $userInfo = $this->userInfo;
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-6">
-                                <label for="country">Country:</label>
+                                    <label for="country">Country:</label>
                                     <select class="form-control" id="country" name="country">
                                         <option value="LB">Lebanon</option>
                                         <!-- <option>2</option>
@@ -45,6 +45,7 @@ $userInfo = $this->userInfo;
                                         <option>4</option> -->
                                     </select>
                                 </div>
+                                <input type="hidden" id="shipping_price" value="">
                                 <div class="col-md-6">
                                     <label for="mobile">City *</label>
                                     <select class="form-control" id="city" name="city">
@@ -89,7 +90,12 @@ $userInfo = $this->userInfo;
                                 echo $item->html;
                             } ?>
                         </tbody>
+                        <input type="hidden" name="products_total" id="products_total" value="<?php echo $total?>">
                         <tfoot>
+                            <tr>
+                                <td class="text-right cart-total">Delivery</td>
+                                <td class="text-right" id="shipping-total">Select City</td>
+                            </tr>
                             <tr>
                                 <td class="text-right cart-total">Total</td>
                                 <td class="text-right" id="cart-total"><?php echo number_format($total) . " LBP"; ?></td>
@@ -100,7 +106,7 @@ $userInfo = $this->userInfo;
                     <div class="text-right order-complete-btn-wrap">
                         <button type="submit" class="btn submit-btn complete-btn">Complete Order</button>
                     </div>
-                    
+
                 </div>
 
             </div>

@@ -28,16 +28,18 @@ function main()
 
 	$condition .= " limit $limit offset $offset ";
 	$records = $itemBrandMySqlExtDAO->select($condition);
-	?>
+?>
 	<div class="portlet box blue">
 		<div class="portlet-title">
 			<div class="caption">
 				<i class="fa fa-globe"></i>BRANDS MANAGEMENT
 				<!--
-				<form name="myform223" action="<?php //echo $_SERVER['PHP_SELF'] ?>" method="post">
+				<form name="myform223" action="<?php //echo $_SERVER['PHP_SELF'] 
+												?>" method="post">
 					<div>
 						Search by banner caption: 
-						<input type="text" value="<?php //echo $keywords ?>" name="keywords" id="keywords" style="width:300px; height:20px;"> &nbsp; 
+						<input type="text" value="<?php //echo $keywords 
+													?>" name="keywords" id="keywords" style="width:300px; height:20px;"> &nbsp; 
 						<input type="submit" style="" value="   Search   " />
 					</div>
 				</form>
@@ -54,6 +56,7 @@ function main()
 						<label><input type="checkbox" checked data-column="<?php echo "1"; ?>"><?php echo "Name"; ?></label>
 						<label><input type="checkbox" checked data-column="<?php echo "2"; ?>"><?php echo "Image"; ?></label>
 						<label><input type="checkbox" checked data-column="<?php echo "3"; ?>"><?php echo "Display Order"; ?></label>
+						<label><input type="checkbox" checked data-column="<?php echo "4"; ?>"><?php echo "Show In Menu"; ?></label>
 					</div>
 				</div>
 				<div class="btn-group">
@@ -71,6 +74,7 @@ function main()
 						<th><?php echo "Name"; ?></th>
 						<th><?php echo "Image"; ?></th>
 						<th><?php echo "Display Order"; ?></th>
+						<th><?php echo "Show In Menu"; ?></th>
 						<th></th>
 						<th></th>
 					</tr>
@@ -84,12 +88,13 @@ function main()
 						<tr id="<?php echo $row->id; ?>">
 							<!-- primary key -->
 							<td><?php echo $row->id; ?></td>
-							<td><?php echo $row->name?></td>
-							<td><img style="max-height: 100px;" src="<?php echo IMAGES_LINK.$row->image?>"/></td>
-							<td><?php echo $row->displayOrder;?></td>
+							<td><?php echo $row->name ?></td>
+							<td><img style="max-height: 100px;" src="<?php echo IMAGES_LINK . $row->image ?>" /></td>
+							<td><?php echo $row->displayOrder; ?></td>
+							<td><?php echo $row->showInMenu; ?></td>
 
 							<td>
-								<a class="btn btn-xs yellow" href="edit_item_brand.php?id=<?php echo $row->id;?>">
+								<a class="btn btn-xs yellow" href="edit_item_brand.php?id=<?php echo $row->id; ?>">
 									Edit
 									<i class="fa fa-edit"></i>
 								</a>

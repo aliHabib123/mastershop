@@ -502,6 +502,26 @@ return [
                     ],
                 ],
             ],
+            'getShippingPrice' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/get-shipping-price',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'getShippingPrice',
+                    ],
+                ],
+            ],
+            'getCheckoutItems' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/get-checkout-items',
+                    'defaults' => [
+                        'controller' => Controller\UserController::class,
+                        'action'     => 'getCheckoutItems',
+                    ],
+                ],
+            ],
             'pay' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -657,6 +677,7 @@ return [
             Controller\CareerController::class => InvokableFactory::class,
             Controller\MPGSController::class => InvokableFactory::class,
             Controller\PaymentController::class => InvokableFactory::class,
+            Controller\OptionsController::class => InvokableFactory::class,
         ],
     ],
     'view_manager' => [

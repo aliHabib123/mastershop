@@ -27,7 +27,7 @@ class ProductController extends AbstractActionController
     public static $TODAYS_DEALS = 1;
     public static $LATEST_ARRIVALS = 2;
     public static $PICKED_FOR_YOU = 3;
-    public static $DAILY_DEALS = 4;
+    //public static $DAILY_DEALS = 4;
     public static $BEST_OFFERS = 5;
     public static $SPOTLIGHT = 6;
     public static $PROMOTIONS = 7;
@@ -44,10 +44,11 @@ class ProductController extends AbstractActionController
             $page = $_GET['page'];
             $offset = ($page - 1) * $limit;
         }
-        $search = (isset($_GET['search']) && $_GET['search'] != "") ? $_GET['search'] : false;
+        $search = (isset($_GET['search']) && $_GET['search'] != "") ? $_GET['search'] : "";
         $brandId = (isset($_GET['brand']) && $_GET['brand'] != "") ? $_GET['brand'] : "";
         $minPrice = (isset($_GET['min-price']) && $_GET['min-price'] != "") ? $_GET['min-price'] : "";
         $maxPrice = (isset($_GET['max-price']) && $_GET['max-price'] != "") ? $_GET['max-price'] : "";
+        $categoriesFiltered = (isset($_GET['categories']) && $_GET['categories'] != "") ? $_GET['categories'] : [];
 
         $cat1 = $this->params('cat1') ? HelperController::filterInput($this->params('cat1')) : false;
         $cat2 = $this->params('cat2') ? HelperController::filterInput($this->params('cat2')) : false;
@@ -84,6 +85,9 @@ class ProductController extends AbstractActionController
         // End of get Category Slug
 
         $categoryArray = [];
+        foreach ($categoriesFiltered as $filteredCategory) {
+            array_push($categoryArray, $filteredCategory);
+        }
         if ($categoryId) {
             array_push($categoryArray, $categoryId);
             if ($cat3) {
@@ -120,23 +124,27 @@ class ProductController extends AbstractActionController
 
         $itemBrandMySqlExtDAO = new ItemBrandMySqlExtDAO();
 
-        $brandsList = $itemBrandMySqlExtDAO->queryAll();
+        if ($cat1) {
+            $cat1Info = $itemCategoryMySqlExtDAO->queryBySlug($cat1)[0];
+            $brandsList = $itemBrandMySqlExtDAO->getBrandsByCategoryId($cat1Info->id);
+        } else {
+            $brandsList = $itemBrandMySqlExtDAO->queryAll();
+        }
 
         $items = self::getItems($categoryArray, $search, $brandId, $minPrice, $maxPrice, false, "", $limit, $offset);
         //print_r($items);
         $itemsCount = count(self::getItems($categoryArray, $search, $brandId, $minPrice, $maxPrice, false));
         $totalPages = ceil($itemsCount / $limit);
 
-        $isSearchPage = false;
-        if ($search != false) {
-            $isSearchPage = true;
-        }
+        $isSearchPage = $search != "" ? true : false;
+
         $data = [
             'items' => $items,
             'totalPages' => $totalPages,
             'currentPage' => $page,
             'completeSlug' => $completeSlug,
             'isSearch' => $isSearchPage,
+            'search' => $search,
             'cat1' => $cat1,
             'cat2' => $cat2,
             'cat3' => $cat3,
@@ -146,6 +154,7 @@ class ProductController extends AbstractActionController
             'brandId' => $brandId,
             'minPrice' => $minPrice,
             'maxPrice' => $maxPrice,
+            'categoriesFiltered' => $categoriesFiltered,
         ];
         return new ViewModel($data);
     }
@@ -253,17 +262,36 @@ class ProductController extends AbstractActionController
             $page = $_GET['page'];
             $offset = ($page - 1) * $limit;
         }
-        $search = (isset($_GET['search']) && $_GET['search'] != "") ? $_GET['search'] : false;
+        $catetgories = CategoryController::getCategories('parent_id = 0 ORDER BY display_order ASC, name ASC, id DESC');
+        $category = (isset($_GET['category']) && $_GET['category'] != "") ? $_GET['category'] : false;
+        $categoryArray = [];
+        if ($category) {
+            $itemCategoryMySqlExtDAO = new ItemCategoryMySqlExtDAO();
+            $cat1Info = $itemCategoryMySqlExtDAO->queryBySlug($category);
+            $cat1Id = $cat1Info[0]->id;
+            $categoriesLevel1 = CategoryController::getCategories("parent_id = $cat1Id");
+            foreach ($categoriesLevel1 as $row) {
+                array_push($categoryArray, $row->id);
+                $cat2Info = $itemCategoryMySqlExtDAO->queryBySlug($row->slug);
+                $cat2Id = $cat2Info[0]->id;
+                $categoriesLevel2 = CategoryController::getCategories("parent_id = $cat2Id");
+                foreach ($categoriesLevel2 as $row) {
+                    array_push($categoryArray, $row->id);
+                }
+            }
+        }
         $itemTagMySqlExtDAO = new ItemTagMySqlExtDAO();
         $tagInfo = $itemTagMySqlExtDAO->queryBySlug('promotions');
         $tagId = $tagInfo[0]->id;
-        $items = self::getItems(false, false, $tagId, "", $limit, $offset);
-        $itemsCount = count(self::getItems(false, false, $tagId));
+        $items = self::getItems($categoryArray, "", "", "", "", $tagId, "", $limit, $offset);
+        $itemsCount = count(self::getItems($categoryArray, "", "", "", "", $tagId));
         $totalPages = ceil($itemsCount / $limit);
         $data = [
             'items' => $items,
             'totalPages' => $totalPages,
             'currentPage' => $page,
+            'categories' =>  $catetgories,
+            'category' => $category,
         ];
         return new ViewModel($data);
     }
@@ -477,7 +505,7 @@ class ProductController extends AbstractActionController
         return PRODUCT_PLACEHOLDER_IMAGE_URL;
     }
 
-    public static function getItems($categoryId = false, $search = false, $brandId = "", $minPrice = "", $maxPrice = "", $tagId = false, $orderBy = "", $limit = 0, $offset = 0)
+    public static function getItems($categoryId = false, $search = "", $brandId = "", $minPrice = "", $maxPrice = "", $tagId = false, $orderBy = "", $limit = 0, $offset = 0)
     {
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
         $items = $itemMySqlExtDAO->getItems($categoryId, $search, $brandId, $minPrice, $maxPrice, $tagId, $orderBy, $limit, $offset);
@@ -553,8 +581,10 @@ class ProductController extends AbstractActionController
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
         $slug = HelperController::slugify($title);
         $item = $itemMySqlExtDAO->queryBySlugAndSupplierId($slug, $_SESSION['user']->id)[0];
-        if ($item->sku == $sku && $item->slug == $slug) {
-            return $item->slug;
+        if ($item) {
+            if ($item->sku == $sku && $item->slug == $slug) {
+                return $item->slug;
+            }
         } else {
             $c = 1;
             while ($itemMySqlExtDAO->queryBySlugAndSupplierId($slug, $_SESSION['user']->id)) {

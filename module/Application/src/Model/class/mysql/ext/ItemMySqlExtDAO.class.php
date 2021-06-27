@@ -20,7 +20,7 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
         return $this->getList($sqlQuery);
     }
 
-    public function getItems($categoryId = false, $search = false, $brandId = "", $minPrice = "", $maxPrice = "", $tagId = false, $orderBy = "", $limit = 0, $offset = 0)
+    public function getItems($categoryId = false, $search = "", $brandId = "", $minPrice = "", $maxPrice = "", $tagId = false, $orderBy = "", $limit = 0, $offset = 0)
     {
         $sql = "SELECT
                     a.*,
@@ -76,7 +76,7 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
         if ($brandId != "") {
             $sql .= " AND d.`brand_id` = $brandId";
         }
-        if ($search) {
+        if ($search != "") {
             $sql .= " AND (a.`title` LIKE '%$search%' OR a.`description` LIKE '%$search%' OR a.`specification` LIKE '%$search%')";
         }
         $sql .= " ORDER BY";
@@ -89,7 +89,7 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
         if ($limit != 0) {
             $sql .= " LIMIT $limit OFFSET $offset";
         }
-        //echo $sql;
+        //echo $sql;echo '<br><br>';
         $sqlQuery = new SqlQuery($sql);
         return $this->getList($sqlQuery);
     }
@@ -162,8 +162,9 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
         return $this->getList($sqlQuery);
     }
 
-    public function loadItem($id){
-		$sql = 'SELECT 
+    public function loadItem($id)
+    {
+        $sql = 'SELECT 
                     a.*,
                     b.company_name,
                     b.company_commission 
@@ -171,8 +172,8 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
                 LEFT OUTER JOIN user b 
                 ON a.`supplier_id` = b.`id` 
                 WHERE a.`id` = ?';
-		$sqlQuery = new SqlQuery($sql);
-		$sqlQuery->set($id);
-		return $this->getRow($sqlQuery);
-	}
+        $sqlQuery = new SqlQuery($sql);
+        $sqlQuery->set($id);
+        return $this->getRow($sqlQuery);
+    }
 }

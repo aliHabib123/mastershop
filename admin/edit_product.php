@@ -6,41 +6,36 @@ function main()
 	$itemMySqlExtDAO = new ItemMySqlExtDAO();
 	$itemTagMappingMySqlExtDAO = new ItemTagMappingMySqlExtDAO();
 	$mapping = $itemTagMappingMySqlExtDAO->queryByItemId($id);
-	//print_r($mapping);
 	$tags = [
 		'todays-deals' => false,
 		'latest-arrivals' => false,
 		'picked-for-you' => false,
-		'daily-deals' => false,
 		'best-offers' => false,
 		'spotlight' => false,
 		'promotions' => false,
 	];
-	foreach($mapping as $map){
-		if($map->tagId == 1){
+	foreach ($mapping as $map) {
+		if ($map->tagId == 1) {
 			$tags['todays-deals'] = true;
 		}
-		if($map->tagId == 2){
+		if ($map->tagId == 2) {
 			$tags['latest-arrivals'] = true;
 		}
-		if($map->tagId == 3){
+		if ($map->tagId == 3) {
 			$tags['picked-for-you'] = true;
 		}
-		if($map->tagId == 4){
-			$tags['daily-deals'] = true;
-		}
-		if($map->tagId == 5){
+		if ($map->tagId == 5) {
 			$tags['best-offers'] = true;
 		}
-		if($map->tagId == 6){
+		if ($map->tagId == 6) {
 			$tags['spotlight'] = true;
 		}
-		if($map->tagId == 7){
+		if ($map->tagId == 7) {
 			$tags['promotions'] = true;
 		}
 	}
 	$item = $itemMySqlExtDAO->load($id);
-	?>
+?>
 	<link href="css/css.css" rel="stylesheet" type="text/css" />
 	<script language="JavaScript" type="text/javascript" src="javascript/pop_up.js"></script>
 	<script language="JavaScript" type="text/javascript" src="javascript/delete_file_confirmation.js"></script>
@@ -73,14 +68,6 @@ function main()
 									<input type="hidden" value="<?php echo $item->image; ?>" name="current_image" />
 								</div>
 								<div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
-								<!-- <div>
-									<span class="btn default btn-file">
-										<span class="fileupload-new"><i class="fa fa-paper-clip"></i> Select image</span>
-										<span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
-										<input type="file" class="default" name="image" id="image" />
-									</span>
-									<a href="#" class="btn red fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash-o"></i> Remove</a>
-								</div> -->
 							</div>
 						</div>
 					</div>
@@ -89,9 +76,9 @@ function main()
 						<label class="col-md-3 control-label">Is Todays Deals</label>
 						<div class="col-md-9">
 							<div class="make-switch" data-on="warning" data-off="danger">
-								<input type="checkbox" class="toggle"  name="todays_deals" <?php if ($tags['todays-deals']) {
-										echo "checked";
-									} ?>/>
+								<input type="checkbox" class="toggle" name="todays_deals" <?php if ($tags['todays-deals']) {
+																								echo "checked";
+																							} ?> />
 							</div>
 						</div>
 					</div>
@@ -99,70 +86,52 @@ function main()
 						<label class="col-md-3 control-label">Is Latest Arrivals</label>
 						<div class="col-md-9">
 							<div class="make-switch" data-on="warning" data-off="danger">
-								<input type="checkbox" class="toggle"  name="latest_arrivals" <?php if ($tags['latest-arrivals']) {
-										echo "checked";
-									} ?>/>
+								<input type="checkbox" class="toggle" name="latest_arrivals" <?php if ($tags['latest-arrivals']) {
+																									echo "checked";
+																								} ?> />
 							</div>
 						</div>
-					</div>	
+					</div>
 					<div class="form-group">
 						<label class="col-md-3 control-label">Is Picked For You</label>
 						<div class="col-md-9">
 							<div class="make-switch" data-on="warning" data-off="danger">
-								<input type="checkbox" class="toggle"  name="picked_for_you" <?php if ($tags['picked-for-you']) {
-										echo "checked";
-									} ?>/>
+								<input type="checkbox" class="toggle" name="picked_for_you" <?php if ($tags['picked-for-you']) {
+																								echo "checked";
+																							} ?> />
 							</div>
 						</div>
-					</div>	
-					<div class="form-group">
-						<label class="col-md-3 control-label">Is Daily Deals</label>
-						<div class="col-md-9">
-							<div class="make-switch" data-on="warning" data-off="danger">
-								<input type="checkbox" class="toggle"  name="daily_deals" <?php if ($tags['daily-deals']) {
-										echo "checked";
-									} ?>/>
-							</div>
-						</div>
-					</div>	
+					</div>
 					<div class="form-group">
 						<label class="col-md-3 control-label">Is Best Offers</label>
 						<div class="col-md-9">
 							<div class="make-switch" data-on="warning" data-off="danger">
-								<input type="checkbox" class="toggle"  name="best_offers" <?php if ($tags['best-offers']) {
-										echo "checked";
-									} ?>/>
+								<input type="checkbox" class="toggle" name="best_offers" <?php if ($tags['best-offers']) {
+																								echo "checked";
+																							} ?> />
 							</div>
 						</div>
-					</div>	
+					</div>
 					<div class="form-group">
 						<label class="col-md-3 control-label">Is Spotlight</label>
 						<div class="col-md-9">
 							<div class="make-switch" data-on="warning" data-off="danger">
-								<input type="checkbox" class="toggle"  name="spotlight" <?php if ($tags['spotlight']) {
-										echo "checked";
-									} ?>/>
+								<input type="checkbox" class="toggle" name="spotlight" <?php if ($tags['spotlight']) {
+																							echo "checked";
+																						} ?> />
 							</div>
 						</div>
-					</div>	
+					</div>
 					<div class="form-group">
 						<label class="col-md-3 control-label">Is Promotions</label>
 						<div class="col-md-9">
 							<div class="make-switch" data-on="warning" data-off="danger">
-								<input type="checkbox" class="toggle"  name="promotions" <?php if ($tags['promotions']) {
-										echo "checked";
-									} ?>/>
+								<input type="checkbox" class="toggle" name="promotions" <?php if ($tags['promotions']) {
+																							echo "checked";
+																						} ?> />
 							</div>
 						</div>
 					</div>
-					<!-- <div class="form-group">
-						<label class="col-md-3 control-label">Display Order</label>
-						<div class="col-md-3">
-							<input name="display_order" type="number" class="form-control" id="title" value="<?php echo $item->displayOrder ?>" placeholder="Ex: 1">
-						</div>
-					</div> -->
-
-
 					<br />
 					<div class="row">
 						<div class="col-md-12">

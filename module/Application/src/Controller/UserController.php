@@ -361,6 +361,64 @@ class UserController extends AbstractActionController
         return $this->response;
     }
 
+    //getShippingPrice
+    public function getShippingPriceAction()
+    {
+        $city = HelperController::filterInput($this->getRequest()->getPost('city'));
+        $productsTotal = HelperController::filterInput($this->getRequest()->getPost('productsTotal'));
+        $shipping = 0;
+        if ($city == "Beirut") {
+            $shipping = OptionsController::getOption(OptionsController::$SHIPPING_INSIDE_BEIRUT);
+        } else {
+            $shipping = OptionsController::getOption(OptionsController::$SHIPPING_OUTSIDE_BEIRUT);
+        }
+        $shippingLabel = number_format(floatval($shipping)) . " LBP";
+        $total = number_format(floatval($productsTotal) + floatval($shipping)) . " LBP";
+        $response = json_encode([
+            'shipping' => $shipping,
+            'label' => $shippingLabel,
+            'total' => $total,
+        ]);
+        print_r($response);
+        return $this->response;
+    }
+
+    public function getCheckoutItemsAction()
+    {
+        self::checkCustomerLoggedIn();
+        $itemMySqlExtDAO = new ItemMySqlExtDAO();
+        $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
+        $html = "<table class=\"table shopping-cart-wrap checkout-wrap\">
+                    <thead class=\"text-muted\">
+                        <tr>
+                            <th scope=\"col\">Name</th>
+                            <th scope=\"col\" class=\"text-right\">Sub Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>";
+        $total = 0;
+        foreach ($cartItems as $item) {
+            $item = DesignController::checkOutItem($item);
+            $total += $item->subtotal;
+            $html .= $item->html;
+        }
+        $html .= "</tbody>
+                <tfoot>
+                <tr>
+                    <td class=\"text-right cart-total\">Delivery</td>
+                    <td class=\"text-right\" id=\"shipping-total\">Select City</td>
+                </tr>
+                <tr>
+                    <td class=\"text-right cart-total\">Total</td>
+                    <td class=\"text-right\" id=\"cart-total\">";
+        $html .= number_format($total) . " LBP";
+        $html .= "</td>
+            </tr>
+        </tfoot>
+    </table>";
+    }
+
+
     public function deleteFromCartAction()
     {
         $result = false;
@@ -711,14 +769,22 @@ class UserController extends AbstractActionController
                         if ($insertSaleOrderItem) {
                             $c++;
                         }
-                        if (count($cartItems) == $c) {
-                            $saleOrder = $saleOrderMySqlExtDAO->load($insertSaleOrder);
-                            $saleOrder->netTotal = $total;
-                            $saleOrderMySqlExtDAO->update($saleOrder);
-                            $msg = "Order Success";
-                            $redirectUrl = MAIN_URL . 'pay?orderId=' . $insertSaleOrder . "&amount=" . $total;
-                            $result = true;
+                    }
+
+                    if (count($cartItems) == $c) {
+                        $saleOrder = $saleOrderMySqlExtDAO->load($insertSaleOrder);
+                        $shipping = 0;
+                        if ($city == "Beirut") {
+                            $shipping = OptionsController::getOption(OptionsController::$SHIPPING_INSIDE_BEIRUT);
+                        } else {
+                            $shipping = OptionsController::getOption(OptionsController::$SHIPPING_OUTSIDE_BEIRUT);
                         }
+                        $netTotal = floatval($total) + floatval($shipping);
+                        $saleOrder->netTotal = $netTotal;
+                        $saleOrderMySqlExtDAO->update($saleOrder);
+                        $msg = "Order Success";
+                        $redirectUrl = MAIN_URL . 'pay?orderId=' . $insertSaleOrder . "&amount=" . $netTotal;
+                        $result = true;
                     }
                 }
             }
