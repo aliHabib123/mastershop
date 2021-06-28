@@ -31,11 +31,11 @@ function main()
 	}
 
 	if ($supplierId) {
-		$condition = " a.`supplier_id`= '$supplierId' AND";
+		$condition .= " a.`supplier_id`= '$supplierId' AND";
 	}
 
 	if ($tagId) {
-		$condition = " c.`tag_id`= '$tagId' AND";
+		$condition .= " c.`tag_id`= '$tagId' AND";
 	}
 
 	$condition .= " 1 GROUP BY a.`id` order by $fieldName $orderBy";
