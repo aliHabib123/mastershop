@@ -76,6 +76,10 @@ interface ItemDAO{
 
 	public function queryByDimensions($value);
 
+	public function queryByWarranty($value);
+
+	public function queryByExchange($value);
+
 	public function queryByStatus($value);
 
 	public function queryByIsFeatured($value);
@@ -126,6 +130,10 @@ interface ItemDAO{
 	public function deleteBySize($value);
 
 	public function deleteByDimensions($value);
+
+	public function deleteByWarranty($value);
+
+	public function deleteByExchange($value);
 
 	public function deleteByStatus($value);
 
