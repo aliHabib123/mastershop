@@ -4,6 +4,7 @@ use Application\Controller\DesignController;
 use Application\Controller\PaymentController;
 
 $userInfo = $this->userInfo;
+$isSingleItemCheckout = ($this->singleItemId) ? 1 : 0;
 ?>
 <div class="main-wrapper shopping-cart pt30">
     <div class="notice-area"></div>
@@ -92,6 +93,7 @@ $userInfo = $this->userInfo;
                             } ?>
                         </tbody>
                         <input type="hidden" name="products_total" id="products_total" value="<?php echo $total ?>">
+                        <input type="hidden" name="is_single_item_checkout" value="<?php echo $isSingleItemCheckout; ?>">
                         <tfoot>
                             <tr>
                                 <td class="text-right cart-total">Delivery</td>

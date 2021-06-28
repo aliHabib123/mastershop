@@ -25,8 +25,8 @@ function main()
 						<td><b>SKU</b></td>
 						<td><b>Title</b></td>
 						<td><b>Vendor</b></td>
-						<td><b>Qty</b></td>
 						<td><b>Price</b></td>
+						<td><b>Qty</b></td>
 						<td><b>SubTotal</b></td>
 						<td><b>Commission</b></td>
 					</tr>
@@ -49,8 +49,8 @@ function main()
 							<td><?php echo $item->sku; ?></td>
 							<td><?php echo $item->title; ?></td>
 							<td><?php echo $item->companyName; ?></td>
-							<td><?php echo $saleOrderItem->qty; ?></td>
 							<td><?php echo number_format($price) . " LBP"; ?></td>
+							<td><?php echo $saleOrderItem->qty; ?></td>
 							<td><?php echo number_format($subtotal) . " LBP"; ?></td>
 							<td><?php echo number_format($saleOrderItem->commission) . " LBP"; ?></td>
 						</tr>

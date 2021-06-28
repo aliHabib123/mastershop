@@ -557,7 +557,12 @@ class UserController extends AbstractActionController
     {
         self::checkCustomerLoggedIn();
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
-        $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
+        $singleItemId = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT) : false;
+        if ($singleItemId) {
+            $cartItems = $itemMySqlExtDAO->getSinglesCheckoutItem($singleItemId);
+        } else {
+            $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
+        }
         if (count($cartItems) <= 0) {
             header('Location: ' . MAIN_URL . 'my-cart');
             exit();
@@ -573,6 +578,7 @@ class UserController extends AbstractActionController
             'items' => $cartItems,
             'userInfo' => $userInfo,
             'cities' => $cities,
+            'singleItemId' => $singleItemId,
         ]);
     }
 
@@ -733,6 +739,7 @@ class UserController extends AbstractActionController
         $deliveryAddress = HelperController::filterInput($this->getRequest()->getPost('delivery-address'));
         $notes = HelperController::filterInput($this->getRequest()->getPost('notes'));
         $paymentMethod = HelperController::filterInput($this->getRequest()->getPost('payment-method'));
+        $isSingleItemCheckout = HelperController::filterInput($this->getRequest()->getPost('is_single_item_checkout'));
 
         if ($fullName == "" || $email == "" || $mobile == "" || $country == "" || $city == "" || $deliveryAddress == "") {
             $msg = "Please fill all inputs!";
@@ -795,9 +802,9 @@ class UserController extends AbstractActionController
                         $saleOrderMySqlExtDAO->update($saleOrder);
                         $msg = "Order Success";
                         if ($paymentMethod == PaymentController::$PAYMENT_CASH_ON_DELIVERY) {
-                            $redirectUrl = MAIN_URL . 'order-result?orderId=' . $insertSaleOrder . "&payment=" . PaymentController::$PAYMENT_CASH_ON_DELIVERY;
+                            $redirectUrl = MAIN_URL . 'order-result?orderId=' . $insertSaleOrder . "&payment=" . PaymentController::$PAYMENT_CASH_ON_DELIVERY . "&single_item_checkout=" . $isSingleItemCheckout;
                         } elseif ($paymentMethod == PaymentController::$PAYMENT_ONLINE) {
-                            $redirectUrl = MAIN_URL . 'pay?orderId=' . $insertSaleOrder . "&amount=" . $netTotal;
+                            $redirectUrl = MAIN_URL . 'pay?orderId=' . $insertSaleOrder . "&amount=" . $netTotal . "&single_item_checkout=" . $isSingleItemCheckout;
                         }
 
                         $result = true;
@@ -822,6 +829,8 @@ class UserController extends AbstractActionController
         $isCashOnDelivery = false;
         $orderId = isset($_GET['orderId']) ? $_GET['orderId'] : "";
         $successIndicator = isset($_GET['resultIndicator']) ? $_GET['resultIndicator'] : "";
+        //single_item_checkout
+        $isSingleItemCheckout = isset($_GET['single_item_checkout']) ? $_GET['single_item_checkout'] : false;
         if (isset($_GET['payment'])) {
             if ($_GET['payment'] == PaymentController::$PAYMENT_CASH_ON_DELIVERY) {
                 $isCashOnDelivery = true;
@@ -830,9 +839,12 @@ class UserController extends AbstractActionController
         $saleOrdermySqlExtDAO = new SaleOrderMySqlExtDAO();
         $orderInfo = $saleOrdermySqlExtDAO->load($orderId);
         $success = true;
-        $cartMySqlExtDAO = new CartMySqlExtDAO();
-        $cartMySqlExtDAO->deleteByUserId($_SESSION['user']->id);
-        $_SESSION['user']->cart = [];
+
+        if (!$isSingleItemCheckout) {
+            $cartMySqlExtDAO = new CartMySqlExtDAO();
+            $cartMySqlExtDAO->deleteByUserId($_SESSION['user']->id);
+            $_SESSION['user']->cart = [];
+        }
 
         if ($isCashOnDelivery) {
         } else {
@@ -1008,11 +1020,12 @@ class UserController extends AbstractActionController
 
         $orderId = HelperController::filterInput($_GET['orderId']);
         $amount = HelperController::filterInput($_GET['amount']);
+        $isSingleItemCheckout = HelperController::filterInput($_GET['single_item_checkout']);
 
         $mpgs = new MPGSController(MPGS_CONFIG);
         $mpgs->SetOrderId(HelperController::random(10));
         $mpgs->SetOrderAmount($amount);
-        $mpgs->SetReturnUrl(MAIN_URL . 'order-result?orderId=' . $orderId);
+        $mpgs->SetReturnUrl(MAIN_URL . 'order-result?orderId=' . $orderId . '&single_item_checkout=' . $isSingleItemCheckout);
         $response = $mpgs->createCheckoutSession();
 
         if ($response['result'] != 'SUCCESS') {

@@ -114,6 +114,27 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
         $sqlQuery->set($userId);
         return $this->getList($sqlQuery);
     }
+
+    public function getSinglesCheckoutItem($itemId)
+    {
+        //$sql = "SELECT a.*, b.id AS cart_id, b.qty AS cart_qty FROM item a LEFT OUTER JOIN cart b ON a.`id` = b.`item_id` WHERE b.`user_id` = ?";
+        //echo $sql;
+        $sql = "SELECT
+                a.*,
+                '0' AS cart_id,
+                '1' AS cart_qty,
+                c.usd_exchange_rate
+            FROM
+                item a
+                LEFT OUTER JOIN cart b
+                ON a.`id` = b.`item_id`
+                LEFT OUTER JOIN `user` c
+                ON a.`supplier_id` = c.`id`
+            WHERE a.`id` = ?";
+        $sqlQuery = new SqlQuery($sql);
+        $sqlQuery->set($itemId);
+        return $this->getList($sqlQuery);
+    }
     public function adminGetItems($condition = '1', $limit = 0, $offset = 0)
     {
         //$sql = "SELECT a.*, b.company_name, b.status FROM item a LEFT OUTER JOIN user b ON a.`supplier_id` = b.`id` WHERE $condition";
