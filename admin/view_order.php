@@ -2,12 +2,29 @@
 require "session_start.php";
 function main()
 {
+	//Payment status
+	$paymentsStatuses = [
+		'pending',
+		'paid',
+		'canceled',
+	];
 	$id = $_REQUEST["id"];
 	$saleOrderMySqlExtDAO = new SaleOrderMySqlExtDAO();
 	$saleOrderItemMySqlExtDAO = new SaleOrderItemMySqlExtDAO();
 	$itemMySqlExtDAO = new ItemMySqlExtDAO();
 	$userMySqlExtDAO = new UserMySqlExtDAO();
 	$saleOrder = $saleOrderMySqlExtDAO->load($id);
+
+	if ($saleOrder->paymentType == 'cash-on-delivery') {
+		if (isset($_POST['payment_status'])) {
+			$saleOrder->status = $_POST['payment_status'];
+			$saleOrderMySqlExtDAO->update($saleOrder);
+			// ob_start();
+			// exit(header('Location: ' . ADMIN_LINK . 'view_order.php?id=' . $id));
+			// ob_end_clean();
+		}
+	}
+
 	$saleOrderItems  = $saleOrderItemMySqlExtDAO->getSaleOrderItems($id);
 	$customerInfo = $userMySqlExtDAO->load($saleOrder->customerId);
 ?>
@@ -15,8 +32,72 @@ function main()
 		<div class="portlet-title">
 			<div class="caption"><i class="fa fa-reorder"></i>Order #<?php echo $saleOrder->id; ?></div>
 		</div>
-		<div class="portlet-body">
 
+		<div class="portlet-body">
+			<div class="row">
+				<div class="col-md-8">
+					<h2>Order Details</h2>
+					<table class="table table-bordered table-hover table-full-width">
+						<tbody>
+							<tr>
+								<td width="20%"><b>ID</b></td>
+								<td><?php echo $saleOrder->id; ?></td>
+							</tr>
+							<tr>
+								<td width="20%"><b>Status</b></td>
+								<td><?php echo ucfirst($saleOrder->status); ?></td>
+							</tr>
+							<tr>
+								<td width="20%"><b>Payment Method</b></td>
+								<td><?php echo ucfirst(str_replace('-', ' ', $saleOrder->paymentType)); ?></td>
+							</tr>
+							<tr>
+								<td width="20%"><b>Customer Name</b></td>
+								<td><?php echo $customerInfo->fullName; ?></td>
+							</tr>
+							<tr>
+								<td width="20%"><b>Customer Email</b></td>
+								<td><?php echo $customerInfo->email; ?></td>
+							</tr>
+							<tr>
+								<td width="20%"><b>Delivery Address</b></td>
+								<td><?php echo $saleOrder->deliveryAddress; ?></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col-md-4">
+					<?php if ($saleOrder->paymentType == 'cash-on-delivery') { ?>
+						<h2>Payment Information</h2>
+						<div class="portlet-body">
+							<div class="search-form">
+								<form class="form-horizontal" action="<?php echo ADMIN_LINK . 'view_order.php?id=' . $id; ?>" method="POST">
+									<div class="form-group">
+										<div class="col-md-12">
+											<label class="control-label">Change Payment Status</label>
+											<select class="form-control select2me" data-placeholder="Select Payment Status..." name="payment_status" id="payment_status">
+												<option selected="selected" value="">--- Select Payment Status ---</option>
+												<?php
+												foreach ($paymentsStatuses as $row) {
+													//echo $row->id."<br>";
+													$sel = "";
+													if ($row == $saleOrder->status) {
+														$sel = "selected";
+													} ?>
+													<option value="<?php echo $row; ?>" <?php echo $sel; ?>><?php echo ucfirst(str_replace('-', " ", $row)); ?></option>
+												<?php
+												} ?>
+											</select>
+										</div>
+									</div>
+									<button type="submit" class="btn btn-primary">Update</button>
+								</form>
+							</div>
+						</div>
+					<?php } ?>
+
+				</div>
+			</div>
 			<h2>Items</h2>
 			<table class="table table-striped table-bordered table-hover table-full-width">
 				<thead>
@@ -74,35 +155,7 @@ function main()
 				</tbody>
 			</table>
 
-			<h2>Order Details</h2>
-			<table class="table table-bordered table-hover table-full-width">
-				<tbody>
-					<tr>
-						<td width="20%"><b>ID</b></td>
-						<td><?php echo $saleOrder->id; ?></td>
-					</tr>
-					<tr>
-						<td width="20%"><b>Status</b></td>
-						<td><?php echo ucfirst($saleOrder->status); ?></td>
-					</tr>
-					<tr>
-						<td width="20%"><b>Payment Method</b></td>
-						<td><?php echo ucfirst(str_replace('-', ' ', $saleOrder->paymentType)); ?></td>
-					</tr>
-					<tr>
-						<td width="20%"><b>Customer Name</b></td>
-						<td><?php echo $customerInfo->fullName; ?></td>
-					</tr>
-					<tr>
-						<td width="20%"><b>Customer Email</b></td>
-						<td><?php echo $customerInfo->email; ?></td>
-					</tr>
-					<tr>
-						<td width="20%"><b>Delivery Address</b></td>
-						<td><?php echo $saleOrder->deliveryAddress; ?></td>
-					</tr>
-				</tbody>
-			</table>
+
 		</div>
 	<?php
 }

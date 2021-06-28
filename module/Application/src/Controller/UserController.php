@@ -740,6 +740,7 @@ class UserController extends AbstractActionController
         $notes = HelperController::filterInput($this->getRequest()->getPost('notes'));
         $paymentMethod = HelperController::filterInput($this->getRequest()->getPost('payment-method'));
         $isSingleItemCheckout = HelperController::filterInput($this->getRequest()->getPost('is_single_item_checkout'));
+        $singleItemId = HelperController::filterInput($this->getRequest()->getPost('single_item_id'));
 
         if ($fullName == "" || $email == "" || $mobile == "" || $country == "" || $city == "" || $deliveryAddress == "") {
             $msg = "Please fill all inputs!";
@@ -747,8 +748,12 @@ class UserController extends AbstractActionController
             $msg = "Invalid payment method!";
         } else {
             $itemMySqlExtDAO = new ItemMySqlExtDAO();
-            $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
-            if (!$cartItems) {
+            if ($isSingleItemCheckout) {
+                $cartItems = $itemMySqlExtDAO->getSinglesCheckoutItem($singleItemId);
+            } else {
+                $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
+            }
+            if (!$cartItems && !$isSingleItemCheckout) {
                 $msg = "Nothing in cart!";
             } else {
                 $saleOrderMySqlExtDAO = new SaleOrderMySqlExtDAO();

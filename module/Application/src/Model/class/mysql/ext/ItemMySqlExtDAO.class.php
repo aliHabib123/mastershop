@@ -142,13 +142,16 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
                 a.*,
                 b.company_name,
                 b.status,
-                c.tag_id
+                c.tag_id,
+                d.category_id
             FROM
                 item a
                 LEFT OUTER JOIN `user` b
                 ON a.`supplier_id` = b.`id`
                 LEFT OUTER JOIN item_tag_mapping c
                 ON a.`id` = c.`item_id`
+                LEFT OUTER JOIN item_category_mapping d
+                ON a.`id` = d.`item_id`
                 WHERE $condition";
         if ($limit != 0) {
             $sql .= " LIMIT $limit OFFSET $offset";
