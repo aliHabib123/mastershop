@@ -64,13 +64,13 @@ use Application\Controller\ProductController;
                                         <label for="pwd">Status:</label>
                                         <select name="status" class="custom-select form-control">
                                             <option value="" selected>Select Status</option>
-                                            <option value="pending" <?php if ($status == 'pending') {
+                                            <option value="pending" <?php if ($this->status == 'pending') {
                                                                         echo 'selected';
                                                                     } ?>>PENDING</option>
-                                            <option value="complete" <?php if ($status == 'complete') {
+                                            <option value="complete" <?php if ($this->status == 'complete') {
                                                                             echo 'selected';
                                                                         } ?>>COMPLETE</option>
-                                            <option value="in-progress" <?php if ($status == 'in-progress') {
+                                            <option value="in-progress" <?php if ($this->status == 'in-progress') {
                                                                             echo 'selected';
                                                                         } ?>>IN PROGRESS</option>
                                         </select>

@@ -10,9 +10,9 @@ use Application\Controller\ProductController;
                 <div class="breadcrumb-wrap">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="<?php echo MAIN_URL;?>">Home</a></li>
-                            <li class="breadcrumb-item"><a href="<?php echo MAIN_URL . "my-orders";?>">My Orders</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Order #<?php echo $this->saleOrder->id;?></li>
+                            <li class="breadcrumb-item"><a href="<?php echo MAIN_URL; ?>">Home</a></li>
+                            <li class="breadcrumb-item"><a href="<?php echo MAIN_URL . "my-orders"; ?>">My Orders</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Order #<?php echo $this->saleOrder->id; ?></li>
                         </ol>
                     </nav>
                 </div>
@@ -45,7 +45,11 @@ use Application\Controller\ProductController;
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td class="text-right cart-total">Total</td>
+                            <td class="text-right cart-total" width="75%">Shipping</td>
+                            <td class="text-right" id="cart-total"><?php echo number_format($this->saleOrder->shippingTotal) . " LBP"; ?></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right cart-total" width="75%">Total</td>
                             <td class="text-right" id="cart-total"><?php echo number_format($this->saleOrder->netTotal) . " LBP"; ?></td>
                         </tr>
                     </tfoot>
@@ -54,9 +58,9 @@ use Application\Controller\ProductController;
             <div class="col-md-6 mt30">
                 <div><?php echo DesignController::secondaryTitle('Order Details'); ?></div>
                 <div class="order-details">
-                   <div class="order-details_line"><b>Date: </b><?php echo date('M j, Y | H:i:g A', strtotime($this->saleOrder->createdAt))?></div>
-                   <div class="order-details_line"><b>Status: </b><?php echo strtoupper(str_replace('-', ' ', $this->saleOrder->status))?></div>
-                   <div class="order-details_line"><b>Notes: </b><?php echo $this->saleOrder->note;?></div>
+                    <div class="order-details_line"><b>Date: </b><?php echo date('M j, Y | H:i:g A', strtotime($this->saleOrder->createdAt)) ?></div>
+                    <div class="order-details_line"><b>Status: </b><?php echo strtoupper(str_replace('-', ' ', $this->saleOrder->status)) ?></div>
+                    <div class="order-details_line"><b>Notes: </b><?php echo $this->saleOrder->note; ?></div>
                 </div>
             </div>
             <div class="col-md-6 mt30">

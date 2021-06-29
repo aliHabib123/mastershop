@@ -34,6 +34,7 @@
 					<a href="#" class="btn red fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash-o"></i> Remove</a>
 				</div>
 			</div>
+			<span>170 * 70 px</span>
 		</div>
 	</div>
 	<div class="form-group">

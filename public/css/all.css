@@ -607,7 +607,7 @@ a.disabled {
     color: #fff;
     padding-right: 8px;
     padding-left: 8px; }
-    .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li > a:hover, .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li > a:focus, .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li > a:active {
+    .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li > a:hover, .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li > a:active {
       -webkit-transition: all 0.3s ease;
       -moz-transition: all 0.3s ease;
       -o-transition: all 0.3s ease;

@@ -349,7 +349,7 @@ $("#my-products-form-filter").on("reset", function (e) {
 $("html").on("click", ".wishlist-add", function (e) {
   alertify.set("notifier", "position", "top-right");
   if (isLoggedIn == "" || userType != 3) {
-    alertify.error("Please Login.");
+    $('#login-modal').modal('show');
     return false;
   }
   let itemId = $(this).data("itemId");
@@ -390,7 +390,7 @@ $("html").on("click", ".wishlist-add", function (e) {
 $("html").on("click", ".cart-add", function (e) {
   alertify.set("notifier", "position", "top-right");
   if (isLoggedIn == "" || userType != 3) {
-    alertify.error("Please Login.");
+    $('#login-modal').modal('show');
     return false;
   }
   let itemId = $(this).data("itemId");

@@ -85,11 +85,7 @@ class ProductController extends AbstractActionController
         // End of get Category Slug
 
         $categoryArray = [];
-        foreach ($categoriesFiltered as $filteredCategory) {
-            array_push($categoryArray, $filteredCategory);
-        }
         if ($categoryId) {
-            array_push($categoryArray, $categoryId);
             if ($cat3) {
                 $cat3Info = $itemCategoryMySqlExtDAO->queryBySlug($cat3);
                 array_push($categoryArray, $cat3Info[0]->id);
@@ -98,7 +94,13 @@ class ProductController extends AbstractActionController
                 $cat2Id = $cat2Info[0]->id;
                 $categoriesLevel2 = CategoryController::getCategories("parent_id = $cat2Id");
                 foreach ($categoriesLevel2 as $row) {
-                    array_push($categoryArray, $row->id);
+                    if (count($categoriesFiltered) > 0) {
+                        if (in_array($row->id, $categoriesFiltered)) {
+                            array_push($categoryArray, $row->id);
+                        }
+                    } else {
+                        array_push($categoryArray, $row->id);
+                    }
                 }
                 $categoryList = $itemCategoryMySqlExtDAO->select("parent_id = $cat2Id ORDER BY name ASC");
                 $prefixUrl = MAIN_URL . 'products/' . $cat1 . "/" . $cat2 . "/";
@@ -107,7 +109,29 @@ class ProductController extends AbstractActionController
                 $cat1Id = $cat1Info[0]->id;
                 $categoriesLevel1 = CategoryController::getCategories("parent_id = $cat1Id");
                 foreach ($categoriesLevel1 as $row) {
-                    array_push($categoryArray, $row->id);
+                    if (count($categoriesFiltered) > 0) {
+                        $categoriesFilteredList = implode(',', $categoriesFiltered);
+                        $categoriesLevel2 = CategoryController::getCategories("parent_id IN ($categoriesFilteredList)");
+                        foreach ($categoriesLevel2 as $row) {
+                            array_push($categoryArray, $row->id);
+                        }
+                    } else {
+                        $cat2Info = $itemCategoryMySqlExtDAO->queryBySlug($row->slug);
+                        $cat2Id = $cat2Info[0]->id;
+                        $categoriesLevel2 = CategoryController::getCategories("parent_id = $cat2Id");
+                        foreach ($categoriesLevel2 as $row) {
+                            array_push($categoryArray, $row->id);
+                        }
+                    }
+                }
+                $categoryList = $itemCategoryMySqlExtDAO->select("parent_id = $cat1Id ORDER BY name ASC");
+                $prefixUrl = MAIN_URL . 'products/' . $cat1 . "/";
+            }
+        } else {
+            if (count($categoriesFiltered) > 0) {
+                $categoriesFilteredList = implode(',', $categoriesFiltered);
+                $categoriesLevel1 = CategoryController::getCategories("parent_id IN ($categoriesFilteredList)");
+                foreach ($categoriesLevel1 as $row) {
                     $cat2Info = $itemCategoryMySqlExtDAO->queryBySlug($row->slug);
                     $cat2Id = $cat2Info[0]->id;
                     $categoriesLevel2 = CategoryController::getCategories("parent_id = $cat2Id");
@@ -115,11 +139,9 @@ class ProductController extends AbstractActionController
                         array_push($categoryArray, $row->id);
                     }
                 }
-                $categoryList = $itemCategoryMySqlExtDAO->select("parent_id = $cat1Id ORDER BY name ASC");
-                $prefixUrl = MAIN_URL . 'products/' . $cat1 . "/";
+            } else {
+                $categoryList = $itemCategoryMySqlExtDAO->select('parent_id = 0 ORDER BY name ASC');
             }
-        } else {
-            $categoryList = $itemCategoryMySqlExtDAO->select('parent_id = 0 ORDER BY name ASC');
         }
 
         $itemBrandMySqlExtDAO = new ItemBrandMySqlExtDAO();
@@ -131,8 +153,9 @@ class ProductController extends AbstractActionController
             $brandsList = $itemBrandMySqlExtDAO->queryAll();
         }
 
+        sort($categoryArray);
+        $categoryArray = array_unique($categoryArray);
         $items = self::getItems($categoryArray, $search, $brandId, $minPrice, $maxPrice, false, "", $limit, $offset);
-        //print_r($items);
         $itemsCount = count(self::getItems($categoryArray, $search, $brandId, $minPrice, $maxPrice, false));
         $totalPages = ceil($itemsCount / $limit);
 
@@ -372,12 +395,9 @@ class ProductController extends AbstractActionController
             }
 
             $itemExists = $itemMySqlExtDAO->queryBySkuAndSupplierId($row['SKU'], $supplierId);
-            //echo 'SKU: ' . $row['SKU'] . ' title: ' . $row['Title'].'<br>';
             $date = date('Y-m-d H:i:s');
             $categoryId = ProductController::getCategory($row['Category'], $row['sub category'], $row['product category']);
             if ($itemExists) {
-                // print_r($itemExists[0]);
-                // echo '<br>';
                 // delete image
                 HelperController::deleteImage($itemExists[0]->image);
                 // delete album and images
@@ -455,13 +475,13 @@ class ProductController extends AbstractActionController
         $itemObj->weight = (isset($row['Weight']) && !empty($row['Weight'])) ? $row['Weight'] : "";
         $itemObj->sku = $row['SKU'];
         $itemObj->qty = (isset($row['Stock']) && !empty($row['Stock'])) ? $row['Stock'] : 0;
-        $itemObj->supplierId = $supplierId;
-        $itemObj->displayOrder = 0;
         $itemObj->specification = (isset($row['Specification']) && !empty($row['Specification'])) ? $row['Specification'] : "";
         $itemObj->color = (isset($row['Color']) && !empty($row['Color'])) ? $row['Color'] : "";
         $itemObj->size = (isset($row['Size']) && !empty($row['Size'])) ? $row['Size'] : "";
         $itemObj->dimensions = (isset($row['Dimensions']) && !empty($row['Dimensions'])) ? $row['Dimensions'] : "";
         $itemObj->albumId = $albumId;
+        $itemObj->supplierId = $supplierId;
+        $itemObj->displayOrder = 0;
         $itemObj->slug = self::slugify($row['Title'], $row['SKU']);
         $itemObj->warranty = (isset($row['Warranty']) && !empty($row['Warranty'])) ? $row['Warranty'] : "";
         $itemObj->exchange = (isset($row['Exchange']) && !empty($row['Exchange'])) ? $row['Exchange'] : "";

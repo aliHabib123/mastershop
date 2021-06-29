@@ -23,15 +23,15 @@ class DesignController extends AbstractActionController
     }
     public static function item(object $item)
     {
+        $hasDiscount = false;
         //print_r();
         $customerId = 0;
         if (isset($_SESSION['user'])) {
             $customerId = $_SESSION['user']->id;
         }
-        $price = ProductController::getFinalPrice($item->regularPrice * $item->usdExchangeRate, $item->salePrice * $item->usdExchangeRate);
+        $price = ProductController::getFinalPrice(floatval($item->regularPrice) * $item->usdExchangeRate, floatval($item->salePrice) * $item->usdExchangeRate);
         $rawPrice = ProductController::getFinalPrice(floatval($item->regularPrice) * $item->usdExchangeRate, floatval($item->salePrice) * $item->usdExchangeRate, true);
         if ($price != "n/a") {
-            $hasDiscount = false;
             if ($item->salePrice) {
                 $hasDiscount = true;
                 $discount  = ceil(100 - (floatval($item->salePrice) / floatval($item->regularPrice) * 100));

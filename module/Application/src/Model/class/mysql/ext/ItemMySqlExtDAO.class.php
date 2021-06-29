@@ -50,7 +50,7 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
                         ON a.`id` = d.`item_id`";
         }
 
-        $sql .= " WHERE 1";
+        $sql .= " WHERE a.`image` != ''";
 
         if ($minPrice != "") {
             $sql .= " AND a.`regular_price` * e.`usd_exchange_rate` >= $minPrice";
@@ -89,15 +89,13 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
         if ($limit != 0) {
             $sql .= " LIMIT $limit OFFSET $offset";
         }
-        //echo $sql;echo '<br><br>';
+        
         $sqlQuery = new SqlQuery($sql);
         return $this->getList($sqlQuery);
     }
 
     public function getCartItemsByUserId($userId)
     {
-        //$sql = "SELECT a.*, b.id AS cart_id, b.qty AS cart_qty FROM item a LEFT OUTER JOIN cart b ON a.`id` = b.`item_id` WHERE b.`user_id` = ?";
-        //echo $sql;
         $sql = "SELECT
                 a.*,
                 b.id AS cart_id,
@@ -117,8 +115,6 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
 
     public function getSinglesCheckoutItem($itemId)
     {
-        //$sql = "SELECT a.*, b.id AS cart_id, b.qty AS cart_qty FROM item a LEFT OUTER JOIN cart b ON a.`id` = b.`item_id` WHERE b.`user_id` = ?";
-        //echo $sql;
         $sql = "SELECT
                 a.*,
                 '0' AS cart_id,
@@ -137,7 +133,6 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
     }
     public function adminGetItems($condition = '1', $limit = 0, $offset = 0)
     {
-        //$sql = "SELECT a.*, b.company_name, b.status FROM item a LEFT OUTER JOIN user b ON a.`supplier_id` = b.`id` WHERE $condition";
         $sql = "SELECT
                 a.*,
                 b.company_name,

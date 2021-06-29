@@ -269,7 +269,7 @@ class UserController extends AbstractActionController
         $wishlist = [];
         if (count($_SESSION['user']->wishlist)) {
             $list = implode(',', $_SESSION['user']->wishlist);
-            $cond = "id IN ($list)";
+            $cond = "b.`id` IN ($list)";
             $wishlist = $itemMySqlExtDAO->select($cond);
         }
         return new ViewModel([
@@ -550,6 +550,7 @@ class UserController extends AbstractActionController
         $saleOrders = self::getOrders($fromDate, $toDate, $status);
         return new ViewModel([
             'saleOrders' => $saleOrders,
+            'status' => $status,
         ]);
     }
 
