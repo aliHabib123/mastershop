@@ -463,6 +463,8 @@ class ProductController extends AbstractActionController
         $itemObj->dimensions = (isset($row['Dimensions']) && !empty($row['Dimensions'])) ? $row['Dimensions'] : "";
         $itemObj->albumId = $albumId;
         $itemObj->slug = self::slugify($row['Title'], $row['SKU']);
+        $itemObj->warranty = (isset($row['Warranty']) && !empty($row['Warranty'])) ? $row['Warranty'] : "";
+        $itemObj->exchange = (isset($row['Exchange']) && !empty($row['Exchange'])) ? $row['Exchange'] : "";
     }
 
     public static function deleteItemBySku($sku)

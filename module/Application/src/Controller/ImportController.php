@@ -37,8 +37,10 @@ class ImportController extends AbstractActionController
             $upload = move_uploaded_file($file, $targetFile);
             //var_dump($upload);
 
+            $fileName = fileName;
             // Get our import file extension
-            ${'Extension'} = strtolower(array_pop(explode('.', fileName)));
+            $r = explode('.', $fileName);
+            ${'Extension'} = strtolower(array_pop($r));
 
             $allowedExtensions = ['xls', 'xlsx'];
             if (!in_array(${'Extension'}, $allowedExtensions)) {
@@ -80,7 +82,9 @@ class ImportController extends AbstractActionController
                     $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(15, 1)->getValue() != 'Brand Name' ||
                     $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(16, 1)->getValue() != 'Stock' ||
                     $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(17, 1)->getValue() != 'Price' ||
-                    $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(18, 1)->getValue() != 'Special Price'
+                    $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(18, 1)->getValue() != 'Special Price' ||
+                    $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(19, 1)->getValue() != 'Warranty' ||
+                    $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(20, 1)->getValue() != 'Exchange'
                 ) {
                     $result = false;
                     $msg = "Some coloumns missing, please use the correct excel sheet";
@@ -100,12 +104,12 @@ class ImportController extends AbstractActionController
                         // Sanitize all our & add them to the accounts array
                         if ($objPHPExcel->getActiveSheet()->getCellByColumnAndRow(8, $row)->getValue() == "") {
                             $missingSkusCount++;
-                           $missingSkusCount++; 
+                            $missingSkusCount++;
                             $missingSkusCount++;
                         }
                         if ($objPHPExcel->getActiveSheet()->getCellByColumnAndRow(4, $row)->getValue() == "") {
                             $missingTitlesCount++;
-                           $missingTitlesCount++; 
+                            $missingTitlesCount++;
                             $missingTitlesCount++;
                         }
                         ${'List'}[${'Iterator'}] = [
@@ -128,6 +132,8 @@ class ImportController extends AbstractActionController
                             'Stock' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(16, $row)->getCalculatedValue(),
                             'Price' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(17, $row)->getCalculatedValue(),
                             'Special Price'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(18, $row)->getCalculatedValue(),
+                            'Warranty'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(19, $row)->getCalculatedValue(),
+                            'Exchange'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(20, $row)->getCalculatedValue(),
                         ];
                         ${'Iterator'}++;
                         if ($missingSkusCount > 0) {

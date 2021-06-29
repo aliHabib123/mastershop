@@ -598,6 +598,9 @@ a.disabled {
 
 .mega-menu nav.navbar {
   padding: 0; }
+  .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li.promotions-link a {
+    background-color: red;
+    color: #fff; }
   .mega-menu nav.navbar .navbar-collapse > ul.navbar-nav > li > a {
     padding-top: 1rem;
     padding-bottom: 1rem;
@@ -1172,12 +1175,14 @@ a.disabled {
 
 .product-details-side .title {
   font-family: "Montserrat Alternates", sans-serif;
-  font-size: 24px; }
+  font-size: 24px;
+  margin-bottom: 10px; }
 
 .product-details-side .sku {
   font-family: "Montserrat", sans-serif;
   font-size: 16px;
-  font-weight: 300; }
+  font-weight: 300;
+  line-height: 1.4; }
 
 .product-details-side .brand {
   margin-bottom: 15px;
@@ -1189,7 +1194,8 @@ a.disabled {
   font-family: "Montserrat", sans-serif;
   font-size: 18px;
   font-weight: 300;
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+  margin-top: 10px; }
 
 .product-details-side .color {
   color: #5a5a5a;

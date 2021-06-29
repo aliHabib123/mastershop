@@ -68,7 +68,13 @@ $image = ($item->image != "" && $item->image != null) ? HelperController::getIma
                         <?php } ?>
                         <div class="price2"><?php echo ProductController::getFinalPrice($item->regularPrice * $item->usdExchangeRate, $item->salePrice * $item->usdExchangeRate); ?><span>LBP</span></div>
                         <div class="title"><?php echo $item->title; ?></div>
-                        <div class="sku">SKU: <?php echo $item->sku; ?></div>
+                        <div class="sku"><b>SKU: </b><?php echo $item->sku; ?></div>
+                        <?php if ($item->warranty) { ?>
+                            <div class="sku"><b>Warranty: </b><?php echo $item->warranty; ?></div>
+                        <?php } ?>
+                        <?php if ($item->exchange) { ?>
+                            <div class="sku"><b>Exchange: </b><?php echo $item->exchange; ?></div>
+                        <?php } ?>
                         <?php if (isset($this->itemBrand->image)) { ?>
                             <div class="brand"><img src="<?php echo HelperController::getImageUrl($this->itemBrand->image); ?>" /></div>
                         <?php } ?>

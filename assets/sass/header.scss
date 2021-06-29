@@ -5,6 +5,12 @@
     .navbar-collapse {
       > ul.navbar-nav {
         > li {
+          &.promotions-link{
+            a{
+              background-color: red;
+              color: #fff;
+            }
+          }
           > a {
             padding-top: 1rem;
             padding-bottom: 1rem;
