@@ -34,6 +34,10 @@
 
 		var $dimensions;
 
+		var $warranty;
+
+		var $exchange;
+
 		var $status;
 
 		var $isFeatured;

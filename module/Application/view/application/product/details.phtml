@@ -6,8 +6,7 @@ use Application\Controller\ProductController;
 
 $item = $this->item;
 $specs = preg_split("/\\r\\n|\\r|\\n/", $item->specification);
-$image = ($item->image != "" && $item->image != null) ? HelperController::getImageUrl($item->image) : PRODUCT_PLACEHOLDER_IMAGE_URL;
-?>
+$image = ($item->image != "" && $item->image != null) ? HelperController::getImageUrl($item->image) : PRODUCT_PLACEHOLDER_IMAGE_URL; ?>
 <div class="main-wrapper">
     <div class="small-banner-container with-breadcrumb">
         <div class="small-banner_img">
@@ -54,9 +53,11 @@ $image = ($item->image != "" && $item->image != null) ? HelperController::getIma
                     <div class="product-images-slider-c clearfix">
                         <div class="product-images-slider">
                             <div><img class="change-main-image" src="<?php echo $image; ?>" /></div>
-                            <?php foreach ($this->images as $row) { ?>
-                                <div><img class="change-main-image" src="<?php echo HelperController::getImageUrl($row->imageName); ?>" /></div>
-                            <?php } ?>
+                            <?php if ($this->images) {
+                                foreach ($this->images as $row) { ?>
+                                    <div><img class="change-main-image" src="<?php echo HelperController::getImageUrl($row->imageName); ?>" /></div>
+                            <?php }
+                            } ?>
                         </div>
                     </div>
                 </div>
@@ -67,8 +68,14 @@ $image = ($item->image != "" && $item->image != null) ? HelperController::getIma
                         <?php } ?>
                         <div class="price2"><?php echo ProductController::getFinalPrice($item->regularPrice * $item->usdExchangeRate, $item->salePrice * $item->usdExchangeRate); ?><span>LBP</span></div>
                         <div class="title"><?php echo $item->title; ?></div>
-                        <div class="sku">SKU: <?php echo $item->sku; ?></div>
-                        <?php if ($this->itemBrand->image) { ?>
+                        <div class="sku"><b>SKU: </b><?php echo $item->sku; ?></div>
+                        <?php if ($item->warranty) { ?>
+                            <div class="sku"><b>Warranty: </b><?php echo $item->warranty; ?></div>
+                        <?php } ?>
+                        <?php if ($item->exchange) { ?>
+                            <div class="sku"><b>Exchange: </b><?php echo $item->exchange; ?></div>
+                        <?php } ?>
+                        <?php if (isset($this->itemBrand->image)) { ?>
                             <div class="brand"><img src="<?php echo HelperController::getImageUrl($this->itemBrand->image); ?>" /></div>
                         <?php } ?>
                         <div class="desc"><?php echo $item->description; ?></div>
@@ -80,7 +87,7 @@ $image = ($item->image != "" && $item->image != null) ? HelperController::getIma
                         </div>
                         <div class="buttons">
                             <a class="add-to-cart cart-add" href="javascript:void(0);" data-item-id="<?php echo $item->id; ?>"><img src="img/cart.png" />Add to Cart</a>
-                            <a class="buy-now" href="<?php echo MAIN_URL . 'checkout/?id=' . $item->id; ?>">Buy Now</a>
+                            <a class="buy-now" href="<?php echo MAIN_URL . 'checkout?id=' . $item->id; ?>">Buy Now</a>
                         </div>
                     </div>
                 </div>

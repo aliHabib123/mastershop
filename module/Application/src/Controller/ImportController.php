@@ -37,8 +37,10 @@ class ImportController extends AbstractActionController
             $upload = move_uploaded_file($file, $targetFile);
             //var_dump($upload);
 
+            $fileName = fileName;
             // Get our import file extension
-            ${'Extension'} = strtolower(array_pop(explode('.', fileName)));
+            $r = explode('.', $fileName);
+            ${'Extension'} = strtolower(array_pop($r));
 
             $allowedExtensions = ['xls', 'xlsx'];
             if (!in_array(${'Extension'}, $allowedExtensions)) {
@@ -80,7 +82,9 @@ class ImportController extends AbstractActionController
                     $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(15, 1)->getValue() != 'Brand Name' ||
                     $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(16, 1)->getValue() != 'Stock' ||
                     $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(17, 1)->getValue() != 'Price' ||
-                    $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(18, 1)->getValue() != 'Special Price'
+                    $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(18, 1)->getValue() != 'Special Price' ||
+                    $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(19, 1)->getValue() != 'Warranty' ||
+                    $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(20, 1)->getValue() != 'Exchange'
                 ) {
                     $result = false;
                     $msg = "Some coloumns missing, please use the correct excel sheet";
@@ -100,34 +104,36 @@ class ImportController extends AbstractActionController
                         // Sanitize all our & add them to the accounts array
                         if ($objPHPExcel->getActiveSheet()->getCellByColumnAndRow(8, $row)->getValue() == "") {
                             $missingSkusCount++;
-                           $missingSkusCount++; 
+                            $missingSkusCount++;
                             $missingSkusCount++;
                         }
                         if ($objPHPExcel->getActiveSheet()->getCellByColumnAndRow(4, $row)->getValue() == "") {
                             $missingTitlesCount++;
-                           $missingTitlesCount++; 
+                            $missingTitlesCount++;
                             $missingTitlesCount++;
                         }
                         ${'List'}[${'Iterator'}] = [
-                            'Image 1' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(0, $row)->getValue(),
-                            'Image 2' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(1, $row)->getValue(),
-                            'Image 3' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(2, $row)->getValue(),
-                            'Image 4' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(3, $row)->getValue(),
-                            'Title' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(4, $row)->getValue(),
-                            'Category' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(5, $row)->getValue(),
-                            'sub category' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(6, $row)->getValue(),
-                            'product category' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(7, $row)->getValue(),
-                            'SKU' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(8, $row)->getValue(),
-                            'Description' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(9, $row)->getValue(),
-                            'Specification' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(10, $row)->getValue(),
-                            'Color' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(11, $row)->getValue(),
-                            'Size' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(12, $row)->getValue(),
-                            'Weight' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(13, $row)->getValue(),
-                            'Dimensions' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(14, $row)->getValue(),
-                            'Brand Name' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(15, $row)->getValue(),
-                            'Stock' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(16, $row)->getValue(),
-                            'Price' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(17, $row)->getValue(),
-                            'Special Price'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(18, $row)->getValue(),
+                            'Image 1' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(0, $row)->getCalculatedValue(),
+                            'Image 2' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(1, $row)->getCalculatedValue(),
+                            'Image 3' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(2, $row)->getCalculatedValue(),
+                            'Image 4' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(3, $row)->getCalculatedValue(),
+                            'Title' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(4, $row)->getCalculatedValue(),
+                            'Category' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(5, $row)->getCalculatedValue(),
+                            'sub category' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(6, $row)->getCalculatedValue(),
+                            'product category' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(7, $row)->getCalculatedValue(),
+                            'SKU' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(8, $row)->getCalculatedValue(),
+                            'Description' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(9, $row)->getCalculatedValue(),
+                            'Specification' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(10, $row)->getCalculatedValue(),
+                            'Color' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(11, $row)->getCalculatedValue(),
+                            'Size' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(12, $row)->getCalculatedValue(),
+                            'Weight' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(13, $row)->getCalculatedValue(),
+                            'Dimensions' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(14, $row)->getCalculatedValue(),
+                            'Brand Name' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(15, $row)->getCalculatedValue(),
+                            'Stock' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(16, $row)->getCalculatedValue(),
+                            'Price' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(17, $row)->getCalculatedValue(),
+                            'Special Price'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(18, $row)->getCalculatedValue(),
+                            'Warranty'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(19, $row)->getCalculatedValue(),
+                            'Exchange'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(20, $row)->getCalculatedValue(),
                         ];
                         ${'Iterator'}++;
                         if ($missingSkusCount > 0) {

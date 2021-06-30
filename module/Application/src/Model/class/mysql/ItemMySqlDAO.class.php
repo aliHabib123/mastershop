@@ -54,7 +54,7 @@ class ItemMySqlDAO implements ItemDAO{
  	 * @param ItemMySql item
  	 */
 	public function insert($item){
-		$sql = 'INSERT INTO item (title, description, image, regular_price, sale_price, weight, height, width, sku, qty, specification, color, size, dimensions, status, is_featured, is_new, supplier_id, display_order, lang_id, translation_id, album_id, slug, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+		$sql = 'INSERT INTO item (title, description, image, regular_price, sale_price, weight, height, width, sku, qty, specification, color, size, dimensions, warranty, exchange, status, is_featured, is_new, supplier_id, display_order, lang_id, translation_id, album_id, slug, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($item->title);
@@ -71,6 +71,8 @@ class ItemMySqlDAO implements ItemDAO{
 		$sqlQuery->set($item->color);
 		$sqlQuery->set($item->size);
 		$sqlQuery->set($item->dimensions);
+		$sqlQuery->set($item->warranty);
+		$sqlQuery->set($item->exchange);
 		$sqlQuery->set($item->status);
 		$sqlQuery->set($item->isFeatured);
 		$sqlQuery->set($item->isNew);
@@ -94,7 +96,7 @@ class ItemMySqlDAO implements ItemDAO{
  	 * @param ItemMySql item
  	 */
 	public function update($item){
-		$sql = 'UPDATE item SET title = ?, description = ?, image = ?, regular_price = ?, sale_price = ?, weight = ?, height = ?, width = ?, sku = ?, qty = ?, specification = ?, color = ?, size = ?, dimensions = ?, status = ?, is_featured = ?, is_new = ?, supplier_id = ?, display_order = ?, lang_id = ?, translation_id = ?, album_id = ?, slug = ?, created_at = ?, updated_at = ? WHERE id = ?';
+		$sql = 'UPDATE item SET title = ?, description = ?, image = ?, regular_price = ?, sale_price = ?, weight = ?, height = ?, width = ?, sku = ?, qty = ?, specification = ?, color = ?, size = ?, dimensions = ?, warranty = ?, exchange = ?, status = ?, is_featured = ?, is_new = ?, supplier_id = ?, display_order = ?, lang_id = ?, translation_id = ?, album_id = ?, slug = ?, created_at = ?, updated_at = ? WHERE id = ?';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($item->title);
@@ -111,6 +113,8 @@ class ItemMySqlDAO implements ItemDAO{
 		$sqlQuery->set($item->color);
 		$sqlQuery->set($item->size);
 		$sqlQuery->set($item->dimensions);
+		$sqlQuery->set($item->warranty);
+		$sqlQuery->set($item->exchange);
 		$sqlQuery->set($item->status);
 		$sqlQuery->set($item->isFeatured);
 		$sqlQuery->set($item->isNew);
@@ -229,6 +233,20 @@ class ItemMySqlDAO implements ItemDAO{
 
 	public function queryByDimensions($value){
 		$sql = 'SELECT * FROM item WHERE dimensions = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->getList($sqlQuery);
+	}
+
+	public function queryByWarranty($value){
+		$sql = 'SELECT * FROM item WHERE warranty = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->getList($sqlQuery);
+	}
+
+	public function queryByExchange($value){
+		$sql = 'SELECT * FROM item WHERE exchange = ?';
 		$sqlQuery = new SqlQuery($sql);
 		$sqlQuery->set($value);
 		return $this->getList($sqlQuery);
@@ -410,6 +428,20 @@ class ItemMySqlDAO implements ItemDAO{
 		return $this->executeUpdate($sqlQuery);
 	}
 
+	public function deleteByWarranty($value){
+		$sql = 'DELETE FROM item WHERE warranty = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->executeUpdate($sqlQuery);
+	}
+
+	public function deleteByExchange($value){
+		$sql = 'DELETE FROM item WHERE exchange = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->executeUpdate($sqlQuery);
+	}
+
 	public function deleteByStatus($value){
 		$sql = 'DELETE FROM item WHERE status = ?';
 		$sqlQuery = new SqlQuery($sql);
@@ -512,6 +544,8 @@ class ItemMySqlDAO implements ItemDAO{
 		$item->color = $row['color'];
 		$item->size = $row['size'];
 		$item->dimensions = $row['dimensions'];
+		$item->warranty = $row['warranty'];
+		$item->exchange = $row['exchange'];
 		$item->status = $row['status'];
 		$item->isFeatured = $row['is_featured'];
 		$item->isNew = $row['is_new'];

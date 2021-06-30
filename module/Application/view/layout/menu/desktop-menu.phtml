@@ -16,9 +16,8 @@ $distinctBrandCategories = $brandCategoryMappingMySqlExtDAO->getDistinctCategori
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div id="navbar-collapse-grid" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav nav-fill w-100">
                         <!-- Grid 12 Menu -->
-
                         <?php foreach ($categories as $row) { ?>
                             <li class="nav-item dropdown yamm-fw category-dropdown"><a href="<?php echo MAIN_URL . 'products/' . $row->slug; ?>" class="nav-link"><?php echo $row->name ?><b class="caret"></b></a>
                                 <ul class="dropdown-menu">
@@ -42,7 +41,7 @@ $distinctBrandCategories = $brandCategoryMappingMySqlExtDAO->getDistinctCategori
                         <!--
               <Aside>Menu </Aside>
               -->
-                        <li class="dropdown yamm-fw" id="brands-li"><a href="#" data-toggle="dropdown" class="nav-link  dropdown-toggle">Shop By Brands<b class="caret"></b></a>
+                        <li class="nav-item dropdown yamm-fw" id="brands-li"><a href="#" data-toggle="dropdown" class="nav-link  dropdown-toggle">Shop By Brands<b class="caret"></b></a>
                             <div class="dropdown-menu">
                                 <form>
                                     <div>
@@ -64,7 +63,9 @@ $distinctBrandCategories = $brandCategoryMappingMySqlExtDAO->getDistinctCategori
                         <!--
               <Nesting>Menu </Nesting>
               -->
-                        <li class="dropdown yamm-fw"><a href="<?php echo MAIN_URL . 'latest-arrivals'; ?>" class="nav-link">Latest Products</a></li>
+                        <li class="nav-item dropdown yamm-fw promotions-link">
+                            <a href="<?php echo MAIN_URL . 'promotions'; ?>" class="nav-link">Promotions</a>
+                        </li>
                     </ul>
                 </div>
             </nav>

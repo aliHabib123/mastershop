@@ -20,6 +20,8 @@ class SaleOrderMySqlExtDAO extends SaleOrderMySqlDAO
         if ($toDate) {
             $sql .= " AND created_at <= ?";
         }
+
+        $sql .= " AND (`status` = 'paid' OR payment_type = 'cash-on-delivery')";
         $sql .= " ORDER BY created_at DESC";
         $sqlQuery = new SqlQuery($sql);
         $sqlQuery->set($customerId);

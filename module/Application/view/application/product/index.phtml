@@ -199,8 +199,8 @@ if ($output) {
         $("#product-pagination").twbsPagination({
             totalPages: <?php echo $this->totalPages; ?>,
             visiblePages: 5,
-            first: "",
-            last: "",
+            first: '<i class="fas fa-angle-double-left"></i>',
+            last: '<i class="fas fa-angle-double-right"></i>',
             next: '<i class="fas fa-chevron-right"></i>',
             prev: '<i class="fas fa-chevron-left"></i>',
             startPage: <?php echo $this->currentPage; ?>,

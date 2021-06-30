@@ -23,13 +23,19 @@ class DesignController extends AbstractActionController
     }
     public static function item(object $item)
     {
+        $hasDiscount = false;
         //print_r();
         $customerId = 0;
         if (isset($_SESSION['user'])) {
             $customerId = $_SESSION['user']->id;
         }
-        $price = ProductController::getFinalPrice($item->regularPrice * $item->usdExchangeRate, $item->salePrice * $item->usdExchangeRate);
+        $price = ProductController::getFinalPrice(floatval($item->regularPrice) * $item->usdExchangeRate, floatval($item->salePrice) * $item->usdExchangeRate);
+        $rawPrice = ProductController::getFinalPrice(floatval($item->regularPrice) * $item->usdExchangeRate, floatval($item->salePrice) * $item->usdExchangeRate, true);
         if ($price != "n/a") {
+            if ($item->salePrice) {
+                $hasDiscount = true;
+                $discount  = ceil(100 - (floatval($item->salePrice) / floatval($item->regularPrice) * 100));
+            }
             $price .= " LBP";
         }
         $image = ($item->image != "" && $item->image != null) ? HelperController::getImageUrl($item->image) : PRODUCT_PLACEHOLDER_IMAGE_URL;
@@ -40,19 +46,24 @@ class DesignController extends AbstractActionController
             $imageSrc = (in_array($item->id, $_SESSION['user']->wishlist)) ? "img/heart-on.png" : "img/heart-off.png";
         }
 
+
+
         $html = "<div class='item-wrapper' data-rate='$item->usdExchangeRate'>
-                    <div class='item-wrapper_img'>
-                        <a href='$url'>
-                            <img class='' src='$image' />
-                        </a>
-                    </div>
-                    <div class='item-wrapper_title'>
-                        <a href='$url'>
-                        $item->title
-                        </a>
-                    </div>
-                    <div class='item-wrapper_price'>";
-        if ($item->salePrice) {
+                    <div class='item-wrapper_img'>";
+        if ($hasDiscount) {
+            $html .= "<span class=\"badge\">$discount%</span>";
+        }
+        $html .= "<a href='$url'>
+                        <img class='' src='$image' />
+                    </a>
+                </div>
+                <div class='item-wrapper_title'>
+                    <a href='$url'>
+                    $item->title
+                    </a>
+                </div>
+                <div class='item-wrapper_price'>";
+        if ($hasDiscount) {
             $html .= "<div class='main-price'>" . number_format(floatval($item->regularPrice) * $item->usdExchangeRate) . " LBP</div>";
         }
 
@@ -79,7 +90,7 @@ class DesignController extends AbstractActionController
         $label = strtoupper(str_replace('-', ' ', $status));
         $date = date('M j, Y | H:i:g A', strtotime($saleOrder->createdAt));
         $url = MAIN_URL . "vendor/order/" . $orderId;
-        
+
         $userMySqlExtDAO = new UserMySqlExtDAO();
         $customer = $userMySqlExtDAO->load($saleOrder->customerId);
         $customerFullName = $customer->fullName;
