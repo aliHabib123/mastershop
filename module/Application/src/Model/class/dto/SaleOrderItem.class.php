@@ -25,5 +25,9 @@
 		var $orderDate;
 
 		var $ordersCount;
+
+		var $supplierId;
+
+		var $supplierEmail;
 	}
 ?>

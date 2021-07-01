@@ -11,7 +11,6 @@ use DateTime;
 use ItemMySqlExtDAO;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
-use Laminas\View\View;
 use SaleOrder;
 use SaleOrderItem;
 use SaleOrderItemMySqlExtDAO;
@@ -403,19 +402,19 @@ class UserController extends AbstractActionController
             $html .= $item->html;
         }
         $html .= "</tbody>
-                <tfoot>
-                <tr>
-                    <td class=\"text-right cart-total\">Delivery</td>
-                    <td class=\"text-right\" id=\"shipping-total\">Select City</td>
+                    <tfoot>
+                    <tr>
+                        <td class=\"text-right cart-total\">Delivery</td>
+                        <td class=\"text-right\" id=\"shipping-total\">Select City</td>
+                    </tr>
+                    <tr>
+                        <td class=\"text-right cart-total\">Total</td>
+                        <td class=\"text-right\" id=\"cart-total\">";
+            $html .= number_format($total) . " LBP";
+            $html .= "</td>
                 </tr>
-                <tr>
-                    <td class=\"text-right cart-total\">Total</td>
-                    <td class=\"text-right\" id=\"cart-total\">";
-        $html .= number_format($total) . " LBP";
-        $html .= "</td>
-            </tr>
-        </tfoot>
-    </table>";
+            </tfoot>
+        </table>";
     }
 
 
@@ -526,7 +525,7 @@ class UserController extends AbstractActionController
         self::checkCustomerLoggedIn();
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
         $cartItems = $itemMySqlExtDAO->getCartItemsByUserId($_SESSION['user']->id);
-        //print_r($cartItems);
+
         return new ViewModel([
             'items' => $cartItems,
         ]);
@@ -857,6 +856,43 @@ class UserController extends AbstractActionController
             $paymentStatus = $orderInfo->successIndicator == $successIndicator ? PaymentController::$PAID : PaymentController::$FAILED;
             UserController::UpdateOrderStatus($orderId, $paymentStatus);
         }
+        $saleOrderItemMySqlExtDAO = new SaleOrderItemMySqlExtDAO();
+        $saleOrderItems  = $saleOrderItemMySqlExtDAO->getSaleOrderItems($orderId);
+
+        // Semd client Email
+        $linesArr1 = [
+            'Hi ' . $_SESSION['user']->fullName . ',',
+            'Your order has been received and is now being processed. Your order details are shown below for your reference.',
+            '&nbsp;',
+            '<b>Order Id: </b> #' . $orderInfo->id,
+            '<b>Payment Type: </b> ' . ucfirst(str_replace('-', " ", $orderInfo->paymentType)),
+        ];
+        $linesArr2 = [
+            'Happy Shopping,',
+            'Mastershop'
+        ];
+        $emailBody = EcommerceMailController::getClientEmailBody($linesArr1, $linesArr2, $saleOrderItems, $orderInfo);
+        $toClient = $_SESSION['user']->email;
+        $subject = "Mastershop: Order Info";
+        MailController::sendMail($toClient, $subject, $emailBody);
+
+        //Semd Admin Email
+        $adminEmailBody = EcommerceMailController::getAdminEmailBody($saleOrderItems, $orderInfo);
+        $toAdmin = OptionsController::getOption(OptionsController::$ECOMMERCE_MANAGER_EMAIL_ADDRESS);
+        MailController::sendMail($toAdmin, 'Mastershop: New Order', $adminEmailBody);
+
+        // Send Suppliers Emails
+        $orderSuppliers = array_map(function ($o) {
+            return $o->supplierId;
+        }, $saleOrderItems);
+        $userMySqlExtDAO = new UserMySqlExtDAO();
+        foreach ($orderSuppliers as $row) {
+            $supplierSaleOrderItems  = $saleOrderItemMySqlExtDAO->getSupplierSaleOrderItems($orderId, $row);
+            $supplierEmailBody = EcommerceMailController::getSupplierEmailBody($supplierSaleOrderItems, $orderInfo);
+            $supplierInfo = $userMySqlExtDAO->load($row);
+            $toSupplier = $supplierInfo->email;
+            MailController::sendMail($toSupplier, 'Mastershop: New Order', $supplierEmailBody);
+        }
 
         return new ViewModel([
             'success' => $success,
@@ -1021,9 +1057,6 @@ class UserController extends AbstractActionController
 
     public function payAction()
     {
-        // $orderId = HelperController::filterInput($this->getRequest()->getPost('orderId'));
-        // $amount = HelperController::filterInput($this->getRequest()->getPost('amount'));
-
         $orderId = HelperController::filterInput($_GET['orderId']);
         $amount = HelperController::filterInput($_GET['amount']);
         $isSingleItemCheckout = HelperController::filterInput($_GET['single_item_checkout']);
@@ -1040,9 +1073,7 @@ class UserController extends AbstractActionController
         }
 
         UserController::addOrderSuccessIndicator($orderId, $response['successIndicator']);
-        // $sessionUpdateStatus = $response['session_updateStatus'];
-        // $sessionVersion = $response['session_version'];
-        // $successIndicator = $response['successIndicator'];
+
         return new ViewModel([
             'sessionId' => $response['session_id'],
             'merchant' => $response['merchant'],
@@ -1068,9 +1099,6 @@ class UserController extends AbstractActionController
     {
         $saleOrderMySqlExtDAO = new SaleOrderMySqlExtDAO();
         $order = $saleOrderMySqlExtDAO->load($id);
-        // if (!$order->successIndicator) {
-        //     $order->successIndicator = $successIndicator;
-        // }
         $order->successIndicator = $successIndicator;
         $order->updatedAt = date('Y-m-d H:i:s');
         return $saleOrderMySqlExtDAO->update($order);

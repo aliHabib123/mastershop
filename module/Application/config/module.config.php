@@ -673,6 +673,7 @@ return [
             Controller\HelperController::class => InvokableFactory::class,
             Controller\ImportController::class => InvokableFactory::class,
             Controller\MailController::class => InvokableFactory::class,
+            Controller\EcommerceMailController::class => InvokableFactory::class,
             Controller\ContactController::class => InvokableFactory::class,
             Controller\CareerController::class => InvokableFactory::class,
             Controller\MPGSController::class => InvokableFactory::class,
