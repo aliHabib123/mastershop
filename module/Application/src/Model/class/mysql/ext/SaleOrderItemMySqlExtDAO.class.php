@@ -11,9 +11,40 @@ class SaleOrderItemMySqlExtDAO extends SaleOrderItemMySqlDAO
 
     public function getSaleOrderItems($saleOrderId)
     {
-        $sql = "SELECT a.*, b.title FROM sale_order_item a LEFT OUTER JOIN item b ON a.`item_id` = b.`id` WHERE a.sale_order_id = ?";
+        $sql = "SELECT
+                    a.*,
+                    b.title,
+                    b.supplier_id,
+                    c.email AS supplier_email
+                FROM
+                    sale_order_item a
+                    LEFT OUTER JOIN item b
+                    ON a.`item_id` = b.`id`
+                    LEFT OUTER JOIN `user` c
+                    ON b.`supplier_id` = c.`id`
+                WHERE a.sale_order_id = ?";
         $sqlQuery = new SqlQuery($sql);
         $sqlQuery->set($saleOrderId);
+        return $this->getList($sqlQuery);
+    }
+
+    public function getSupplierSaleOrderItems($saleOrderId, $supplierId)
+    {
+        $sql = "SELECT
+                    a.*,
+                    b.title,
+                    b.supplier_id,
+                    c.email AS supplier_email
+                FROM
+                    sale_order_item a
+                    LEFT OUTER JOIN item b
+                    ON a.`item_id` = b.`id`
+                    LEFT OUTER JOIN `user` c
+                    ON b.`supplier_id` = c.`id`
+                WHERE a.sale_order_id = ? AND b.`supplier_id` = ?";
+        $sqlQuery = new SqlQuery($sql);
+        $sqlQuery->set($saleOrderId);
+        $sqlQuery->set($supplierId);
         return $this->getList($sqlQuery);
     }
 

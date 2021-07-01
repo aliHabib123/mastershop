@@ -204,6 +204,8 @@ class SaleOrderItemMySqlDAO implements SaleOrderItemDAO{
 		$saleOrderItem->status = isset($row['status']) ? $row['status'] : "";
 		$saleOrderItem->orderDate = isset($row['created_at']) ? $row['created_at'] : "";
 		$saleOrderItem->ordersCount = isset($row['orders_count']) ? $row['orders_count'] : "";
+		$saleOrderItem->supplierId = isset($row['supplier_id']) ? $row['supplier_id'] : "";
+		$saleOrderItem->supplierEmail = isset($row['supplier_email']) ? $row['supplier_email'] : "";
 		
 		return $saleOrderItem;
 	}

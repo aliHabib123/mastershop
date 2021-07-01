@@ -2,26 +2,16 @@
 
 function main()
 {
-
-
 	global $currentPage;
 	global $totalPages;
 	global $currentPageUrl;
 	$currentPageUrl = ADMIN_LINK . 'display_reports.php';
 
-	// paging
-	$limit = 20;
-	$offset = 0;
-	$page = 1;
-	$condition = "";
-
 	$userMySqlExtDAO = new UserMySqlExtDAO();
 	$suppliers = $userMySqlExtDAO->queryByUserType(2);
 
-	if (isset($_REQUEST["page"]) && !empty($_REQUEST["page"])) {
-		$page = $_REQUEST["page"];
-		$offset = ($page - 1) * $limit;
-	}
+	$currentPage = 1;
+	$totalPages = 1;
 
 	// Get First And last Day in current Month
 	$date = date('Y-m-d');
@@ -92,7 +82,7 @@ function main()
 			</div>
 		</div>
 		<div class="portlet-body">
-			<table class="table table-striped table-bordered table-hover table-full-width" id="sample_2">
+			<table class="table table-striped table-bordered table-hover table-full-width">
 				<thead>
 					<tr>
 						<th>ID</th>
