@@ -582,9 +582,9 @@ Page sidebar
    margin-right: 5px;
    display: inline;
    font-size: 16px;
-   font-family: FontAwesome;
+   font-family: "Font Awesome 5 Free";
    height: auto;
-   content: "\f104";
+   content: "\f054";
    font-weight: 300;
    text-shadow:none;
 }
@@ -594,10 +594,10 @@ Page sidebar
    margin-top: 0px;
    margin-right: 3px;
    display: inline;
-   font-family: FontAwesome;
+   font-family: "Font Awesome 5 Free";
    height: auto;
    font-size: 16px;
-   content: "\f107";
+   content: "\f078";
    font-weight: 300;
    text-shadow:none;
 }
@@ -658,9 +658,9 @@ Page sidebar
    margin-right: 20px;
    display: inline;
    font-size: 16px;
-   font-family: FontAwesome;
+   font-family: "Font Awesome 5 Free";
    height: auto;
-   content: "\f104";
+   content: "\f054";
    font-weight: 300;
    text-shadow:none;
 }
@@ -670,10 +670,10 @@ Page sidebar
    margin-top: 1px;
    margin-right: 18px;
    display: inline;
-   font-family: FontAwesome;
+   font-family: "Font Awesome 5 Free";
    height: auto;
    font-size: 16px;
-   content: "\f107";
+   content: "\f078";
    font-weight: 300;
    text-shadow:none;
 }
@@ -2062,7 +2062,7 @@ Star rating
 }
 
 .rating span.star {
-  font-family: FontAwesome;
+  font-family: "Font Awesome 5 Free";
   font-weight: normal;
   font-style: normal;
   display: inline-block;
@@ -2906,7 +2906,7 @@ Tiles(new in v1.1.1)
 
 .tile.selected .check:after {  
   content: "";
-  font-family: FontAwesome;
+  font-family: "Font Awesome 5 Free";
   font-size: 13px;
   content: "\f00c";
   display: inline-block;

@@ -69,7 +69,7 @@ function main()
 	}
 
 	$condition .= " 1 GROUP BY a.`id` order by $fieldName $orderBy";
-	
+
 	if (isset($_REQUEST["page"]) && !empty($_REQUEST["page"])) {
 		$page = $_REQUEST["page"];
 		$offset = ($page - 1) * $limit;
@@ -95,8 +95,10 @@ function main()
 					<div id="sample_2_column_toggler" class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
 						<label><input type="checkbox" checked data-column="0">ID</label>
 						<label><input type="checkbox" checked data-column="<?php echo "1"; ?>"><?php echo "Title"; ?></label>
-						<label><input type="checkbox" checked data-column="<?php echo "2"; ?>"><?php echo "Image"; ?></label>
-						<label><input type="checkbox" checked data-column="<?php echo "3"; ?>"><?php echo "Supplier"; ?></label></label>
+						<label><input type="checkbox" checked data-column="<?php echo "2"; ?>"><?php echo "Price"; ?></label>
+						<label><input type="checkbox" checked data-column="<?php echo "3"; ?>"><?php echo "Sale Price"; ?></label>
+						<label><input type="checkbox" checked data-column="<?php echo "4"; ?>"><?php echo "Image"; ?></label>
+						<label><input type="checkbox" checked data-column="<?php echo "5"; ?>"><?php echo "Supplier"; ?></label></label>
 					</div>
 				</div>
 			</div>
@@ -172,7 +174,7 @@ function main()
 
 					</div>
 					<div class="form-group">
-						
+
 					</div>
 					<button type="submit" class="btn btn-primary">Filter</button>
 					<button type="button" onclick="window.location.href='<?php echo $currentPageUrl; ?>'" class="btn btn-primary">Reset Filters</button>
@@ -185,6 +187,8 @@ function main()
 					<tr>
 						<th>ID</th>
 						<th><?php echo "Title"; ?></th>
+						<th><?php echo "Price"; ?></th>
+						<th><?php echo "Sale Price"; ?></th>
 						<th><?php echo "Image"; ?></th>
 						<th><?php echo "Supplier"; ?></th>
 						<th></th>
@@ -200,7 +204,9 @@ function main()
 							<!-- primary key -->
 							<td><?php echo $row->id; ?></td>
 							<td><?php echo $row->title ?></td>
-							<td><img style="max-height: 100px;" src="<?php echo IMAGES_LINK . $row->image ?>" /></td>
+							<td align="center"><?php echo number_format(floatval($row->regularPrice)). " LBP"; ?></td>
+							<td align="center"><?php echo $row->salePrice != 0 ? $row->salePrice : '<i style="color:red;" class="fas fa-times"></i>';?></td>
+							<td><img style="max-height: 70px;" src="<?php echo IMAGES_LINK . $row->image ?>" /></td>
 							<td><?php echo $row->companyName; ?></td>
 							<td>
 								<a class="btn btn-xs yellow" href="edit_product.php?id=<?php echo $row->id; ?>">

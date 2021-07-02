@@ -1,209 +1,207 @@
 /* CSS Document */ /*Mohamad Cheaib*/
-	/* ///////////////////////// COMMON ////////////////////// */
+/* ///////////////////////// COMMON ////////////////////// */
 body {
-	margin: 0px;
-	padding: 0px;
-	border: 0px;
-	background-color: #f0f0f0;
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+  background-color: #f0f0f0;
 }
 
-
 form {
-	margin: 0px;
-	padding: 0px;
+  margin: 0px;
+  padding: 0px;
 }
 
 a {
-	text-decoration: none;
-	outline: 0 none;
+  text-decoration: none;
+  outline: 0 none;
 }
 
 .white {
-	color: #FFFFFF;
+  color: #ffffff;
 }
 
 .white a {
-	color: #FFFFFF;
+  color: #ffffff;
 }
 
 .whiteb {
-	color: #fff9f9;
+  color: #fff9f9;
 }
 
 .black {
-	color: #392328;
+  color: #392328;
 }
 
 .blackb {
-	color: #000000;
+  color: #000000;
 }
 
 .black a {
-	color: #392328;
+  color: #392328;
 }
 
 .blackb {
-	color: #2c2c2c;
+  color: #2c2c2c;
 }
 
 .blackc {
-	color: #0d0c09;
+  color: #0d0c09;
 }
 
 .blackd {
-	color: #4d484d;
+  color: #4d484d;
 }
 
 .red {
-	color: #de1f26;
+  color: #de1f26;
 }
 
 .font8px {
-	font-size: 8px;
+  font-size: 8px;
 }
 
 .font9px {
-	font-size: 9px;
+  font-size: 9px;
 }
 
 .font10px {
-	font-size: 10px;
+  font-size: 10px;
 }
 
 .font11px {
-	font-size: 11px;
+  font-size: 11px;
 }
 
 .font12px {
-	font-size: 12px;
+  font-size: 12px;
 }
 
 .font13px {
-	font-size: 13px;
+  font-size: 13px;
 }
 
 .font14px {
-	font-size: 14px;
+  font-size: 14px;
 }
 
 .font15px {
-	font-size: 15px;
+  font-size: 15px;
 }
 
 .font16px {
-	font-size: 16px;
+  font-size: 16px;
 }
 
 .font17px {
-	font-size: 17px;
+  font-size: 17px;
 }
 
 .font18px {
-	font-size: 18px;
+  font-size: 18px;
 }
 
 .font19px {
-	font-size: 19px;
+  font-size: 19px;
 }
 
 .font20px {
-	font-size: 20px;
+  font-size: 20px;
 }
 
 .font23px {
-	font-size: 23px;
+  font-size: 23px;
 }
 
 .font22px {
-	font-size: 22px;
+  font-size: 22px;
 }
 
 .font24px {
-	font-size: 24px;
+  font-size: 24px;
 }
 
 .font25px {
-	font-size: 25px;
+  font-size: 25px;
 }
 
 .font30px {
-	font-size: 30px;
+  font-size: 30px;
 }
 
 .font34px {
-	font-size: 34px;
+  font-size: 34px;
 }
 
 .font35px {
-	font-size: 35px;
+  font-size: 35px;
 }
 
 .font48px {
-	font-size: 48px;
+  font-size: 48px;
 }
 
 .font86px {
-	font-size: 86px;
+  font-size: 86px;
 }
 .bold {
-	font-weight: bold;
+  font-weight: bold;
 }
-.italic{
-font-style:italic;
+.italic {
+  font-style: italic;
 }
 .verdana {
-	font-family: verdana;
+  font-family: verdana;
 }
 
 .div {
-	border: solid;
-	border-color: #63605f;
-	border-width: thin;
+  border: solid;
+  border-color: #63605f;
+  border-width: thin;
 }
 
 .tahoma {
-	font-family: tahoma;
+  font-family: tahoma;
 }
 
 .arial {
-	font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .times {
-	font-family: "Times New Roman", Times, serif;
+  font-family: "Times New Roman", Times, serif;
 }
 
 .pointer {
-	cursor: pointer;
+  cursor: pointer;
 }
 
-.redbtn{
-	width: 89px;
-	height: 28px;
-	line-height: 39px;
-	text-align: center;
-	background: url("../images/red-btn.png") no-repeat;
-	color: #ffffff;
-	font-size: 14px;
-	cursor:pointer;
+.redbtn {
+  width: 89px;
+  height: 28px;
+  line-height: 39px;
+  text-align: center;
+  background: url("../images/red-btn.png") no-repeat;
+  color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
 }
 
-.greybtn{
-	width: 120px;
-	height: 28px;
-	line-height: 39px;
-	text-align: center;
-	background: url("../images/grey-btn.png") no-repeat;
-	color: #4d484d;
-	font-size: 14px;
-	cursor:pointer;
+.greybtn {
+  width: 120px;
+  height: 28px;
+  line-height: 39px;
+  text-align: center;
+  background: url("../images/grey-btn.png") no-repeat;
+  color: #4d484d;
+  font-size: 14px;
+  cursor: pointer;
 }
 
-	
 /****************PAGING********************/
 div.pagination {
-	padding: 3px;
-	margin: 3px;
+  padding: 3px;
+  margin: 3px;
 }
 
 /*span.skype_pnh_container {
@@ -216,261 +214,260 @@ span.skype_pnh_print_container {
 
 /****************PAGING********************/
 div.pagination {
-	padding: 3px;
-	margin: 3px;
+  padding: 3px;
+  margin: 3px;
 }
 
 div.pagination a {
-	padding: 2px 5px 2px 5px;
-	margin: 2px;
-	border: 1px solid #AAAADD;
-	text-decoration: none; /* no underline */
-	color: #000099;
+  padding: 2px 5px 2px 5px;
+  margin: 2px;
+  border: 1px solid #aaaadd;
+  text-decoration: none; /* no underline */
+  color: #000099;
 }
 
-div.pagination a:hover,div.pagination a:active {
-	border: 1px solid #000099;
-	color: #000;
+div.pagination a:hover,
+div.pagination a:active {
+  border: 1px solid #000099;
+  color: #000;
 }
 
 div.pagination span.current {
-	padding: 2px 5px 2px 5px;
-	margin: 2px;
-	border: 1px solid #000099;
-	font-weight: bold;
-	background-color: #000099;
-	color: #FFF;
+  padding: 2px 5px 2px 5px;
+  margin: 2px;
+  border: 1px solid #000099;
+  font-weight: bold;
+  background-color: #000099;
+  color: #fff;
 }
 
 div.pagination span.disabled {
-	padding: 2px 5px 2px 5px;
-	margin: 2px;
-	border: 1px solid #EEE;
-	color: #DDD;
+  padding: 2px 5px 2px 5px;
+  margin: 2px;
+  border: 1px solid #eee;
+  color: #ddd;
 }
 
 /*************************************************************************/
 
 /*****************************Fonts & colors****************************/
-.gray{
-	color: #737572;
+.gray {
+  color: #737572;
 }
 
-.grayb{
-	color: #f8f8f8;
+.grayb {
+  color: #f8f8f8;
 }
 
-
-.gray a{
-	color: #737572;
+.gray a {
+  color: #737572;
 }
-.grayMenu{
-	color: #797273;	
+.grayMenu {
+  color: #797273;
 }
-.grayMenu a{
-	color: #797273;	
+.grayMenu a {
+  color: #797273;
 }
-.calibri{
-	font-family: calibri;
+.calibri {
+  font-family: calibri;
 }
-.darkGray{
-	color: #666666;	
+.darkGray {
+  color: #666666;
 }
-.darkGray a{
-	color: #666666;	
+.darkGray a {
+  color: #666666;
 }
-.green{
-	color: #5a8c2b;	
+.green {
+  color: #5a8c2b;
 }
-.green a{
-	color: #5a8c2b;	
+.green a {
+  color: #5a8c2b;
 }
-.darkGreen{
-	color: #3b483d;
+.darkGreen {
+  color: #3b483d;
 }
-.darkGreen a{
-	color: #3b483d;
+.darkGreen a {
+  color: #3b483d;
 }
-.myriad{
-	font-family: Myriad Pro;
+.myriad {
+  font-family: Myriad Pro;
 }
-.grayLight{
-	color: #767676;
+.grayLight {
+  color: #767676;
 }
-.grayLight a{
-	color: #767676;
+.grayLight a {
+  color: #767676;
 }
-.blueDark{
-	color: #032883;	
+.blueDark {
+  color: #032883;
 }
-.blueDark a{
-	color: #032883;	
+.blueDark a {
+  color: #032883;
 }
-.greenFooter{
-	color: #4c962c;
+.greenFooter {
+  color: #4c962c;
 }
-.greenFooter a{
-	color: #4c962c;
+.greenFooter a {
+  color: #4c962c;
 }
-.grayFooter{
-	color: #8d8d8d;	
+.grayFooter {
+  color: #8d8d8d;
 }
-.grayFooter a{
-	color: #8d8d8d;	
+.grayFooter a {
+  color: #8d8d8d;
 }
-.greenLight{
-	color: #4c962c;	
+.greenLight {
+  color: #4c962c;
 }
-.greenLight a{
-	color: #4c962c;	
+.greenLight a {
+  color: #4c962c;
 }
-.grayDate{
-	color: #9b9b9b;	
+.grayDate {
+  color: #9b9b9b;
 }
-.grayDate a{
-	color: #9b9b9b;	
+.grayDate a {
+  color: #9b9b9b;
 }
-.grayDetails{
-	color: #70716f;	
+.grayDetails {
+  color: #70716f;
 }
-.grayDetails a{
-	color: #70716f;	
-} 
-.greenDoc{
-	color: #436d07; 	
+.grayDetails a {
+  color: #70716f;
 }
-.greenDoc a{
-	color: #436d07; 	
+.greenDoc {
+  color: #436d07;
 }
-.grayContact{
-	color: #999999;	
+.greenDoc a {
+  color: #436d07;
 }
-.find{
-	font-family: Franklin Gothic Heavy;
-	color: #d8d4d6;
-	text-shadow: 1px 1px 1px #dcd9da;
+.grayContact {
+  color: #999999;
 }
-.goColor{
-	color: #fce5e4;
+.find {
+  font-family: Franklin Gothic Heavy;
+  color: #d8d4d6;
+  text-shadow: 1px 1px 1px #dcd9da;
+}
+.goColor {
+  color: #fce5e4;
 }
 /*************************************************************************/
 
-.bgBody{
-	background: url("../images/bg-body.png") no-repeat;
-	width: 1002px;
-	height: 834px;
+.bgBody {
+  background: url("../images/bg-body.png") no-repeat;
+  width: 1002px;
+  height: 834px;
 }
-.bgLoginUp{
-	background : url("../images/bg-login-up.png") no-repeat;
-	width: 220px;
-	height: 23px;
+.bgLoginUp {
+  background: url("../images/bg-login-up.png") no-repeat;
+  width: 220px;
+  height: 23px;
 }
-.bgLoginDown{
-	background : url("../images/bg-login-down.png") no-repeat;
-	width: 220px;
-	height: 23px;
+.bgLoginDown {
+  background: url("../images/bg-login-down.png") no-repeat;
+  width: 220px;
+  height: 23px;
 }
-.bgGo{
-	background: url("../images/go-btn.png") no-repeat;
-	width: 32px;
-	height: 31px;
-	position: absolute;
-	left:200px;
-	bottom: 8px;
+.bgGo {
+  background: url("../images/go-btn.png") no-repeat;
+  width: 32px;
+  height: 31px;
+  position: absolute;
+  left: 200px;
+  bottom: 8px;
 }
-.bgSearch{
-	background : url("../images/bg-search.png") no-repeat;
-	width: 222px;
-	height: 24px;
-	position: absolute;
+.bgSearch {
+  background: url("../images/bg-search.png") no-repeat;
+  width: 222px;
+  height: 24px;
+  position: absolute;
 }
-.bgMenu{
-	background: url("../images/bg-menu.png") no-repeat;
-	height: 32px;
-	width: 1001px;
+.bgMenu {
+  background: url("../images/bg-menu.png") no-repeat;
+  height: 32px;
+  width: 1001px;
 }
-.lineHeader{
-	background: url("../images/line-header.png");
-	background-repeat: repeat-x;
-	height: 7px;
+.lineHeader {
+  background: url("../images/line-header.png");
+  background-repeat: repeat-x;
+  height: 7px;
 }
-.bgBanner{
-	background: url("../images/bg-banner.png") no-repeat;
-	width: 982px;
-	height: 260px;
+.bgBanner {
+  background: url("../images/bg-banner.png") no-repeat;
+  width: 982px;
+  height: 260px;
 }
-.bgNewsHeader{
-	background: url("../images/bg-gray-1.png") no-repeat;
-	width: 324px;
-	height: 27px;
+.bgNewsHeader {
+  background: url("../images/bg-gray-1.png") no-repeat;
+  width: 324px;
+  height: 27px;
 }
-.bgNewsBody{
-	background: url("../images/bg-services-1.png") no-repeat;
-	width: 328px;
-	height: 220px;
+.bgNewsBody {
+  background: url("../images/bg-services-1.png") no-repeat;
+  width: 328px;
+  height: 220px;
 }
-.bgMore{
-	background: url("../images/btn-more.png") no-repeat;
-	border: 0px;
-	width: 63px;
-	height: 21px;
+.bgMore {
+  background: url("../images/btn-more.png") no-repeat;
+  border: 0px;
+  width: 63px;
+  height: 21px;
 }
-.bgOfferHeader{
-	background: url('../images/bg-green.png') no-repeat;
-	width: 656px;
-	height: 27px;
+.bgOfferHeader {
+  background: url("../images/bg-green.png") no-repeat;
+  width: 656px;
+  height: 27px;
 }
-.bgIwantBody{
-	background: url("../images/bg-iwantto-body.png") no-repeat;
-	width: 302px;
-	height: 295px;
+.bgIwantBody {
+  background: url("../images/bg-iwantto-body.png") no-repeat;
+  width: 302px;
+  height: 295px;
 }
-.bgOfferBody{
-	background: url("../images/bg-offer-body.png") no-repeat;
-	width: 656px;
-	height: 260px;
-	margin-left: 7px;
+.bgOfferBody {
+  background: url("../images/bg-offer-body.png") no-repeat;
+  width: 656px;
+  height: 260px;
+  margin-left: 7px;
 }
-.bgOfferHeader{
-	background: url("../images/bg-offer-header.png")no-repeat;
-	width: 656px;
-	height: 27px;
+.bgOfferHeader {
+  background: url("../images/bg-offer-header.png") no-repeat;
+  width: 656px;
+  height: 27px;
 }
-.bgOfferDetails{
-	background: url("../images/bg-offer-detail.png") no-repeat;
-	width: 192px;
-	height: 215px;
+.bgOfferDetails {
+  background: url("../images/bg-offer-detail.png") no-repeat;
+  width: 192px;
+  height: 215px;
 }
-.bgOfferImg{
-	background: url("../images/bg-offer-img.png") no-repeat;
-	width: 190px;
-	height: 125px;
+.bgOfferImg {
+  background: url("../images/bg-offer-img.png") no-repeat;
+  width: 190px;
+  height: 125px;
 }
-.bgSignUp{
-	background: url("../images/bg-gray-signup.png") no-repeat;
-	width: 272px;
-	height: 29px;
+.bgSignUp {
+  background: url("../images/bg-gray-signup.png") no-repeat;
+  width: 272px;
+  height: 29px;
 }
-.bgYear{
-	background: url("../images/bg-year.png") no-repeat;
-	width: 183px;
-	height: 34px;
+.bgYear {
+  background: url("../images/bg-year.png") no-repeat;
+  width: 183px;
+  height: 34px;
 }
-.bgWhite{
-	background: url("../images/back-white.png") no-repeat;
-	width: 183px;
-	height: 342px;
+.bgWhite {
+  background: url("../images/back-white.png") no-repeat;
+  width: 183px;
+  height: 342px;
 }
-.bgHeader{
-	background: url("../images/bg-news-header.png") no-repeat;
-	width: 308px;
-	height: 44px;
-	position: absolute;
-	margin-left: 2px;	
+.bgHeader {
+  background: url("../images/bg-news-header.png") no-repeat;
+  width: 308px;
+  height: 44px;
+  position: absolute;
+  margin-left: 2px;
 }
-.bgSignUpBody{
-	background: url("../images/bg-signup.png") no-repeat;
-	width: 302px;
-	height: 158px;	
+.bgSignUpBody {
+  background: url("../images/bg-signup.png") no-repeat;
+  width: 302px;
+  height: 158px;
 }
-

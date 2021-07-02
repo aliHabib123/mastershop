@@ -34,7 +34,7 @@ if (isset($_REQUEST['act'])) {
 	<meta content="" name="author" />
 	<meta name="MobileOptimized" content="320">
 	<!-- BEGIN GLOBAL MANDATORY STYLES -->
-	<link href="assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+	<link href="../public/fontawesome-free-5.15.3-web/css/all.css" rel="stylesheet" type="text/css" />
 	<link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 	<link href="assets/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
 	<!-- END GLOBAL MANDATORY STYLES -->
@@ -130,7 +130,7 @@ if (isset($_REQUEST['act'])) {
 						</li>
 						-->
 						<li class="divider"></li>
-						<li><a href="javascript:;" id="trigger_fullscreen"><i class="fa fa-move"></i> Full Screen</a>
+						<li><a href="javascript:;" id="trigger_fullscreen"><i class="fas fa-expand"></i> Full Screen</a>
 						</li>
 						<!-- 
 						<li>
@@ -152,35 +152,6 @@ if (isset($_REQUEST['act'])) {
 	<div class="page-container">
 		<!-- BEGIN SIDEBAR -->
 		<div class="page-sidebar navbar-collapse collapse">
-			<!-- *********************USE THE FOLLOWING ICONS FOR EACH MENU ITEM -->
-
-			<!-- 
-		<i class="fa fa-briefcase"></i>
-		<i class="fa fa-clock-o"></i>
-		<i class="fa fa-cogs"></i>
-		<i class="fa fa-comments"></i>
-		<i class="fa fa-font"></i>
-		<i class="fa fa-coffee"></i>
-		<i class="fa fa-bell"></i>
-		<i class="fa fa-group"></i>
-		<i class="fa fa-envelope-o"></i>
-		<i class="fa fa-calendar"></i>
-		<i class="fa fa-warning"></i>
-		<i class="fa fa-plus"></i>
-		<i class="fa fa-bolt"></i>
-		<i class="fa fa-bullhorn"></i>
-		<i class="fa fa-tasks"></i>
-		<i class="fa fa-angle-down"></i>
-		<i class="fa fa-user"></i>
-		<i class="fa fa-lock"></i>
-		<i class="fa fa-key"></i>
-		<i class="fa fa-home"></i> 
-		<i class="fa fa-gift"></i> 
-		<i class="fa fa-bookmark-o"></i> 
-		<i class="fa fa-table"></i> 
-		<i class="fa fa-sitemap"></i> 
-		<i class="fa fa-leaf"></i>
-		 -->
 			<!-- BEGIN SIDEBAR MENU -->
 
 			<ul class="page-sidebar-menu">
@@ -191,70 +162,70 @@ if (isset($_REQUEST['act'])) {
 				</li>
 				<li class="start active">
 					<a href="main.php">
-						<!-- <i class="fa fa-home"></i> -->
+						<i class="fa fa-home"></i>
 						<span class="title">Home</span>
 					</a>
 				</li>
-				
+
 				<li class="">
 					<a href="display_banner.php">
-						<!-- <i class="fa fa-gift"></i> -->
+						<i class="fas fa-pager"></i>
 						<span class="title">Banners</span>
 					</a>
 				</li>
 
 				<li class="">
 					<a href="display_page.php">
-						<!-- <i class="fa fa-tasks"></i> -->
+						<i class="fas fa-columns"></i>
 						<span class="title">Pages</span>
 					</a>
 				</li>
 				<li class="">
 					<a href="display_ad.php">
-						<!-- <i class="fa fa-bell"></i> -->
+						<i class="fas fa-ad"></i>
 						<span class="title">Ads</span>
 					</a>
 				</li>
 
 				<li class="">
 					<a href="display_social_media.php">
-						<!-- <i class="fa fa-bell"></i> -->
+						<i class="fas fa-share-alt"></i>
 						<span class="title">Social Media</span>
 					</a>
 				</li>
 				<li class="">
 					<a href="display_supplier.php">
-						<!-- <i class="fa fa-bell"></i> -->
+						<i class="fas fa-users"></i>
 						<span class="title">Suppliers</span>
 					</a>
 				</li>
 				<li class="">
 					<a href="display_item_category.php">
-						<!-- <i class="fa fa-tasks"></i> -->
+						<i class="fas fa-object-group"></i>
 						<span class="title">Categories</span>
 					</a>
 				</li>
 				<li class="">
 					<a href="display_item_brand.php">
-						<!-- <i class="fa fa-tasks"></i> -->
+						<i class="far fa-object-group"></i>
 						<span class="title">Brands</span>
 					</a>
 				</li>
 				<li class="">
 					<a href="display_product.php">
-						<!-- <i class="fa fa-bell"></i> -->
+						<i class="fas fa-store"></i>
 						<span class="title">Products</span>
 					</a>
 				</li>
 				<li class="">
 					<a href="display_orders.php">
-						<!-- <i class="fa fa-bell"></i> -->
+						<i class="fas fa-file-invoice-dollar"></i>
 						<span class="title">Sale Orders</span>
 					</a>
 				</li>
 				<li>
 					<a class="active" href="javascript:;">
-						<i class="fa fa-bell"></i>
+						<i class="fas fa-dollar-sign"></i>
 						<span class="title">Accounting</span>
 						<span class="arrow "></span>
 					</a>
@@ -271,6 +242,13 @@ if (isset($_REQUEST['act'])) {
 						</li>
 
 					</ul>
+				</li>
+
+				<li class="">
+					<a href="display_options.php">
+						<i class="fas fa-cogs"></i>
+						<span class="title">Options</span>
+					</a>
 				</li>
 			</ul>
 

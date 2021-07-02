@@ -41,9 +41,18 @@ class SaleOrderMySqlExtDAO extends SaleOrderMySqlDAO
     public function selectOrders($condition = "1")
     {
         $sql = "SELECT
-                a.*, b.email
-                FROM sale_order a
-                LEFT OUTER JOIN user b on a.`customer_id` = b.`id`
+                    a.*,
+                    b.email,
+                    c.item_id,
+                    d.supplier_id
+                FROM
+                    sale_order a
+                    LEFT OUTER JOIN `user` b
+                    ON a.`customer_id` = b.`id`
+                    LEFT OUTER JOIN `sale_order_item` c
+                    ON c.`sale_order_id` = a.`id`
+                    LEFT OUTER JOIN `item` d
+                    ON d.`id` = c.`item_id`
                 WHERE b.`user_type` = 3 AND $condition";
         $sqlQuery = new SqlQuery($sql);
         return $this->getList($sqlQuery);
