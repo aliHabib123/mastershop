@@ -89,10 +89,9 @@ function main()
 							<!-- primary key -->
 							<td><?php echo $row->id; ?></td>
 							<td><?php echo $row->name ?></td>
-							<td><img style="max-height: 100px;" src="<?php echo IMAGES_LINK . $row->image ?>" /></td>
-							<td><?php echo $row->displayOrder; ?></td>
-							<td><?php echo $row->showInMenu; ?></td>
-
+							<td align="center"><img style="max-height: 100px;" src="<?php echo IMAGES_LINK . $row->image ?>" /></td>
+							<td align="center"><?php echo $row->displayOrder; ?></td>
+							<td align="center"><?php echo $row->showInMenu == 1 ? '<i style="color:green" class="fas fa-check"></i>' : '<i style="color:red;" class="fas fa-times"></i>'; ?></td>
 							<td>
 								<a class="btn btn-xs yellow" href="edit_item_brand.php?id=<?php echo $row->id; ?>">
 									Edit

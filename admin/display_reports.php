@@ -112,9 +112,9 @@ function main()
 							<td><?php echo number_format(floatval($ordersTotalCommission)) . " LBP"; ?></td>
 							<td><?php echo number_format(floatval($ordersTotalPrice) - floatval($ordersTotalCommission)) . " LBP"; ?></td>
 							<td>
-								<?php /*<a class="btn btn-xs yellow" href="view_order.php?id=<?php echo $row->id; ?>">
-									View Order
-								</a>*/?>
+								<a class="btn btn-xs yellow" href="<?php echo ADMIN_LINK .'display_orders.php?status=paid&supplier_id='.$row->id.'&from_date='.$displayFromDate.'&to_date='.$displayToDate.'&from_reports=1';?>">
+									View Orders
+								</a>
 							</td>
 						</tr>
 					<?php

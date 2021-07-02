@@ -29,16 +29,18 @@ function main()
 
 	$condition .= " limit $limit offset $offset ";
 	$records = $contentMySqlExtDAO->select($condition);
-	?>
+?>
 	<div class="portlet box blue">
 		<div class="portlet-title">
 			<div class="caption">
 				<i class="fa fa-globe"></i>PAGES MANAGEMENT
 				<!--
-				<form name="myform223" action="<?php //echo $_SERVER['PHP_SELF'] ?>" method="post">
+				<form name="myform223" action="<?php //echo $_SERVER['PHP_SELF'] 
+												?>" method="post">
 					<div>
 						Search by banner caption: 
-						<input type="text" value="<?php //echo $keywords ?>" name="keywords" id="keywords" style="width:300px; height:20px;"> &nbsp; 
+						<input type="text" value="<?php //echo $keywords 
+													?>" name="keywords" id="keywords" style="width:300px; height:20px;"> &nbsp; 
 						<input type="submit" style="" value="   Search   " />
 					</div>
 				</form>
@@ -90,47 +92,54 @@ function main()
 						<tr id="<?php echo $row->id; ?>">
 							<!-- primary key -->
 							<td><?php echo $row->id; ?></td>
-							<td><?php echo $row->title?></td>
-							<td><img style="max-height: 100px;" src="<?php echo IMAGES_LINK.$row->image?>"/></td>
-							<td><?php echo substr(strip_tags($row->details), 0, 30); if(strlen($row->details) > 30) echo "...";  ?></td>
-							<td>
-							<?php if($row->lang == 1){
-								echo 'English';
-							} else {
-								echo 'Arabic';
-                            }?>
+							<td><?php echo $row->title ?></td>
+							<td align="center">
+								<?php if ($row->image) { ?>
+									<img style="max-height: 70px;" src="<?php echo IMAGES_LINK . $row->image ?>" />
+								<?php } else { ?>
+									<i style="color:red;" class="fas fa-times"></i>
+								<?php } ?>
 							</td>
-							<td><?php echo $row->displayOrder;?></td>
+							<td><?php echo substr(strip_tags($row->details), 0, 30);
+								if (strlen($row->details) > 30) echo "...";  ?></td>
+							<td>
+								<?php if ($row->lang == 1) {
+									echo 'English';
+								} else {
+									echo 'Arabic';
+								} ?>
+							</td>
+							<td><?php echo $row->displayOrder; ?></td>
 
 							<td>
-								<a class="btn btn-xs yellow" href="edit_page.php?id=<?php echo $row->id;?>">
+								<a class="btn btn-xs yellow" href="edit_page.php?id=<?php echo $row->id; ?>">
 									Edit
 									<i class="fa fa-edit"></i>
 								</a>
 							</td>
 							<td>
-								<?php if($row->canDelete){?>
+								<?php if ($row->canDelete) { ?>
 									<a class="btn btn-xs red" href="javascript:deleteAjax('page', '<?php echo $row->id; ?>')">
-									<i class="fa fa-times"></i>
-									Delete
-								</a>
-									<?php }?>
+										<i class="fa fa-times"></i>
+										Delete
+									</a>
+								<?php } ?>
 							</td>
-							<?php if(!$row->translationId){?>
+							<?php if (!$row->translationId) { ?>
 								<td>
-								<a class="btn btn-xs green" href="new_page.php?id=<?php echo $row->id;?>">
-									<i class="fa fa-picture-o"></i>
-									Translate
-								</a>
-							</td>
-								<?php } else{ ?>
-									<td>
-								<a class="btn btn-xs green" href="edit_page.php?id=<?php echo $row->translationId;?>">
-									<i class="fa fa-picture-o"></i>
-									Edit Translation
-								</a>
-							</td>
-									<?php }?>
+									<a class="btn btn-xs green" href="new_page.php?id=<?php echo $row->id; ?>">
+										<i class="fa fa-picture-o"></i>
+										Translate
+									</a>
+								</td>
+							<?php } else { ?>
+								<td>
+									<a class="btn btn-xs green" href="edit_page.php?id=<?php echo $row->translationId; ?>">
+										<i class="fa fa-picture-o"></i>
+										Edit Translation
+									</a>
+								</td>
+							<?php } ?>
 						</tr>
 					<?php
 					}

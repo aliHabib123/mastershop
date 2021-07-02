@@ -108,11 +108,17 @@ function main()
 							<!-- primary key -->
 							<td><?php echo $row->id; ?></td>
 							<td><?php echo $row->name ?></td>
-							<td><img style="max-height: 100px;" src="<?php echo IMAGES_LINK . $row->image ?>" /></td>
-							<td><?php echo $row->parentId; ?></td>
-							<td><?php echo $row->displayOrder; ?></td>
-							<td><?php echo $row->active; ?></td>
-							<td><?php echo $row->isFeatured; ?></td>
+							<td align="center">
+								<?php if ($row->image) { ?>
+									<img style="max-height: 70px;" src="<?php echo IMAGES_LINK . $row->image ?>" />
+								<?php } else { ?>
+									<i style="color:red;" class="fas fa-times"></i>
+								<?php } ?>
+							</td>
+							<td align="center"><?php echo $row->parentId; ?></td>
+							<td align="center"><?php echo $row->displayOrder; ?></td>
+							<td align="center"><?php echo $row->active == 1 ? '<i style="color:green" class="fas fa-check"></i>' : '<i style="color:red;" class="fas fa-times"></i>' ; ?></td>
+							<td align="center"><?php echo $row->isFeatured == 1 ? '<i style="color:green" class="fas fa-check"></i>' : '<i style="color:red;" class="fas fa-times"></i>'; ?></td>
 
 							<td>
 								<a class="btn btn-xs yellow" href="edit_item_category.php?id=<?php echo $row->id; ?>">

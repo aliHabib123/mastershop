@@ -31,3 +31,16 @@
 .footer .footer-inner a {
   color: red;
 }
+.navbar-inverse .navbar-nav > li > a {
+  color: #fff;
+}
+.header .navbar-nav > li.dropdown.user .dropdown-toggle .username {
+  color: #fff;
+}
+.header .navbar-nav li.dropdown .dropdown-toggle i {
+  color: #fff !important;
+}
+.header .navbar-nav > li.dropdown:last-child {
+  padding-right: 15px;
+  margin-top: 5px;
+}
