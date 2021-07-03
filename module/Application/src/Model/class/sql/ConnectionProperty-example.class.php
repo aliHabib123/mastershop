@@ -27,3 +27,4 @@ class ConnectionProperty{
 		return ConnectionProperty::$database;
 	}
 }
+?>
