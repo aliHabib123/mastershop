@@ -602,14 +602,23 @@ class ProductController extends AbstractActionController
     {
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
         $slug = HelperController::slugify($title);
-        $item = $itemMySqlExtDAO->queryBySlugAndSupplierId($slug, $_SESSION['user']->id)[0];
+        $item = $itemMySqlExtDAO->queryBySlug($slug);
         if ($item) {
-            if ($item->sku == $sku && $item->slug == $slug) {
+            $item = $item[0];
+            if ($item->sku == $sku && $item->supplierId == $_SESSION['user']->id && $item->slug == $slug) {
                 return $item->slug;
+            } else {
+                $c = 1;
+                while ($itemMySqlExtDAO->queryBySlug($slug)) {
+                    $slug =  HelperController::slugify($title);
+                    $slug = $slug . '-' . $c;
+                    $c++;
+                }
+                return $slug;
             }
         } else {
             $c = 1;
-            while ($itemMySqlExtDAO->queryBySlugAndSupplierId($slug, $_SESSION['user']->id)) {
+            while ($itemMySqlExtDAO->queryBySlug($slug)) {
                 $slug =  HelperController::slugify($title);
                 $slug = $slug . '-' . $c;
                 $c++;

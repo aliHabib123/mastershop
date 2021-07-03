@@ -14,7 +14,6 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
-        $saleOrderItemMySqlExtA =  new SaleOrderItemMySqlExtDAO();
         $langId = HelperController::langId(HelperController::filterInput($this->params('lang')));
         $bannerLocation = ($langId == 1) ? 1 : 2;
         $banners = ContentController::getBanners($bannerLocation);

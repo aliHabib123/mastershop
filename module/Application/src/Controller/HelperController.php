@@ -133,7 +133,7 @@ class HelperController extends AbstractActionController
     public static function downloadFile($url = "", $prefix = "")
     {
         $res = false;
-        if ($url && $url != "" && getimagesize($url)) {
+        if ($url && $url != "" && @getimagesize($url)) {
             $ext = pathinfo($url, PATHINFO_EXTENSION);
             // Initialize the cURL session
             $ch = curl_init($url);
@@ -166,7 +166,7 @@ class HelperController extends AbstractActionController
     public static function deleteImage($imageName)
     {
         $filePath = BASE_PATH . upload_image_dir . $imageName;
-        if (file_exists($filePath)) {
+        if (is_file($filePath)) {
             unlink($filePath);
             return true;
         }

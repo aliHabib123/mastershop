@@ -410,8 +410,8 @@ class UserController extends AbstractActionController
                     <tr>
                         <td class=\"text-right cart-total\">Total</td>
                         <td class=\"text-right\" id=\"cart-total\">";
-            $html .= number_format($total) . " LBP";
-            $html .= "</td>
+        $html .= number_format($total) . " LBP";
+        $html .= "</td>
                 </tr>
             </tfoot>
         </table>";
@@ -968,7 +968,7 @@ class UserController extends AbstractActionController
                 if ($sendEmail) {
                     $result = true;
                     $msg = "Please check your email for reset link";
-                    $msg = $resetLink;
+                    error_log($resetLink, 0);
                 }
             }
         } else {
