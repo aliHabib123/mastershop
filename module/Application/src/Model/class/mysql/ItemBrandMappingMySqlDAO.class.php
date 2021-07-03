@@ -135,8 +135,8 @@ class ItemBrandMappingMySqlDAO implements ItemBrandMappingDAO{
 		$itemBrandMapping->id = $row['id'];
 		$itemBrandMapping->itemId = $row['item_id'];
 		$itemBrandMapping->brandId = $row['brand_id'];
-		$itemBrandMapping->name = $row['name'];
-		$itemBrandMapping->image = $row['image'];
+		$itemBrandMapping->name = isset($row['name']) ? $row['name'] : "";
+		$itemBrandMapping->image = isset($row['image']) ? $row['image'] : "";
 
 		return $itemBrandMapping;
 	}
@@ -192,4 +192,3 @@ class ItemBrandMappingMySqlDAO implements ItemBrandMappingDAO{
 		return QueryExecutor::executeInsert($sqlQuery);
 	}
 }
-?>
