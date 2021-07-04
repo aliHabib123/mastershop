@@ -18,3 +18,5 @@ Untitled-1.txt
 module/Application/src/Model/class/sql/ConnectionProperty.class.php
 admin/config.php
 admin/connect.php
+.htaccess
+public/.htaccess
