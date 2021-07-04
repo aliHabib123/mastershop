@@ -14,6 +14,7 @@ define('PATH', dirname(__FILE__));
 
 define('MAIN_URL', "http://localhost/mastershop/");
 define('BASE_URL', "http://localhost/mastershop/public/");
+
 define('BASE_PATH', PATH . '/');
 define('image_dir', 'images/');
 define('upload_image_dir', 'uploads/images/');

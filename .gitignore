@@ -20,3 +20,4 @@ admin/config.php
 admin/connect.php
 .htaccess
 public/.htaccess
+public/index.php
