@@ -21,3 +21,5 @@ admin/connect.php
 .htaccess
 public/.htaccess
 public/index.php
+admin/connect.php
+admin/config.php
