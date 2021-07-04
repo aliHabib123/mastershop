@@ -20,6 +20,7 @@ class IndexController extends AbstractActionController
         $ads = ContentController::getContent("type = 'ad' and lang = $langId ORDER BY display_order asc LIMIT 3");
         $featuredCategories = CategoryController::getCategories("is_featured = 1");
 
+        
         //Todays DEALS, PICKED FOR YOU and BEST OFFERS
         $todaysDeals = ProductController::getItems(false, false, "", "", "", ProductController::$TODAYS_DEALS, "", 10, 0);
         $pickedForYou = ProductController::getItems(false, false,  "", "", "", ProductController::$PICKED_FOR_YOU, "", 10, 0);
