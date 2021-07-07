@@ -1,5 +1,6 @@
 <?php
 
+use Application\Controller\CategoryController;
 use Application\Controller\DesignController;
 use Application\Controller\HelperController;
 use Application\Controller\ProductController;
@@ -64,27 +65,28 @@ if ($this->isSearch) {
         <div class="row">
             <div class="col-md-3">
                 <div class="accordion-c">
-                    <div class="accordion_title">Filter by</div>
+                    <div class="accordion_title"><?php echo _t('filterBy');?></div>
                     <div id="accordion">
                         <form action="<?php echo MAIN_URL . 'products' . $this->completeSlug; ?>" method="get" id="sidebar-filter">
                             <?php if (!$this->cat3) { ?>
                                 <div class="card">
                                     <div class="card-header">
                                         <a class="card-link" data-toggle="collapse" href="#collapseOne">
-                                            Category<i class="fas fa-plus"></i>
+                                        <?php echo _t('category');?><i class="fas fa-plus"></i>
                                         </a>
                                     </div>
                                     <div id="collapseOne" class="collapse" data-parent="#accordion">
                                         <div class="card-body">
                                             <div class="sidebar-category-menu">
                                                 <?php foreach ($this->categoryList as $row) { 
+                                                    $categoryName = CategoryController::categoryName($row->name, $row->arabicName);
                                                     $checked = "";
                                                     if(in_array($row->id, $this->categoriesFiltered)){
                                                         $checked = "checked";
                                                     }?>
                                                     <div class="forms-check">
                                                         <label class="form-scheck-label" for="<?php echo $row->id; ?>">
-                                                            <?php echo $row->name; ?>
+                                                            <?php echo $categoryName; ?>
                                                         </label>
                                                         <input <?php echo $checked;?> name="categories[]" class="forms-check-input" type="checkbox" value="<?php echo $row->id;?>" id="<?php echo $row->id; ?>">
                                                     </div>
@@ -98,14 +100,14 @@ if ($this->isSearch) {
                             <div class="card">
                                 <div class="card-header">
                                     <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
-                                        Price<i class="fas fa-plus"></i>
+                                    <?php echo _t('price');?><i class="fas fa-plus"></i>
                                     </a>
                                 </div>
                                 <div id="collapseTwo" class="collapse" data-parent="#accordion">
                                     <div class="card-body">
                                         <div class="min-max-price">
-                                            <div class=""><label>From: </label><input class="form-control" type="number" name="min-price" value="<?php echo $this->minPrice; ?>"></div>
-                                            <div class=""><label>To: </label><input class="form-control" type="number" name="max-price" value="<?php echo $this->maxPrice; ?>"></div>
+                                            <div class=""><label><?php echo _t('from');?>: </label><input class="form-control" type="number" name="min-price" value="<?php echo $this->minPrice; ?>"></div>
+                                            <div class=""><label><?php echo _t('to');?>: </label><input class="form-control" type="number" name="max-price" value="<?php echo $this->maxPrice; ?>"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -114,7 +116,7 @@ if ($this->isSearch) {
                             <div class="card">
                                 <div class="card-header">
                                     <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
-                                        Brand<i class="fas fa-plus"></i>
+                                    <?php echo _t('brand');?><i class="fas fa-plus"></i>
                                     </a>
                                 </div>
                                 <div id="collapseThree" class="collapse" data-parent="#accordion">
@@ -137,10 +139,10 @@ if ($this->isSearch) {
                             <?php } ?>
                             <div class="text-left sidebar-filter-btn">
                                 <button class="btn submit-btn" type="submit">
-                                    Filter
+                                    <?php echo _t('filter');?>
                                 </button>
                                 <button class="btn submit-btn" type="reset">
-                                    Clear
+                                <?php echo _t('clear');?>
                                 </button>
                             </div>
                         </form>
@@ -161,7 +163,7 @@ if ($this->isSearch) {
                         </div>
                     <?php } else { ?>
                         <div class="col-md-12">
-                            <h3 style="text-align: center;display: block;margin-top: 30px;">No Items Found</h3>
+                            <h3 style="text-align: center;display: block;margin-top: 30px;"><?php echo _t('nothingFound');?></h3>
                         </div>
                     <?php } ?>
                 </div>
@@ -194,15 +196,15 @@ if ($output) {
 ?>
 <script type="text/javascript">
     const append = '<?php echo $append; ?>';
-    const currentPageUrl = '<?php echo MAIN_URL . 'products' . $this->completeSlug; ?>';
+    const currentPageUrl = '<?php echo MAIN_URL .$this->lang. '/products' . $this->completeSlug; ?>';
     $(function() {
         $("#product-pagination").twbsPagination({
             totalPages: <?php echo $this->totalPages; ?>,
             visiblePages: 5,
-            first: '<i class="fas fa-angle-double-left"></i>',
-            last: '<i class="fas fa-angle-double-right"></i>',
-            next: '<i class="fas fa-chevron-right"></i>',
-            prev: '<i class="fas fa-chevron-left"></i>',
+            first: '<i class="fas fa-angle-double-'+translations.config.left+'"></i>',
+            last: '<i class="fas fa-angle-double-'+translations.config.right+'"></i>',
+            next: '<i class="fas fa-chevron-'+translations.config.right+'"></i>',
+            prev: '<i class="fas fa-chevron-'+translations.config.left+'"></i>',
             startPage: <?php echo $this->currentPage; ?>,
             initiateStartPageClick: false,
             onPageClick: function(event, page) {

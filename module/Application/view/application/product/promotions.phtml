@@ -1,7 +1,9 @@
 <?php
 
+use Application\Controller\CategoryController;
 use Application\Controller\DesignController;
 use Application\Controller\HelperController;
+use Application\Controller\LanguageController;
 
 ?>
 <div class="main-wrapper">
@@ -12,15 +14,15 @@ use Application\Controller\HelperController;
         <div class="small-banner-caption-container centered">
             <div class="container">
                 <div class="banner-title1">NEW FOR YOU</div>
-                <div class="banner-title2">Get Ready!</div>
-                <div class="banner-title3">Get a chance and see our promotions.</div>
+                <div class="banner-title2"><?php echo _t('getReady'); ?></div>
+                <div class="banner-title3"><?php echo _t('promotions'); ?></div>
             </div>
         </div>
         <div class="banner-breadcrumb">
             <div class="container">
                 <ul>
-                    <li><a href="<?php echo MAIN_URL; ?>"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
-                    <li><a class="light">Promotions</a></li>
+                    <li><a href="<?php echo MAIN_URL . $_SESSION['lang']; ?>"><span><img src="img/home-icon.jpg" /></span><?php echo _t('home'); ?></a></li>
+                    <li><a class="light"><?php echo _t('promotions'); ?></a></li>
                 </ul>
             </div>
         </div>
@@ -29,8 +31,8 @@ use Application\Controller\HelperController;
         <div class="breadcrumb-c-inner">
             <div class="container">
                 <ul>
-                    <li><a href="<?php echo MAIN_URL; ?>"><span><img src="img/home-icon.jpg" /></span>Home</a></li>
-                    <li><a>Promotions</a></li>
+                    <li><a href="<?php echo MAIN_URL . $_SESSION['lang']; ?>"><span><img src="img/home-icon.jpg" /></span><?php echo _t('home'); ?></a></li>
+                    <li><a><?php echo _t('promotions'); ?></a></li>
                 </ul>
             </div>
         </div>
@@ -38,16 +40,15 @@ use Application\Controller\HelperController;
     <div class="container">
         <div class="row">
             <div class="col-md-12 with-margin">
-                <?php echo DesignController::mainTitle("PROMOTIONS") ?>
+                <?php echo DesignController::mainTitle(strtoupper(_t('promotions'))) ?>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12 promotions-categories">
                 <ul class="nav justify-content-center">
                     <li class="nav-item">
-                        <a class="nav-link <?php if (!$this->category) {
-                                                echo 'active';
-                                            } ?>" href="<?php echo MAIN_URL . 'promotions' ?>">All</a>
+                        <?php $isActive = (!$this->category) ? 'active' : ''; ?>
+                        <a class="nav-link <?php echo $isActive; ?>" href="<?php echo MAIN_URL . $_SESSION['lang'] . '/promotions' ?>"><?php echo _t('all'); ?></a>
                     </li>
                     <?php foreach ($this->categories as $row) {
                         $active = "";
@@ -55,24 +56,24 @@ use Application\Controller\HelperController;
                             $active = "active";
                         } ?>
                         <li class="nav-item">
-                            <a class="nav-link <?php echo $active; ?>" href="<?php echo MAIN_URL . 'promotions/?category=' . $row->slug; ?>"><?php echo $row->name; ?></a>
+                            <a class="nav-link <?php echo $active; ?>" href="<?php echo MAIN_URL . $_SESSION['lang'] . '/promotions/?category=' . $row->slug; ?>"><?php echo CategoryController::categoryName($row->name, $row->arabicName); ?></a>
                         </li>
                     <?php } ?>
                 </ul>
             </div>
         </div>
         <div class="row">
-            <?php if($this->items){
+            <?php if ($this->items) {
                 foreach ($this->items as $item) { ?>
-                <div class="col-6 col-md-2 item-col">
-                    <?php echo DesignController::item($item); ?>
+                    <div class="col-6 col-md-2 item-col">
+                        <?php echo DesignController::item($item); ?>
+                    </div>
+                <?php }
+            } else { ?>
+                <div class="col-md-12 text-center">
+                    <h3 class="no-results"><?php echo _t('nothingFound'); ?></h3>
                 </div>
-            <?php }
-        } else { ?>
-    <div class="col-md-12 text-center">
-        <h3 class="no-results">No Items Found</h3>
-    </div>
-<?php }?>
+            <?php } ?>
         </div>
 
         <div class="row">
@@ -101,10 +102,10 @@ if ($output) {
         $("#product-pagination").twbsPagination({
             totalPages: <?php echo $this->totalPages; ?>,
             visiblePages: 5,
-            first: "",
-            last: "",
-            next: '<i class="fas fa-chevron-right"></i>',
-            prev: '<i class="fas fa-chevron-left"></i>',
+            first: '<i class="fas fa-angle-double-' + translations.config.left + '"></i>',
+            last: '<i class="fas fa-angle-double-' + translations.config.right + '"></i>',
+            next: '<i class="fas fa-chevron-' + translations.config.right + '"></i>',
+            prev: '<i class="fas fa-chevron-' + translations.config.left + '"></i>',
             startPage: <?php echo $this->currentPage; ?>,
             initiateStartPageClick: false,
             onPageClick: function(event, page) {

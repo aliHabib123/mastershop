@@ -13,26 +13,26 @@ $singleItemId = $isSingleItemCheckout == 1 ? $this->singleItemId : 0;
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <?php echo DesignController::mainTitle('CHECKOUT') ?>
+                    <?php echo DesignController::mainTitle(strtoupper(_t('checkout'))) ?>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div><?php echo DesignController::secondaryTitle('Delivery Info'); ?></div>
+                    <div><?php echo DesignController::secondaryTitle(_t('deliveryInfo')); ?></div>
                     <div class="checkout-form-wrapper">
 
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <label for="name">Full Name *</label>
+                                    <label for="name"><?php echo _t('fullName') ?> *</label>
                                     <input type="text" class="form-control" placeholder="Enter Name" id="name" value="<?php echo $userInfo->fullName ?>" name="full-name">
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="mobile">Mobile *</label>
+                                    <label for="mobile"><?php echo _t('mobile') ?> *</label>
                                     <input type="text" class="form-control" placeholder="Enter Mobile" id="mobile" value="<?php echo $userInfo->mobile ?>" name="mobile">
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="email">Email Address: *</label>
+                                    <label for="email"><?php echo _t('emailAddress') ?> *</label>
                                     <input type="email" class="form-control" placeholder="Enter email" id="email" value="<?php echo $userInfo->email ?>" name="email">
                                 </div>
                             </div>
@@ -40,7 +40,7 @@ $singleItemId = $isSingleItemCheckout == 1 ? $this->singleItemId : 0;
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label for="country">Country:</label>
+                                    <label for="country"><?php echo _t('country') ?></label>
                                     <select class="form-control" id="country" name="country">
                                         <option value="LB">Lebanon</option>
                                         <!-- <option>2</option>
@@ -50,7 +50,7 @@ $singleItemId = $isSingleItemCheckout == 1 ? $this->singleItemId : 0;
                                 </div>
                                 <input type="hidden" id="shipping_price" value="">
                                 <div class="col-md-6">
-                                    <label for="mobile">City *</label>
+                                    <label for="mobile"><?php echo _t('city') ?> *</label>
                                     <select class="form-control" id="city" name="city">
                                         <option>Select City</option>
                                         <?php foreach ($this->cities as $city) {
@@ -65,22 +65,22 @@ $singleItemId = $isSingleItemCheckout == 1 ? $this->singleItemId : 0;
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="email">Delivery Address: *</label>
+                            <label for="email"><?php echo _t('deliveryAddress') ?> *</label>
                             <textarea class="form-control" style="min-height: 150px;" name="delivery-address"><?php echo $userInfo->address1; ?></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="email">Notes:</label>
+                            <label for="email"><?php echo _t('notes') ?></label>
                             <textarea class="form-control" style="min-height: 100px;" name="notes"></textarea>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <div><?php echo DesignController::secondaryTitle('Items Bought'); ?></div>
+                    <div><?php echo DesignController::secondaryTitle(_t('itemsBought')); ?></div>
                     <table class="table shopping-cart-wrap checkout-wrap">
                         <thead class="text-muted">
                             <tr>
-                                <th scope="col">Name</th>
-                                <th scope="col" class="text-right">Sub Total</th>
+                                <th scope="col"><?php echo _t('product') ?></th>
+                                <th scope="col" class="text-right"><?php echo _t('subtotal'); ?></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -96,35 +96,35 @@ $singleItemId = $isSingleItemCheckout == 1 ? $this->singleItemId : 0;
                         <input type="hidden" name="products_total" id="products_total" value="<?php echo $total ?>">
                         <input type="hidden" name="is_single_item_checkout" value="<?php echo $isSingleItemCheckout; ?>">
                         <input type="hidden" name="single_item_id" value="<?php echo $singleItemId; ?>">
-                        
+
                         <tfoot>
                             <tr>
-                                <td class="text-right cart-total">Delivery</td>
-                                <td class="text-right" id="shipping-total">Select City</td>
+                                <td class="text-right cart-total"><?php echo _t('delivery'); ?></td>
+                                <td class="text-right" id="shipping-total"><?php echo _t('selectCity'); ?></td>
                             </tr>
                             <tr>
-                                <td class="text-right cart-total">Total</td>
-                                <td class="text-right" id="cart-total"><?php echo number_format($total) . " LBP"; ?></td>
+                                <td class="text-right cart-total"><?php echo _t('total'); ?></td>
+                                <td class="text-right" id="cart-total"><?php echo number_format($total) . " " . _t('lbp'); ?></td>
                             </tr>
                         </tfoot>
                     </table>
 
                     <div class="select-payment-method">
-                        <h2>Select Payment Method</h2>
+                        <h2><?php echo _t('selectPayment'); ?></h2>
                         <div class="form-check-inline">
                             <label class="form-check-label">
-                                <input type="radio" class="form-check-input" name="payment-method" value="<?php echo PaymentController::$PAYMENT_CASH_ON_DELIVERY; ?>">Cash On Delivery
+                                <input type="radio" class="form-check-input" name="payment-method" value="<?php echo PaymentController::$PAYMENT_CASH_ON_DELIVERY; ?>"><?php echo _t('cashOnDelivery'); ?>
                             </label>
                         </div>
                         <div class="form-check-inline">
                             <label class="form-check-label">
-                                <input type="radio" class="form-check-input" name="payment-method" value="<?php echo PaymentController::$PAYMENT_ONLINE; ?>">Pay Online
+                                <input type="radio" class="form-check-input" name="payment-method" value="<?php echo PaymentController::$PAYMENT_ONLINE; ?>"><?php echo _t('payOnline'); ?>
                             </label>
                         </div>
                     </div>
 
                     <div class="text-right order-complete-btn-wrap">
-                        <button type="submit" class="btn submit-btn complete-btn">Complete Order</button>
+                        <button type="submit" class="btn submit-btn complete-btn"><?php echo _t('completeOrder'); ?></button>
                     </div>
 
                 </div>

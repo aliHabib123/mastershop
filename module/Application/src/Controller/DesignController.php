@@ -13,6 +13,7 @@ class DesignController extends AbstractActionController
 {
     public static function mainTitle(string $title)
     {
+        $title = strtoupper($title);
         $html = "<div class='main-title centered'>$title</div>";
         return $html;
     }
@@ -23,9 +24,15 @@ class DesignController extends AbstractActionController
     }
     public static function item(object $item)
     {
+        $lang = LanguageController::getLanguage();
         $hasDiscount = false;
-        //print_r();
         $customerId = 0;
+        $itemTitle = $item->title;
+        if ($lang == LanguageController::$ARABIC) {
+            if ($item->titleAr != "") {
+                $itemTitle = $item->titleAr;
+            }
+        }
         if (isset($_SESSION['user'])) {
             $customerId = $_SESSION['user']->id;
         }
@@ -36,10 +43,10 @@ class DesignController extends AbstractActionController
                 $hasDiscount = true;
                 $discount  = ceil(100 - (floatval($item->salePrice) / floatval($item->regularPrice) * 100));
             }
-            $price .= " LBP";
+            $price .= " " . _t('lbp');
         }
-        $image = ($item->image != "" && $item->image != null) ? HelperController::getImageUrl($item->image) : PRODUCT_PLACEHOLDER_IMAGE_URL;
-        $url = MAIN_URL . 'product/' . $item->slug;
+        $image = ($item->image != "" && $item->image != null && file_exists(BASE_PATH . upload_image_dir . $item->image)) ? HelperController::getImageUrl($item->image) : PRODUCT_PLACEHOLDER_IMAGE_URL;
+        $url = MAIN_URL . $lang . '/product/' . $item->slug;
 
         $imageSrc = "img/heart-off.png";
         if (isset($_SESSION['user'])) {
@@ -59,12 +66,12 @@ class DesignController extends AbstractActionController
                 </div>
                 <div class='item-wrapper_title'>
                     <a href='$url'>
-                    $item->title
+                    $itemTitle
                     </a>
                 </div>
                 <div class='item-wrapper_price'>";
         if ($hasDiscount) {
-            $html .= "<div class='main-price'>" . number_format(floatval($item->regularPrice) * $item->usdExchangeRate) . " LBP</div>";
+            $html .= "<div class='main-price'>" . number_format(floatval($item->regularPrice) * $item->usdExchangeRate) . " " . _t('lbp') . "</div>";
         }
 
         $html .= "<div class='final-price'>
@@ -111,10 +118,10 @@ class DesignController extends AbstractActionController
             $html .= " <div class='item'>$title<b> X $qty</b></div>";
         }
 
-        $totalLabel = "LBP " . number_format($total);
+        $totalLabel = _t('lbp') . " " . number_format($total);
         $comission = $total * 0.1;
-        $comissionLabel = "LBP " . number_format($comission);
-        $finalAmount = "LBP " . number_format($total - $comission);
+        $comissionLabel = _t('lbp') . " " . number_format($comission);
+        $finalAmount = _t('lbp') . " " . number_format($total - $comission);
 
         $html .= "</div>
                             <div class='item-order-details line1'>
@@ -141,6 +148,7 @@ class DesignController extends AbstractActionController
         $orderId = $saleOrder->id;
         $date = date('M j, Y | H:i:g A', strtotime($saleOrder->createdAt));
         $url = MAIN_URL . "order/" . $saleOrder->id;
+        $currency = _t('lbp');
         $html =  "<div class='order-item'>
                     <div class='row'>
                         <div class='col-md-9'>
@@ -158,7 +166,7 @@ class DesignController extends AbstractActionController
                         </div>
                         <div class='col-md-3'>
                             <div class='final-amount-label'>Final Amount</div>
-                            <div class='final-amount'>LBP $saleOrder->netTotal</div>
+                            <div class='final-amount'>$currency $saleOrder->netTotal</div>
                             <div class='order-status $status'>$label</div>
                         </div>
                     </div>
@@ -214,9 +222,9 @@ class DesignController extends AbstractActionController
         $price = ProductController::getFinalPrice(floatval($item->regularPrice) * $item->usdExchangeRate, floatval($item->salePrice) * $item->usdExchangeRate);
         $rawPrice = ProductController::getFinalPrice(floatval($item->regularPrice) * $item->usdExchangeRate, floatval($item->salePrice) * $item->usdExchangeRate, true);
         $subtotalRaw = $rawPrice * $item->cartQty;
-        $subtotal = number_format($subtotalRaw) . " LBP";
+        $subtotal = number_format($subtotalRaw) . " " . _t('lbp');
         if ($price != "n/a") {
-            $price .= " LBP";
+            $price .= " " . _t('lbp');
         }
         $image = ($item->image != "" && $item->image != null) ? HelperController::getImageUrl($item->image) : PRODUCT_PLACEHOLDER_IMAGE_URL;
         //$url = MAIN_URL . 'product/' . $item->slug;
@@ -257,9 +265,9 @@ class DesignController extends AbstractActionController
         $price = ProductController::getFinalPrice($item->regularPrice * $item->usdExchangeRate, $item->salePrice * $item->usdExchangeRate);
         $rawPrice = ProductController::getFinalPrice($item->regularPrice * $item->usdExchangeRate, $item->salePrice * $item->usdExchangeRate, true);
         $subtotalRaw = $rawPrice * $item->cartQty;
-        $subtotal = number_format($subtotalRaw) . " LBP";
+        $subtotal = number_format($subtotalRaw) . " " . _t('lbp');
         if ($price != "n/a") {
-            $price .= " LBP";
+            $price .= " " . _t('lbp');
         }
         $image = ($item->image != "" && $item->image != null) ? HelperController::getImageUrl($item->image) : PRODUCT_PLACEHOLDER_IMAGE_URL;
         //$url = MAIN_URL . 'product/' . $item->slug;
@@ -281,10 +289,12 @@ class DesignController extends AbstractActionController
 
     public static function compactCartItems($cartItems)
     {
+        $lang = LanguageController::getLanguage();
         $html = "";
         if (count($cartItems) > 0) {
-            $cartUrl =  MAIN_URL . 'my-cart';
-            $checkoutUrl = MAIN_URL . 'checkout';
+            $cartUrl =  MAIN_URL . $lang . '/my-cart';
+            $checkoutUrl = MAIN_URL . $lang . '/checkout';
+            $currency = _t('lbp');
             foreach ($cartItems as $row) {
                 $cartItemImage = PRODUCT_PLACEHOLDER_THUMBNAIL_URL;
                 if ($row->image != "" && @getimagesize(BASE_PATH . upload_image_dir . $row->image)) {
@@ -303,15 +313,15 @@ class DesignController extends AbstractActionController
                                         $title
                                     </div>
                                     <div class=\"compact-cart-price\">
-                                        $price LBP
+                                        $price $currency
                                     </div>
                                 </div>
                             </div>
                         </div>";
             }
             $html .= "<div class=\"compact-cart-buttons\">
-            <a href=\"$cartUrl\" class=\"to-cart\">Continue to cart</a>
-            <a href=\"$checkoutUrl\" class=\"to-checkout\">Continue to checkout</a>
+            <a href=\"$cartUrl\" class=\"to-cart\">"._t('continueCart')."</a>
+            <a href=\"$checkoutUrl\" class=\"to-checkout\">"._t('continueCheckout')."</a>
         </div>";
         } else {
             $html = "<h4 style=\"text-align: center;width: 100%;\">No items in cart!</h4>";

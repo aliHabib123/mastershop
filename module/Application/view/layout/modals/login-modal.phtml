@@ -18,23 +18,22 @@ use Application\Controller\UserController;
 
             <!-- Modal body -->
             <div class="modal-body">
-                <div class="modal-title">Welcome Back!</div>
-                <div class="modal-subtitle">To stay connected with us, please login<br>with your
-                    personal information</div>
+                <div class="modal-title"><?php echo _t('welcomeBack!'); ?></div>
+                <div class="modal-subtitle"><?php echo _t('stayConnected'); ?></div>
 
                 <div class="modal-form">
                     <form action="<?php echo MAIN_URL . 'submit-login'; ?>" id="login-form">
                         <input type="hidden" name="redirectUrl" value="<?php echo HelperController::getCurrentUrl(); ?>" />
                         <div class="form-group">
-                            <input type="email" class="form-control" placeholder="Email address*" id="login-email" name="email" autocomplete="username">
+                            <input type="email" class="form-control" placeholder="<?php echo _t('emailAddress'); ?>*" id="login-email" name="email" autocomplete="username">
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" placeholder="Enter password" id="login-pwd" name="password" autocomplete="current-password">
-                            <span class="forgot"><a href="<?php echo MAIN_URL . 'forgot-password/' . UserController::$CUSTOMER; ?>">Forgot password?</a></span>
+                            <input type="password" class="form-control" placeholder="<?php echo _t('enterPassword'); ?>" id="login-pwd" name="password" autocomplete="current-password">
+                            <span class="forgot"><a href="<?php echo MAIN_URL . 'forgot-password/' . UserController::$CUSTOMER; ?>"><?php echo _t('forgotPassword'); ?></a></span>
                         </div>
                         <div class="form-group form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox"> Remember me
+                                <input class="form-check-input" type="checkbox"> <?php echo _t('rememberMe'); ?>
                             </label>
                         </div>
 
@@ -46,21 +45,21 @@ use Application\Controller\UserController;
                         </div> -->
                         <div class="notice-area"></div>
                         <div class="centered-button">
-                            <button type="submit" class="btn">SIGN IN</button>
+                            <button type="submit" class="btn"><?php echo strtoupper(_t('signin')); ?></button>
                         </div>
-                        <?php 
+                        <?php
                         $redirectUrl = HelperController::getCurrentUrl();
-                        if(strpos($redirectUrl, 'login-required') !== false){
+                        if (strpos($redirectUrl, 'login-required') !== false) {
                             $redirectUrl = $_GET['redirectUrl'];
-                        }?>                        
+                        } ?>
                         <div class="fb-button-wrapper">
                             <a href="<?php echo FacebookController::getLoginUrl($redirectUrl); ?>"><i class="fab fa-facebook-f"></i> Login with facebook</a>
                         </div>
                         <div class="have-account">
-                            <p>Don't have an account yet?</p>
+                            <p><?php echo _t('dontHaveAccount'); ?></p>
                             <!-- Button to Open the Modal -->
                             <a class="modal-register" data-toggle="modal" data-target="#signup-modal" data-dismiss="modal">
-                                Register
+                                <?php echo _t('register'); ?>
                             </a>
                         </div>
 

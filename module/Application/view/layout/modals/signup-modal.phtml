@@ -17,21 +17,21 @@ use Application\Controller\HelperController;
 
             <!-- Modal body -->
             <div class="modal-body register-modal-body">
-                <div class="modal-title">Im new here!</div>
+                <div class="modal-title"><?php echo _t('newHere');?></div>
                 <div class="modal-subtitle">Join our big family and stay updated with our latest
                     promotions and offers</div>
 
                 <div class="fb-button-wrapper in-register">
                     <a href="<?php echo FacebookController::getLoginUrl(HelperController::getCurrentUrl()); ?>"><i class="fab fa-facebook-f"></i> Register with facebook</a>
                 </div>
-                <div class="or">OR</div>
+                <div class="or"><?php echo _t('or');?></div>
                 <div class="modal-form">
                     <form action="<?php echo MAIN_URL . 'submit-register' ?>" autocomplete="off" id="register-form">
                         <input type="hidden" name="redirectUrl" value="<?php echo HelperController::getCurrentUrl(); ?>" />
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="full-name" placeholder="Full Name" autocomplete="off">
+                                    <input type="text" class="form-control" name="full-name" placeholder="<?php echo _t('fullName');?>" autocomplete="off">
                                 </div>
                                 <div class="col-md-6">
                                     <input type="date" class="form-control" name="birthday" placeholder="YYYY-MM-DD" autocomplete="off" />
@@ -40,13 +40,13 @@ use Application\Controller\HelperController;
 
                         </div>
                         <div class="form-group">
-                            <input type="email" class="form-control" name="email" placeholder="Email address*" id="signup-email" autocomplete="off">
+                            <input type="email" class="form-control" name="email" placeholder="<?php echo _t('emailAddress');?>*" id="signup-email" autocomplete="off">
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" name="password" placeholder="Enter password" id="signup-pwd" autocomplete="off">
+                            <input type="password" class="form-control" name="password" placeholder="<?php echo _t('enterPassword');?>" id="signup-pwd" autocomplete="off">
                         </div>
                         <div class="form-group">
-                            <input type="password" name="confirm-password" class="form-control confirm-password" placeholder="Confirm password" id="pwd" autocomplete="off">
+                            <input type="password" name="confirm-password" class="form-control confirm-password" placeholder="<?php echo _t('confirmPassword');?>" id="pwd" autocomplete="off">
                         </div>
                         <div class="form-group form-check">
                             <label class="form-check-label">
@@ -62,13 +62,13 @@ use Application\Controller\HelperController;
                         <div class="notice-area"></div>
 
                         <div class="centered-button">
-                            <button type="submit" class="btn signup-button">REGISTER</button>
+                            <button type="submit" class="btn signup-button"><?php echo strtoupper(_t('register'));?></button>
                         </div>
                         <div class="have-account">
-                            <p>Already have an account?</p>
+                            <p><?php echo _t('haveAccount');?></p>
                             <!-- Button to Open the Modal -->
                             <a class="modal-register" data-toggle="modal" data-target="#login-modal" data-dismiss="modal">
-                                Login
+                            <?php echo strtoupper(_t('signin'));?>
                             </a>
                         </div>
 

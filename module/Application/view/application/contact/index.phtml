@@ -6,7 +6,7 @@ use Application\Controller\DesignController;
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <?php echo DesignController::mainTitle('CONTACT US'); ?>
+                <?php echo DesignController::mainTitle(strtoupper(_t('contactUs'))); ?>
             </div>
             <div class="col-md-12">
                 <div class="map-wrapper">
@@ -15,32 +15,32 @@ use Application\Controller\DesignController;
             </div>
 
             <div class="col-md-12">
-                <?php echo DesignController::secondaryTitle('Contact Us Form'); ?>
+                <?php echo DesignController::secondaryTitle(_t('contactUsForm')); ?>
                 <div class="form-wrapper">
                     <div class="notice-area"></div>
                     <form action="<?php echo MAIN_URL . 'contact-submit'; ?>" id="contact-submit">
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <label for="name">Full Name*</label>
-                                    <input type="text" class="form-control" placeholder="Enter Name" id="name" value="" name="full-name">
+                                    <label for="name"><?php echo _t('fullName');?>*</label>
+                                    <input type="text" class="form-control" placeholder="<?php echo _t('fullName');?>" id="name" value="" name="full-name">
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="mobile">Mobile*</label>
-                                    <input type="text" class="form-control" placeholder="Enter Mobile" id="mobile" value="" name="mobile">
+                                    <label for="mobile"><?php echo _t('mobile');?>*</label>
+                                    <input type="text" class="form-control" placeholder="<?php echo _t('mobile');?>" id="mobile" value="" name="mobile">
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="email">Email Address*</label>
-                                    <input type="email" class="form-control" placeholder="Enter Email" id="email" value="" name="email">
+                                    <label for="email"><?php echo _t('emailAddress');?>*</label>
+                                    <input type="email" class="form-control" placeholder="<?php echo _t('emailAddress');?>" id="email" value="" name="email">
                             </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="email">Message*</label>
+                            <label for="email"><?php echo _t('message');?>*</label>
                             <textarea class="form-control" style="min-height: 150px;" name="message"></textarea>
                         </div>
                         <div class="text-left order-complete-btn-wrap">
-                            <button type="submit" class="btn submit-btn">SEND</button>
+                            <button type="submit" class="btn submit-btn"><?php echo strtoupper(_t('send'));?></button>
                         </div>
                     </form>
                 </div>

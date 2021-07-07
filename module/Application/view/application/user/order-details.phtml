@@ -30,7 +30,7 @@ use Application\Controller\ProductController;
                         <?php
                         $total = 0;
                         foreach ($this->items as $item) {
-                            $subtotal = number_format($item->qty * $item->price) . " LBP";
+                            $subtotal = number_format($item->qty * $item->price) . " ". _t('lbp');
                             $title = $item->name;
                             //$itemMySqlExtDAO = 
                             // $item = DesignController::checkOutItem($this->saleOrder, $item);
@@ -46,11 +46,11 @@ use Application\Controller\ProductController;
                     <tfoot>
                         <tr>
                             <td class="text-right cart-total" width="75%">Shipping</td>
-                            <td class="text-right" id="cart-total"><?php echo number_format($this->saleOrder->shippingTotal) . " LBP"; ?></td>
+                            <td class="text-right" id="cart-total"><?php echo number_format($this->saleOrder->shippingTotal) . " ". _t('lbp'); ?></td>
                         </tr>
                         <tr>
                             <td class="text-right cart-total" width="75%">Total</td>
-                            <td class="text-right" id="cart-total"><?php echo number_format($this->saleOrder->netTotal) . " LBP"; ?></td>
+                            <td class="text-right" id="cart-total"><?php echo number_format($this->saleOrder->netTotal) . " ". _t('lbp'); ?></td>
                         </tr>
                     </tfoot>
                 </table>

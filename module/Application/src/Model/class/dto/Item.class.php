@@ -56,6 +56,22 @@
 
 		var $slug;
 
+		var $titleAr;
+
+		var $descriptionAr;
+
+		var $specificationAr;
+
+		var $colorAr;
+
+		var $sizeAr;
+
+		var $dimensionsAr;
+
+		var $warrantyAr;
+
+		var $exchangeAr;
+
 		var $createdAt;
 
 		var $updatedAt;

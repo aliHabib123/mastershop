@@ -98,6 +98,22 @@ interface ItemDAO{
 
 	public function queryBySlug($value);
 
+	public function queryByTitleAr($value);
+
+	public function queryByDescriptionAr($value);
+
+	public function queryBySpecificationAr($value);
+
+	public function queryByColorAr($value);
+
+	public function queryBySizeAr($value);
+
+	public function queryByDimensionsAr($value);
+
+	public function queryByWarrantyAr($value);
+
+	public function queryByExchangeAr($value);
+
 	public function queryByCreatedAt($value);
 
 	public function queryByUpdatedAt($value);
@@ -152,6 +168,22 @@ interface ItemDAO{
 	public function deleteByAlbumId($value);
 
 	public function deleteBySlug($value);
+
+	public function deleteByTitleAr($value);
+
+	public function deleteByDescriptionAr($value);
+
+	public function deleteBySpecificationAr($value);
+
+	public function deleteByColorAr($value);
+
+	public function deleteBySizeAr($value);
+
+	public function deleteByDimensionsAr($value);
+
+	public function deleteByWarrantyAr($value);
+
+	public function deleteByExchangeAr($value);
 
 	public function deleteByCreatedAt($value);
 

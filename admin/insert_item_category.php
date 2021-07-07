@@ -45,6 +45,7 @@ $obj->megaMenuDisplayOrder = $mega_menu_display_order;
 $obj->active = $active;
 $obj->isFeatured = $isFeatured;
 $obj->slug = $slug;
+$obj->langId = 1;
 
 $insert = $itemCategoryMysqlExtDAO->insert($obj);
 if ($insert) {

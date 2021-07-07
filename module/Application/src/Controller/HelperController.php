@@ -71,20 +71,6 @@ class HelperController extends AbstractActionController
         return $input;
     }
 
-    public static function langId($langId)
-    {
-        switch ($langId) {
-            case 'en':
-                return 1;
-                break;
-            case 'ar':
-                return 2;
-                break;
-            default:
-                return 1;
-        }
-    }
-
     public static function getImageUrl($imageName)
     {
         return BASE_URL . upload_image_dir . $imageName;

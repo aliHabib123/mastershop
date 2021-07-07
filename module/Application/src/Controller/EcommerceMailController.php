@@ -172,7 +172,7 @@ class EcommerceMailController extends AbstractActionController
       $html .= "
         <tr>
             <td><b>" . $item->qty . " X </b> " . $item->name . "</td>
-            <td align=\"right\">" . number_format(floatval($item->qty) * floatval($item->price)) . " LBP</td>
+            <td align=\"right\">" . number_format(floatval($item->qty) * floatval($item->price)) . " " . _t('lbp') . "</td>
         </tr>";
     }
     $html .= "<tr>
@@ -180,11 +180,11 @@ class EcommerceMailController extends AbstractActionController
         </tr>
         <tr>
             <td style=\"font-weight:bold;\">Shipping</td>
-            <td align=\"right\">" . number_format(floatval($order->shippingTotal)) . " LBP</td>
+            <td align=\"right\">" . number_format(floatval($order->shippingTotal)) . " " . _t('lbp') . "</td>
         </tr>
         <tr>
             <td style=\"font-weight:bold;\">Total</td>
-            <td align=\"right\">" . number_format(floatval($order->netTotal)) . " LBP</td>
+            <td align=\"right\">" . number_format(floatval($order->netTotal)) . " " . _t('lbp') . "</td>
         </tr>
         <tr>
             <td colspan=\"2\">&nbsp;</td>
@@ -228,7 +228,7 @@ class EcommerceMailController extends AbstractActionController
       $commission += floatval($item->commission);
       $html .= "<tr>
                   <td><b>" . $item->qty . " X </b> " . $item->name . "</td>
-                  <td align=\"right\">" . number_format(floatval($item->qty) * floatval($item->price)) . " LBP</td>
+                  <td align=\"right\">" . number_format(floatval($item->qty) * floatval($item->price)) . " " . _t('lbp') . "</td>
               </tr>";
     }
     $html .= "<tr>
@@ -236,11 +236,11 @@ class EcommerceMailController extends AbstractActionController
               </tr>
               <tr>
                   <td style=\"font-weight:bold;\">Total</td>
-                  <td align=\"right\">" . number_format($total) . " LBP</td>
+                  <td align=\"right\">" . number_format($total) . " " . _t('lbp') . "</td>
               </tr>
               <tr>
                   <td style=\"font-weight:bold;\">Mastershop Commission</td>
-                  <td align=\"right\">" . number_format($commission) . " LBP</td>
+                  <td align=\"right\">" . number_format($commission) . " " . _t('lbp') . "</td>
               </tr>
               <tr>
                   <td colspan=\"2\">&nbsp;</td>

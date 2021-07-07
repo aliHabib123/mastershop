@@ -1,11 +1,14 @@
 <?php
 
+use Application\Controller\CategoryController;
 use Application\Controller\HelperController;
+use Application\Controller\LanguageController;
 
 global $categories;
 $brandCategoryMappingMySqlExtDAO = new BrandCategoryMappingMySqlExtDAO();
 $itemBrandMySqlExtDAO = new ItemBrandMySqlExtDAO();
 $distinctBrandCategories = $brandCategoryMappingMySqlExtDAO->getDistinctCategories();
+$lang = LanguageController::getLanguage();
 ?>
 
 <div class="lower-menu d-none d-sm-block">
@@ -18,17 +21,21 @@ $distinctBrandCategories = $brandCategoryMappingMySqlExtDAO->getDistinctCategori
                 <div id="navbar-collapse-grid" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav nav-fill w-100">
                         <!-- Grid 12 Menu -->
-                        <?php foreach ($categories as $row) { ?>
-                            <li class="nav-item dropdown yamm-fw category-dropdown"><a href="<?php echo MAIN_URL . 'products/' . $row->slug; ?>" class="nav-link"><?php echo $row->name ?><b class="caret"></b></a>
+                        <?php foreach ($categories as $row) {
+                            $categoryName = CategoryController::categoryName($row->name, $row->arabicName);
+                        ?>
+                            <li class="nav-item dropdown yamm-fw category-dropdown"><a href="<?php echo MAIN_URL . $lang . '/products/' . $row->slug; ?>" class="nav-link"><?php echo $categoryName ?><b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li class="grid-list">
                                         <div class="grid-container card-columns">
-                                            <?php foreach ($row->subcategories as $row1) { ?>
+                                            <?php foreach ($row->subcategories as $row1) {
+                                                $categoryName1 = CategoryController::categoryName($row1->name, $row1->arabicName); ?>
                                                 <div class="grid-item card">
-                                                    <div class="main-cat-name"><a href="<?php echo MAIN_URL . 'products/' . $row->slug . "/" . $row1->slug; ?>"><?php echo $row1->name ?></a></div>
+                                                    <div class="main-cat-name"><a href="<?php echo MAIN_URL . $lang . '/products/' . $row->slug . "/" . $row1->slug; ?>"><?php echo $categoryName1; ?></a></div>
                                                     <ul class="subcategories">
-                                                        <?php foreach ($row1->subsubcategories as $row2) { ?>
-                                                            <li><a href="<?php echo MAIN_URL . 'products/' . $row->slug . "/" . $row1->slug . "/" . $row2->slug; ?>"><?php echo $row2->name ?></a></li>
+                                                        <?php foreach ($row1->subsubcategories as $row2) {
+                                                            $categoryName2 = CategoryController::categoryName($row2->name, $row2->arabicName); ?>
+                                                            <li><a href="<?php echo MAIN_URL . $lang . '/products/' . $row->slug . "/" . $row1->slug . "/" . $row2->slug; ?>"><?php echo $categoryName2; ?></a></li>
                                                         <?php } ?>
                                                     </ul>
                                                 </div>
@@ -41,7 +48,7 @@ $distinctBrandCategories = $brandCategoryMappingMySqlExtDAO->getDistinctCategori
                         <!--
               <Aside>Menu </Aside>
               -->
-                        <li class="nav-item dropdown yamm-fw brands-dropdown" id="brands-li"><a href="#" data-toggle="dropdown" class="nav-link  dropdown-toggle">Shop By Brands<b class="caret"></b></a>
+                        <li class="nav-item dropdown yamm-fw brands-dropdown" id="brands-li"><a href="#" data-toggle="dropdown" class="nav-link  dropdown-toggle"><?php echo _t('shopByBrand'); ?><b class="caret"></b></a>
                             <div class="dropdown-menu">
                                 <form>
                                     <div>
@@ -64,7 +71,7 @@ $distinctBrandCategories = $brandCategoryMappingMySqlExtDAO->getDistinctCategori
               <Nesting>Menu </Nesting>
               -->
                         <li class="nav-item dropdown yamm-fw promotions-link">
-                            <a href="<?php echo MAIN_URL . 'promotions'; ?>" class="nav-link">Promotions</a>
+                            <a href="<?php echo MAIN_URL . $lang . '/promotions'; ?>" class="nav-link"><?php echo _t('promotions'); ?></a>
                         </li>
                     </ul>
                 </div>

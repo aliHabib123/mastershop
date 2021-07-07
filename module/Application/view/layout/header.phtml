@@ -3,10 +3,13 @@
 use Application\Controller\CategoryController;
 use Application\Controller\DesignController;
 use Application\Controller\HelperController;
+use Application\Controller\LanguageController;
 use Application\Controller\ProductController;
 use Application\Controller\UserController;
 use Application\Controller\OptionsController;
+use Laminas\Filter\File\UpperCase;
 
+$lang = LanguageController::getLanguage();
 $searchWord = isset($_GET['search']) && $_GET['search'] ? $_GET['search'] : "";
 $cartCount = 0;
 if (isset($_SESSION['user'])) {
@@ -21,15 +24,15 @@ if (isset($_SESSION['user'])) {
 }
 
 global $categories;
-$level1Categories = CategoryController::getCategories('parent_id = 0 ORDER BY display_order ASC, name ASC, id DESC');
+$level1Categories = CategoryController::getCategories('parent_id = 0 AND lang_id = 1 ORDER BY display_order ASC, name ASC, id DESC');
 $categories = $level1Categories;
 //print_r($categories);echo '<br>';
 $c = 0;
 foreach ($level1Categories as $row) {
-    $categories[$c]->subcategories = CategoryController::getCategories("parent_id = $row->id and active = 1 ORDER BY mega_menu_display_order ASC, name ASC, id DESC");
+    $categories[$c]->subcategories = CategoryController::getCategories("parent_id = $row->id AND lang_id = 1 AND active = 1 ORDER BY mega_menu_display_order ASC, name ASC, id DESC");
     $c1 = 0;
     foreach ($categories[$c]->subcategories as $row1) {
-        $categories[$c]->subcategories[$c1]->subsubcategories = CategoryController::getCategories("parent_id = $row1->id and active = 1 ORDER BY display_order ASC, name ASC, id DESC");
+        $categories[$c]->subcategories[$c1]->subsubcategories = CategoryController::getCategories("parent_id = $row1->id AND lang_id = 1 AND active = 1 ORDER BY display_order ASC, name ASC, id DESC");
         $c1++;
     }
     $c++;
@@ -44,7 +47,7 @@ foreach ($level1Categories as $row) {
                     <div class="col-md-3 col-6">
                         <div class="signin-register">
                             <?php if (isset($_SESSION['user'])) { ?>
-                                HI
+                                <?php echo _t('hi'); ?>
                                 <div class="dropdown user-dropdown">
                                     <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <?php echo $_SESSION['user']->firstName; ?>
@@ -53,24 +56,24 @@ foreach ($level1Categories as $row) {
                                         <?php if ($_SESSION['user']->userType == UserController::$CUSTOMER) { ?>
                                             <a class="dropdown-item" href="<?php echo MAIN_URL . 'my-profile'; ?>">Edit Profile</a>
                                         <?php } else { ?>
-                                            <a class="dropdown-item" href="<?php echo MAIN_URL . 'vendor/my-dashboard'; ?>">My Dashboard</a>
+                                            <a class="dropdown-item" href="<?php echo MAIN_URL . 'vendor/my-dashboard'; ?>"><?php echo _t('myDashboard'); ?></a>
                                         <?php } ?>
                                         <!-- <div class="dropdown-divider"></div> -->
-                                        <a class="dropdown-item" href="<?php echo MAIN_URL . 'logout'; ?>">Logout</a>
+                                        <a class="dropdown-item" href="<?php echo MAIN_URL . 'logout'; ?>"><?php echo _t('signout'); ?></a>
                                     </div>
                                 </div>
                             <?php } else { ?>
-                                Hi <a href="javascript:void(0);" class="signin" data-toggle="modal" data-target="#login-modal">Sign in</a> or <a href="javascript:void(0);" class="register" data-toggle="modal" data-target="#signup-modal">Register</a>
+                                <?php echo _t('hi'); ?> <a href="javascript:void(0);" class="signin" data-toggle="modal" data-target="#login-modal"><?php echo _t('signin'); ?></a> <?php echo _t('or'); ?> <a href="javascript:void(0);" class="register" data-toggle="modal" data-target="#signup-modal"><?php echo _t('register'); ?></a>
                             <?php } ?>
                         </div>
                     </div>
                     <div class="col-md-6 col-6 d-none d-sm-block">
                         <ul class="custom-menu custom-menu-centered">
-                            <li><a href="<?php echo MAIN_URL . 'todays-deals'; ?>">Todays Deals</a></li>
-                            <li><a href="<?php echo MAIN_URL . 'latest-arrivals'; ?>">Latest Arrivals</a></li>
-                            <li><a href="<?php echo MAIN_URL . 'page/about-us'; ?>">About us</a></li>
+                            <li><a href="<?php echo MAIN_URL . $lang . '/todays-deals'; ?>"><?php echo _t('todaysDeals'); ?></a></li>
+                            <li><a href="<?php echo MAIN_URL . $lang . '/latest-arrivals'; ?>"><?php echo _t('latestArrivals'); ?></a></li>
+                            <li><a href="<?php echo MAIN_URL . $lang . '/page/about-us'; ?>"><?php echo _t('aboutUs'); ?></a></li>
                             <li class="dropdown pointer">
-                                <a class="dropdown-toggle" data-toggle="dropdown">Help & Contact
+                                <a class="dropdown-toggle" data-toggle="dropdown"><?php echo _t('helpAndContact'); ?>
                                     <span class="caret"></span></a>
                                 <div class="dropdown-menu dropdown-about">
                                     <?php echo OptionsController::getOption(OptionsController::$HEADER_LOCATION); ?>
@@ -85,12 +88,12 @@ foreach ($level1Categories as $row) {
                     <div class="col-md-3 col-6">
                         <ul class="custom-menu custom-menu-right">
                             <li class="wishlist">
-                                <a href="<?php echo MAIN_URL . 'my-wishlist'; ?>" class="d-none d-sm-inline-block">my wishlist
+                                <a href="<?php echo MAIN_URL . $lang . '/my-wishlist'; ?>" class="d-none d-sm-inline-block"><?php echo _t('myWishlist'); ?>
                                     <span class="badge" <?php if (!$wishlistCount) {
                                                             echo 'style="display:none;"';
                                                         } ?>><?php echo $wishlistCount; ?></span>
                                 </a>
-                                <a href="<?php echo MAIN_URL . 'my-wishlist'; ?>" class="d-inline-block d-sm-none"><i class="far fa-heart"></i></a>
+                                <a href="<?php echo MAIN_URL . $lang . '/my-wishlist'; ?>" class="d-inline-block d-sm-none"><i class="far fa-heart"></i></a>
                             </li>
                             <!-- <li class="bell-icon"><a href=""><i class="far fa-bell"></i></a></li> -->
                             <!-- <li class="cart-icon"><a href="#"><i class="fas fa-shopping-cart"></i><span class="badge">5</span></a></li> -->
@@ -118,11 +121,18 @@ foreach ($level1Categories as $row) {
                             </li>
                             <li class="dropdown pointer">
                                 <a class="dropdown-toggle" data-toggle="dropdown">
-                                    <img src="img/uk.png" />
+                                    <?php if ($lang == LanguageController::$ENGLISH) { ?>
+                                        <img src="img/uk.png" />
+                                    <?php } else { ?>
+                                        <img src="img/leb.png" />
+                                    <?php } ?>
                                     <span class="caret"></span></a>
                                 <ul class="dropdown-menu dropdown-menu-right">
-                                    <li><a href="javascript:void(0);"><img src="img/uk.png" /></a></li>
-                                    <li><a href="javascript:void(0);"><img src="img/leb.png" /></a></li>
+                                    <?php if ($lang == LanguageController::$ARABIC) { ?>
+                                        <li><a href="<?php echo MAIN_URL . LanguageController::$ENGLISH; ?>"><img src="img/uk.png" /></a></li>
+                                    <?php } else { ?>
+                                        <li><a href="<?php echo MAIN_URL . LanguageController::$ARABIC; ?>"><img src="img/leb.png" /></a></li>
+                                    <?php } ?>
                                 </ul>
                             </li>
                         </ul>
@@ -135,26 +145,27 @@ foreach ($level1Categories as $row) {
 
         <div class="middle-menu clearfix">
             <div class="logo-container">
-                <a href="<?php echo MAIN_URL ?>"><img src="img/logo.png?v=1.0.0" /></a>
+                <a href="<?php echo MAIN_URL . $lang; ?>"><img src="img/logo.png?v=1.0.0" /></a>
             </div>
             <div class="search-container">
-                <form action="<?php echo MAIN_URL . 'products/' ?>" method="GET">
+                <form action="<?php echo MAIN_URL . $lang . '/products/' ?>" method="GET">
                     <div class="input-group">
                         <div class="input-group-prepend all-cat-btn">
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All <span class="d-none d-sm-inline-block">Categories</span></button>
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo _t('all'); ?> <span class="d-none d-sm-inline-block"><?php echo _t('categories') ?></span></button>
                             <div class="dropdown-menu" id="search-categories">
-                                <a class="dropdown-item" href="#" data-id="0">All <span class="d-none d-sm-inline-block">Categories</span></a>
-                                <?php foreach ($level1Categories as $cat) { ?>
-                                    <a class="dropdown-item" href="javascript:void();" data-slug="<?php echo $cat->slug; ?>" data-id="<?php echo $cat->id; ?>"><?php echo $cat->name; ?></a>
+                                <a class="dropdown-item" href="#" data-id="0"><?php echo _t('all'); ?> <span class="d-none d-sm-inline-block"><?php echo _t('categories') ?></span></a>
+                                <?php foreach ($level1Categories as $cat) {
+                                    $categoryName = CategoryController::categoryName($cat->name, $cat->arabicName); ?>
+                                    <a class="dropdown-item" href="javascript:void();" data-slug="<?php echo $cat->slug; ?>" data-id="<?php echo $cat->id; ?>"><?php echo $categoryName; ?></a>
                                 <?php } ?>
                                 <!-- <div role="separator" class="dropdown-divider"></div> -->
                             </div>
                         </div>
                         <input type="hidden" id="selected-category" value="0">
-                        <input type="text" class="form-control" aria-label="All Categories" placeholder="Search for anything" name="search" required autocomplete="off" value="<?php echo $searchWord; ?>">
+                        <input type="text" class="form-control" aria-label="All Categories" placeholder="<?php echo _t('searchForAnything'); ?>" name="search" required autocomplete="off" value="<?php echo $searchWord; ?>">
                         <div class="input-group-append search-button">
                             <button class="btn btn-outline-secondary" type="submit">
-                                <span class="d-none d-sm-inline-block">SEARCH</span>
+                                <span class="d-none d-sm-inline-block"><?php echo strtoupper(_t('search')) ?></span>
                                 <i class="fas fa-search d-block d-sm-none"></i>
                             </button>
                         </div>

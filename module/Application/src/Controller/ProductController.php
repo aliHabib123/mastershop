@@ -34,8 +34,10 @@ class ProductController extends AbstractActionController
 
     public function indexAction()
     {
+        $langId =  LanguageController::setLanguage($this);
+        $lang = LanguageController::getLanguage();
         $itemCategoryMySqlExtDAO = new ItemCategoryMySqlExtDAO();
-        $prefixUrl = MAIN_URL . 'products/';
+        $prefixUrl = MAIN_URL . $lang . '/products/';
         $categoryList = [];
         $page = 1;
         $limit = 12;
@@ -92,7 +94,7 @@ class ProductController extends AbstractActionController
             } elseif ($cat2 && !$cat3) {
                 $cat2Info = $itemCategoryMySqlExtDAO->queryBySlug($cat2);
                 $cat2Id = $cat2Info[0]->id;
-                $categoriesLevel2 = CategoryController::getCategories("parent_id = $cat2Id");
+                $categoriesLevel2 = CategoryController::getCategories("parent_id = $cat2Id AND lang_id = 1");
                 foreach ($categoriesLevel2 as $row) {
                     if (count($categoriesFiltered) > 0) {
                         if (in_array($row->id, $categoriesFiltered)) {
@@ -102,45 +104,45 @@ class ProductController extends AbstractActionController
                         array_push($categoryArray, $row->id);
                     }
                 }
-                $categoryList = $itemCategoryMySqlExtDAO->select("parent_id = $cat2Id ORDER BY name ASC");
-                $prefixUrl = MAIN_URL . 'products/' . $cat1 . "/" . $cat2 . "/";
+                $categoryList = $itemCategoryMySqlExtDAO->select("a.`parent_id` = $cat2Id AND a.`lang_id` = 1 ORDER BY a.`name` ASC");
+                $prefixUrl = MAIN_URL . $lang . '/products/' . $cat1 . "/" . $cat2 . "/";
             } elseif ($cat1 && !$cat2 && !$cat3) {
                 $cat1Info = $itemCategoryMySqlExtDAO->queryBySlug($cat1);
                 $cat1Id = $cat1Info[0]->id;
-                $categoriesLevel1 = CategoryController::getCategories("parent_id = $cat1Id");
+                $categoriesLevel1 = CategoryController::getCategories("parent_id = $cat1Id AND lang_id = 1");
                 foreach ($categoriesLevel1 as $row) {
                     if (count($categoriesFiltered) > 0) {
                         $categoriesFilteredList = implode(',', $categoriesFiltered);
-                        $categoriesLevel2 = CategoryController::getCategories("parent_id IN ($categoriesFilteredList)");
+                        $categoriesLevel2 = CategoryController::getCategories("parent_id IN ($categoriesFilteredList) AND lang_id = 1");
                         foreach ($categoriesLevel2 as $row) {
                             array_push($categoryArray, $row->id);
                         }
                     } else {
                         $cat2Info = $itemCategoryMySqlExtDAO->queryBySlug($row->slug);
                         $cat2Id = $cat2Info[0]->id;
-                        $categoriesLevel2 = CategoryController::getCategories("parent_id = $cat2Id");
+                        $categoriesLevel2 = CategoryController::getCategories("parent_id = $cat2Id AND lang_id = 1");
                         foreach ($categoriesLevel2 as $row) {
                             array_push($categoryArray, $row->id);
                         }
                     }
                 }
-                $categoryList = $itemCategoryMySqlExtDAO->select("parent_id = $cat1Id ORDER BY name ASC");
-                $prefixUrl = MAIN_URL . 'products/' . $cat1 . "/";
+                $categoryList = $itemCategoryMySqlExtDAO->select("a.`parent_id` = $cat1Id AND a.`lang_id` = 1 ORDER BY a.`name` ASC");
+                $prefixUrl = MAIN_URL . $lang . '/products/' . $cat1 . "/";
             }
         } else {
             if (count($categoriesFiltered) > 0) {
                 $categoriesFilteredList = implode(',', $categoriesFiltered);
-                $categoriesLevel1 = CategoryController::getCategories("parent_id IN ($categoriesFilteredList)");
+                $categoriesLevel1 = CategoryController::getCategories("parent_id IN ($categoriesFilteredList) AND lang_id = 1");
                 foreach ($categoriesLevel1 as $row) {
                     $cat2Info = $itemCategoryMySqlExtDAO->queryBySlug($row->slug);
                     $cat2Id = $cat2Info[0]->id;
-                    $categoriesLevel2 = CategoryController::getCategories("parent_id = $cat2Id");
+                    $categoriesLevel2 = CategoryController::getCategories("parent_id = $cat2Id AND lang_id = 1");
                     foreach ($categoriesLevel2 as $row) {
                         array_push($categoryArray, $row->id);
                     }
                 }
             } else {
-                $categoryList = $itemCategoryMySqlExtDAO->select('parent_id = 0 ORDER BY name ASC');
+                $categoryList = $itemCategoryMySqlExtDAO->select('a.`parent_id` = 0 AND a.`lang_id` = 1 ORDER BY a.`name` ASC');
             }
         }
 
@@ -178,11 +180,14 @@ class ProductController extends AbstractActionController
             'minPrice' => $minPrice,
             'maxPrice' => $maxPrice,
             'categoriesFiltered' => $categoriesFiltered,
+            'lang' => $lang,
         ];
         return new ViewModel($data);
     }
     public function detailsAction()
     {
+        $langId =  LanguageController::setLanguage($this);
+        $lang = LanguageController::getLanguage();
         $slug = HelperController::filterInput($this->params('slug'));
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
         $item = $itemMySqlExtDAO->queryBySlug($slug);
@@ -222,10 +227,12 @@ class ProductController extends AbstractActionController
             'itemBrand' => $itemBrand,
             'images' => $images,
             'relatedProducts' => $relatedProducts,
+            'lang' => $lang,
         ]);
     }
     public function todaysDealsAction()
     {
+        $langId =  LanguageController::setLanguage($this);
         $page = 1;
         $limit = 12;
         $offset = 0;
@@ -254,7 +261,7 @@ class ProductController extends AbstractActionController
     }
     public function latestArrivalsAction()
     {
-        $langId = HelperController::langId(HelperController::filterInput($this->params('lang')));
+        $langId =  LanguageController::setLanguage($this);
         $page = 1;
         $limit = 12;
         $offset = 0;
@@ -266,8 +273,8 @@ class ProductController extends AbstractActionController
         $itemTagMySqlExtDAO = new ItemTagMySqlExtDAO();
         $tagInfo = $itemTagMySqlExtDAO->queryBySlug('latest-arrivals');
         $tagId = $tagInfo[0]->id;
-        $items = self::getItems(false, false, $tagId, "", $limit, $offset);
-        $itemsCount = count(self::getItems(false, false, $tagId));
+        $items = self::getItems(false, "", "", "", "", $tagId, "", $limit, $offset);
+        $itemsCount = count(self::getItems(false, "", "", "", "", $tagId));
         $totalPages = ceil($itemsCount / $limit);
 
         $ads = ContentController::getContent("type = 'ad1' and lang = $langId ORDER BY display_order asc LIMIT 3");
@@ -282,6 +289,7 @@ class ProductController extends AbstractActionController
 
     public function promotionsAction()
     {
+        $langId =  LanguageController::setLanguage($this);
         $page = 1;
         $limit = 12;
         $offset = 0;
@@ -289,19 +297,19 @@ class ProductController extends AbstractActionController
             $page = $_GET['page'];
             $offset = ($page - 1) * $limit;
         }
-        $catetgories = CategoryController::getCategories('parent_id = 0 ORDER BY display_order ASC, name ASC, id DESC');
+        $catetgories = CategoryController::getCategories('parent_id = 0 AND lang_id = 1 ORDER BY display_order ASC, name ASC, id DESC');
         $category = (isset($_GET['category']) && $_GET['category'] != "") ? $_GET['category'] : false;
         $categoryArray = [];
         if ($category) {
             $itemCategoryMySqlExtDAO = new ItemCategoryMySqlExtDAO();
             $cat1Info = $itemCategoryMySqlExtDAO->queryBySlug($category);
             $cat1Id = $cat1Info[0]->id;
-            $categoriesLevel1 = CategoryController::getCategories("parent_id = $cat1Id");
+            $categoriesLevel1 = CategoryController::getCategories("parent_id = $cat1Id AND lang_id = 1");
             foreach ($categoriesLevel1 as $row) {
                 array_push($categoryArray, $row->id);
                 $cat2Info = $itemCategoryMySqlExtDAO->queryBySlug($row->slug);
                 $cat2Id = $cat2Info[0]->id;
-                $categoriesLevel2 = CategoryController::getCategories("parent_id = $cat2Id");
+                $categoriesLevel2 = CategoryController::getCategories("parent_id = $cat2Id AND lang_id = 1");
                 foreach ($categoriesLevel2 as $row) {
                     array_push($categoryArray, $row->id);
                 }
@@ -497,14 +505,14 @@ class ProductController extends AbstractActionController
             $specialPrice = isset($row['Special Price']) ? $row['Special Price'] : '';
             $warranty = isset($row['Warranty']) ? $row['Warranty'] : '';
             $exchange = isset($row['Exchange']) ? $row['Exchange'] : '';
-            $title_ar = isset($row['title_ar']) ? $row['title_ar'] : '';
-            $description_ar = isset($row['description_ar']) ? $row['description_ar'] : '';
-            $specs_ar = isset($row['specs_ar']) ? $row['specs_ar'] : '';
-            $color_ar = isset($row['color_ar']) ? $row['color_ar'] : '';
-            $size_ar = isset($row['size_ar']) ? $row['size_ar'] : '';
-            $dimensions_ar = isset($row['dimensions_ar']) ? $row['dimensions_ar'] : '';
-            $warranty_ar = isset($row['warranty_ar']) ? $row['warranty_ar'] : '';
-            $exchange_ar = isset($row['exchange_ar']) ? $row['exchange_ar'] : '';
+            $title_ar = isset($row['Title Arabic']) ? $row['Title Arabic'] : '';
+            $description_ar = isset($row['Description Arabic']) ? $row['Description Arabic'] : '';
+            $specs_ar = isset($row['Specification Arabic']) ? $row['Specification Arabic'] : '';
+            $color_ar = isset($row['Color Arabic']) ? $row['Color Arabic'] : '';
+            $size_ar = isset($row['Size Arabic']) ? $row['Size Arabic'] : '';
+            $dimensions_ar = isset($row['Dimensions Arabic']) ? $row['Dimensions Arabic'] : '';
+            $warranty_ar = isset($row['Warranty Arabic']) ? $row['Warranty Arabic'] : '';
+            $exchange_ar = isset($row['Exchange Arabic']) ? $row['Exchange Arabic'] : '';
             $processed = 0;
 
             $data[] = "('$image1', '$image2', '$image3', '$image4', '$title', '$category',
@@ -775,6 +783,15 @@ class ProductController extends AbstractActionController
         $itemObj->slug = self::slugify($row['Title'], $row['SKU']);
         $itemObj->warranty = (isset($row['Warranty']) && !empty($row['Warranty'])) ? $row['Warranty'] : "";
         $itemObj->exchange = (isset($row['Exchange']) && !empty($row['Exchange'])) ? $row['Exchange'] : "";
+        $itemObj->titleAr = (isset($row['Title Arabic']) && !empty($row['Title Arabic'])) ? $row['Title Arabic'] : "";
+        $itemObj->descriptionAr = (isset($row['Description Arabic']) && !empty($row['Description Arabic'])) ? $row['Description Arabic'] : "";
+        $itemObj->specificationAr = (isset($row['Specification Arabic']) && !empty($row['Specification Arabic'])) ? $row['Specification Arabic'] : "";
+        $itemObj->colorAr = (isset($row['Color Arabic']) && !empty($row['Color Arabic'])) ? $row['Color Arabic'] : "";
+        $itemObj->sizeAr = (isset($row['Size Arabic']) && !empty($row['Size Arabic'])) ? $row['Size Arabic'] : "";
+        $itemObj->dimensionsAr = (isset($row['Dimensions Arabic']) && !empty($row['Dimensions Arabic'])) ? $row['Dimensions Arabic'] : "";
+        $itemObj->warrantyAr = (isset($row['Warranty Arabic']) && !empty($row['Warranty Arabic'])) ? $row['Warranty Arabic'] : "";
+        $itemObj->exchangeAr = (isset($row['Exchange Arabic']) && !empty($row['Exchange Arabic'])) ? $row['Exchange Arabic'] : "";
+
     }
 
     public static function deleteItemBySku($sku)
