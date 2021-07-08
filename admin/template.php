@@ -180,11 +180,37 @@ if (isset($_REQUEST['act'])) {
 						<span class="title">Pages</span>
 					</a>
 				</li>
-				<li class="">
+				<!-- <li class="">
 					<a href="display_ad.php">
 						<i class="fas fa-ad"></i>
 						<span class="title">Ads</span>
 					</a>
+				</li> -->
+
+				<li>
+					<a class="active" href="javascript:;">
+					<i class="fas fa-ad"></i>
+					<span class="title">Ads</span>
+						<span class="arrow "></span>
+					</a>
+					<ul class="sub-menu">
+						<!-- <li>
+							<a href="accounting_dashboard.php">
+								Dashboard
+							</a>
+						</li> -->
+						<li>
+						<a href="display_ad.php">
+								Homepage Ads
+							</a>
+						</li>
+						<li>
+						<a href="display_ad1.php">
+								Inner Ads
+							</a>
+						</li>
+
+					</ul>
 				</li>
 
 				<li class="">

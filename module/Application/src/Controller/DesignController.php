@@ -73,10 +73,12 @@ class DesignController extends AbstractActionController
                     </div>
                     <div class='item-wrapper_cart_heart'>
                         <a class='heart wishlist-add off' href='#' data-item-id='$item->id' data-customer-id='$customerId'>
-                            <img src='$imageSrc' />
+                            <img class='visible-heart' src='$imageSrc' />
+                            <img class='hidden-heart' src='img/heart-on.png' />
                         </a>
                         <a class='cart cart-add' href='javascript:void(0);' data-item-id='$item->id'>
-                            <img src='img/cart.png' />
+                            <img class='visible-cart' src='img/cart.png' />
+                            <img class='hidden-cart' src='img/cart-on.png' />
                         </a>
                     </div>
                 </div>";

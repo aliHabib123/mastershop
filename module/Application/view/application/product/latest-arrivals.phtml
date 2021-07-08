@@ -1,6 +1,8 @@
 <?php
 
 use Application\Controller\DesignController;
+use Application\Controller\HelperController;
+
 ?>
 <div class="main-wrapper">
     <div class="small-banner-container with-breadcrumb">
@@ -35,16 +37,13 @@ use Application\Controller\DesignController;
     </div>
     <div class="container ads-c">
         <div class="row">
-            <div class="col-md-6 ad-col">
-                <a href="<?php echo MAIN_URL;?>">
-                    <img src="img/ad2.png"/>
+            <?php foreach($this->ads as $row){?>
+                <div class="col-md-6 ad-col">
+                <a href="<?php echo $row->customUrl; ?>">
+                    <img src="<?php echo HelperController::getImageUrl($row->image); ?>"/>
                 </a>
             </div>
-            <div class="col-md-6 ad-col">
-                <a href="<?php echo MAIN_URL;?>">
-                    <img src="img/ad2.png"/>
-                </a>
-            </div>
+            <?php }?>
         </div>
     </div>
     <div class="container">

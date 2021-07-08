@@ -254,6 +254,7 @@ class ProductController extends AbstractActionController
     }
     public function latestArrivalsAction()
     {
+        $langId = HelperController::langId(HelperController::filterInput($this->params('lang')));
         $page = 1;
         $limit = 12;
         $offset = 0;
@@ -268,10 +269,13 @@ class ProductController extends AbstractActionController
         $items = self::getItems(false, false, $tagId, "", $limit, $offset);
         $itemsCount = count(self::getItems(false, false, $tagId));
         $totalPages = ceil($itemsCount / $limit);
+
+        $ads = ContentController::getContent("type = 'ad1' and lang = $langId ORDER BY display_order asc LIMIT 3");
         $data = [
             'items' => $items,
             'totalPages' => $totalPages,
             'currentPage' => $page,
+            'ads' => $ads,
         ];
         return new ViewModel($data);
     }
