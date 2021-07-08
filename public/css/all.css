@@ -475,6 +475,8 @@ span.forgot {
   float: right; }
   span.forgot a {
     color: #5a5a5a; }
+    span.forgot a:hover {
+      color: #2576ba; }
 
 .have-account {
   text-align: center;
@@ -1031,9 +1033,9 @@ a.disabled {
           line-height: 1;
           font-size: 16px;
           font-family: "Montserrat Alternates", sans-serif;
-          color: #000;
+          color: #fff;
           padding: 0px 8px;
-          border-left: 1px solid #000; }
+          border-left: 1px solid #fff; }
         .small-banner-container .banner-breadcrumb ul li:last-child a {
           padding-right: 0;
           color: #2576ba; }
@@ -1102,6 +1104,18 @@ a.disabled {
       display: inline-block;
       margin-right: 5px;
       margin-left: 5px; }
+    .item-wrapper_cart_heart a.heart:hover img.visible-heart {
+      display: none; }
+    .item-wrapper_cart_heart a.heart:hover img.hidden-heart {
+      display: block; }
+    .item-wrapper_cart_heart a.cart:hover img.visible-cart {
+      display: none; }
+    .item-wrapper_cart_heart a.cart:hover img.hidden-cart {
+      display: block; }
+    .item-wrapper_cart_heart .hidden-heart {
+      display: none; }
+    .item-wrapper_cart_heart .hidden-cart {
+      display: none; }
 
 .product-details .main-image {
   text-align: center;
@@ -1487,7 +1501,7 @@ footer {
     font-weight: 500;
     color: #353535; }
     footer .footer2 p a {
-      color: red; }
+      color: #2576ba; }
   footer .footer-menu_title {
     font-family: "Montserrat Alternates", sans-serif;
     font-size: 18px;
@@ -2655,9 +2669,9 @@ a.list-group-item,
           line-height: 1;
           font-size: 16px;
           font-family: "Montserrat Alternates", sans-serif;
-          color: #000;
+          color: #fff;
           padding: 0px 8px;
-          border-left: 1px solid #000; }
+          border-left: 1px solid #fff; }
         .small-banner-container + .breadcrumb-c .breadcrumb-c-inner ul li:last-child a {
           padding-right: 0;
           color: #2576ba; }

@@ -65,6 +65,32 @@
       margin-right: 5px;
       margin-left: 5px;
     }
+    a.heart {
+      &:hover{
+        img.visible-heart{
+          display: none;
+        }
+        img.hidden-heart{
+          display: block;
+        }
+      }
+    }
+    a.cart {
+      &:hover{
+        img.visible-cart{
+          display: none;
+        }
+        img.hidden-cart{
+          display: block;
+        }
+      }
+    }
+    .hidden-heart{
+      display: none;
+    }
+    .hidden-cart{
+      display: none;
+    }
   }
 }
 

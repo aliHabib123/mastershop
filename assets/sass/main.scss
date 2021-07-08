@@ -559,6 +559,9 @@ span.forgot {
   float: right;
   a {
     color: $base-black;
+    &:hover{
+      color: $base-color;
+    }
   }
 }
 .have-account {
