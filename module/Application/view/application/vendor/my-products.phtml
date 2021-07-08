@@ -57,7 +57,7 @@ $withPrice = isset($_GET['with-price']) ? $_GET['with-price'] : '';
                                     <th>Product</th>
                                     <th class="text-center">Status</th>
                                     <th class="text-center">QTY Confirmed</th>
-                                    <th class="text-center">Qty Pending</th>
+                                    <th class="text-center">SKU</th>
                                     <th class="text-center">QTY Sold</th>
                                     <th>Earn Amount</th>
                                 </tr>
@@ -76,7 +76,7 @@ $withPrice = isset($_GET['with-price']) ? $_GET['with-price'] : '';
                                         </td>
                                         <td class="text-center">PENDING</td>
                                         <td class="text-center"><?php echo $row->qty; ?></td>
-                                        <td class="text-center">n/a</td>
+                                        <td class="text-center"><?php echo $row->sku; ?></td>
                                         <td class="text-center">2</td>
                                         <td>
                                             23,000 LBP
