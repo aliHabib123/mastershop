@@ -1107,11 +1107,13 @@ a.disabled {
     .item-wrapper_cart_heart a.heart:hover img.visible-heart {
       display: none; }
     .item-wrapper_cart_heart a.heart:hover img.hidden-heart {
-      display: block; }
+      display: inline-block; }
     .item-wrapper_cart_heart a.cart:hover img.visible-cart {
       display: none; }
     .item-wrapper_cart_heart a.cart:hover img.hidden-cart {
-      display: block; }
+      display: inline-block; }
+    .item-wrapper_cart_heart .visible-heart, .item-wrapper_cart_heart .visible-cart {
+      display: inline-block; }
     .item-wrapper_cart_heart .hidden-heart {
       display: none; }
     .item-wrapper_cart_heart .hidden-cart {

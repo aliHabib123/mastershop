@@ -71,7 +71,7 @@
           display: none;
         }
         img.hidden-heart{
-          display: block;
+          display: inline-block;
         }
       }
     }
@@ -81,9 +81,12 @@
           display: none;
         }
         img.hidden-cart{
-          display: block;
+          display: inline-block;
         }
       }
+    }
+    .visible-heart, .visible-cart{
+      display: inline-block;
     }
     .hidden-heart{
       display: none;
