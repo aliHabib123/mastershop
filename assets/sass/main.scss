@@ -252,7 +252,7 @@ body {
 .pt30 {
   padding-top: 30px;
 }
-.mt30{
+.mt30 {
   margin-top: 30px;
 }
 .item-col {
@@ -559,7 +559,7 @@ span.forgot {
   float: right;
   a {
     color: $base-black;
-    &:hover{
+    &:hover {
       color: $base-color;
     }
   }
@@ -696,17 +696,33 @@ a.disabled {
   color: #fff !important;
 }
 
-
 //Breadcrumb
-.breadcrumb-wrap{
-  .breadcrumb{
+.breadcrumb-wrap {
+  .breadcrumb {
     background-color: #f6f6f6;
-    .breadcrumb-item{
-      a{
+    .breadcrumb-item {
+      a {
         color: $base-color;
         font-family: $fontsecondary;
       }
     }
   }
-  
+}
+.page-loader {
+  display: none;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  z-index: 999999;
+  span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    i {
+      color: #fff;
+      font-size: 60px;
+    }
+  }
 }
