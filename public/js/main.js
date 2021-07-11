@@ -257,7 +257,9 @@ $(function () {
         console.log(response);
         showMsg(".notice-area", response.status, response.msg);
         if (response.status == true) {
-          insertItemsBatches();
+          if(useNewMechanism == 1){
+            insertItemsBatches();
+          }
           //location.href = response.redirectUrl;
         }
       },

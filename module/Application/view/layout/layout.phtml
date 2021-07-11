@@ -90,6 +90,7 @@ if (isset($_SESSION['user'])) {
         const userCountry = '<?php echo $userCountry; ?>';
         const isLoggedIn = '<?php echo $isLoggedIn; ?>';
         const userType = '<?php echo $userType; ?>';
+        const useNewMechanism = '<?php echo boolval(USE_NEW_IMPORT_MECHANISM);?>';
         $(function() {
             <?php if ($date == "") { ?>
                 $('.date').val('');
