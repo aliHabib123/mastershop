@@ -7,10 +7,10 @@ use Application\Controller\DesignController;
     <div class="container">
         <div class="row">
             <div class="col-md-3 sidebar">
-                <?php echo DesignController::getVendorSidebar('inventory');?>
+                <?php echo DesignController::getVendorSidebar('inventory'); ?>
             </div>
             <div class="col-md-9 vendor-pl0">
-                <div class="page-date"><i class="far fa-calendar-alt"></i>&nbsp;<?php echo date('l, F j, Y')?></div>
+                <div class="page-date"><i class="far fa-calendar-alt"></i>&nbsp;<?php echo date('l, F j, Y') ?></div>
                 <div class="vendor-page-wrapper">
                     <form id="import-form" action="<?php echo MAIN_URL . 'submit-import'; ?>">
                         <div class="row">
@@ -19,11 +19,11 @@ use Application\Controller\DesignController;
                                     <div class="card-body">
                                         <h5 class="card-title">STEP 1</h5>
                                         <p class="card-text txt-lrg">DOWNLOAD INVENTORY CSV FILE</p>
-                                        <?php if($this->user->uploadedFile){?>
+                                        <?php if ($this->user->uploadedFile) { ?>
                                             <div class="card-bottom">
-                                            <a download href="<?php echo BASE_URL.upload_file_dir.$this->user->uploadedFile;?>" class="btn download-csv">DOWNLOAD CSV</a>
-                                        </div>
-                                        <?php }?>
+                                                <a download href="<?php echo BASE_URL . upload_file_dir . $this->user->uploadedFile; ?>" class="btn download-csv">DOWNLOAD CSV</a>
+                                            </div>
+                                        <?php } ?>
                                     </div>
                                 </div>
                             </div>
@@ -67,8 +67,10 @@ use Application\Controller\DesignController;
     </div>
 </div>
 <script>
-$(function(){
-    $('.page-loader').toggle();
-    checkTempTable();
-});
+    $(function() {
+        <?php if (USE_NEW_IMPORT_MECHANISM) { ?>
+            $('.page-loader').toggle();
+            checkTempTable();
+        <?php } ?>
+    });
 </script>
