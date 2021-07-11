@@ -257,6 +257,7 @@ $(function () {
         console.log(response);
         showMsg(".notice-area", response.status, response.msg);
         if (response.status == true) {
+          insertItemsBatches();
           //location.href = response.redirectUrl;
         }
       },
@@ -349,7 +350,7 @@ $("#my-products-form-filter").on("reset", function (e) {
 $("html").on("click", ".wishlist-add", function (e) {
   alertify.set("notifier", "position", "top-right");
   if (isLoggedIn == "" || userType != 3) {
-    $('#login-modal').modal('show');
+    $("#login-modal").modal("show");
     return false;
   }
   let itemId = $(this).data("itemId");
@@ -390,7 +391,7 @@ $("html").on("click", ".wishlist-add", function (e) {
 $("html").on("click", ".cart-add", function (e) {
   alertify.set("notifier", "position", "top-right");
   if (isLoggedIn == "" || userType != 3) {
-    $('#login-modal').modal('show');
+    $("#login-modal").modal("show");
     return false;
   }
   let itemId = $(this).data("itemId");
@@ -803,3 +804,75 @@ $(function () {
     );
   }
 });
+function checkTempTable() {
+  $.ajax({
+    url: mainUrl + "insert-batch",
+    type: "POST",
+    dataType: "json",
+    data: {},
+    beforeSend: function () {},
+    success: function (response) {
+      console.log(response);
+      if (response.res == true) {
+        $(".page-loader").hide();
+        $(".notice-area").html("importing your file, please wait.<i class='fas fa-spinner fa-spin'></i>");
+        insertItemsBatches();
+      }
+    },
+    error: function () {},
+  });
+}
+function insertItemsBatches() {
+  $.ajax({
+    url: mainUrl + "insert-batch",
+    type: "POST",
+    dataType: "json",
+    data: {},
+    beforeSend: function () {
+      $(".notice-area").html("importing your file, please wait.<i class='fas fa-spinner fa-spin'></i>");
+    },
+    success: function (response) {
+      console.log(response);
+      if (response.res == true) {
+        setTimeout(function () {
+          insertItemsBatches();
+        }, 3000);
+      } else {
+        deleteDeletedItems();
+      }
+    },
+    error: function () {},
+  });
+}
+function deleteDeletedItems() {
+  $.ajax({
+    url: mainUrl + "delete-deleted",
+    type: "POST",
+    dataType: "json",
+    data: {},
+    beforeSend: function () {
+      $(".notice-area").html("importing your file, please wait.<i class='fas fa-spinner fa-spin'></i>");
+    },
+    success: function (response) {
+      console.log(response);
+      cleanTempTable();
+    },
+    error: function () {},
+  });
+}
+function cleanTempTable() {
+  $.ajax({
+    url: mainUrl + "clean-temp-table",
+    type: "POST",
+    dataType: "json",
+    data: {},
+    beforeSend: function () {
+      $(".notice-area").html("importing your file, please wait.<i class='fas fa-spinner fa-spin'></i>");
+    },
+    success: function (response) {
+      console.log(response);
+      $(".notice-area").html("finished");
+    },
+    error: function () {},
+  });
+}

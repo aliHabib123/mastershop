@@ -242,6 +242,37 @@ return [
                     ],
                 ],
             ],
+            'insertBatch' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/insert-batch',
+                    'defaults' => [
+                        'controller' => Controller\ImportController::class,
+                        'action'     => 'insertBatch',
+                    ],
+                ],
+            ],
+            'deleteDeletedItems' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/delete-deleted',
+                    'defaults' => [
+                        'controller' => Controller\ImportController::class,
+                        'action'     => 'deleteDeletedItems',
+                    ],
+                ],
+            ],
+            //clean-temp-table
+            'cleanTempTable' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/clean-temp-table',
+                    'defaults' => [
+                        'controller' => Controller\ImportController::class,
+                        'action'     => 'cleanTempTable',
+                    ],
+                ],
+            ],
             'addWarehouse' => [
                 'type'    => Literal::class,
                 'options' => [

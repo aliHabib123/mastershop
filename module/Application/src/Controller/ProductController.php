@@ -470,6 +470,127 @@ class ProductController extends AbstractActionController
         return $response;
     }
 
+    public static function processBatch($items, $brandIdsNames = [])
+    {
+        $supplierId = $_SESSION['user']->id;
+        $insertedItems = 0;
+        $updatedItems = 0;
+        // Initialize
+        $itemMySqlExtDAO = new ItemMySqlExtDAO();
+        $itemCategoryMappingMySqlExtDAO = new ItemCategoryMappingMySqlExtDAO();
+        $itemBrandMappingMySqlExtDAO = new ItemBrandMappingMySqlExtDAO();
+
+
+        foreach ($items as $row) {
+            $update = $insert = false;
+            $albumId = 0;
+            $prefix = $supplierId . '-' . HelperController::slugify($row['SKU']);
+            $image = HelperController::downloadFile($row['Image 1'], $prefix);
+            $imagesArray = [];
+            if ($row['Image 2'] != "") {
+                $image1 = HelperController::downloadFile($row['Image 2'], $prefix);
+                if ($image1) {
+                    array_push($imagesArray, $image1);
+                }
+            }
+            if ($row['Image 3'] != "") {
+                $image2 = HelperController::downloadFile($row['Image 3'], $prefix);
+                if ($image2) {
+                    array_push($imagesArray, $image2);
+                }
+            }
+            if ($row['Image 4'] != "") {
+                $image3 = HelperController::downloadFile($row['Image 4'], $prefix);
+                if ($image3) {
+                    array_push($imagesArray, $image3);
+                }
+            }
+
+            if ($imagesArray) {
+                $albumMySqlExtDAO = new AlbumMySqlExtDAO();
+                $albumImageMySqlExtDAO = new ImageMySqlExtDAO();
+                $albumObj = new Album();
+                $albumObj->displayOrder = 0;
+                $albumObj->active = 1;
+                $albumId = $albumMySqlExtDAO->insert($albumObj);
+
+                foreach ($imagesArray as $albumImageItem) {
+                    $albumImageObj = new Image();
+                    $albumImageObj->albumId = $albumId;
+                    $albumImageObj->imageName = $albumImageItem;
+                    $albumImageMySqlExtDAO->insert($albumImageObj);
+                }
+            }
+
+            $itemObj = new Item();
+            self::populateItem($itemObj, $row, $supplierId, $albumId);
+            if ($image) {
+                $itemObj->image = $image;
+            }
+
+            $itemExists = $itemMySqlExtDAO->queryBySkuAndSupplierId($row['SKU'], $supplierId);
+            $date = date('Y-m-d H:i:s');
+            $categoryId = ProductController::getCategory($row['Category'], $row['sub category'], $row['product category']);
+            if ($itemExists) {
+                // delete image
+                HelperController::deleteImage($itemExists[0]->image);
+                // delete album and images
+                if ($itemExists[0]->albumId != 0) {
+                    $oldImages = $albumImageMySqlExtDAO->queryByAlbumId($itemExists[0]->albumId);
+                    foreach ($oldImages as $oldImage) {
+                        HelperController::deleteImage($oldImage->imageName);
+                        $albumImageMySqlExtDAO->deleteByAlbumId($itemExists[0]->albumId);
+                    }
+                    $albumMySqlExtDAO->delete($itemExists[0]->albumId);
+                }
+
+                $itemObj->id = $itemExists[0]->id;
+                $itemObj->createdAt = $itemExists[0]->createdAt;
+                $itemObj->updatedAt = $date;
+                //print_r($itemObj);echo '<br>';
+                $update = $itemMySqlExtDAO->update($itemObj);
+                if ($update) {
+                    $updatedItems++;
+                    //echo $itemObj->id.'<br>';
+                    if ($categoryId) {
+                        CategoryController::updateOrInsertItemCategory($itemObj->id, $categoryId);
+                    }
+                    if (array_key_exists($row['Brand Name'], $brandIdsNames)) {
+                        BrandController::updateOrInsertItemBrand($itemObj->id, $brandIdsNames[$row['Brand Name']]);
+                    }
+                }
+            } else {
+                //echo 'does not exists<br>';
+                $itemObj->updatedAt = $date;
+                $itemObj->createdAt = $date;
+                $insert = $itemMySqlExtDAO->insert($itemObj);
+                if ($insert) {
+                    $insertedItems ++;
+                    if ($categoryId) {
+                        $itemCategoryMappingMySqlExtDAO->insertItemCategory($insert, $categoryId);
+                    }
+                    if (array_key_exists($row['Brand Name'], $brandIdsNames)) {
+                        $itemBrandMappingMySqlExtDAO->insertItemBrand($insert, $brandIdsNames[$row['Brand Name']]);
+                    }
+                }
+            }
+            if($update || $insert){
+                //echo 'update or insert<br>';
+                $conn =  ConnectionFactory::getConnection();
+                $sql = "UPDATE items_temp set processed = 1 where supplier_id = $supplierId AND sku = '".$row['SKU']."'";
+                if (!$conn->query($sql)) {
+                    $msg = $conn->error;
+                    //echo $msg;
+                }
+            }
+        }
+
+        $response = new stdClass();
+        $response->inserted = $insertedItems;
+        $response->updated = $updatedItems;
+        return $response;
+    }
+
     public static function populateItem(&$itemObj, $row, $supplierId, $albumId)
     {
         $itemObj->title = $row['Title'];
@@ -629,5 +750,26 @@ class ProductController extends AbstractActionController
             }
             return $slug;
         }
+    }
+
+    public static function insertItemsIntoTempTable($targetFile, $supplierId)
+    {
+        $conn = ConnectionFactory::getConnection();
+
+        $sql  = "LOAD DATA LOCAL INFILE '$targetFile' INTO TABLE `items_temp` CHARACTER SET 'utf8' FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES SET supplier_id = $supplierId, processed=0, id=NULL";
+        if (!$conn->query($sql)) {
+            echo ("Error description: " . $conn->error);
+            $res = false;
+            $msg = $conn->error;
+        } else{
+            $res = true;
+            $msg = 'imported';
+        }
+
+        $conn->close();
+        $cls = new stdClass();
+        $cls->res = $res;
+        $cls->msg = $msg;
+        return $cls;
     }
 }

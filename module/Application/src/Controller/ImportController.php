@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Application\Controller;
 
+use ConnectionFactory;
+use ItemBrandMappingMySqlExtDAO;
+use ItemCategoryMappingMySqlExtDAO;
+use ItemMySqlExtDAO;
 use Laminas\Mvc\Controller\AbstractActionController;
 use PHPExcel_Reader_Excel2007;
 use PHPExcel_Writer_Excel5;
@@ -18,10 +22,11 @@ use PHPExcel_Worksheet_Drawing;
 use PHPExcel_Worksheet_MemoryDrawing;
 
 use PHPExcel_IOFactory;
+use UserMySqlExtDAO;
 
 class ImportController extends AbstractActionController
 {
-    public function submitImportAction()
+    public function submitImport1Action()
     {
         $result = true;
         $msg = "Initial";
@@ -92,8 +97,6 @@ class ImportController extends AbstractActionController
 
                 // Get the total number of rows in the spreadsheet
                 $rows = $objWorksheet->getHighestRow();
-
-
 
                 if ($result) {
                     // Loop through all the rows (line items)
@@ -167,6 +170,173 @@ class ImportController extends AbstractActionController
             'updated' => $insert->updated,
             'deleted' => $insert->deleted,
             'status' => $result,
+            'msg' => $msg,
+        ]);
+        print_r($response);
+        return $this->response;
+    }
+
+    public function submitImportAction()
+    {
+        $result = true;
+        $msg = "Initial";
+        $upload = false;
+        // $missingSkusCount = 0;
+        // $missingTitlesCount = 0;
+        if ($_FILES['excel']['tmp_name']) {
+
+            $file = $_FILES['excel']['tmp_name'];
+            $userfile_extn = explode(".", strtolower($_FILES['excel']['name']));
+            $target_dir = BASE_PATH . upload_file_dir;
+            $newName = HelperController::random(10) . '.' . $userfile_extn[1];
+            $target_file = $target_dir . $newName;
+            $upload = move_uploaded_file($file, $target_file);
+            if ($upload) {
+                $realPath = realpath($target_file);
+            }
+        } else {
+            $result = false;
+            $msg = "No file uploaded";
+        }
+        // insert rows into temp table
+        if ($result) {
+            $realPath = str_replace("\\", "/", $realPath);
+            $insertIntoTemp = ProductController::insertItemsIntoTempTable($realPath, $_SESSION['user']->id);
+            $result = $insertIntoTemp->res;
+            $msg = $insertIntoTemp->msg;
+            if ($result) {
+                $userMysqlExtDAO = new UserMySqlExtDAO();
+                $userInfo = $userMysqlExtDAO->load($_SESSION['user']->id);
+                $userInfo->uploadedFile = $newName;
+                $update = $userMysqlExtDAO->update($userInfo);
+            }
+        }
+
+        $response = json_encode([
+            'status' => $result,
+            'msg' => $msg,
+            'imported' => $insertIntoTemp,
+        ]);
+        print_r($response);
+        return $this->response;
+    }
+    public function insertBatchAction()
+    {
+        $processBatchRes = false;
+        $conn = ConnectionFactory::getConnection();
+        $supplierId = $_SESSION['user']->id;
+        $sql = "SELECT * FROM items_temp WHERE supplier_id = $supplierId AND processed = 0 ORDER BY id ASC LIMIT 5 OFFSET 0";
+        $result = $conn->query($sql);
+        $res = true;
+        $batch = [];
+        if ($result->num_rows > 0) {
+            // Initialize
+            $brandIdsNames = [];
+            // Get Brands
+            $brands = BrandController::getBrands();
+            foreach ($brands as $brand) {
+                $brandIdsNames[$brand->name] = $brand->id;
+            }
+
+            // map items fields
+            while ($row = $result->fetch_assoc()) {
+                $item = [
+                    'Image 1' => $row['image1'],
+                    'Image 2' => $row['image2'],
+                    'Image 3' => $row['image3'],
+                    'Image 4' => $row['image4'],
+                    'Title' => $row['title'],
+                    'Category' => $row['category'],
+                    'sub category' => $row['sub_category'],
+                    'product category' => $row['product_category'],
+                    'SKU' => $row['sku'],
+                    'Description' => $row['description'],
+                    'Specification' => $row['specs'],
+                    'Color' => $row['color'],
+                    'Size' => $row['size'],
+                    'Weight' => $row['weight'],
+                    'Dimensions' => $row['dimension'],
+                    'Brand Name' => $row['brand_name'],
+                    'Stock' => $row['stock'],
+                    'Price' => $row['price'],
+                    'Special Price'  => $row['special_price'],
+                    'Warranty'  => $row['warranty'],
+                    'Exchange'  => $row['exchange'],
+                ];
+                array_push($batch, $item);
+            }
+            // \ map items fields
+            $processBatchRes = ProductController::processBatch($batch, $brandIdsNames);
+            $msg = 'success';
+        } else {
+            $res = false;
+            $msg = 'nothing to process';
+        }
+
+        $conn->close();
+        $response = json_encode([
+            'res' => $res,
+            'sql' => $sql,
+            'msg' => $msg,
+            'batchRes' => $processBatchRes,
+        ]);
+        print_r($response);
+        return $this->response;
+    }
+
+    public function deleteDeletedItemsAction()
+    {
+        $itemMySqlExtDAO = new ItemMySqlExtDAO();
+
+        $supplierId = $_SESSION['user']->id;
+        $conn = ConnectionFactory::getConnection();
+        // New Sku List
+        $sql = "select sku from items_temp where supplier_id = 44";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            $newItemsSKUList = [];
+            while ($row = $result->fetch_assoc()) {
+                array_push($newItemsSKUList, $row['sku']);
+            }
+        }
+
+        // Old SKU List
+        $oldItems = $itemMySqlExtDAO->queryBySupplierId($supplierId);
+        $oldItemsSKUList = array_map(function ($e) {
+            return $e->sku;
+        }, $oldItems);
+        $conn->close();
+        $toBeDeleted = array_diff($oldItemsSKUList, $newItemsSKUList);
+
+        $deletedItems = 0;
+        if (count($toBeDeleted) > 0) {
+            foreach ($toBeDeleted as $del) {
+                $delete = ProductController::deleteItemBySku($del);
+                if ($delete) {
+                    $deletedItems++;
+                }
+            }
+        }
+        $response = json_encode([
+            'deletedCount' => $deletedItems,
+            'deletedItems' => $toBeDeleted,
+        ]);
+        print_r($response);
+        return $this->response;
+    }
+
+    public function cleanTempTableAction(){
+
+        $supplierId = $_SESSION['user']->id;
+        $conn = ConnectionFactory::getConnection();
+      
+        $sql = "DELETE FROM items_temp where `processed` = 1 AND supplier_id = $supplierId";
+        $result = $conn->query($sql);
+        $msg = $result ? 'cleaned up' : 'not cleaned up';
+       
+        $conn->close();
+        $response = json_encode([
+            'res' => $result,
             'msg' => $msg,
         ]);
         print_r($response);
