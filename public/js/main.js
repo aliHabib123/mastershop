@@ -812,14 +812,16 @@ function checkTempTable() {
     data: {},
     beforeSend: function () {},
     success: function (response) {
+      $(".page-loader").hide();
       console.log(response);
       if (response.res == true) {
-        $(".page-loader").hide();
-        $(".notice-area").html("importing your file, please wait.<i class='fas fa-spinner fa-spin'></i>");
+        $(".notice-area").html("importing your file, please wait. <i class='fas fa-spinner fa-spin'></i>");
         insertItemsBatches();
       }
     },
-    error: function () {},
+    error: function () {
+      $(".page-loader").hide();
+    },
   });
 }
 function insertItemsBatches() {
@@ -829,14 +831,14 @@ function insertItemsBatches() {
     dataType: "json",
     data: {},
     beforeSend: function () {
-      $(".notice-area").html("importing your file, please wait.<i class='fas fa-spinner fa-spin'></i>");
+      $(".notice-area").html("importing your file, please wait. <i class='fas fa-spinner fa-spin'></i>");
     },
     success: function (response) {
       console.log(response);
       if (response.res == true) {
         setTimeout(function () {
           insertItemsBatches();
-        }, 3000);
+        }, 1000);
       } else {
         deleteDeletedItems();
       }
@@ -851,7 +853,7 @@ function deleteDeletedItems() {
     dataType: "json",
     data: {},
     beforeSend: function () {
-      $(".notice-area").html("importing your file, please wait.<i class='fas fa-spinner fa-spin'></i>");
+      $(".notice-area").html("importing your file, please wait. <i class='fas fa-spinner fa-spin'></i>");
     },
     success: function (response) {
       console.log(response);
@@ -867,7 +869,7 @@ function cleanTempTable() {
     dataType: "json",
     data: {},
     beforeSend: function () {
-      $(".notice-area").html("importing your file, please wait.<i class='fas fa-spinner fa-spin'></i>");
+      $(".notice-area").html("importing your file, please wait. <i class='fas fa-spinner fa-spin'></i>");
     },
     success: function (response) {
       console.log(response);

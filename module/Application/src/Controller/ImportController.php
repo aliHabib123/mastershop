@@ -181,18 +181,24 @@ class ImportController extends AbstractActionController
         $result = true;
         $msg = "Initial";
         $upload = false;
+        $insertIntoTemp = false;
         // $missingSkusCount = 0;
         // $missingTitlesCount = 0;
         if ($_FILES['excel']['tmp_name']) {
-
-            $file = $_FILES['excel']['tmp_name'];
             $userfile_extn = explode(".", strtolower($_FILES['excel']['name']));
-            $target_dir = BASE_PATH . upload_file_dir;
-            $newName = HelperController::random(10) . '.' . $userfile_extn[1];
-            $target_file = $target_dir . $newName;
-            $upload = move_uploaded_file($file, $target_file);
-            if ($upload) {
-                $realPath = realpath($target_file);
+            //print_r($userfile_extn[1]);
+            if ($userfile_extn[1] == 'csv') {
+                $file = $_FILES['excel']['tmp_name'];
+                $target_dir = BASE_PATH . upload_file_dir;
+                $newName = HelperController::random(10) . '.' . $userfile_extn[1];
+                $target_file = $target_dir . $newName;
+                $upload = move_uploaded_file($file, $target_file);
+                if ($upload) {
+                    $realPath = realpath($target_file);
+                }
+            } else {
+                $result = false;
+                $msg = "please use .csv files only";
             }
         } else {
             $result = false;
@@ -225,7 +231,7 @@ class ImportController extends AbstractActionController
         $processBatchRes = false;
         $conn = ConnectionFactory::getConnection();
         $supplierId = $_SESSION['user']->id;
-        $sql = "SELECT * FROM items_temp WHERE supplier_id = $supplierId AND processed = 0 ORDER BY id ASC LIMIT 5 OFFSET 0";
+        $sql = "SELECT * FROM items_temp WHERE supplier_id = $supplierId AND processed = 0 ORDER BY id ASC LIMIT 7 OFFSET 0";
         $result = $conn->query($sql);
         $res = true;
         $batch = [];
@@ -276,7 +282,7 @@ class ImportController extends AbstractActionController
         $conn->close();
         $response = json_encode([
             'res' => $res,
-            'sql' => $sql,
+            //'sql' => $sql,
             'msg' => $msg,
             'batchRes' => $processBatchRes,
         ]);
@@ -325,15 +331,16 @@ class ImportController extends AbstractActionController
         return $this->response;
     }
 
-    public function cleanTempTableAction(){
+    public function cleanTempTableAction()
+    {
 
         $supplierId = $_SESSION['user']->id;
         $conn = ConnectionFactory::getConnection();
-      
+
         $sql = "DELETE FROM items_temp where `processed` = 1 AND supplier_id = $supplierId";
         $result = $conn->query($sql);
         $msg = $result ? 'cleaned up' : 'not cleaned up';
-       
+
         $conn->close();
         $response = json_encode([
             'res' => $result,

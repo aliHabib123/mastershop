@@ -143,23 +143,21 @@ class HelperController extends AbstractActionController
                 $file_name = $prefix . '_' . HelperController::random(10) . '.' . $ext;
             }
 
-            if (is_file(BASE_PATH . upload_image_dir . $file_name)) {
-                // Save file into file location
-                $save_file_loc = BASE_PATH . upload_image_dir . $file_name;
-                // Open file
-                $fp = fopen($save_file_loc, 'wb');
-                // It set an option for a cURL transfer
-                curl_setopt($ch, CURLOPT_FILE, $fp);
-                curl_setopt($ch, CURLOPT_HEADER, 0);
-                // Perform a cURL session
-                $res = curl_exec($ch);
-                // Closes a cURL session and frees all resources
-                curl_close($ch);
-                // Close file
-                fclose($fp);
-                if ($res) {
-                    $res = $file_name;
-                }
+            // Save file into file location
+            $save_file_loc = BASE_PATH . upload_image_dir . $file_name;
+            // Open file
+            $fp = fopen($save_file_loc, 'wb');
+            // It set an option for a cURL transfer
+            curl_setopt($ch, CURLOPT_FILE, $fp);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            // Perform a cURL session
+            $res = curl_exec($ch);
+            // Closes a cURL session and frees all resources
+            curl_close($ch);
+            // Close file
+            fclose($fp);
+            if ($res) {
+                $res = $file_name;
             }
         }
         return $res;
