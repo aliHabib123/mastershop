@@ -16,10 +16,23 @@ use Application\Controller\HelperController;
         <div class="col-md-12">
             <div class="categories-slider-wrapper">
                 <div id="categories-slider">
-                    <?php foreach ($this->featuredCategories as $cat) { ?>
+                    <?php foreach ($this->featuredCategories as $cat) {
+                        $itemCategoryMySqlExtDAO =  new ItemCategoryMySqlExtDAO();
+                        if($cat->parentId == 0){
+                            $url = MAIN_URL . 'products/' . $cat->slug;
+                        } else {
+                            $parentCategory = $itemCategoryMySqlExtDAO->load($cat->parentId);
+                            if($parentCategory->parentId == 0){
+                                $url = MAIN_URL . 'products/' . $parentCategory->slug . '/' . $cat->slug;
+                            } else {
+                                $mainCategory = $itemCategoryMySqlExtDAO->load($parentCategory->parentId);
+                                $url = MAIN_URL . 'products/' . $mainCategory->slug .'/'. $parentCategory->slug . '/' . $cat->slug;
+                            }
+                        }
+                    ?>
                         <div>
-                            <div class="cat-img hover08"><a href="<?php echo MAIN_URL . 'products/' . $cat->slug; ?>"><img src="<?php echo HelperController::getImageUrl($cat->image); ?>" /></a></div>
-                            <div class="cat-title"><a href="<?php echo MAIN_URL . 'products/' . $cat->slug; ?>"><?php echo $cat->name; ?></a></div>
+                            <div class="cat-img hover08"><a href="<?php echo $url; ?>"><img src="<?php echo HelperController::getImageUrl($cat->image); ?>" /></a></div>
+                            <div class="cat-title"><a href="<?php echo $url; ?>"><?php echo $cat->name; ?></a></div>
                         </div>
                     <?php } ?>
                 </div>
@@ -54,7 +67,7 @@ use Application\Controller\HelperController;
                         } ?>
                     </div>
                     <div class="special-tags-slider" id="special-tags-slider-picked-for-you">
-                    <?php foreach ($this->pickedForYou as $row) {
+                        <?php foreach ($this->pickedForYou as $row) {
                             echo '<div>';
                             echo DesignController::item($row);
                             echo '</div>';

@@ -15,6 +15,7 @@
 	$tel1 = ($action == 'edit') ? $userInfo->tel1 : "";
 	$tel2 = ($action == 'edit') ? $userInfo->tel2 : "";
 	$commission = ($action == 'edit') ? $userInfo->companyCommission : "";
+	$usd_exchange_rate = ($action == 'edit') ? $userInfo->usdExchangeRate : "";
 	$active = ($action == 'edit') ? $userInfo->status : 'inactive';
 ?>
 
@@ -80,6 +81,12 @@
 						<label class="col-md-3 control-label">Commission in %*</label>
 						<div class="col-md-3">
 							<input name="commission" type="number" class="form-control" id="commission" value="<?php echo $commission; ?>" placeholder="Enter Commission in %">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label">USD Exchange Rate*</label>
+						<div class="col-md-3">
+							<input name="usd_exchange_rate" type="number" class="form-control" id="usd_exchange_rate" value="<?php echo $usd_exchange_rate; ?>" placeholder="Enter USD exchange rate">
 						</div>
 					</div>
 					<div class="form-group">
