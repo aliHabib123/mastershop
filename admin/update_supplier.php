@@ -30,8 +30,9 @@ $user->tel1 = $tel1;
 $user->tel2 = $tel2;
 $user->companyCommission = $commission;
 $user->status = $status;
+$user->usdExchangeRate = $usd_exchange_rate;
 
-if ($company_name == "" || $commission == "" || $first_name == "" || $last_name == "" || $email == "") {
+if ($company_name == "" || $commission == "" || $first_name == "" || $last_name == "" || $email == ""|| $usd_exchange_rate == "") {
     $msg = "Please fill all required fields marked with *";
 } elseif (
     ($action == 'new' && $userMysqlExtDAO->queryByEmail($email)) ||
