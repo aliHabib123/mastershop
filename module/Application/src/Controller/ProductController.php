@@ -470,6 +470,72 @@ class ProductController extends AbstractActionController
         return $response;
     }
 
+    public static function insertBulkItems($items)
+    {
+        $conn = ConnectionFactory::getConnection();
+        $supplierId = $_SESSION['user']->id;
+        $data = [];
+        foreach ($items as $row) {
+            $image1 = isset($row['Image 1']) ? mysqli_real_escape_string($conn, $row['Image 1']) : '';
+            $image2 = isset($row['Image 2']) ? mysqli_real_escape_string($conn, $row['Image 2']) : '';
+            $image3 = isset($row['Image 3']) ? mysqli_real_escape_string($conn, $row['Image 3']) : '';
+            $image4 = isset($row['Image 4']) ? mysqli_real_escape_string($conn, $row['Image 4']) : '';
+            $title = isset($row['Title']) ? $row['Title'] : '';
+            $category = isset($row['Category']) ? $row['Category'] : '';
+            $subCategory = isset($row['sub category']) ? $row['sub category'] : '';
+            $productCategory = isset($row['product category']) ? $row['product category'] : '';
+            $sku = isset($row['SKU']) ? mysqli_real_escape_string($conn, $row['SKU']) : '';
+            $description = isset($row['Description']) ? $row['Description'] : '';
+            $specs = isset($row['Specification']) ? $row['Specification'] : '';
+            $color = isset($row['Color']) ? $row['Color'] : '';
+            $size = isset($row['Size']) ? $row['Size'] : '';
+            $weight = isset($row['Weight']) ? $row['Weight'] : '';
+            $dimensions = isset($row['Dimensions']) ? $row['Dimensions'] : '';
+            $brandName = isset($row['Brand Name']) ? $row['Brand Name'] : '';
+            $stock = isset($row['Stock']) ? $row['Stock'] : '';
+            $price = isset($row['Price']) ? $row['Price'] : '';
+            $specialPrice = isset($row['Special Price']) ? $row['Special Price'] : '';
+            $warranty = isset($row['Warranty']) ? $row['Warranty'] : '';
+            $exchange = isset($row['Exchange']) ? $row['Exchange'] : '';
+            $title_ar = isset($row['title_ar']) ? $row['title_ar'] : '';
+            $description_ar = isset($row['description_ar']) ? $row['description_ar'] : '';
+            $specs_ar = isset($row['specs_ar']) ? $row['specs_ar'] : '';
+            $color_ar = isset($row['color_ar']) ? $row['color_ar'] : '';
+            $size_ar = isset($row['size_ar']) ? $row['size_ar'] : '';
+            $dimensions_ar = isset($row['dimensions_ar']) ? $row['dimensions_ar'] : '';
+            $warranty_ar = isset($row['warranty_ar']) ? $row['warranty_ar'] : '';
+            $exchange_ar = isset($row['exchange_ar']) ? $row['exchange_ar'] : '';
+            $processed = 0;
+
+            $data[] = "('$image1', '$image2', '$image3', '$image4', '$title', '$category',
+                        '$subCategory', '$productCategory', '$sku',
+                        '$description', '$specs', '$color', '$size', '$weight', '$dimensions', '$brandName',
+                        '$stock', '$price', '$specialPrice', '$warranty', '$exchange',
+                        '$title_ar', '$description_ar', '$specs_ar',
+                        '$color_ar', '$size_ar', '$dimensions_ar', '$warranty_ar', '$exchange_ar', $supplierId, $processed)";
+        }
+        $sql  = "INSERT INTO items_temp (`image1`, `image2`, `image3`, `image4`, `title`, `category`,
+        `sub_category`, `product_category`, `sku`,
+        `description`, `specs`, `color`, `size`, `weight`, `dimension`, `brand_name`,
+        `stock`, `price`, `special_price`, `warranty`, `exchange`,
+        `title_ar`, `description_ar`, `specs_ar`,
+        `color_ar`, `size_ar`, `dimensions_ar`, `warranty_ar`, `exchange_ar`, `supplier_id`, `processed`) VALUES " . implode(',', $data);
+        // /echo $sql;
+        if (!$conn->query($sql)) {
+            $res = false;
+            $msg = $conn->error;
+        } else {
+            $res = true;
+            $msg = 'imported';
+        }
+
+        $conn->close();
+        $cls = new stdClass();
+        $cls->res = $res;
+        $cls->msg = $msg;
+        return $cls;
+    }
+
     public static function processBatch($items, $brandIdsNames = [])
     {
         $supplierId = $_SESSION['user']->id;
@@ -565,7 +631,7 @@ class ProductController extends AbstractActionController
                 $itemObj->createdAt = $date;
                 $insert = $itemMySqlExtDAO->insert($itemObj);
                 if ($insert) {
-                    $insertedItems ++;
+                    $insertedItems++;
                     if ($categoryId) {
                         $itemCategoryMappingMySqlExtDAO->insertItemCategory($insert, $categoryId);
                     }
@@ -574,10 +640,10 @@ class ProductController extends AbstractActionController
                     }
                 }
             }
-            if($update || $insert){
+            if ($update || $insert) {
                 //echo 'update or insert<br>';
                 $conn =  ConnectionFactory::getConnection();
-                $sql = "UPDATE items_temp set processed = 1 where supplier_id = $supplierId AND sku = '".$row['SKU']."'";
+                $sql = "UPDATE items_temp set processed = 1 where supplier_id = $supplierId AND sku = '" . $row['SKU'] . "'";
                 if (!$conn->query($sql)) {
                     $msg = $conn->error;
                     //echo $msg;
@@ -761,7 +827,7 @@ class ProductController extends AbstractActionController
             echo ("Error description: " . $conn->error);
             $res = false;
             $msg = $conn->error;
-        } else{
+        } else {
             $res = true;
             $msg = 'imported';
         }
