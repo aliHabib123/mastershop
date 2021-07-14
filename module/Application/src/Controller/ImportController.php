@@ -178,7 +178,7 @@ class ImportController extends AbstractActionController
 
     public function submitImportAction()
     {
-        if (USE_NEW_IMPORT_MECHANISM) {
+        if (USE_LOAD_DATA_INFILE) {
             $result = true;
             $msg = "Initial";
             $upload = false;
@@ -356,20 +356,15 @@ class ImportController extends AbstractActionController
             //print_r(${'List'});
             // insert rows into database
             if ($result) {
-                $insert = ProductController::insertItems(${'List'}, $newName);
-                $result = true;
-                $msg = "Your file has been imported successfully";
-                if ($insert->inserted == 0 && $insert->updated == 0 && $insert->deleted == 0) {
-                    $msg = "Nothing updated/deleted";
-                }
+                $insert = ProductController::insertBulkItems(${'List'});
+                $result = $insert->res;
+                $msg = $insert->msg;
             }
 
             $response = json_encode([
-                'inserted' => $insert->inserted,
-                'updated' => $insert->updated,
-                'deleted' => $insert->deleted,
                 'status' => $result,
                 'msg' => $msg,
+                'imported' => $insert,
             ]);
             print_r($response);
             return $this->response;
