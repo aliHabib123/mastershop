@@ -485,8 +485,8 @@ class ProductController extends AbstractActionController
             $subCategory = isset($row['sub category']) ? $row['sub category'] : '';
             $productCategory = isset($row['product category']) ? $row['product category'] : '';
             $sku = isset($row['SKU']) ? mysqli_real_escape_string($conn, $row['SKU']) : '';
-            $description = isset($row['Description']) ? $row['Description'] : '';
-            $specs = isset($row['Specification']) ? $row['Specification'] : '';
+            $description = isset($row['Description']) ?  mysqli_real_escape_string($conn, $row['Description']) : '';
+            $specs = isset($row['Specification']) ?  mysqli_real_escape_string($conn, $row['Specification']) : '';
             $color = isset($row['Color']) ? $row['Color'] : '';
             $size = isset($row['Size']) ? $row['Size'] : '';
             $weight = isset($row['Weight']) ? $row['Weight'] : '';
