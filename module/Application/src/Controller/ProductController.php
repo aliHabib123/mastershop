@@ -480,7 +480,7 @@ class ProductController extends AbstractActionController
             $image2 = isset($row['Image 2']) ? mysqli_real_escape_string($conn, $row['Image 2']) : '';
             $image3 = isset($row['Image 3']) ? mysqli_real_escape_string($conn, $row['Image 3']) : '';
             $image4 = isset($row['Image 4']) ? mysqli_real_escape_string($conn, $row['Image 4']) : '';
-            $title = isset($row['Title']) ? $row['Title'] : '';
+            $title = isset($row['Title']) ? mysqli_real_escape_string($conn, $row['Title']) : '';
             $category = isset($row['Category']) ? $row['Category'] : '';
             $subCategory = isset($row['sub category']) ? $row['sub category'] : '';
             $productCategory = isset($row['product category']) ? $row['product category'] : '';
@@ -520,10 +520,10 @@ class ProductController extends AbstractActionController
         `stock`, `price`, `special_price`, `warranty`, `exchange`,
         `title_ar`, `description_ar`, `specs_ar`,
         `color_ar`, `size_ar`, `dimensions_ar`, `warranty_ar`, `exchange_ar`, `supplier_id`, `processed`) VALUES " . implode(',', $data);
-        // /echo $sql;
         if (!$conn->query($sql)) {
             $res = false;
             $msg = $conn->error;
+            error_log($msg);
         } else {
             $res = true;
             $msg = 'imported';
