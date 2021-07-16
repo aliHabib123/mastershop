@@ -476,15 +476,15 @@ class ProductController extends AbstractActionController
         $supplierId = $_SESSION['user']->id;
         $data = [];
         foreach ($items as $row) {
-            $image1 = isset($row['Image 1']) ? mysqli_real_escape_string($conn, $row['Image 1']) : '';
-            $image2 = isset($row['Image 2']) ? mysqli_real_escape_string($conn, $row['Image 2']) : '';
-            $image3 = isset($row['Image 3']) ? mysqli_real_escape_string($conn, $row['Image 3']) : '';
-            $image4 = isset($row['Image 4']) ? mysqli_real_escape_string($conn, $row['Image 4']) : '';
+            $image1 = isset($row['Image 1']) ? mysqli_real_escape_string($conn, strval($row['Image 1'])) : '';
+            $image2 = isset($row['Image 2']) ? mysqli_real_escape_string($conn, strval($row['Image 2'])) : '';
+            $image3 = isset($row['Image 3']) ? mysqli_real_escape_string($conn, strval($row['Image 3'])) : '';
+            $image4 = isset($row['Image 4']) ? mysqli_real_escape_string($conn, strval($row['Image 4'])) : '';
             $title = isset($row['Title']) ? mysqli_real_escape_string($conn, $row['Title']) : '';
             $category = isset($row['Category']) ? $row['Category'] : '';
             $subCategory = isset($row['sub category']) ? $row['sub category'] : '';
             $productCategory = isset($row['product category']) ? $row['product category'] : '';
-            $sku = isset($row['SKU']) ? mysqli_real_escape_string($conn, $row['SKU']) : '';
+            $sku = isset($row['SKU']) ? mysqli_real_escape_string($conn, strval($row['SKU'])) : '';
             $description = isset($row['Description']) ?  mysqli_real_escape_string($conn, $row['Description']) : '';
             $specs = isset($row['Specification']) ?  mysqli_real_escape_string($conn, $row['Specification']) : '';
             $color = isset($row['Color']) ? $row['Color'] : '';
