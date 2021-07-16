@@ -450,10 +450,10 @@ class ImportController extends AbstractActionController
         $supplierId = $_SESSION['user']->id;
         $conn = ConnectionFactory::getConnection();
         // New Sku List
-        $sql = "select sku from items_temp where supplier_id = 44";
+        $sql = "select sku from items_temp where supplier_id = $supplierId";
         $result = $conn->query($sql);
+        $newItemsSKUList = [];
         if ($result->num_rows > 0) {
-            $newItemsSKUList = [];
             while ($row = $result->fetch_assoc()) {
                 array_push($newItemsSKUList, $row['sku']);
             }
