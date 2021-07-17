@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Application\Controller;
 
+use Attachment;
+use AttachmentMySqlExtDAO;
 use Laminas\Filter\HtmlEntities;
 use Laminas\Filter\StringTrim;
 use Laminas\Filter\StripTags;
@@ -146,21 +148,44 @@ class HelperController extends AbstractActionController
             // Save file into file location
             $save_file_loc = BASE_PATH . upload_image_dir . $file_name;
             // Open file
-            $fp = fopen($save_file_loc, 'wb');
+            $fp = @fopen($save_file_loc, 'wb');
             // It set an option for a cURL transfer
-            curl_setopt($ch, CURLOPT_FILE, $fp);
-            curl_setopt($ch, CURLOPT_HEADER, 0);
-            // Perform a cURL session
-            $res = curl_exec($ch);
-            // Closes a cURL session and frees all resources
-            curl_close($ch);
-            // Close file
-            fclose($fp);
-            if ($res) {
-                $res = $file_name;
+            if (file_exists($save_file_loc)) {
+                curl_setopt($ch, CURLOPT_FILE, $fp);
+                curl_setopt($ch, CURLOPT_HEADER, 0);
+                // Perform a cURL session
+                $res = curl_exec($ch);
+                // Closes a cURL session and frees all resources
+                curl_close($ch);
+                // Close file
+                fclose($fp);
+                if ($res) {
+                    $res = $file_name;
+                }
             }
         }
         return $res;
+    }
+
+    public static function getOrDownloadImage($url, $prefix = "")
+    {
+        $attachmentMySqlExtDAO = new AttachmentMySqlExtDAO();
+        $attachemntExists = $attachmentMySqlExtDAO->queryByUrl($url);
+        //error_log('result for: '. $url . ' ' . json_encode($attachemntExists[0]));
+        if ($attachemntExists && file_exists(BASE_PATH . upload_image_dir . $attachemntExists[0]->imageName)) {
+            //error_log($url . ' already exists. image name: '. $attachemntExists[0]->imageName);
+            return $attachemntExists[0]->imageName;
+        } else {
+            //error_log('downloading: ' . $url);
+            $imageName = self::downloadFile($url, $prefix);
+            if ($imageName) {
+                $attachmentObj = new Attachment();
+                $attachmentObj->url = $url;
+                $attachmentObj->imageName = $imageName;
+                $attachmentMySqlExtDAO->insert($attachmentObj);
+            }
+            return $imageName;
+        }
     }
 
     public static function deleteImage($imageName)

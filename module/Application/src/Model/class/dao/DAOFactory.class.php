@@ -13,6 +13,13 @@ class DAOFactory{
 	}
 
 	/**
+	 * @return AttachmentDAO
+	 */
+	public static function getAttachmentDAO(){
+		return new AttachmentMySqlExtDAO();
+	}
+
+	/**
 	 * @return BannerDAO
 	 */
 	public static function getBannerDAO(){
@@ -157,6 +164,13 @@ class DAOFactory{
 	 */
 	public static function getItemTagMappingDAO(){
 		return new ItemTagMappingMySqlExtDAO();
+	}
+
+	/**
+	 * @return ItemsTempDAO
+	 */
+	public static function getItemsTempDAO(){
+		return new ItemsTempMySqlExtDAO();
 	}
 
 	/**

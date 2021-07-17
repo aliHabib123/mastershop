@@ -13,6 +13,10 @@
 	require_once('class/dto/Album.class.php');
 	require_once('class/mysql/AlbumMySqlDAO.class.php');
 	require_once('class/mysql/ext/AlbumMySqlExtDAO.class.php');
+	require_once('class/dao/AttachmentDAO.class.php');
+	require_once('class/dto/Attachment.class.php');
+	require_once('class/mysql/AttachmentMySqlDAO.class.php');
+	require_once('class/mysql/ext/AttachmentMySqlExtDAO.class.php');
 	require_once('class/dao/BannerDAO.class.php');
 	require_once('class/dto/Banner.class.php');
 	require_once('class/mysql/BannerMySqlDAO.class.php');
@@ -97,6 +101,10 @@
 	require_once('class/dto/ItemTagMapping.class.php');
 	require_once('class/mysql/ItemTagMappingMySqlDAO.class.php');
 	require_once('class/mysql/ext/ItemTagMappingMySqlExtDAO.class.php');
+	require_once('class/dao/ItemsTempDAO.class.php');
+	require_once('class/dto/ItemsTemp.class.php');
+	require_once('class/mysql/ItemsTempMySqlDAO.class.php');
+	require_once('class/mysql/ext/ItemsTempMySqlExtDAO.class.php');
 	require_once('class/dao/LangDAO.class.php');
 	require_once('class/dto/Lang.class.php');
 	require_once('class/mysql/LangMySqlDAO.class.php');
