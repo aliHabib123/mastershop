@@ -10,13 +10,7 @@ $image = ($item->image != "" && $item->image != null) ? HelperController::getIma
 <div class="main-wrapper">
     <div class="small-banner-container with-breadcrumb">
         <div class="small-banner_img">
-            <img src="img/small-banner.jpg" />
-        </div>
-        <div class="small-banner-caption-container">
-            <div class="container">
-                <div class="banner-title">Electronics</div>
-                <div class="banner-brief">Shop the latest electronic products in the market</div>
-            </div>
+            <img src="<?php echo ProductController::getCategoryBanner(true, true, true, [$this->itemCategory], [$this->parentCategory], [$this->mainCategory]); ?>" />
         </div>
         <div class="banner-breadcrumb">
             <div class="container">
