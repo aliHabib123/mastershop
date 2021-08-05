@@ -75,12 +75,8 @@ $(function () {
   //   //let defaultId = $("#brands-li").find("ul li").first().attr("id");
   //   reloadBxSlider();
   // });
-  $("#brands-slider").bxSlider({
-    minSlides: 1,
-    maxSlides: 6,
-    adaptiveHeight: true,
-    slideWidth: "200px",
-    pager: false,
+  $(".brands-dropdown").mouseover(function () {
+    reloadBxSlider();
   });
   // $("body .brands-categories").on("click", "li", function (e) {
   //   e.preventDefault();
@@ -264,7 +260,7 @@ $(function () {
         console.log(response);
         showMsg(".notice-area", response.status, response.msg);
         if (response.status == true) {
-          if(useNewMechanism == 1){
+          if (useNewMechanism == 1) {
             insertItemsBatches();
           }
           //location.href = response.redirectUrl;
@@ -824,7 +820,9 @@ function checkTempTable() {
       $(".page-loader").hide();
       console.log(response);
       if (response.res == true) {
-        $(".notice-area").html("importing your file, please wait. <i class='fas fa-spinner fa-spin'></i>");
+        $(".notice-area").html(
+          "importing your file, please wait. <i class='fas fa-spinner fa-spin'></i>"
+        );
         insertItemsBatches();
       }
     },
@@ -840,7 +838,9 @@ function insertItemsBatches() {
     dataType: "json",
     data: {},
     beforeSend: function () {
-      $(".notice-area").html("importing your file, please wait. <i class='fas fa-spinner fa-spin'></i>");
+      $(".notice-area").html(
+        "importing your file, please wait. <i class='fas fa-spinner fa-spin'></i>"
+      );
     },
     success: function (response) {
       console.log(response);
@@ -862,7 +862,9 @@ function deleteDeletedItems() {
     dataType: "json",
     data: {},
     beforeSend: function () {
-      $(".notice-area").html("importing your file, please wait. <i class='fas fa-spinner fa-spin'></i>");
+      $(".notice-area").html(
+        "importing your file, please wait. <i class='fas fa-spinner fa-spin'></i>"
+      );
     },
     success: function (response) {
       console.log(response);
@@ -878,7 +880,9 @@ function cleanTempTable() {
     dataType: "json",
     data: {},
     beforeSend: function () {
-      $(".notice-area").html("importing your file, please wait. <i class='fas fa-spinner fa-spin'></i>");
+      $(".notice-area").html(
+        "importing your file, please wait. <i class='fas fa-spinner fa-spin'></i>"
+      );
     },
     success: function (response) {
       console.log(response);
