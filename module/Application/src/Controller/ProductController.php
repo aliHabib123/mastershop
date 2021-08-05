@@ -308,8 +308,8 @@ class ProductController extends AbstractActionController
             }
         }
         $itemTagMySqlExtDAO = new ItemTagMySqlExtDAO();
-        $tagInfo = $itemTagMySqlExtDAO->queryBySlug('promotions');
-        $tagId = $tagInfo[0]->id;
+        //$tagInfo = $itemTagMySqlExtDAO->queryBySlug('promotions');
+        $tagId = self::$PROMOTIONS;
         $items = self::getItems($categoryArray, "", "", "", "", $tagId, "", $limit, $offset);
         $itemsCount = count(self::getItems($categoryArray, "", "", "", "", $tagId));
         $totalPages = ceil($itemsCount / $limit);
