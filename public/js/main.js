@@ -71,9 +71,16 @@ $(function () {
   }
 
   let slider;
-  $("#brands-li").on("shown.bs.dropdown", function () {
-    //let defaultId = $("#brands-li").find("ul li").first().attr("id");
-    reloadBxSlider();
+  // $("#brands-li").on("shown.bs.dropdown", function () {
+  //   //let defaultId = $("#brands-li").find("ul li").first().attr("id");
+  //   reloadBxSlider();
+  // });
+  $("#brands-slider").bxSlider({
+    minSlides: 1,
+    maxSlides: 6,
+    adaptiveHeight: true,
+    slideWidth: "200px",
+    pager: false,
   });
   // $("body .brands-categories").on("click", "li", function (e) {
   //   e.preventDefault();

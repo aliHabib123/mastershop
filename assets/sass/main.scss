@@ -675,8 +675,11 @@ a.disabled {
   outline: 0;
   box-shadow: none;
 }
-.dropdown.category-dropdown:hover > .dropdown-menu {
-  display: block;
+.dropdown.category-dropdown:hover,
+.dropdown.brands-dropdown:hover {
+  > .dropdown-menu {
+    display: block;
+  }
 }
 
 .dropdown.category-dropdown > .dropdown-toggle:active {

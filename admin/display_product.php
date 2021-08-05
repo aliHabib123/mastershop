@@ -6,7 +6,7 @@ function main()
 	global $currentPageUrl;
 	$currentPageUrl = ADMIN_LINK . 'display_product.php';
 
-	$limit = 25;
+	$limit = 10;
 	$offset = 0;
 	$orderBy = "desc";
 	$fieldName = "a.`id`";
