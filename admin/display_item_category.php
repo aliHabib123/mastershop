@@ -3,7 +3,7 @@ function main()
 {
     $itemCategoryMySqlExtDAO = new ItemcategoryMySqlExtDAO();
     $orderBy = "desc";
-    $fieldName = "id";
+    $fieldName = "a.`id`";
     if (isset($_REQUEST["orderBy"])) {
         $orderBy = $_REQUEST["orderBy"];
         $fieldName = $_REQUEST["fieldName"];
@@ -11,7 +11,7 @@ function main()
     $condition = "";
     if (isset($_REQUEST["keywords"]) && !empty($_REQUEST["keywords"])) {
         $keywords = trim($_REQUEST["keywords"]);
-        $condition .= " name like '%$keywords%' and ";
+        $condition .= " a.`name` like '%$keywords%' and ";
     }
 
     $subIdSet = false;
@@ -20,16 +20,17 @@ function main()
         $id = trim($_REQUEST["id"]);
         if (isset($_REQUEST["subId"]) && !empty($_REQUEST["subId"])) {
             $subId = trim($_REQUEST["subId"]);
-            $condition .= " parent_id = '$subId' and ";
+            $condition .= " a.`parent_id` = '$subId' and ";
             $subIdSet = true;
         } else {
-            $condition .= " parent_id = '$id' and ";
+            $condition .= " a.`parent_id` = '$id' and ";
         }
         $idIsSet = true;
     } else {
-        $condition .= " parent_id = '0' and ";
+        $condition .= " a.`parent_id` = '0' and ";
     }
 
+	$condition .= " a.`lang_id` = 1 AND ";
 
     $condition .= " 1 order by $fieldName $orderBy ";
 
@@ -59,11 +60,12 @@ function main()
 					<div id="sample_2_column_toggler" class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
 						<label><input type="checkbox" checked data-column="0">ID</label>
 						<label><input type="checkbox" checked data-column="<?php echo "1"; ?>"><?php echo "Name"; ?></label>
-						<label><input type="checkbox" checked data-column="<?php echo "2"; ?>"><?php echo "Image"; ?></label>
-						<label><input type="checkbox" checked data-column="<?php echo "3"; ?>"><?php echo "Parent"; ?></label>
-						<label><input type="checkbox" checked data-column="<?php echo "4"; ?>"><?php echo "Display Order"; ?></label>
-						<label><input type="checkbox" checked data-column="<?php echo "5"; ?>"><?php echo "Active"; ?></label>
-						<label><input type="checkbox" checked data-column="<?php echo "6"; ?>"><?php echo "Featured"; ?></label>
+						<label><input type="checkbox" checked data-column="<?php echo "2"; ?>"><?php echo "Arabic Name"; ?></label>
+						<label><input type="checkbox" checked data-column="<?php echo "3"; ?>"><?php echo "Image"; ?></label>
+						<label><input type="checkbox" checked data-column="<?php echo "4"; ?>"><?php echo "Parent"; ?></label>
+						<label><input type="checkbox" checked data-column="<?php echo "5"; ?>"><?php echo "Display Order"; ?></label>
+						<label><input type="checkbox" checked data-column="<?php echo "6"; ?>"><?php echo "Active"; ?></label>
+						<label><input type="checkbox" checked data-column="<?php echo "7"; ?>"><?php echo "Featured"; ?></label>
 					</div>
 				</div>
 				<div class="btn-group">
@@ -87,11 +89,13 @@ function main()
 					<tr>
 						<th>ID</th>
 						<th><?php echo "Name"; ?></th>
+						<th><?php echo "Arabic Name"; ?></th>
 						<th><?php echo "Image"; ?></th>
 						<th><?php echo "Parent"; ?></th>
 						<th><?php echo "Display Order"; ?></th>
 						<th><?php echo "Active"; ?></th>
 						<th><?php echo "Featured"; ?></th>
+						<th></th>
 						<th></th>
 						<th></th>
 						<?php if (!$subIdSet) {?>
@@ -108,6 +112,7 @@ function main()
 							<!-- primary key -->
 							<td><?php echo $row->id; ?></td>
 							<td><?php echo $row->name ?></td>
+							<td><?php echo $row->arabicName ?></td>
 							<td align="center">
 								<?php if ($row->image) { ?>
 									<img style="max-height: 70px;" src="<?php echo IMAGES_LINK . $row->image ?>" />
@@ -123,6 +128,12 @@ function main()
 							<td>
 								<a class="btn btn-xs yellow" href="edit_item_category.php?id=<?php echo $row->id; ?>">
 									Edit
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+							<td>
+								<a class="btn btn-xs yellow" href="translate_item_category.php?id=<?php echo $row->id; ?>">
+									Edit Translation
 									<i class="fa fa-edit"></i>
 								</a>
 							</td>

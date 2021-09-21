@@ -21,7 +21,7 @@ if ($slug != $newSlug) {
     }
 }
 $active = radio_button($active);
-$isFeatured=radio_button($is_featured);
+$isFeatured = radio_button($is_featured);
 
 if ($_FILES['image']['size'] > 0) {
     $newImage = upload_image("image", $imagesPath);
@@ -65,7 +65,11 @@ $obj->parentId = $parent_id;
 $obj->displayOrder = $display_order;
 $obj->megaMenuDisplayOrder = $mega_menu_display_order;
 $obj->isFeatured = $isFeatured;
-$obj->slug = $newSlug;
+if ($lang_id == 1) {
+    $obj->slug = $newSlug;
+}
+$obj->langId = $lang_id;
+$obj->translationId = $translation_id;
 
 $update = $itemCategoryMysqlExtDAO->update($obj);
 

@@ -4,6 +4,7 @@
  * @var Laminas\View\Renderer\PhpRenderer $this
  */
 
+use Application\Controller\CategoryController;
 use Application\Controller\DesignController;
 use Application\Controller\HelperController;
 
@@ -11,28 +12,28 @@ use Application\Controller\HelperController;
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <?php echo DesignController::mainTitle('SHOP BY CATEGORIES') ?>
+            <?php echo DesignController::mainTitle(_t('shopByCategories')) ?>
         </div>
         <div class="col-md-12">
             <div class="categories-slider-wrapper">
                 <div id="categories-slider">
                     <?php foreach ($this->featuredCategories as $cat) {
                         $itemCategoryMySqlExtDAO =  new ItemCategoryMySqlExtDAO();
-                        if($cat->parentId == 0){
-                            $url = MAIN_URL . 'products/' . $cat->slug;
+                        if ($cat->parentId == 0) {
+                            $url = MAIN_URL . $this->lang . '/products/' . $cat->slug;
                         } else {
                             $parentCategory = $itemCategoryMySqlExtDAO->load($cat->parentId);
-                            if($parentCategory->parentId == 0){
-                                $url = MAIN_URL . 'products/' . $parentCategory->slug . '/' . $cat->slug;
+                            if ($parentCategory->parentId == 0) {
+                                $url = MAIN_URL . $this->lang . '/products/' . $parentCategory->slug . '/' . $cat->slug;
                             } else {
                                 $mainCategory = $itemCategoryMySqlExtDAO->load($parentCategory->parentId);
-                                $url = MAIN_URL . 'products/' . $mainCategory->slug .'/'. $parentCategory->slug . '/' . $cat->slug;
+                                $url = MAIN_URL . $this->lang . '/products/' . $mainCategory->slug . '/' . $parentCategory->slug . '/' . $cat->slug;
                             }
                         }
-                    ?>
+                        $categoryName = CategoryController::categoryName($cat->name, $cat->arabicName); ?>
                         <div>
                             <div class="cat-img hover08"><a href="<?php echo $url; ?>"><img src="<?php echo HelperController::getImageUrl($cat->image); ?>" /></a></div>
-                            <div class="cat-title"><a href="<?php echo $url; ?>"><?php echo $cat->name; ?></a></div>
+                            <div class="cat-title"><a href="<?php echo $url; ?>"><?php echo $categoryName; ?></a></div>
                         </div>
                     <?php } ?>
                 </div>
@@ -46,9 +47,9 @@ use Application\Controller\HelperController;
             <div class="col-md-12">
                 <div class="special-tags">
                     <ul>
-                        <li class="active" id="daily-deals"><a href="#">TODAYS DEALS</a></li>
-                        <li id="picked-for-you"><a href="#">PICKED FOR YOU</a></li>
-                        <li id="best-offers"><a href="#">BEST OFFERS</a></li>
+                        <li class="active" id="daily-deals"><a href="#"><?php echo strtoupper(_t('todaysDeals')); ?></a></li>
+                        <li id="picked-for-you"><a href="#"><?php echo strtoupper(_t('pickedForYou')) ?></a></li>
+                        <li id="best-offers"><a href="#"><?php echo strtoupper(_t('bestOffers')) ?></a></li>
                     </ul>
                 </div>
                 <div class="special-tags-slider-container">

@@ -7,7 +7,7 @@ use Application\Controller\HelperController;
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <?php echo DesignController::mainTitle('CAREERS'); ?>
+                <?php echo DesignController::mainTitle(strtoupper(_t('careers'))); ?>
             </div>
         </div>
     </div>
@@ -15,9 +15,9 @@ use Application\Controller\HelperController;
         <div class="row careers-header">
             <div class="col-lg-10 mx-auto mb-4">
                 <div class="section-title text-center ">
-                    <h3 class="top-c-sep">Grow your career with us</h3>
-                    <p>Lorem ipsum dolor sit detudzdae amet, rcquisc adipiscing elit. Aenean socada commodo
-                        ligaui egets dolor. Nullam quis ante tiam sit ame orci eget erovtiu faucid.</p>
+                    <h3 class="top-c-sep"><?php echo _t('growYourCareer')?></h3>
+                    <!-- <p>Lorem ipsum dolor sit detudzdae amet, rcquisc adipiscing elit. Aenean socada commodo
+                        ligaui egets dolor. Nullam quis ante tiam sit ame orci eget erovtiu faucid.</p> -->
                 </div>
             </div>
         </div>

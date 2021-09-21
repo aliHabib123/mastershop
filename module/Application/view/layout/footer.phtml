@@ -1,7 +1,11 @@
-<?php 
+<?php
+
+use Application\Controller\LanguageController;
+
 $contentMySqlExtDAO = new ContentMySqlExtDAO();
 $facebook = $contentMySqlExtDAO->queryBySlug('facebook')[0];
 $instagram = $contentMySqlExtDAO->queryBySlug('instagram')[0];
+$lang = LanguageController::getLanguage();
 ?>
 <footer>
     <div class="container">
@@ -14,50 +18,55 @@ $instagram = $contentMySqlExtDAO->queryBySlug('instagram')[0];
                                 <img src="img/logo.png?v=1.0.0" />
                             </div>
                             <div class="social-media">
-                                <a href="<?php echo $facebook->customUrl;?>" target="_blank"><img src="img/fb.png" /></a>
-                                <a href="<?php echo $instagram->customUrl;?>" target="_blank"><img src="img/insta.png" /></a>
+                                <a href="<?php echo $facebook->customUrl; ?>" target="_blank"><img src="img/fb.png" /></a>
+                                <a href="<?php echo $instagram->customUrl; ?>" target="_blank"><img src="img/insta.png" /></a>
                                 <!-- <a href="https://twitter.com" target="_blank"><img src="img/twitter.png" /></a> -->
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 col-6 footer-menu">
-                        <div class="footer-menu_title">we are...</div>
+                        <div class="footer-menu_title"><?php echo _t('weAre...');?></div>
                         <ul>
-                            <li><a href="<?php echo MAIN_URL . 'page/about-us' ?>">About us</a></li>
-                            <li><a href="<?php echo MAIN_URL . 'careers'?>">Careers</a></li>
-                            <li><a href="<?php echo MAIN_URL . 'contact-us'?>">Contact us</a></li>
-                            <li><a href="<?php echo MAIN_URL . 'page/terms-conditions' ?>">Terms & conditions</a></li>
-                            <li><a href="<?php echo MAIN_URL . 'page/frequently-asked-questions' ?>">FAQ's</a></li>
+                            <li><a href="<?php echo MAIN_URL . $lang. '/page/about-us' ?>"><?php echo _t('aboutUs');?></a></li>
+                            <li><a href="<?php echo MAIN_URL . $lang . '/careers' ?>"><?php echo _t('careers');?></a></li>
+                            <li><a href="<?php echo MAIN_URL . $lang . '/contact-us' ?>"><?php echo _t('contactUs');?></a></li>
+                            <li><a href="<?php echo MAIN_URL . $lang . '/page/terms-conditions' ?>"><?php echo _t('termsAndConditions');?></a></li>
+                            <li><a href="<?php echo MAIN_URL . $lang . '/page/frequently-asked-questions' ?>"><?php echo _t('faqs');?></a></li>
                         </ul>
                     </div>
                     <div class="col-md-3 col-6 footer-menu">
-                        <div class="footer-menu_title">more about us...</div>
+                        <div class="footer-menu_title"><?php echo _t('moreAboutUs...');?></div>
                         <ul>
-                            <!-- <li><a href="javascript:void(0);">News/Events</a></li> -->
-                            <li><a href="<?php echo MAIN_URL . 'promotions' ?>">Promotions</a></li>
-                            <li><a href="<?php echo MAIN_URL . 'latest-arrivals' ?>">Latest Arrivals</a></li>
+                            <!-- <li style="display: none;"><a href="javascript:void(0);">News/Events</a></li> -->
+                            <li><a href="<?php echo MAIN_URL . $lang . '/promotions' ?>"><?php echo _t('promotions');?></a></li>
+                            <li><a href="<?php echo MAIN_URL . $lang . '/latest-arrivals' ?>"><?php echo _t('latestProducts');?></a></li>
                         </ul>
                     </div>
                     <div class="col-md-3 footer-menu">
-                        <div class="footer-menu_title">my account...</div>
+                        <div class="footer-menu_title"><?php echo _t('myAccount...');?></div>
                         <ul>
-                            <li><a href="javascript:void(0);" data-toggle="modal" data-target="#login-modal">Sign In</a></li>
-                            <li><a href="<?php echo MAIN_URL . 'my-cart'; ?>">My Cart</a></li>
-                            <li><a href="<?php echo MAIN_URL . 'my-wishlist'; ?>">My Wishlist</a></li>
-                            <li><a href="<?php echo MAIN_URL . 'page/return-policy'; ?>">Return Policy</a></li>
-                            <li><a href="<?php echo MAIN_URL . 'page/warranty'; ?>">Warranty</a></li>
-                            <li><a href="<?php echo MAIN_URL . 'vendor-login'; ?>">Vendor Area</a></li>
+                            <li><a href="javascript:void(0);" data-toggle="modal" data-target="#login-modal"><?php echo _t('signin');?></a></li>
+                            <li><a href="<?php echo MAIN_URL . 'my-cart'; ?>"><?php _t('myCart');?></a></li>
+                            <li><a href="<?php echo MAIN_URL . $lang . '/my-wishlist'; ?>"><?php echo _t('myWishlist');?></a></li>
+                            <li><a href="<?php echo MAIN_URL . $lang. '/page/return-policy'; ?>"><?php echo _t('returnPolicy');?></a></li>
+                            <li><a href="<?php echo MAIN_URL . $lang .'/page/warranty'; ?>"><?php echo _t('warranty');?></a></li>
+                            <li><a href="<?php echo MAIN_URL . 'vendor-login'; ?>"><?php echo _t('vendorArea');?></a></li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="col-md-12 footer2">
-                <p>Mastershop &copy; <?= date('Y') ?> All rights reserved, powered by <a href="http://thirteencube.com" target="_blank">Thirteencube</a></p>
+                <?php 
+                $year = date('Y');
+                $str = "<a href='http://thirteencube.com' target='_blank'>Thirteencube</a>";
+                //$welcome = sprintf('Mastershop &copy; %s All Rights reserved, powered by %s', $number, $str);
+                ?>
+                <p><?php echo sprintf('Mastershop &copy; %s '._t('allRightsReserved').' %s', $year, $str);?> </p>
             </div>
         </div>
     </div>
     <div class="floating-wpp"></div>
 </footer>
-<?php /*<pre>
-    <?php print_r($_SESSION['user']);?>
-</pre>*/?>
+<!-- <pre>
+    <?php //print_r($_SESSION['lang']); ?>
+</pre> -->

@@ -7,18 +7,17 @@ namespace Application\Controller;
 use ContentMySqlExtDAO;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
-use SaleOrderItemMySqlExtDAO;
-use WishlistMySqlExtDAO;
 
 class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
-        $langId = HelperController::langId(HelperController::filterInput($this->params('lang')));
-        $bannerLocation = ($langId == 1) ? 1 : 2;
-        $banners = ContentController::getBanners($bannerLocation);
+        $langId =  LanguageController::setLanguage($this);
+        $lang = LanguageController::getLanguage();
+        $bannerId = ($langId == 1) ? 1 : 2;
+        $banners = ContentController::getBanners($bannerId);
         $ads = ContentController::getContent("type = 'ad' and lang = $langId ORDER BY display_order asc LIMIT 3");
-        $featuredCategories = CategoryController::getCategories("is_featured = 1");
+        $featuredCategories = CategoryController::getCategories("a.`is_featured` = 1 AND a.`lang_id` = 1");
 
         //Todays DEALS, PICKED FOR YOU and BEST OFFERS
         $todaysDeals = ProductController::getItems(false, false, "", "", "", ProductController::$TODAYS_DEALS, "", 10, 0);
@@ -33,15 +32,17 @@ class IndexController extends AbstractActionController
             'todaysDeals' => $todaysDeals,
             'pickedForYou' => $pickedForYou,
             'bestOffers' => $bestOffers,
+            'lang' => $lang,
         ];
         return new ViewModel($data);
     }
 
     public function contentAction()
     {
+        $langId =  LanguageController::setLanguage($this);
         $slug = HelperController::filterInput($this->params('slug'));
         $contentMySqlExtDAO = new ContentMySqlExtDAO();
-        $page = $contentMySqlExtDAO->queryBySlug($slug);
+        $page = $contentMySqlExtDAO->queryBySlugAndLang($slug, $langId);
         $this->layout()->htmlClass = 'content';
         return new ViewModel([
             'page' => $page[0],

@@ -489,7 +489,7 @@ $("#search-categories.dropdown-menu a").click(function (e) {
     .find(".dropdown-toggle")
     .html(selText + ' <span class="caret"></span>');
   $("#selected-category").val(selId);
-  let href = mainUrl + "products/";
+  let href = mainUrl + selectedLang + "/products/";
   if (selId != 0) {
     href += $(this).data("slug");
   }
@@ -762,11 +762,11 @@ $("#reset-form").submit(function (e) {
 $(function () {
   $(".floating-wpp").floatingWhatsApp({
     phone: "0096181676564",
-    popupMessage: "Hi there\nHow can i help you?",
+    popupMessage: translations.whatsappHowCanIHelp,
     showPopup: true,
     message: "",
-    headerTitle: "Typically replies within 1 hour",
-    position: "right",
+    headerTitle: translations.whatsappTypicallyReplies,
+    position: translations.config.right,
   });
 });
 

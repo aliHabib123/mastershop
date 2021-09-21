@@ -27,4 +27,13 @@ class CategoryController extends AbstractActionController
         }
         return $res;
     }
+
+    public static function categoryName($name, $arabicName)
+    {
+        $categoryName = $_SESSION['lang'] == LanguageController::$ENGLISH ? $name : $arabicName;
+        if ($categoryName == '') {
+            $categoryName = $name;
+        }
+        return $categoryName;
+    }
 }

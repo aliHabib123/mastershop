@@ -288,7 +288,15 @@ class ImportController extends AbstractActionController
                         $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(17, 1)->getValue() != 'Price' ||
                         $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(18, 1)->getValue() != 'Special Price' ||
                         $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(19, 1)->getValue() != 'Warranty' ||
-                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(20, 1)->getValue() != 'Exchange'
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(20, 1)->getValue() != 'Exchange' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(21, 1)->getValue() != 'Title Arabic' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(22, 1)->getValue() != 'Description Arabic' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(23, 1)->getValue() != 'Specification Arabic' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(24, 1)->getValue() != 'Color Arabic' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(25, 1)->getValue() != 'Size Arabic' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(26, 1)->getValue() != 'Dimensions Arabic' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(27, 1)->getValue() != 'Warranty Arabic' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(28, 1)->getValue() != 'Exchange Arabic'
                     ) {
                         $result = false;
                         $msg = "Some coloumns missing, please use the correct excel sheet";
@@ -336,6 +344,14 @@ class ImportController extends AbstractActionController
                                 'Special Price'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(18, $row)->getCalculatedValue(),
                                 'Warranty'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(19, $row)->getCalculatedValue(),
                                 'Exchange'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(20, $row)->getCalculatedValue(),
+                                'Title Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(21, $row)->getCalculatedValue(),
+                                'Description Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(22, $row)->getCalculatedValue(),
+                                'Specification Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(23, $row)->getCalculatedValue(),
+                                'Color Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(24, $row)->getCalculatedValue(),
+                                'Size Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(25, $row)->getCalculatedValue(),
+                                'Dimensions Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(26, $row)->getCalculatedValue(),
+                                'Warranty Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(27, $row)->getCalculatedValue(),
+                                'Exchange Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(28, $row)->getCalculatedValue(),
                             ];
                             ${'Iterator'}++;
                             if ($missingSkusCount > 0) {
@@ -421,6 +437,14 @@ class ImportController extends AbstractActionController
                     'Special Price'  => $row['special_price'],
                     'Warranty'  => $row['warranty'],
                     'Exchange'  => $row['exchange'],
+                    'Title Arabic' => $row['title_ar'],
+                    'Description Arabic' => $row['description_ar'],
+                    'Specification Arabic' => $row['specs_ar'],
+                    'Color Arabic' => $row['color_ar'],
+                    'Size Arabic' => $row['size_ar'],
+                    'Dimensions Arabic'  => $row['dimensions_ar'],
+                    'Warranty Arabic'  => $row['warranty_ar'],
+                    'Exchange Arabic'  => $row['exchange_ar'],
                 ];
                 array_push($batch, $item);
             }

@@ -18,8 +18,6 @@ function main()
 				<div class="form-body">
 					<input name="id" type="hidden" value="<?php echo $category->id;?>" />
 					<input name="slug" type="hidden" value="<?php echo $category->slug; ?>" />
-					<input name="lang_id" type="hidden" value="<?php echo $category->langId; ?>" />
-					<input name="translation_id" type="hidden" value="<?php echo $category->translationId; ?>" />
 
 					<div class="form-group">
 						<label class="col-md-3 control-label">Name</label>

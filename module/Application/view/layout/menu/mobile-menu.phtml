@@ -1,5 +1,9 @@
 <?php
+
+use Application\Controller\LanguageController;
+
 global $categories;
+$lang = LanguageController::getLanguage();
 ?>
 <div class="mobile-menu d-block d-sm-none">
     <nav class="navbar navbar-expand-lg navbar-light">
@@ -48,7 +52,7 @@ global $categories;
                                         <a id="dropdownMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle"><?php echo $row1->name ?></a>
                                         <ul aria-labelledby="dropdownMenu2" class="dropdown-menu border-0">
                                         <?php foreach ($row1->subsubcategories as $row2) { ?>
-                                            <li><a href="<?php echo MAIN_URL . 'products/' . $row->slug . "/" . $row1->slug . "/" . $row2->slug; ?>" class="dropdown-item"><?php echo $row2->name;?></a></li>
+                                            <li><a href="<?php echo MAIN_URL . $lang . '/products/' . $row->slug . "/" . $row1->slug . "/" . $row2->slug; ?>" class="dropdown-item"><?php echo $row2->name;?></a></li>
                                             <?php }?>
                                         </ul>
                                     </li>
@@ -60,9 +64,9 @@ global $categories;
                     <?php } ?>
 
 
-                    <li class="nav-item"><a href="<?php echo MAIN_URL.'promotions'?>" class="nav-link">Promotions</a></li>
-                    <li class="nav-item"><a href="<?php echo MAIN_URL.'latest-arrivals'?>" class="nav-link">Latest products</a></li>
-                    <li class="nav-item"><a href="<?php echo MAIN_URL.'todays-deals'?>" class="nav-link">Todays Deals</a></li>
+                    <li class="nav-item"><a href="<?php echo MAIN_URL. $lang . '/promotions'?>" class="nav-link">Promotions</a></li>
+                    <li class="nav-item"><a href="<?php echo MAIN_URL. $lang . '/latest-arrivals'?>" class="nav-link">Latest products</a></li>
+                    <li class="nav-item"><a href="<?php echo MAIN_URL. $lang . '/todays-deals'?>" class="nav-link">Todays Deals</a></li>
                 </ul>
             </div>
         </div>

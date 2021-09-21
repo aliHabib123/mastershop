@@ -11,6 +11,7 @@ class CareerController extends AbstractActionController
 {
     public function indexAction()
     {
+        $langId =  LanguageController::setLanguage($this);
         return new ViewModel();
     }
 
