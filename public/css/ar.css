@@ -1,3 +1,9 @@
+:not(i) {
+  font-family: "Almarai", sans-serif !important;
+}
+.content .page-details {
+  line-height: 1.6;
+}
 .middle-menu .logo-container {
   float: right;
 }
