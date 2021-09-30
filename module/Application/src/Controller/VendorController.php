@@ -87,6 +87,10 @@ class VendorController extends AbstractActionController
                 $cond  .= "(regular_price = '' OR regular_price = 0 OR regular_price IS NULL) AND";
             }
         }
+        if (isset($_GET['sku']) && !empty($_GET['sku'])) {
+            $sku = $_GET['sku'];
+            $cond  .= "sku liKE '%$sku%' AND";
+        }
         $cond  .= ' supplier_id = ' . $_SESSION['user']->id;
         //echo $cond;
         $itemsMySqlExtDAO = new ItemMySqlExtDAO();
@@ -266,7 +270,7 @@ class VendorController extends AbstractActionController
                 $warehouseMySqlExtDAO = new WarehouseMySqlExtDAO();
                 $warehouseObj = new Warehouse();
                 $warehouseObj->warehouseId = $warehouseId;
-                
+
                 $warehouseObj->title = $warehouseName;
                 $warehouseObj->contactId = $contactId;
                 $warehouseObj->active = 1;
@@ -293,7 +297,8 @@ class VendorController extends AbstractActionController
         return $this->response;
     }
 
-    public function vendorOrderDetailsAction(){
+    public function vendorOrderDetailsAction()
+    {
         UserController::checkVendorLoggedIn();
         $id = HelperController::filterInput($this->params('id'));
         $saleOrderMySqlExtDAO = new SaleOrderMySqlExtDAO();
