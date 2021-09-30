@@ -25,12 +25,18 @@ function main()
 
 	$categoryId = isset($_GET['category_id']) && !empty($_GET['category_id']) ? filter_var($_GET['category_id'], FILTER_SANITIZE_NUMBER_INT) : false;
 
+	$skuSelected = isset($_GET['sku']) && !empty($_GET['sku']) ? filter_var($_GET['sku'], FILTER_SANITIZE_STRING) : false;
+
 	$level1Categories = $categoryMySqlExtDAO->select('parent_id = 0 ORDER BY display_order ASC, name ASC, id DESC');
 
 	$condition = " b.`status` IN ('active', 'inactive') AND";
 	if (isset($_GET["orderBy"])) {
 		$orderBy = $_GET["orderBy"];
 		$fieldName = $_GET["fieldName"];
+	}
+
+	if ($skuSelected) {
+		$condition .= " a.`sku`LIKE '%$skuSelected%' AND";
 	}
 
 	if ($supplierId) {
@@ -94,11 +100,12 @@ function main()
 					</a>
 					<div id="sample_2_column_toggler" class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
 						<label><input type="checkbox" checked data-column="0">ID</label>
-						<label><input type="checkbox" checked data-column="<?php echo "1"; ?>"><?php echo "Title"; ?></label>
-						<label><input type="checkbox" checked data-column="<?php echo "2"; ?>"><?php echo "Price"; ?></label>
-						<label><input type="checkbox" checked data-column="<?php echo "3"; ?>"><?php echo "Sale Price"; ?></label>
-						<label><input type="checkbox" checked data-column="<?php echo "4"; ?>"><?php echo "Image"; ?></label>
-						<label><input type="checkbox" checked data-column="<?php echo "5"; ?>"><?php echo "Supplier"; ?></label></label>
+						<label><input type="checkbox" checked data-column="<?php echo "1"; ?>"><?php echo "SKU"; ?></label>
+						<label><input type="checkbox" checked data-column="<?php echo "2"; ?>"><?php echo "Title"; ?></label>
+						<label><input type="checkbox" checked data-column="<?php echo "3"; ?>"><?php echo "Price"; ?></label>
+						<label><input type="checkbox" checked data-column="<?php echo "4"; ?>"><?php echo "Sale Price"; ?></label>
+						<label><input type="checkbox" checked data-column="<?php echo "5"; ?>"><?php echo "Image"; ?></label>
+						<label><input type="checkbox" checked data-column="<?php echo "6"; ?>"><?php echo "Supplier"; ?></label></label>
 					</div>
 				</div>
 			</div>
@@ -123,7 +130,7 @@ function main()
 								} ?>
 							</select>
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-2">
 							<label class="control-label">Tag</label>
 							<select class="form-control select2me" data-placeholder="Select Tag..." name="tag_id" id="tag_id">
 								<option selected="selected" value="">--- Select Tag ---</option>
@@ -139,7 +146,7 @@ function main()
 								} ?>
 							</select>
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-4">
 							<label class="control-label">Category</label>
 							<select class="form-control select2me" data-placeholder="Select Supplier..." name="category_id" id="category_id">
 								<option selected="selected" value="">--- Select Supplier ---</option>
@@ -171,6 +178,10 @@ function main()
 								} ?>
 							</select>
 						</div>
+						<div class="col-md-3">
+							<label class="control-label">SKU</label>
+							<input class="form-control" name="sku" value="<?php if ($skuSelected) { echo $skuSelected; } ?>" />
+						</div>
 
 					</div>
 					<div class="form-group">
@@ -186,6 +197,7 @@ function main()
 				<thead>
 					<tr>
 						<th>ID</th>
+						<th><?php echo "SKU"; ?></th>
 						<th><?php echo "Title"; ?></th>
 						<th><?php echo "Price"; ?></th>
 						<th><?php echo "Sale Price"; ?></th>
@@ -203,9 +215,10 @@ function main()
 						<tr id="<?php echo $row->id; ?>">
 							<!-- primary key -->
 							<td><?php echo $row->id; ?></td>
+							<td><?php echo $row->sku ?></td>
 							<td><?php echo $row->title ?></td>
-							<td align="center"><?php echo number_format(floatval($row->regularPrice)). " LBP"; ?></td>
-							<td align="center"><?php echo $row->salePrice != 0 ? $row->salePrice : '<i style="color:red;" class="fas fa-times"></i>';?></td>
+							<td align="center"><?php echo number_format(floatval($row->regularPrice)) . " LBP"; ?></td>
+							<td align="center"><?php echo $row->salePrice != 0 ? $row->salePrice : '<i style="color:red;" class="fas fa-times"></i>'; ?></td>
 							<td><img style="max-height: 70px;" src="<?php echo IMAGES_LINK . $row->image ?>" /></td>
 							<td><?php echo $row->companyName; ?></td>
 							<td>

@@ -5,6 +5,7 @@ use Application\Controller\ProductController;
 
 $withImage = isset($_GET['with-image']) ? $_GET['with-image'] : '';
 $withPrice = isset($_GET['with-price']) ? $_GET['with-price'] : '';
+$sku = isset($_GET['sku']) ? $_GET['sku'] : '';
 ?>
 <div class="main-wrapper">
     <div class="container">
@@ -18,8 +19,11 @@ $withPrice = isset($_GET['with-price']) ? $_GET['with-price'] : '';
                     <div class="filters-wrap">
                         <div class="row">
                             <div class="col-md-12">
+                                <label for="" class="main">FILTER BY:</label>
+                            </div>
+                            <div class="col-md-12">
                                 <form class="form-inline" action="" id="my-products-form-filter">
-                                    <label for="" class="main">FILTER BY:</label>
+
                                     <div>
                                         <label for="pwd">Image:</label>
                                         <select name="with-image" class="custom-select form-control">
@@ -44,6 +48,10 @@ $withPrice = isset($_GET['with-price']) ? $_GET['with-price'] : '';
                                                                 } ?>>Without Price</option>
                                         </select>
                                     </div>
+                                    <div>
+                                        <label for="pwd">SKU:</label>
+                                        <input type="text" class="form-control" value="<?php echo $sku;?>" name="sku"/>
+                                    </div>
                                     <button type="submit" class="btn apply-btn">FILTER</button>
                                     <button type="reset" class="btn apply-btn reset-btn">CLEAR</button>
                                 </form>
@@ -58,8 +66,8 @@ $withPrice = isset($_GET['with-price']) ? $_GET['with-price'] : '';
                                     <th class="text-center">Status</th>
                                     <th class="text-center">QTY Confirmed</th>
                                     <th class="text-center">SKU</th>
-                                    <th class="text-center">QTY Sold</th>
-                                    <th>Earn Amount</th>
+                                    <!-- <th class="text-center">QTY Sold</th>
+                                    <th>Earn Amount</th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -77,10 +85,10 @@ $withPrice = isset($_GET['with-price']) ? $_GET['with-price'] : '';
                                         <td class="text-center">PENDING</td>
                                         <td class="text-center"><?php echo $row->qty; ?></td>
                                         <td class="text-center"><?php echo $row->sku; ?></td>
-                                        <td class="text-center">2</td>
+                                        <!-- <td class="text-center">2</td>
                                         <td>
                                             23,000 LBP
-                                        </td>
+                                        </td> -->
                                     </tr>
                                 <?php } ?>
                             </tbody>
