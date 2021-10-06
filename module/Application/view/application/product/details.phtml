@@ -14,6 +14,7 @@ $itemWarranty  = $item->warranty;
 $itemExchange  = $item->exchange;
 $itemDesc = $item->description;
 $itemSpecs = $item->specification;
+$inStock = $item->qty > 0 ? true : false;
 if ($lang == LanguageController::$ARABIC) {
     if ($item->titleAr != "") {
         $itemTitle = $item->titleAr;
@@ -88,27 +89,31 @@ $specs = preg_split("/\\r\\n|\\r|\\n/", $itemSpecs);
                         <?php } ?>
                         <div class="price2"><?php echo ProductController::getFinalPrice($item->regularPrice * $item->usdExchangeRate, $item->salePrice * $item->usdExchangeRate); ?><span><?php echo _t('lbp'); ?></span></div>
                         <div class="title"><?php echo $itemTitle; ?></div>
-                        <div class="sku"><b><?php echo _t('sku:');?> </b><?php echo $item->sku; ?></div>
+                        <div class="sku"><b><?php echo _t('sku:'); ?> </b><?php echo $item->sku; ?></div>
                         <?php if ($item->warranty) { ?>
-                            <div class="sku"><b><?php echo _t('warranty:');?> </b><?php echo $itemWarranty; ?></div>
+                            <div class="sku"><b><?php echo _t('warranty:'); ?> </b><?php echo $itemWarranty; ?></div>
                         <?php } ?>
                         <?php if ($item->exchange) { ?>
-                            <div class="sku"><b><?php echo _t('exchange:');?> </b><?php echo $itemExchange; ?></div>
+                            <div class="sku"><b><?php echo _t('exchange:'); ?> </b><?php echo $itemExchange; ?></div>
                         <?php } ?>
                         <?php if (isset($this->itemBrand->image)) { ?>
                             <div class="brand"><img src="<?php echo HelperController::getImageUrl($this->itemBrand->image); ?>" /></div>
                         <?php } ?>
                         <div class="desc"><?php echo $itemDesc; ?></div>
                         <!-- <div class="color">Color: Not Specified</div> -->
-                        <div class="qty noSelect"><?php echo _t('qty:');?>&nbsp;
-                            <span class="input-wrapper">
-                                <i class="fas fa-minus"></i><input type="number" value="1" min="1" pattern="[1-9]" id="qty" /><i class="fas fa-plus"></i>
-                            </span>
-                        </div>
-                        <div class="buttons">
-                            <a class="add-to-cart cart-add" href="javascript:void(0);" data-item-id="<?php echo $item->id; ?>"><img src="img/cart.png" /><?php echo _t('addToCart'); ?></a>
-                            <a class="buy-now" href="<?php echo MAIN_URL . 'checkout?id=' . $item->id; ?>"><?php echo _t('buyNow'); ?></a>
-                        </div>
+                        <?php if ($inStock) { ?>
+                            <div class="qty noSelect"><?php echo _t('qty:'); ?>&nbsp;
+                                <span class="input-wrapper">
+                                    <i class="fas fa-minus"></i><input type="number" value="1" min="1" pattern="[1-9]" id="qty" /><i class="fas fa-plus"></i>
+                                </span>
+                            </div>
+                            <div class="buttons">
+                                <a class="add-to-cart cart-add" href="javascript:void(0);" data-item-id="<?php echo $item->id; ?>"><img src="img/cart.png" /><?php echo _t('addToCart'); ?></a>
+                                <a class="buy-now" href="<?php echo MAIN_URL . 'checkout?id=' . $item->id; ?>"><?php echo _t('buyNow'); ?></a>
+                            </div>
+                        <?php } else{?>
+                            <div class="out-of-stock">Out of stock</div>
+                            <?php }?>
                     </div>
                 </div>
                 <?php if ($specs) { ?>

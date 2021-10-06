@@ -50,7 +50,7 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
                         ON a.`id` = d.`item_id`";
         }
 
-        $sql .= " WHERE a.`image` != ''";
+        $sql .= " WHERE a.`image` != '' AND a.`regular_price` != 0";
 
         if ($minPrice != "") {
             $sql .= " AND a.`regular_price` * e.`usd_exchange_rate` >= $minPrice";

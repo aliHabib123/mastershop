@@ -28,6 +28,7 @@ class DesignController extends AbstractActionController
         $hasDiscount = false;
         $customerId = 0;
         $itemTitle = $item->title;
+        $inStock = $item->qty > 0 ? true : false;
         if ($lang == LanguageController::$ARABIC) {
             if ($item->titleAr != "") {
                 $itemTitle = $item->titleAr;
@@ -57,8 +58,11 @@ class DesignController extends AbstractActionController
 
         $html = "<div class='item-wrapper' data-rate='$item->usdExchangeRate'>
                     <div class='item-wrapper_img'>";
-        if ($hasDiscount) {
+        if ($inStock && $hasDiscount) {
             $html .= "<span class=\"badge\">$discount%</span>";
+        }
+        if (!$inStock) {
+            $html .= "<span class=\"badge-out-of-stock\">Out of stock</span>";
         }
         $html .= "<a href='$url'>
                         <img class='' src='$image' />
@@ -82,12 +86,15 @@ class DesignController extends AbstractActionController
                         <a class='heart wishlist-add off' href='#' data-item-id='$item->id' data-customer-id='$customerId'>
                             <img class='visible-heart' src='$imageSrc' />
                             <img class='hidden-heart' src='img/heart-on.png' />
-                        </a>
-                        <a class='cart cart-add' href='javascript:void(0);' data-item-id='$item->id'>
+                        </a>";
+        if ($inStock) {
+            $html .= "  <a class='cart cart-add' href='javascript:void(0);' data-item-id='$item->id'>
                             <img class='visible-cart' src='img/cart.png' />
                             <img class='hidden-cart' src='img/cart-on.png' />
-                        </a>
-                    </div>
+                        </a>";
+        }
+
+        $html .= "</div>
                 </div>";
         return $html;
     }
@@ -320,8 +327,8 @@ class DesignController extends AbstractActionController
                         </div>";
             }
             $html .= "<div class=\"compact-cart-buttons\">
-            <a href=\"$cartUrl\" class=\"to-cart\">"._t('continueCart')."</a>
-            <a href=\"$checkoutUrl\" class=\"to-checkout\">"._t('continueCheckout')."</a>
+            <a href=\"$cartUrl\" class=\"to-cart\">" . _t('continueCart') . "</a>
+            <a href=\"$checkoutUrl\" class=\"to-checkout\">" . _t('continueCheckout') . "</a>
         </div>";
         } else {
             $html = "<h4 style=\"text-align: center;width: 100%;\">No items in cart!</h4>";
