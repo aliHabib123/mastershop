@@ -53,6 +53,20 @@
       line-height: 1;
       padding-top: 19px;
     }
+    .badge-out-of-stock {
+      position: absolute;
+      background-color: red;
+      top: 0;
+      left: 0;
+      z-index: 99;
+      width: 100%;
+      /* height: 50px; */
+      font-size: 14px;
+      color: #fff;
+      text-align: center;
+      line-height: 1;
+      padding: 10px;
+    }
     a {
       display: block;
       height: 100%;
@@ -66,32 +80,33 @@
       margin-left: 5px;
     }
     a.heart {
-      &:hover{
-        img.visible-heart{
+      &:hover {
+        img.visible-heart {
           display: none;
         }
-        img.hidden-heart{
+        img.hidden-heart {
           display: inline-block;
         }
       }
     }
     a.cart {
-      &:hover{
-        img.visible-cart{
+      &:hover {
+        img.visible-cart {
           display: none;
         }
-        img.hidden-cart{
+        img.hidden-cart {
           display: inline-block;
         }
       }
     }
-    .visible-heart, .visible-cart{
+    .visible-heart,
+    .visible-cart {
       display: inline-block;
     }
-    .hidden-heart{
+    .hidden-heart {
       display: none;
     }
-    .hidden-cart{
+    .hidden-cart {
       display: none;
     }
   }
@@ -157,7 +172,7 @@
       }
     }
   }
-  .out-of-stock{
+  .out-of-stock {
     color: red;
     font-weight: bold;
   }

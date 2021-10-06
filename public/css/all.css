@@ -1112,6 +1112,19 @@ a.disabled {
       text-align: center;
       line-height: 1;
       padding-top: 19px; }
+    .item-wrapper_img .badge-out-of-stock {
+      position: absolute;
+      background-color: red;
+      top: 0;
+      left: 0;
+      z-index: 99;
+      width: 100%;
+      /* height: 50px; */
+      font-size: 14px;
+      color: #fff;
+      text-align: center;
+      line-height: 1;
+      padding: 10px; }
     .item-wrapper_img a {
       display: block;
       height: 100%; }
@@ -1129,7 +1142,8 @@ a.disabled {
       display: none; }
     .item-wrapper_cart_heart a.cart:hover img.hidden-cart {
       display: inline-block; }
-    .item-wrapper_cart_heart .visible-heart, .item-wrapper_cart_heart .visible-cart {
+    .item-wrapper_cart_heart .visible-heart,
+    .item-wrapper_cart_heart .visible-cart {
       display: inline-block; }
     .item-wrapper_cart_heart .hidden-heart {
       display: none; }
