@@ -66,6 +66,10 @@ interface ItemDAO{
 
 	public function queryBySku($value);
 
+	public function queryByType($value);
+
+	public function queryByParentId($value);
+
 	public function queryByQty($value);
 
 	public function queryBySpecification($value);
@@ -136,6 +140,10 @@ interface ItemDAO{
 	public function deleteByWidth($value);
 
 	public function deleteBySku($value);
+
+	public function deleteByType($value);
+
+	public function deleteByParentId($value);
 
 	public function deleteByQty($value);
 

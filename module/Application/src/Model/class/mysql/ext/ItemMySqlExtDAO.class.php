@@ -89,7 +89,7 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
         if ($limit != 0) {
             $sql .= " LIMIT $limit OFFSET $offset";
         }
-        
+        echo $sql.'<br><br>';
         $sqlQuery = new SqlQuery($sql);
         return $this->getList($sqlQuery);
     }
@@ -194,5 +194,25 @@ class ItemMySqlExtDAO extends ItemMySqlDAO
         $sqlQuery = new SqlQuery($sql);
         $sqlQuery->set($id);
         return $this->getRow($sqlQuery);
+    }
+
+    public function checkVariant($sku, $color, $size)
+    {
+        $sql = 'SELECT *
+                FROM item a 
+                WHERE `parent_id` = ? AND `color` = ? AND `size` = ?';
+        $sqlQuery = new SqlQuery($sql);
+        $sqlQuery->set($sku);
+        $sqlQuery->set($color);
+        $sqlQuery->set($size);
+        return $this->getRow($sqlQuery);
+    }
+    public function queryByTypeAndSupplierId($value, $value1)
+    {
+        $sql = 'SELECT * FROM item WHERE `supplier_id` = ? AND `type` = ?';
+        $sqlQuery = new SqlQuery($sql);
+        $sqlQuery->setNumber($value);
+        $sqlQuery->set($value1);
+        return $this->getList($sqlQuery);
     }
 }

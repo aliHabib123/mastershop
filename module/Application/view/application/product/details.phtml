@@ -101,6 +101,66 @@ $specs = preg_split("/\\r\\n|\\r|\\n/", $itemSpecs);
                         <?php } ?>
                         <div class="desc"><?php echo $itemDesc; ?></div>
                         <!-- <div class="color">Color: Not Specified</div> -->
+                        <?php
+                        $conn = ConnectionFactory::getConnection();
+                        $q1 = "SELECT DISTINCT color FROM item WHERE parent_id = '$item->sku'";
+                        $result = $conn->query($q1);
+                        $colorArray = [];
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                array_push($colorArray, $row['color']);
+                            }
+                        }
+                        ?>
+                        <?php if (!empty($colorArray)) { ?>
+                            <div class="color-wrap">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Color: </label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <select id="color-selector">
+                                            <option value="">Select Color</option>
+                                            <?php foreach ($colorArray as $color) { ?>
+                                                <option><?php echo $color ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
+                        <?php
+                        $q2 = "SELECT DISTINCT size FROM item WHERE parent_id = '$item->sku'";
+                        $result1 = $conn->query($q2);
+                        $sizeArray = [];
+                        if ($result1->num_rows > 0) {
+                            while ($row1 = $result1->fetch_assoc()) {
+                                array_push($sizeArray, $row1['size']);
+                            }
+                        }
+                        ?>
+                        <?php if ($sizeArray) { ?>
+                            <div class="size-wrap">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Size: </label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <select id="size-selector">
+                                            <option value="">Select Size</option>
+                                            <?php foreach ($sizeArray as $size) { ?>
+                                                <option><?php echo $size ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
+                        <div class="varation-select-wrapper">
+                            <div id="variant-msg">
+                                please select color and size
+                            </div>
+                        </div>
                         <?php if ($inStock) { ?>
                             <div class="qty noSelect"><?php echo _t('qty:'); ?>&nbsp;
                                 <span class="input-wrapper">
@@ -111,9 +171,9 @@ $specs = preg_split("/\\r\\n|\\r|\\n/", $itemSpecs);
                                 <a class="add-to-cart cart-add" href="javascript:void(0);" data-item-id="<?php echo $item->id; ?>"><img src="img/cart.png" /><?php echo _t('addToCart'); ?></a>
                                 <a class="buy-now" href="<?php echo MAIN_URL . 'checkout?id=' . $item->id; ?>"><?php echo _t('buyNow'); ?></a>
                             </div>
-                        <?php } else{?>
+                        <?php } else { ?>
                             <div class="out-of-stock">Out of stock</div>
-                            <?php }?>
+                        <?php } ?>
                     </div>
                 </div>
                 <?php if ($specs) { ?>

@@ -229,7 +229,7 @@ class ImportController extends AbstractActionController
         } else {
             $result = true;
             $msg = "Initial";
-            $missingSkusCount = 0;
+            //$missingSkusCount = 0;
             $missingTitlesCount = 0;
             if ($_FILES['excel']['tmp_name']) {
                 $file = $_FILES['excel']['tmp_name'];
@@ -237,7 +237,7 @@ class ImportController extends AbstractActionController
                 $target_dir = BASE_PATH . upload_file_dir;
                 $newName = HelperController::random(10) . '.' . $userfile_extn[1];
                 define('fileName', $newName);
-                $targetFile = BASE_PATH . upload_file_dir . fileName;
+                $targetFile = BASE_PATH . upload_file_dir . $newName;
                 $upload = move_uploaded_file($file, $targetFile);
                 //var_dump($upload);
 
@@ -277,26 +277,28 @@ class ImportController extends AbstractActionController
                         $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(6, 1)->getValue() != 'sub category' ||
                         $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(7, 1)->getValue() != 'product category' ||
                         $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(8, 1)->getValue() != 'SKU' ||
-                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(9, 1)->getValue() != 'Description' ||
-                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(10, 1)->getValue() != 'Specification' ||
-                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(11, 1)->getValue() != 'Color' ||
-                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(12, 1)->getValue() != 'Size' ||
-                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(13, 1)->getValue() != 'Weight' ||
-                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(14, 1)->getValue() != 'Dimensions' ||
-                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(15, 1)->getValue() != 'Brand Name' ||
-                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(16, 1)->getValue() != 'Stock' ||
-                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(17, 1)->getValue() != 'Price' ||
-                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(18, 1)->getValue() != 'Special Price' ||
-                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(19, 1)->getValue() != 'Warranty' ||
-                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(20, 1)->getValue() != 'Exchange' ||
-                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(21, 1)->getValue() != 'Title Arabic' ||
-                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(22, 1)->getValue() != 'Description Arabic' ||
-                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(23, 1)->getValue() != 'Specification Arabic' ||
-                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(24, 1)->getValue() != 'Color Arabic' ||
-                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(25, 1)->getValue() != 'Size Arabic' ||
-                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(26, 1)->getValue() != 'Dimensions Arabic' ||
-                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(27, 1)->getValue() != 'Warranty Arabic' ||
-                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(28, 1)->getValue() != 'Exchange Arabic'
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(9, 1)->getValue() != 'Type' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(10, 1)->getValue() != 'Parent ID' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(11, 1)->getValue() != 'Description' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(12, 1)->getValue() != 'Specification' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(13, 1)->getValue() != 'Color' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(14, 1)->getValue() != 'Size' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(15, 1)->getValue() != 'Weight' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(16, 1)->getValue() != 'Dimensions' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(17, 1)->getValue() != 'Brand Name' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(18, 1)->getValue() != 'Stock' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(19, 1)->getValue() != 'Price' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(20, 1)->getValue() != 'Special Price' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(21, 1)->getValue() != 'Warranty' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(22, 1)->getValue() != 'Exchange' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(23, 1)->getValue() != 'Title Arabic' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(24, 1)->getValue() != 'Description Arabic' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(25, 1)->getValue() != 'Specification Arabic' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(26, 1)->getValue() != 'Color Arabic' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(27, 1)->getValue() != 'Size Arabic' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(28, 1)->getValue() != 'Dimensions Arabic' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(29, 1)->getValue() != 'Warranty Arabic' ||
+                        $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(30, 1)->getValue() != 'Exchange Arabic'
                     ) {
                         $result = false;
                         $msg = "Some coloumns missing, please use the correct excel sheet";
@@ -312,11 +314,11 @@ class ImportController extends AbstractActionController
                         // skip the first row if it has our column names
                         for (((($objPHPExcel->getActiveSheet()->getCellByColumnAndRow(0, $row)->getValue()) == 'Image 1') ? $row = 2 :  $row = 1); $row <= $rows; ++$row) {
                             // Sanitize all our & add them to the accounts array
-                            if ($objPHPExcel->getActiveSheet()->getCellByColumnAndRow(8, $row)->getValue() == "") {
-                                $missingSkusCount++;
-                                $missingSkusCount++;
-                                $missingSkusCount++;
-                            }
+                            // if ($objPHPExcel->getActiveSheet()->getCellByColumnAndRow(8, $row)->getValue() == "") {
+                            //     $missingSkusCount++;
+                            //     $missingSkusCount++;
+                            //     $missingSkusCount++;
+                            // }
                             if ($objPHPExcel->getActiveSheet()->getCellByColumnAndRow(4, $row)->getValue() == "") {
                                 $missingTitlesCount++;
                                 $missingTitlesCount++;
@@ -332,32 +334,34 @@ class ImportController extends AbstractActionController
                                 'sub category' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(6, $row)->getCalculatedValue(),
                                 'product category' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(7, $row)->getCalculatedValue(),
                                 'SKU' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(8, $row)->getCalculatedValue(),
-                                'Description' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(9, $row)->getCalculatedValue(),
-                                'Specification' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(10, $row)->getCalculatedValue(),
-                                'Color' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(11, $row)->getCalculatedValue(),
-                                'Size' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(12, $row)->getCalculatedValue(),
-                                'Weight' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(13, $row)->getCalculatedValue(),
-                                'Dimensions' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(14, $row)->getCalculatedValue(),
-                                'Brand Name' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(15, $row)->getCalculatedValue(),
-                                'Stock' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(16, $row)->getCalculatedValue(),
-                                'Price' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(17, $row)->getCalculatedValue(),
-                                'Special Price'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(18, $row)->getCalculatedValue(),
-                                'Warranty'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(19, $row)->getCalculatedValue(),
-                                'Exchange'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(20, $row)->getCalculatedValue(),
-                                'Title Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(21, $row)->getCalculatedValue(),
-                                'Description Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(22, $row)->getCalculatedValue(),
-                                'Specification Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(23, $row)->getCalculatedValue(),
-                                'Color Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(24, $row)->getCalculatedValue(),
-                                'Size Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(25, $row)->getCalculatedValue(),
-                                'Dimensions Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(26, $row)->getCalculatedValue(),
-                                'Warranty Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(27, $row)->getCalculatedValue(),
-                                'Exchange Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(28, $row)->getCalculatedValue(),
+                                'Type' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(9, $row)->getCalculatedValue(),
+                                'Parent ID' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(10, $row)->getCalculatedValue(),
+                                'Description' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(11, $row)->getCalculatedValue(),
+                                'Specification' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(12, $row)->getCalculatedValue(),
+                                'Color' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(13, $row)->getCalculatedValue(),
+                                'Size' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(14, $row)->getCalculatedValue(),
+                                'Weight' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(15, $row)->getCalculatedValue(),
+                                'Dimensions' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(16, $row)->getCalculatedValue(),
+                                'Brand Name' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(17, $row)->getCalculatedValue(),
+                                'Stock' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(18, $row)->getCalculatedValue(),
+                                'Price' => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(19, $row)->getCalculatedValue(),
+                                'Special Price'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(20, $row)->getCalculatedValue(),
+                                'Warranty'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(21, $row)->getCalculatedValue(),
+                                'Exchange'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(22, $row)->getCalculatedValue(),
+                                'Title Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(23, $row)->getCalculatedValue(),
+                                'Description Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(24, $row)->getCalculatedValue(),
+                                'Specification Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(25, $row)->getCalculatedValue(),
+                                'Color Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(26, $row)->getCalculatedValue(),
+                                'Size Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(27, $row)->getCalculatedValue(),
+                                'Dimensions Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(28, $row)->getCalculatedValue(),
+                                'Warranty Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(29, $row)->getCalculatedValue(),
+                                'Exchange Arabic'  => $objPHPExcel->getActiveSheet()->getCellByColumnAndRow(30, $row)->getCalculatedValue(),
                             ];
                             ${'Iterator'}++;
-                            if ($missingSkusCount > 0) {
-                                $result = false;
-                                $msg = "Some products do not have SKUs";
-                            }
+                            // if ($missingSkusCount > 0) {
+                            //     $result = false;
+                            //     $msg = "Some products do not have SKUs";
+                            // }
                             if ($missingTitlesCount > 0) {
                                 $result = false;
                                 $msg = "Some products do not have Titles";
@@ -425,6 +429,8 @@ class ImportController extends AbstractActionController
                     'sub category' => $row['sub_category'],
                     'product category' => $row['product_category'],
                     'SKU' => $row['sku'],
+                    'Type' => $row['type'],
+                    'Parent ID' => $row['parent_id'],
                     'Description' => $row['description'],
                     'Specification' => $row['specs'],
                     'Color' => $row['color'],
@@ -445,6 +451,7 @@ class ImportController extends AbstractActionController
                     'Dimensions Arabic'  => $row['dimensions_ar'],
                     'Warranty Arabic'  => $row['warranty_ar'],
                     'Exchange Arabic'  => $row['exchange_ar'],
+                    'ID' => $row['id'],
                 ];
                 array_push($batch, $item);
             }
@@ -469,10 +476,14 @@ class ImportController extends AbstractActionController
 
     public function deleteDeletedItemsAction()
     {
-        $itemMySqlExtDAO = new ItemMySqlExtDAO();
-
+        $deletedItems = 0;
+        $deletedVariants = 0;
         $supplierId = $_SESSION['user']->id;
         $conn = ConnectionFactory::getConnection();
+        $itemMySqlExtDAO = new ItemMySqlExtDAO();
+
+
+        // Delete Simple and Variable products
         // New Sku List
         $sql = "select sku from items_temp where supplier_id = $supplierId";
         $result = $conn->query($sql);
@@ -488,10 +499,8 @@ class ImportController extends AbstractActionController
         $oldItemsSKUList = array_map(function ($e) {
             return $e->sku;
         }, $oldItems);
-        $conn->close();
-        $toBeDeleted = array_diff($oldItemsSKUList, $newItemsSKUList);
 
-        $deletedItems = 0;
+        $toBeDeleted = array_diff($oldItemsSKUList, $newItemsSKUList);
         if (count($toBeDeleted) > 0) {
             foreach ($toBeDeleted as $del) {
                 $delete = ProductController::deleteItemBySku($del);
@@ -500,9 +509,41 @@ class ImportController extends AbstractActionController
                 }
             }
         }
+
+        // Delete Variants
+        $sql = "select website_id from variants_temp where supplier_id = $supplierId";
+        error_log($sql);
+        $result = $conn->query($sql);
+        $newVariantsIdsList = [];
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                array_push($newVariantsIdsList, $row['website_id']);
+            }
+        }
+
+        // Old SKU List
+        $oldVariants = $itemMySqlExtDAO->queryByTypeAndSupplierId($supplierId, ProductController::$TYPE_VARIATION);
+        $oldVariantsIdsList = array_map(function ($e) {
+            return $e->id;
+        }, $oldVariants);
+        $conn->close();
+        $toBeDeleted1 = array_diff($oldVariantsIdsList, $newVariantsIdsList);
+
+        if (count($toBeDeleted1) > 0) {
+            foreach ($toBeDeleted1 as $del) {
+                $itemMySqlExtDAO = new ItemMySqlExtDAO();
+                $delete = $itemMySqlExtDAO->delete($del);
+                if ($delete) {
+                    $deletedVariants++;
+                }
+            }
+        }
+
+
         $response = json_encode([
             'deletedCount' => $deletedItems,
             'deletedItems' => $toBeDeleted,
+            'deletedVariants' => $deletedVariants,
         ]);
         print_r($response);
         return $this->response;
@@ -516,12 +557,18 @@ class ImportController extends AbstractActionController
 
         $sql = "DELETE FROM items_temp where `processed` = 1 AND supplier_id = $supplierId";
         $result = $conn->query($sql);
-        $msg = $result ? 'cleaned up' : 'not cleaned up';
+        $msg = $result ? 'items cleaned up' : 'items not cleaned up';
+
+        $sql1 = "DELETE FROM variants_temp where `processed` = 1 AND supplier_id = $supplierId";
+        $result1 = $conn->query($sql1);
+        $msg1 = $result ? 'variants cleaned up' : 'variants not cleaned up';
 
         $conn->close();
         $response = json_encode([
             'res' => $result,
             'msg' => $msg,
+            'res1'=> $result1,
+            'msg1' => $msg1,
         ]);
         print_r($response);
         return $this->response;

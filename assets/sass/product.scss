@@ -176,6 +176,26 @@
     color: red;
     font-weight: bold;
   }
+  .color-wrap {
+    margin-bottom: 10px;
+    label {
+      font-weight: bold;
+    }
+    select {
+      width: 200px;
+      height: 35px;
+    }
+  }
+  .size-wrap {
+    margin-bottom: 10px;
+    label {
+      font-weight: bold;
+    }
+    select {
+      width: 200px;
+      height: 35px;
+    }
+  }
 }
 .product-details-side {
   .price1 {
@@ -211,8 +231,8 @@
     line-height: 1.4;
   }
   .brand {
-    margin-bottom: 15px;
-    margin-top: 15px;
+    margin-bottom: 5px;
+    margin-top: 5px;
     img {
       max-width: 200px;
     }
@@ -221,7 +241,7 @@
     font-family: $fontsecondary;
     font-size: 18px;
     font-weight: 300;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     margin-top: 10px;
   }
   .color {

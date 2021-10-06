@@ -29,6 +29,7 @@ class DesignController extends AbstractActionController
         $customerId = 0;
         $itemTitle = $item->title;
         $inStock = $item->qty > 0 ? true : false;
+        $itemTitle .= '-' . $item->type;
         if ($lang == LanguageController::$ARABIC) {
             if ($item->titleAr != "") {
                 $itemTitle = $item->titleAr;
@@ -87,11 +88,17 @@ class DesignController extends AbstractActionController
                             <img class='visible-heart' src='$imageSrc' />
                             <img class='hidden-heart' src='img/heart-on.png' />
                         </a>";
+
         if ($inStock) {
-            $html .= "  <a class='cart cart-add' href='javascript:void(0);' data-item-id='$item->id'>
-                            <img class='visible-cart' src='img/cart.png' />
-                            <img class='hidden-cart' src='img/cart-on.png' />
-                        </a>";
+            if ($item->type == ProductController::$TYPE_SIMPLE) {
+                $html .= "<a class='cart cart-add' href='javascript:void(0);' data-item-id='$item->id'>";
+            } else {
+                $html .= "<a class='cart' href='$url' data-item-id='$item->id'>";
+            }
+
+            $html .= "<img class='visible-cart' src='img/cart.png' />
+                        <img class='hidden-cart' src='img/cart-on.png' />
+                    </a>";
         }
 
         $html .= "</div>

@@ -54,7 +54,7 @@ class ItemMySqlDAO implements ItemDAO{
  	 * @param ItemMySql item
  	 */
 	public function insert($item){
-		$sql = 'INSERT INTO item (title, description, image, regular_price, sale_price, weight, height, width, sku, qty, specification, color, size, dimensions, warranty, exchange, status, is_featured, is_new, supplier_id, display_order, lang_id, translation_id, album_id, slug, title_ar, description_ar, specification_ar, color_ar, size_ar, dimensions_ar, warranty_ar, exchange_ar, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+		$sql = 'INSERT INTO item (title, description, image, regular_price, sale_price, weight, height, width, sku, type, parent_id, qty, specification, color, size, dimensions, warranty, exchange, status, is_featured, is_new, supplier_id, display_order, lang_id, translation_id, album_id, slug, title_ar, description_ar, specification_ar, color_ar, size_ar, dimensions_ar, warranty_ar, exchange_ar, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($item->title);
@@ -66,6 +66,8 @@ class ItemMySqlDAO implements ItemDAO{
 		$sqlQuery->set($item->height);
 		$sqlQuery->set($item->width);
 		$sqlQuery->set($item->sku);
+		$sqlQuery->set($item->type);
+		$sqlQuery->set($item->parentId);
 		$sqlQuery->setNumber($item->qty);
 		$sqlQuery->set($item->specification);
 		$sqlQuery->set($item->color);
@@ -104,7 +106,7 @@ class ItemMySqlDAO implements ItemDAO{
  	 * @param ItemMySql item
  	 */
 	public function update($item){
-		$sql = 'UPDATE item SET title = ?, description = ?, image = ?, regular_price = ?, sale_price = ?, weight = ?, height = ?, width = ?, sku = ?, qty = ?, specification = ?, color = ?, size = ?, dimensions = ?, warranty = ?, exchange = ?, status = ?, is_featured = ?, is_new = ?, supplier_id = ?, display_order = ?, lang_id = ?, translation_id = ?, album_id = ?, slug = ?, title_ar = ?, description_ar = ?, specification_ar = ?, color_ar = ?, size_ar = ?, dimensions_ar = ?, warranty_ar = ?, exchange_ar = ?, created_at = ?, updated_at = ? WHERE id = ?';
+		$sql = 'UPDATE item SET title = ?, description = ?, image = ?, regular_price = ?, sale_price = ?, weight = ?, height = ?, width = ?, sku = ?, type = ?, parent_id = ?, qty = ?, specification = ?, color = ?, size = ?, dimensions = ?, warranty = ?, exchange = ?, status = ?, is_featured = ?, is_new = ?, supplier_id = ?, display_order = ?, lang_id = ?, translation_id = ?, album_id = ?, slug = ?, title_ar = ?, description_ar = ?, specification_ar = ?, color_ar = ?, size_ar = ?, dimensions_ar = ?, warranty_ar = ?, exchange_ar = ?, created_at = ?, updated_at = ? WHERE id = ?';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($item->title);
@@ -116,6 +118,8 @@ class ItemMySqlDAO implements ItemDAO{
 		$sqlQuery->set($item->height);
 		$sqlQuery->set($item->width);
 		$sqlQuery->set($item->sku);
+		$sqlQuery->set($item->type);
+		$sqlQuery->set($item->parentId);
 		$sqlQuery->setNumber($item->qty);
 		$sqlQuery->set($item->specification);
 		$sqlQuery->set($item->color);
@@ -214,6 +218,20 @@ class ItemMySqlDAO implements ItemDAO{
 
 	public function queryBySku($value){
 		$sql = 'SELECT * FROM item WHERE sku = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->getList($sqlQuery);
+	}
+
+	public function queryByType($value){
+		$sql = 'SELECT * FROM item WHERE type = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->getList($sqlQuery);
+	}
+
+	public function queryByParentId($value){
+		$sql = 'SELECT * FROM item WHERE parent_id = ?';
 		$sqlQuery = new SqlQuery($sql);
 		$sqlQuery->set($value);
 		return $this->getList($sqlQuery);
@@ -465,6 +483,20 @@ class ItemMySqlDAO implements ItemDAO{
 		return $this->executeUpdate($sqlQuery);
 	}
 
+	public function deleteByType($value){
+		$sql = 'DELETE FROM item WHERE type = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->executeUpdate($sqlQuery);
+	}
+
+	public function deleteByParentId($value){
+		$sql = 'DELETE FROM item WHERE parent_id = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->executeUpdate($sqlQuery);
+	}
+
 	public function deleteByQty($value){
 		$sql = 'DELETE FROM item WHERE qty = ?';
 		$sqlQuery = new SqlQuery($sql);
@@ -667,6 +699,8 @@ class ItemMySqlDAO implements ItemDAO{
 		$item->height = $row['height'];
 		$item->width = $row['width'];
 		$item->sku = $row['sku'];
+		$item->type = $row['type'];
+		$item->parentId = $row['parent_id'];
 		$item->qty = $row['qty'];
 		$item->specification = $row['specification'];
 		$item->color = $row['color'];

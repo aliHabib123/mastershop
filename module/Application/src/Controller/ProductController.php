@@ -32,6 +32,11 @@ class ProductController extends AbstractActionController
     public static $SPOTLIGHT = 6;
     public static $PROMOTIONS = 7;
 
+
+    public static $TYPE_SIMPLE = 'simple';
+    public static $TYPE_VARIABLE = 'variable';
+    public static $TYPE_VARIATION = 'variation';
+
     public function indexAction()
     {
         $langId =  LanguageController::setLanguage($this);
@@ -493,6 +498,8 @@ class ProductController extends AbstractActionController
             $subCategory = isset($row['sub category']) ? $row['sub category'] : '';
             $productCategory = isset($row['product category']) ? $row['product category'] : '';
             $sku = isset($row['SKU']) ? mysqli_real_escape_string($conn, strval($row['SKU'])) : '';
+            $type = isset($row['Type']) ? mysqli_real_escape_string($conn, strval($row['Type'])) : '';
+            $parentId = isset($row['Parent ID']) ? mysqli_real_escape_string($conn, strval($row['Parent ID'])) : '';
             $description = isset($row['Description']) ?  mysqli_real_escape_string($conn, $row['Description']) : '';
             $specs = isset($row['Specification']) ?  mysqli_real_escape_string($conn, $row['Specification']) : '';
             $color = isset($row['Color']) ? $row['Color'] : '';
@@ -516,19 +523,19 @@ class ProductController extends AbstractActionController
             $processed = 0;
 
             $data[] = "('$image1', '$image2', '$image3', '$image4', '$title', '$category',
-                        '$subCategory', '$productCategory', '$sku',
+                        '$subCategory', '$productCategory', '$sku', '$type', '$parentId',
                         '$description', '$specs', '$color', '$size', '$weight', '$dimensions', '$brandName',
                         '$stock', '$price', '$specialPrice', '$warranty', '$exchange',
                         '$title_ar', '$description_ar', '$specs_ar',
-                        '$color_ar', '$size_ar', '$dimensions_ar', '$warranty_ar', '$exchange_ar', $supplierId, $processed)";
+                        '$color_ar', '$size_ar', '$dimensions_ar', '$warranty_ar', '$exchange_ar', $supplierId, $processed, '0')";
         }
         $sql  = "INSERT INTO items_temp (`image1`, `image2`, `image3`, `image4`, `title`, `category`,
-        `sub_category`, `product_category`, `sku`,
+        `sub_category`, `product_category`, `sku`, `type`, `parent_id`,
         `description`, `specs`, `color`, `size`, `weight`, `dimension`, `brand_name`,
         `stock`, `price`, `special_price`, `warranty`, `exchange`,
         `title_ar`, `description_ar`, `specs_ar`,
-        `color_ar`, `size_ar`, `dimensions_ar`, `warranty_ar`, `exchange_ar`, `supplier_id`, `processed`) VALUES " . implode(',', $data);
-        
+        `color_ar`, `size_ar`, `dimensions_ar`, `warranty_ar`, `exchange_ar`, `supplier_id`, `processed`, `website_id`) VALUES " . implode(',', $data);
+
         if (!$conn->query($sql)) {
             $res = false;
             $msg = $conn->error;
@@ -551,6 +558,7 @@ class ProductController extends AbstractActionController
         $supplierId = $_SESSION['user']->id;
         $insertedItems = 0;
         $updatedItems = 0;
+        $deletedVariants = 0;
         // Initialize
         $itemMySqlExtDAO = new ItemMySqlExtDAO();
         $itemCategoryMappingMySqlExtDAO = new ItemCategoryMappingMySqlExtDAO();
@@ -559,139 +567,145 @@ class ProductController extends AbstractActionController
 
         foreach ($items as $row) {
             $update = $insert = false;
-            $albumId = 0;
-            $prefix = $supplierId . '-' . HelperController::slugify($row['SKU']);
-            $image = HelperController::getOrDownloadImage($row['Image 1'], $prefix);
-            $imagesArray = [];
-            if ($row['Image 2'] != "") {
-                $image1 = HelperController::getOrDownloadImage($row['Image 2'], $prefix);
-                if ($image1) {
-                    array_push($imagesArray, $image1);
-                }
-            }
-            if ($row['Image 3'] != "") {
-                $image2 = HelperController::getOrDownloadImage($row['Image 3'], $prefix);
-                if ($image2) {
-                    array_push($imagesArray, $image2);
-                }
-            }
-            if ($row['Image 4'] != "") {
-                $image3 = HelperController::getOrDownloadImage($row['Image 4'], $prefix);
-                if ($image3) {
-                    array_push($imagesArray, $image3);
-                }
-            }
-
+            $date = date('Y-m-d H:i:s');
             $albumMySqlExtDAO = new AlbumMySqlExtDAO();
             $albumImageMySqlExtDAO = new ImageMySqlExtDAO();
-            // if ($imagesArray) {
-            //     $albumObj = new Album();
-            //     $albumObj->displayOrder = 0;
-            //     $albumObj->active = 1;
-            //     $albumId = $albumMySqlExtDAO->insert($albumObj);
+            $prefix = $supplierId . '-' . HelperController::slugify($row['SKU']);
 
-            //     foreach ($imagesArray as $albumImageItem) {
-            //         $albumImageObj = new Image();
-            //         $albumImageObj->albumId = $albumId;
-            //         $albumImageObj->imageName = $albumImageItem;
-            //         $albumImageMySqlExtDAO->insert($albumImageObj);
-            //     }
-            // }
 
+            $itemType  = $row['Type'];
             $itemObj = new Item();
             self::populateItem($itemObj, $row, $supplierId);
-            if ($image) {
-                $itemObj->image = $image;
-            }
-
-            $itemExists = $itemMySqlExtDAO->queryBySkuAndSupplierId($row['SKU'], $supplierId);
-            $date = date('Y-m-d H:i:s');
-            $categoryId = ProductController::getCategory($row['Category'], $row['sub category'], $row['product category']);
-            if ($itemExists) {
-
-                // if ($imagesArray) {
-                //     $albumObj = new Album();
-                //     $albumObj->displayOrder = 0;
-                //     $albumObj->active = 1;
-                //     $albumId = $albumMySqlExtDAO->insert($albumObj);
-
-                //     foreach ($imagesArray as $albumImageItem) {
-                //         $albumImageObj = new Image();
-                //         $albumImageObj->albumId = $albumId;
-                //         $albumImageObj->imageName = $albumImageItem;
-                //         $albumImageMySqlExtDAO->insert($albumImageObj);
-                //     }
-                // }
-
-                // delete image if changed or removed
-                if (!$image || ($image != $itemExists[0]->image)) {
-                    HelperController::deleteImage($itemExists[0]->image);
+            if ($itemType == self::$TYPE_SIMPLE || $itemType == self::$TYPE_VARIABLE) {
+                // Start of Image Management
+                $image = HelperController::getOrDownloadImage($row['Image 1'], $prefix);
+                $imagesArray = [];
+                if ($row['Image 2'] != "") {
+                    $image1 = HelperController::getOrDownloadImage($row['Image 2'], $prefix);
+                    if ($image1) {
+                        array_push($imagesArray, $image1);
+                    }
+                }
+                if ($row['Image 3'] != "") {
+                    $image2 = HelperController::getOrDownloadImage($row['Image 3'], $prefix);
+                    if ($image2) {
+                        array_push($imagesArray, $image2);
+                    }
+                }
+                if ($row['Image 4'] != "") {
+                    $image3 = HelperController::getOrDownloadImage($row['Image 4'], $prefix);
+                    if ($image3) {
+                        array_push($imagesArray, $image3);
+                    }
                 }
 
-                // delete album and images
-                if ($itemExists[0]->albumId && $itemExists[0]->albumId != 0) {
-                    if (count($imagesArray) == 0) {
-                        $oldImages = $albumImageMySqlExtDAO->queryByAlbumId($itemExists[0]->albumId);
-                        foreach ($oldImages as $oldImage) {
-                            HelperController::deleteImage($oldImage->imageName);
-                            $albumImageMySqlExtDAO->deleteByAlbumId($itemExists[0]->albumId);
-                        }
-                        $albumMySqlExtDAO->delete($itemExists[0]->albumId);
-                    } else {
-                        $albumObj = $albumMySqlExtDAO->load($itemExists[0]->albumId);
-                        if ($albumObj) {
-                            $albumId = $albumObj->id;
-                            if($albumId != 0){
-                                $albumImages = $albumImageMySqlExtDAO->queryByAlbumId($albumId);
+                // End of Image Management
 
-                                //Delete deleted images
-                                foreach ($albumImages as $row1) {
-                                    if (!in_array($row1->imageName, $imagesArray)) {
-                                        HelperController::deleteImage($row1->imageName);
+
+                if ($image) {
+                    $itemObj->image = $image;
+                }
+                $categoryId = ProductController::getCategory($row['Category'], $row['sub category'], $row['product category']);
+                $itemExists = $itemMySqlExtDAO->queryBySkuAndSupplierId($row['SKU'], $supplierId);
+                if ($itemExists) {
+
+                    // delete image if changed or removed
+                    if (!$image || ($image != $itemExists[0]->image)) {
+                        HelperController::deleteImage($itemExists[0]->image);
+                    }
+
+                    // delete album and images
+                    if ($itemExists[0]->albumId && $itemExists[0]->albumId != 0) {
+                        if (count($imagesArray) == 0) {
+                            $oldImages = $albumImageMySqlExtDAO->queryByAlbumId($itemExists[0]->albumId);
+                            foreach ($oldImages as $oldImage) {
+                                HelperController::deleteImage($oldImage->imageName);
+                                $albumImageMySqlExtDAO->deleteByAlbumId($itemExists[0]->albumId);
+                            }
+                            $albumMySqlExtDAO->delete($itemExists[0]->albumId);
+                        } else {
+                            $albumObj = $albumMySqlExtDAO->load($itemExists[0]->albumId);
+                            if ($albumObj) {
+                                $albumId = $albumObj->id;
+                                if ($albumId != 0) {
+                                    $albumImages = $albumImageMySqlExtDAO->queryByAlbumId($albumId);
+
+                                    //Delete deleted images
+                                    foreach ($albumImages as $row1) {
+                                        if (!in_array($row1->imageName, $imagesArray)) {
+                                            HelperController::deleteImage($row1->imageName);
+                                        }
+                                    }
+
+                                    $oldImagesNames = array_map(function ($e) {
+                                        return $e->imageName;
+                                    }, $albumImages);
+
+                                    //error_log(json_encode($oldImagesNames));
+
+                                    //update album 
+                                    foreach ($imagesArray as $albumImageItem) {
+                                        if (!in_array($albumImageItem, $oldImagesNames)) {
+                                            $albumImageObj = new Image();
+                                            $albumImageObj->albumId = $albumId;
+                                            $albumImageObj->imageName = $albumImageItem;
+                                            $albumImageMySqlExtDAO->insert($albumImageObj);
+                                        }
                                     }
                                 }
-    
-                                $oldImagesNames = array_map(function ($e) {
-                                    return $e->imageName;
-                                }, $albumImages);
-    
-                                //error_log(json_encode($oldImagesNames));
-                                
-                                //update album 
-                                foreach ($imagesArray as $albumImageItem) {
-                                    if (!in_array($albumImageItem, $oldImagesNames)) {
+                            } else {
+                                if ($imagesArray) {
+                                    $albumObj = new Album();
+                                    $albumObj->displayOrder = 0;
+                                    $albumObj->active = 1;
+                                    $albumId = $albumMySqlExtDAO->insert($albumObj);
+
+                                    foreach ($imagesArray as $albumImageItem) {
                                         $albumImageObj = new Image();
                                         $albumImageObj->albumId = $albumId;
                                         $albumImageObj->imageName = $albumImageItem;
                                         $albumImageMySqlExtDAO->insert($albumImageObj);
                                     }
+                                    $itemObj->albumId = $albumId;
                                 }
-                            }
-                        } else {
-                            if ($imagesArray) {
-                                $albumObj = new Album();
-                                $albumObj->displayOrder = 0;
-                                $albumObj->active = 1;
-                                $albumId = $albumMySqlExtDAO->insert($albumObj);
-
-                                foreach ($imagesArray as $albumImageItem) {
-                                    $albumImageObj = new Image();
-                                    $albumImageObj->albumId = $albumId;
-                                    $albumImageObj->imageName = $albumImageItem;
-                                    $albumImageMySqlExtDAO->insert($albumImageObj);
-                                }
-                                $itemObj->albumId = $albumId;
                             }
                         }
-                    }
-                    //print_r($itemExists);
-                } else {
-                    if ($imagesArray) {
-                        $albumObj = new Album();
-                        $albumObj->displayOrder = 0;
-                        $albumObj->active = 1;
-                        $albumId = $albumMySqlExtDAO->insert($albumObj);
+                        //print_r($itemExists);
+                    } else {
+                        if ($imagesArray) {
+                            $albumObj = new Album();
+                            $albumObj->displayOrder = 0;
+                            $albumObj->active = 1;
+                            $albumId = $albumMySqlExtDAO->insert($albumObj);
 
+                            foreach ($imagesArray as $albumImageItem) {
+                                $albumImageObj = new Image();
+                                $albumImageObj->albumId = $albumId;
+                                $albumImageObj->imageName = $albumImageItem;
+                                $albumImageMySqlExtDAO->insert($albumImageObj);
+                            }
+                            $itemObj->albumId = $albumId;
+                        }
+                    }
+
+                    $itemObj->id = $itemExists[0]->id;
+                    $itemObj->createdAt = $itemExists[0]->createdAt;
+                    $itemObj->updatedAt = $date;
+                    //print_r($itemObj);echo '<br>';
+                    $update = $itemMySqlExtDAO->update($itemObj);
+                    if ($update) {
+                        $updatedItems++;
+                        //echo $itemObj->id.'<br>';
+                        if ($categoryId) {
+                            CategoryController::updateOrInsertItemCategory($itemObj->id, $categoryId);
+                        }
+                        if (array_key_exists($row['Brand Name'], $brandIdsNames)) {
+                            BrandController::updateOrInsertItemBrand($itemObj->id, $brandIdsNames[$row['Brand Name']]);
+                        }
+                    }
+                } else {
+                    $albumId = self::createAlbum();
+                    if ($imagesArray) {
                         foreach ($imagesArray as $albumImageItem) {
                             $albumImageObj = new Image();
                             $albumImageObj->albumId = $albumId;
@@ -700,62 +714,80 @@ class ProductController extends AbstractActionController
                         }
                         $itemObj->albumId = $albumId;
                     }
-                }
 
-                $itemObj->id = $itemExists[0]->id;
-                $itemObj->createdAt = $itemExists[0]->createdAt;
-                $itemObj->updatedAt = $date;
-                //print_r($itemObj);echo '<br>';
-                $update = $itemMySqlExtDAO->update($itemObj);
-                if ($update) {
-                    $updatedItems++;
-                    //echo $itemObj->id.'<br>';
-                    if ($categoryId) {
-                        CategoryController::updateOrInsertItemCategory($itemObj->id, $categoryId);
-                    }
-                    if (array_key_exists($row['Brand Name'], $brandIdsNames)) {
-                        BrandController::updateOrInsertItemBrand($itemObj->id, $brandIdsNames[$row['Brand Name']]);
+                    //echo 'does not exists<br>';
+                    $itemObj->updatedAt = $date;
+                    $itemObj->createdAt = $date;
+                    $insert = $itemMySqlExtDAO->insert($itemObj);
+                    if ($insert) {
+                        $insertedItems++;
+                        if ($categoryId) {
+                            $itemCategoryMappingMySqlExtDAO->insertItemCategory($insert, $categoryId);
+                        }
+                        if (array_key_exists($row['Brand Name'], $brandIdsNames)) {
+                            $itemBrandMappingMySqlExtDAO->insertItemBrand($insert, $brandIdsNames[$row['Brand Name']]);
+                        }
                     }
                 }
-            } else {
-
-                if ($imagesArray) {
-                    $albumObj = new Album();
-                    $albumObj->displayOrder = 0;
-                    $albumObj->active = 1;
-                    $albumId = $albumMySqlExtDAO->insert($albumObj);
-
-                    foreach ($imagesArray as $albumImageItem) {
-                        $albumImageObj = new Image();
-                        $albumImageObj->albumId = $albumId;
-                        $albumImageObj->imageName = $albumImageItem;
-                        $albumImageMySqlExtDAO->insert($albumImageObj);
-                    }
-                    $itemObj->albumId = $albumId;
-                }
-
-                //echo 'does not exists<br>';
-                $itemObj->updatedAt = $date;
-                $itemObj->createdAt = $date;
-                $insert = $itemMySqlExtDAO->insert($itemObj);
-                if ($insert) {
-                    $insertedItems++;
-                    if ($categoryId) {
-                        $itemCategoryMappingMySqlExtDAO->insertItemCategory($insert, $categoryId);
-                    }
-                    if (array_key_exists($row['Brand Name'], $brandIdsNames)) {
-                        $itemBrandMappingMySqlExtDAO->insertItemBrand($insert, $brandIdsNames[$row['Brand Name']]);
+                if ($update || $insert) {
+                    //echo 'update or insert<br>';
+                    $conn =  ConnectionFactory::getConnection();
+                    $sql = "UPDATE items_temp set processed = 1 where id = " . $row['ID'];
+                    if (!$conn->query($sql)) {
+                        $msg = $conn->error;
                     }
                 }
-            }
-            if ($update || $insert) {
-                //echo 'update or insert<br>';
+            } elseif ($itemType == self::$TYPE_VARIATION) {
                 $conn =  ConnectionFactory::getConnection();
-                $sql = "UPDATE items_temp set processed = 1 where supplier_id = $supplierId AND sku = '" . $row['SKU'] . "'";
-                if (!$conn->query($sql)) {
-                    $msg = $conn->error;
-                    //echo $msg;
+                $variations = HelperController::getCombinations($row['Color'], $row['Size']);
+                foreach ($variations as $variant) {
+                    $itemObj->color = $variant->color;
+                    $itemObj->size = $variant->size;
+                    $sqlQuery = "INSERT INTO `variants_temp` (`sku`, `parent_id`, `color`, `size`, `website_id`, `supplier_id`, `processed`) 
+                    VALUES('$itemObj->sku', '$itemObj->parentId', '$itemObj->color', '$itemObj->size', '0', $supplierId, '0')";
+                    if (!$conn->query($sqlQuery)) {
+                        $msg = $conn->error;
+                        error_log(json_encode($msg));
+                    }
+
+
+                    $variantExist = $itemMySqlExtDAO->checkVariant($itemObj->parentId, $itemObj->color, $itemObj->size);
+                    if ($variantExist) {
+                        $itemObj->id = $variantExist->id;
+                        $itemObj->createdAt = $variantExist->createdAt;
+                        $itemObj->updatedAt = $date;
+                        //print_r($itemObj);echo '<br>';
+                        $update = $itemMySqlExtDAO->update($itemObj);
+                        if ($update) {
+                            $updatedItems++;
+                        }
+                        $websiteId = $itemObj->id;
+                    } else {
+                        $insert = $itemMySqlExtDAO->insert($itemObj);
+                        if ($insert) {
+                            $websiteId = $insert;
+                            $insertedItems++;
+                        }
+                    }
+
+                    if ($update || $insert) {
+                        //echo 'update or insert<br>';
+
+                        $sql = "UPDATE variants_temp set `processed` = 1 , `website_id` = '$websiteId' 
+                        where parent_id = '$itemObj->parentId' AND `color` = '$itemObj->color' AND `size` = '$itemObj->size'";
+                        if (!$conn->query($sql)) {
+                            $msg = $conn->error;
+                            error_log($msg);
+                        }
+                    }
+                    //self::insertVariant($variant, $row);
                 }
+                $sqlQuery1 = "UPDATE items_temp set processed = 1 where id = " . $row['ID'];
+                if (!$conn->query($sqlQuery1)) {
+                    $msg = $conn->error;
+                    error_log($msg);
+                }
+                //check number and set variation = processesc
             }
         }
 
@@ -773,6 +805,8 @@ class ProductController extends AbstractActionController
         $itemObj->salePrice = (isset($row['Special Price']) && !empty($row['Special Price'])) ? $row['Special Price'] : 0;
         $itemObj->weight = (isset($row['Weight']) && !empty($row['Weight'])) ? $row['Weight'] : "";
         $itemObj->sku = $row['SKU'];
+        $itemObj->type = $row['Type'];
+        $itemObj->parentId = $row['Parent ID'];
         $itemObj->qty = (isset($row['Stock']) && !empty($row['Stock'])) ? $row['Stock'] : 0;
         $itemObj->specification = (isset($row['Specification']) && !empty($row['Specification'])) ? $row['Specification'] : "";
         $itemObj->color = (isset($row['Color']) && !empty($row['Color'])) ? $row['Color'] : "";
@@ -791,7 +825,6 @@ class ProductController extends AbstractActionController
         $itemObj->dimensionsAr = (isset($row['Dimensions Arabic']) && !empty($row['Dimensions Arabic'])) ? $row['Dimensions Arabic'] : "";
         $itemObj->warrantyAr = (isset($row['Warranty Arabic']) && !empty($row['Warranty Arabic'])) ? $row['Warranty Arabic'] : "";
         $itemObj->exchangeAr = (isset($row['Exchange Arabic']) && !empty($row['Exchange Arabic'])) ? $row['Exchange Arabic'] : "";
-
     }
 
     public static function deleteItemBySku($sku)
@@ -953,5 +986,19 @@ class ProductController extends AbstractActionController
         $cls->res = $res;
         $cls->msg = $msg;
         return $cls;
+    }
+
+    public static function createAlbum()
+    {
+        $albumMySqlExtDAO = new AlbumMySqlExtDAO();
+        $albumObj = new Album();
+        $albumObj->displayOrder = 0;
+        $albumObj->active = 1;
+        $albumId = $albumMySqlExtDAO->insert($albumObj);
+        return $albumId;
+    }
+
+    public static function insertVariant($variant, $item)
+    {
     }
 }

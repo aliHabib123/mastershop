@@ -849,7 +849,7 @@ function insertItemsBatches() {
           insertItemsBatches();
         }, 1000);
       } else {
-        deleteDeletedItems();
+       deleteDeletedItems();
       }
     },
     error: function () {},

@@ -209,4 +209,38 @@ class HelperController extends AbstractActionController
         $ret->status = $result;
         return $ret;
     }
+
+    public static function getCombinations($str1, $str2)
+    {
+        $arr1 = array_filter(array_map('trim', explode('|', $str1)));
+        $arr2 = array_filter(array_map('trim', explode('|', $str2)));
+
+        $combinations = [];
+
+        if (!empty($arr1) && !empty($arr2)) {
+            foreach ($arr1 as $row) {
+                foreach ($arr2 as $row1) {
+                    $class = new stdClass();
+                    $class->color = $row;
+                    $class->size = $row1;
+                    array_push($combinations, $class);
+                }
+            }
+        } elseif (!empty($arr1) && empty($arr2)) {
+            foreach ($arr1 as $row) {
+                $class = new stdClass();
+                $class->color = $row;
+                $class->size = '';
+                array_push($combinations, $class);
+            }
+        } elseif (!empty($arr2) && empty($arr1)) {
+            foreach ($arr2 as $row) {
+                $class = new stdClass();
+                $class->color = '';
+                $class->size = $row;
+                array_push($combinations, $class);
+            }
+        }
+        return $combinations;
+    }
 }

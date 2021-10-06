@@ -24,6 +24,10 @@
 
 		var $sku;
 
+		var $type;
+
+		var $parentId;
+
 		var $qty;
 
 		var $specification;
