@@ -15,7 +15,7 @@ function main()
 	];
 
 	// paging
-	$limit = 20;
+	$limit = 15;
 	$offset = 0;
 	$page = 1;
 	$condition = "";
@@ -168,7 +168,7 @@ function main()
 		<?php
 		} ?>
 		<div class="portlet-body">
-			<table class="table table-striped table-bordered table-hover table-full-width" id="sample_2">
+			<table class="table table-striped table-bordered table-hover table-full-width" id="">
 				<thead>
 					<tr>
 						<th>ID</th>
