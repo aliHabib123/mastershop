@@ -20,6 +20,16 @@
 
 		var $name;
 
+		var $sku;
+
+		var $parentId;
+
+		var $type;
+
+		var $color;
+
+		var $size;
+
 		var $status;
 
 		var $orderDate;

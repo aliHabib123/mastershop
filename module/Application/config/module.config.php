@@ -503,6 +503,16 @@ return [
                     ],
                 ],
             ],
+            'getProductVariation' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/get-product-variation',
+                    'defaults' => [
+                        'controller' => Controller\ProductController::class,
+                        'action'     => 'getProductVariation',
+                    ],
+                ],
+            ],
             'addToCart' => [
                 'type'    => Literal::class,
                 'options' => [

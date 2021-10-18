@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Application\Controller;
 
+use ItemMySqlExtDAO;
 use Laminas\Mvc\Controller\AbstractActionController;
 use SaleOrderItemMySqlExtDAO;
 use stdClass;
@@ -169,9 +170,27 @@ class DesignController extends AbstractActionController
                             <div class='order-id'>ORDER #$orderId<span><a href='$url'>VIEW ORDER</a></span></div>
                             <div class='items-wrap'>";
         foreach ($saleOrderItems as $row) {
-            $html .= "<div class='item'>
+            if ($row->type == ProductController::$TYPE_VARIATION) {
+
+                $itemMySqlExtDAO = new ItemMySqlExtDAO();
+                $parentItem = $itemMySqlExtDAO->queryBySku($row->parentId);
+                //print_r($parentItem[0]);
+                $html .= "<div class='item'>";
+                $html .= $parentItem[0]->title . " X " . $row->qty;
+                $html .= "<span class=\"cart-variations\">";
+                if ($row->color != "") {
+                    $html .= "<div><b>Color: </b>" . $row->color . "</div>";
+                }
+                if ($row->size != "") {
+                    $html .= "<div><b>Size: </b>" . $row->size . "</div>";
+                }
+                $html .= "</span>";
+                $html .= "</div>";
+            } else {
+                $html .= "<div class='item'>
                             $row->name X $row->qty
                         </div>";
+            }
         }
         $html .= "</div>
                             <div class='item-order-details line1'>
@@ -248,9 +267,29 @@ class DesignController extends AbstractActionController
         $html = "<tr id='cart-item-$item->id'>
                     <td>
                         <div class=\"img-wrap\"><img src=\"$image\" class=\"img-thumbnail img-sm\"></div>
-                    </td>
-                    <td> <h6 class=\"title text-truncate\">$title</h6></td>
-                    <td><b>$price</b></td>
+                    </td>";
+        if ($item->type == ProductController::$TYPE_VARIATION) {
+            $itemMySqlExtDAO = new ItemMySqlExtDAO();
+            $parentItem = $itemMySqlExtDAO->queryBySku($item->parentId);
+            //print_r($item->parentId);
+            $html .= "<td>";
+            $html .= "<h6 class=\"title text-truncate\">";
+            $html .= $parentItem[0]->title;
+            $html .= "</h6>";
+            $html .= "<span class=\"cart-variations\">";
+            if ($item->color != "") {
+                $html .= "<div><b>Color: </b>" . $item->color . "</div>";
+            }
+            if ($item->size != "") {
+                $html .= "<div><b>Size: </b>" . $item->size . "</div>";
+            }
+            $html .= "</span>";
+            $html .= "</td>";
+        } else {
+            $html .= "<td> <h6 class=\"title text-truncate\">$title</h6></td>";
+        }
+
+        $html .= "<td><b>$price</b></td>
                     <td class='cart-qty'>
                         <span class='cart-qty-span'><input class='form-control' min='1' type='number' value=\"$item->cartQty\"/></span>
                         <span class='cart-update-wrap'>
@@ -288,9 +327,29 @@ class DesignController extends AbstractActionController
         $title = $item->title;
         //print_r($item);
 
-        $html = "<tr id='cart-item-$item->id'>
-                    <td> <h6 class=\"title text-truncate\">$title <b>X $item->cartQty</b></h6></td>
-                    <td class='text-right'>
+        $itemMySqlExtDAO = new ItemMySqlExtDAO();
+        $parentItem = $itemMySqlExtDAO->queryBySku($item->parentId);
+
+        $html = "<tr id='cart-item-$item->id'>";
+        if ($item->type == ProductController::$TYPE_VARIATION) {
+            $html .= "<td>";
+            $html .= "<h6 class=\"title text-truncate\">";
+            $html .= $parentItem[0]->title;
+            $html .= " <b>X $item->cartQty</b>";
+            $html .= "</h6>";
+            $html .= "<span class=\"cart-variations\">";
+            if ($item->color != "") {
+                $html .= "<div><b>Color: </b>" . $item->color . "</div>";
+            }
+            if ($item->size != "") {
+                $html .= "<div><b>Size: </b>" . $item->size . "</div>";
+            }
+            $html .= "</span>";
+            $html .= "</td>";
+        } else {
+            $html .= "<td> <h6 class=\"title text-truncate\">$title <b>X $item->cartQty</b></h6></td>";
+        }
+        $html .= "<td class='text-right'>
                         <b class='item-subtotal'>$subtotal</b>
                     </td>
                 </tr>";

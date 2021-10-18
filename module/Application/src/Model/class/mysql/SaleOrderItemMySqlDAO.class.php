@@ -201,6 +201,11 @@ class SaleOrderItemMySqlDAO implements SaleOrderItemDAO{
 		$saleOrderItem->commission = $row['commission'];
 		$saleOrderItem->meta = $row['meta'];
 		$saleOrderItem->name = isset($row['title']) ? $row['title'] : "";
+		$saleOrderItem->sku = isset($row['sku']) ? $row['sku'] : "";
+		$saleOrderItem->parentId = isset($row['parent_id']) ? $row['parent_id'] : "";
+		$saleOrderItem->color = isset($row['color']) ? $row['color'] : "";
+		$saleOrderItem->size = isset($row['size']) ? $row['size'] : "";
+		$saleOrderItem->type = isset($row['type']) ? $row['type'] : "";
 		$saleOrderItem->status = isset($row['status']) ? $row['status'] : "";
 		$saleOrderItem->orderDate = isset($row['created_at']) ? $row['created_at'] : "";
 		$saleOrderItem->ordersCount = isset($row['orders_count']) ? $row['orders_count'] : "";

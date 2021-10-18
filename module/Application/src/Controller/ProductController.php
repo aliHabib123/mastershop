@@ -1001,4 +1001,34 @@ class ProductController extends AbstractActionController
     public static function insertVariant($variant, $item)
     {
     }
+    public function getProductVariationAction()
+    {
+        $result = false;
+        $msg = "This combination does not exist";
+        $item = "";
+        $color = HelperController::filterInput($this->getRequest()->getPost('color'));
+        $size = HelperController::filterInput($this->getRequest()->getPost('size'));
+        $productId = HelperController::filterInput($this->getRequest()->getPost('id'));
+        $itemMySqlExtDAO = new ItemMySqlExtDAO();
+        // echo $color;
+        // echo $size;
+        // echo $productId;
+        $item = $itemMySqlExtDAO->getVariation($productId, $color, $size);
+        if ($item) {
+            $result = true;
+            $msg = "success";
+            $price  = self::getFinalPrice(floatval($item->regularPrice) * $item->usdExchangeRate, floatval($item->salePrice) * $item->usdExchangeRate);
+            if ($price != "n/a") {
+                $price .= "<span> " . _t('lbp') . "</span>";
+            }
+        }
+        $response = json_encode([
+            'result' => $result,
+            'msg' => $msg,
+            'item' => $item,
+            'price' => $price,
+        ]);
+        print_r($response);
+        return $this->response;
+    }
 }

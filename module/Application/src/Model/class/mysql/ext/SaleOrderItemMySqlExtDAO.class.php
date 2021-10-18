@@ -14,6 +14,11 @@ class SaleOrderItemMySqlExtDAO extends SaleOrderItemMySqlDAO
         $sql = "SELECT
                     a.*,
                     b.title,
+                    b.sku,
+                    b.type,
+                    b.parent_id,
+                    b.color,
+                    b.size,
                     b.supplier_id,
                     c.email AS supplier_email
                 FROM
