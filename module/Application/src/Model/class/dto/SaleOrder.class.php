@@ -34,6 +34,8 @@
 
 		var $addressId;
 
+		var $shippingDetails;
+
 		var $deliveryAddress;
 
 		var $createdAt;

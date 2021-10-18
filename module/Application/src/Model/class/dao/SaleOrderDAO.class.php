@@ -76,6 +76,8 @@ interface SaleOrderDAO{
 
 	public function queryByAddressId($value);
 
+	public function queryByShippingDetails($value);
+
 	public function queryByDeliveryAddress($value);
 
 	public function queryByCreatedAt($value);
@@ -112,6 +114,8 @@ interface SaleOrderDAO{
 	public function deleteByNote($value);
 
 	public function deleteByAddressId($value);
+
+	public function deleteByShippingDetails($value);
 
 	public function deleteByDeliveryAddress($value);
 

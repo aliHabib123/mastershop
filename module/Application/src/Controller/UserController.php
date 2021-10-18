@@ -750,6 +750,15 @@ class UserController extends AbstractActionController
         } elseif (!in_array($paymentMethod, $availablePayments)) {
             $msg = "Invalid payment method!";
         } else {
+            $shippingDetails = json_encode([
+                'Name' => $fullName,
+                'Email' => $email,
+                'Mobile' => $mobile,
+                'Country' => $country,
+                'City' => $city,
+                'Address' => $deliveryAddress,
+                'Notes' => $notes,
+            ]);
             $itemMySqlExtDAO = new ItemMySqlExtDAO();
             if ($isSingleItemCheckout) {
                 $cartItems = $itemMySqlExtDAO->getSinglesCheckoutItem($singleItemId);
@@ -766,6 +775,7 @@ class UserController extends AbstractActionController
                 $saleOrderObj->status = PaymentController::$PENDING;
                 $saleOrderObj->customerId = $_SESSION['user']->id;
                 $saleOrderObj->note = $notes;
+                $saleOrderObj->shippingDetails = $shippingDetails;
                 $saleOrderObj->deliveryAddress = $deliveryAddress;
                 $saleOrderObj->paymentType = $paymentMethod;
                 $saleOrderObj->createdAt = date('Y-m-d H:i:s');

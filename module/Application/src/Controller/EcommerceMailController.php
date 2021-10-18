@@ -158,6 +158,7 @@ class EcommerceMailController extends AbstractActionController
 
   public static function getOrderTable($items, $order)
   {
+    $shippingDetails = json_decode($order->shippingDetails);
     $html =  "<table style=\"width:100%;\">
     <thead>
     <tr style=\"text-align:center;background-color: #2576ba;color: #fff;\">
@@ -188,8 +189,27 @@ class EcommerceMailController extends AbstractActionController
         </tr>
         <tr>
             <td colspan=\"2\">&nbsp;</td>
-        </tr>
-    </tbody>
+        </tr>";
+
+    if ($shippingDetails) {
+      $html .= "<tr>
+            <td colspan=\"2\">&nbsp;</td>
+        </tr>  <tr>
+        <td colspan=\"2\" style=\"font-weight:bold;color: #2576ba\">Shipping Details</td>
+        </tr><tr>
+        <td colspan=\"2\">&nbsp;</td>
+    </tr>";
+      foreach ($shippingDetails as $key => $val) {
+        $html .= "   <tr>
+<td style=\"font-weight:bold;\">$key</td>
+<td align=\"right\">$val</td>
+</tr>";
+      }
+      $html .= "<tr>
+            <td colspan=\"2\">&nbsp;</td>
+        </tr>";
+    }
+    $html .= "</tbody>
 
     <tfoot>
         <tr>
