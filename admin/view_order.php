@@ -63,6 +63,18 @@ function main()
 								<td width="20%"><b>Delivery Address</b></td>
 								<td><?php echo $saleOrder->deliveryAddress; ?></td>
 							</tr>
+							<tr>
+								<td width="20%"><b>Shipping Details</b></td>
+								<td>
+									<?php 
+									$shippingDetails = json_decode($saleOrder->shippingDetails);
+									if($shippingDetails){
+										foreach($shippingDetails as $key=> $val){
+											echo "<div><b>$key</b><span style=\"float:right;\">$val</span></div>";
+										}
+									}?>
+								</td>
+							</tr>
 						</tbody>
 					</table>
 				</div>

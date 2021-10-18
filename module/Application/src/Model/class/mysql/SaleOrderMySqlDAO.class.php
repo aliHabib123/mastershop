@@ -54,7 +54,7 @@ class SaleOrderMySqlDAO implements SaleOrderDAO{
  	 * @param SaleOrderMySql saleOrder
  	 */
 	public function insert($saleOrder){
-		$sql = 'INSERT INTO sale_order (parent_id, num_items_sold, total_sales, tax_total, shipping_total, net_total, status, success_indicator, payment_type, delivery_status, reference, customer_id, note, address_id, delivery_address, created_at, created_at_gmt, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+		$sql = 'INSERT INTO sale_order (parent_id, num_items_sold, total_sales, tax_total, shipping_total, net_total, status, success_indicator, payment_type, delivery_status, reference, customer_id, note, address_id, shipping_details, delivery_address, created_at, created_at_gmt, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($saleOrder->parentId);
@@ -71,6 +71,7 @@ class SaleOrderMySqlDAO implements SaleOrderDAO{
 		$sqlQuery->set($saleOrder->customerId);
 		$sqlQuery->set($saleOrder->note);
 		$sqlQuery->set($saleOrder->addressId);
+		$sqlQuery->set($saleOrder->shippingDetails);
 		$sqlQuery->set($saleOrder->deliveryAddress);
 		$sqlQuery->set($saleOrder->createdAt);
 		$sqlQuery->set($saleOrder->createdAtGmt);
@@ -87,7 +88,7 @@ class SaleOrderMySqlDAO implements SaleOrderDAO{
  	 * @param SaleOrderMySql saleOrder
  	 */
 	public function update($saleOrder){
-		$sql = 'UPDATE sale_order SET parent_id = ?, num_items_sold = ?, total_sales = ?, tax_total = ?, shipping_total = ?, net_total = ?, status = ?, success_indicator = ?, payment_type = ?, delivery_status = ?, reference = ?, customer_id = ?, note = ?, address_id = ?, delivery_address = ?, created_at = ?, created_at_gmt = ?, updated_at = ? WHERE id = ?';
+		$sql = 'UPDATE sale_order SET parent_id = ?, num_items_sold = ?, total_sales = ?, tax_total = ?, shipping_total = ?, net_total = ?, status = ?, success_indicator = ?, payment_type = ?, delivery_status = ?, reference = ?, customer_id = ?, note = ?, address_id = ?, shipping_details = ?, delivery_address = ?, created_at = ?, created_at_gmt = ?, updated_at = ? WHERE id = ?';
 		$sqlQuery = new SqlQuery($sql);
 		
 		$sqlQuery->set($saleOrder->parentId);
@@ -104,6 +105,7 @@ class SaleOrderMySqlDAO implements SaleOrderDAO{
 		$sqlQuery->set($saleOrder->customerId);
 		$sqlQuery->set($saleOrder->note);
 		$sqlQuery->set($saleOrder->addressId);
+		$sqlQuery->set($saleOrder->shippingDetails);
 		$sqlQuery->set($saleOrder->deliveryAddress);
 		$sqlQuery->set($saleOrder->createdAt);
 		$sqlQuery->set($saleOrder->createdAtGmt);
@@ -215,6 +217,13 @@ class SaleOrderMySqlDAO implements SaleOrderDAO{
 
 	public function queryByAddressId($value){
 		$sql = 'SELECT * FROM sale_order WHERE address_id = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->getList($sqlQuery);
+	}
+
+	public function queryByShippingDetails($value){
+		$sql = 'SELECT * FROM sale_order WHERE shipping_details = ?';
 		$sqlQuery = new SqlQuery($sql);
 		$sqlQuery->set($value);
 		return $this->getList($sqlQuery);
@@ -347,6 +356,13 @@ class SaleOrderMySqlDAO implements SaleOrderDAO{
 		return $this->executeUpdate($sqlQuery);
 	}
 
+	public function deleteByShippingDetails($value){
+		$sql = 'DELETE FROM sale_order WHERE shipping_details = ?';
+		$sqlQuery = new SqlQuery($sql);
+		$sqlQuery->set($value);
+		return $this->executeUpdate($sqlQuery);
+	}
+
 	public function deleteByDeliveryAddress($value){
 		$sql = 'DELETE FROM sale_order WHERE delivery_address = ?';
 		$sqlQuery = new SqlQuery($sql);
@@ -400,6 +416,7 @@ class SaleOrderMySqlDAO implements SaleOrderDAO{
 		$saleOrder->customerId = $row['customer_id'];
 		$saleOrder->note = $row['note'];
 		$saleOrder->addressId = $row['address_id'];
+		$saleOrder->shippingDetails = $row['shipping_details'];
 		$saleOrder->deliveryAddress = $row['delivery_address'];
 		$saleOrder->createdAt = $row['created_at'];
 		$saleOrder->createdAtGmt = $row['created_at_gmt'];
